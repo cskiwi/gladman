@@ -1,9 +1,8 @@
 ---
-name: Validate Skills and Agents
+name: validate-skills-and-agents
 description: Perform a comprehensive validation of all skills and agents in this workspace to ensure consistency, correctness, and completeness.
-agent: agent
+disable-model-invocation: true
 ---
-
 # Validate Skills and Agents
 
 Perform a comprehensive validation of all skills and agents in this workspace to ensure consistency, correctness, and completeness.

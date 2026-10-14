@@ -1,9 +1,8 @@
 ---
-name: Migrate Frontend
+name: migrate-frontend
 description: Fully migrate the Angular frontend project to the latest Angular, PrimeNG, and @ambe-web-framework versions
-agent: Frontend Migrator
+disable-model-invocation: true
 ---
-
 Perform a complete frontend migration of this project to the latest compatible Angular, PrimeNG, and @ambe-web-framework versions.
 
 ## Instructions

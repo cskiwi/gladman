@@ -13,10 +13,15 @@
  * Usage:
  *   node ci-poll-decide.mjs '<ci_info_json>' <poll_count> <verbosity> \
  *     [--wait-mode] [--prev-cipe-url <url>] [--expected-sha <sha>] \
- *     [--prev-status <status>] [--timeout <seconds>] [--new-cipe-timeout <seconds>] \
- *     [--env-rerun-count <n>] [--no-progress-count <n>] \
+ *     [--prev-status <status>] [--timeout <minutes>] [--new-cipe-timeout <minutes>] \
+ *     [--elapsed-seconds <n>] [--env-rerun-count <n>] [--no-progress-count <n>] \
  *     [--prev-cipe-status <status>] [--prev-sh-status <status>] \
  *     [--prev-verification-status <status>] [--prev-failure-classification <status>]
+ *
+ * Note: --timeout and --new-cipe-timeout are accepted in MINUTES (matching the
+ * skill's documented flags) and converted to seconds internally. --elapsed-seconds
+ * is the wall-clock time since monitoring began, carried across attempts by the
+ * orchestrator, and is the authoritative signal for the --timeout budget.
  */
 
 // --- Arg parsing ---
@@ -39,8 +44,13 @@ const waitMode = getFlag('--wait-mode');
 const prevCipeUrl = getArg('--prev-cipe-url');
 const expectedSha = getArg('--expected-sha');
 const prevStatus = getArg('--prev-status');
-const timeoutSeconds = parseInt(getArg('--timeout') || '0', 10);
-const newCipeTimeoutSeconds = parseInt(getArg('--new-cipe-timeout') || '0', 10);
+// Flags are documented in minutes; convert to seconds for internal comparison.
+const timeoutSeconds = parseInt(getArg('--timeout') || '0', 10) * 60;
+const newCipeTimeoutSeconds = parseInt(getArg('--new-cipe-timeout') || '0', 10) * 60;
+// Wall-clock seconds since monitoring began (carried across attempts); null when
+// the orchestrator doesn't supply it (see isTimedOut for that fallback).
+const elapsedArg = getArg('--elapsed-seconds');
+const elapsedSeconds = elapsedArg !== null ? parseInt(elapsedArg, 10) : null;
 const envRerunCount = parseInt(getArg('--env-rerun-count') || '0', 10);
 const inputNoProgressCount = parseInt(getArg('--no-progress-count') || '0', 10);
 const prevCipeStatus = getArg('--prev-cipe-status');
@@ -76,6 +86,8 @@ const {
   failedTaskIds = [],
   verifiedTaskIds = [],
   couldAutoApplyTasks,
+  autoApplySkipped,
+  autoApplySkipReason,
   userAction,
   cipeUrl,
   commitSha,
@@ -104,7 +116,7 @@ function categorizeTasks() {
 }
 
 function backoff(count) {
-  const delays = [60, 90, 120];
+  const delays = [60, 90, 120, 180];
   return delays[Math.min(count, delays.length - 1)];
 }
 
@@ -118,6 +130,10 @@ function hasStateChanged() {
 
 function isTimedOut() {
   if (timeoutSeconds <= 0) return false;
+  // Prefer real wall-clock elapsed (carried across attempts) so --timeout caps
+  // total monitor duration, not a single invocation.
+  if (elapsedSeconds !== null && !Number.isNaN(elapsedSeconds)) return elapsedSeconds >= timeoutSeconds;
+  // Fallback: estimate elapsed from poll cadence within this invocation.
   const avgDelay = pollCount === 0 ? 0 : backoff(Math.floor(pollCount / 2));
   return pollCount * avgDelay >= timeoutSeconds;
 }
@@ -143,7 +159,7 @@ function isNewCipe() {
 //     3. still waiting                   → wait  (waiting_for_cipe)
 //   NORMAL MODE:
 //     4. polling timeout                 → done  (polling_timeout)
-//     5. circuit breaker (5 polls)       → done  (circuit_breaker)
+//     5. circuit breaker (13 polls)      → done  (circuit_breaker)
 //     6. CI succeeded                    → done  (ci_success)
 //     7. CI canceled                     → done  (cipe_canceled)
 //     8. CI timed out                    → done  (cipe_timed_out)
@@ -154,27 +170,32 @@ function isNewCipe() {
 //    13. self-healing in progress        → poll  (sh_running)
 //    14. flaky task auto-rerun           → poll  (flaky_rerun)
 //    15. fix auto-applied                → poll  (fix_auto_applied)
-//    16. auto-apply: verification pending→ poll  (verification_pending)
-//    17. auto-apply: verified            → done  (fix_auto_applying)
-//    18. fix: verification failed/none   → done  (fix_needs_review)
-//    19. fix: all/e2e verified           → done  (fix_apply_ready)
-//    20. fix: needs local verify         → done  (fix_needs_local_verify)
-//    21. self-healing failed             → done  (fix_failed)
-//    22. no fix available                → done  (no_fix)
-//    23. fallback                        → poll  (fallback)
+//    16. auto-apply: skipped             → done  (fix_auto_apply_skipped)
+//    17. auto-apply: verification pending→ poll  (verification_pending)
+//    18. auto-apply: verified            → done  (fix_auto_applying)
+//    19. fix: verification failed/none   → done  (fix_needs_review)
+//    20. fix: all/e2e verified           → done  (fix_apply_ready)
+//    21. fix: needs local verify         → done  (fix_needs_local_verify)
+//    22. self-healing failed             → done  (fix_failed)
+//    23. no fix available                → done  (no_fix)
+//    24. fallback                        → poll  (fallback)
 // ============================================================
 
 function classify() {
   // --- Wait mode ---
   if (waitMode) {
     if (isNewCipe()) return { action: 'poll', code: 'new_cipe_detected' };
+    // The total --timeout budget also caps time spent waiting for a new CI
+    // Attempt, so it must win over --new-cipe-timeout here; otherwise a long
+    // wait (or a sequence of apply→wait cycles) could run past --timeout.
+    if (isTimedOut()) return { action: 'done', code: 'polling_timeout' };
     if (isWaitTimedOut()) return { action: 'done', code: 'no_new_cipe' };
     return { action: 'wait', code: 'waiting_for_cipe' };
   }
 
   // --- Guards ---
   if (isTimedOut()) return { action: 'done', code: 'polling_timeout' };
-  if (noProgressCount >= 5) return { action: 'done', code: 'circuit_breaker' };
+  if (noProgressCount >= 13) return { action: 'done', code: 'circuit_breaker' };
 
   // --- Terminal CI states ---
   if (cipeStatus === 'SUCCEEDED') return { action: 'done', code: 'ci_success' };
@@ -208,6 +229,12 @@ function classify() {
 
   // --- Auto-apply path (couldAutoApplyTasks) ---
   if (couldAutoApplyTasks === true) {
+    if (autoApplySkipped === true)
+      return {
+        action: 'done',
+        code: 'fix_auto_apply_skipped',
+        extra: { autoApplySkipReason },
+      };
     if (verificationStatus === 'NOT_STARTED' || verificationStatus === 'IN_PROGRESS') return { action: 'poll', code: 'verification_pending' };
     if (verificationStatus === 'COMPLETED') return { action: 'done', code: 'fix_auto_applying' };
     // verification FAILED or NOT_EXECUTABLE → falls through to fix_needs_review
@@ -250,7 +277,7 @@ const messages = {
 
   // guards
   polling_timeout: () => 'Polling timeout exceeded.',
-  circuit_breaker: () => 'No progress after 5 consecutive polls. Stopping.',
+  circuit_breaker: () => 'No progress after 13 consecutive polls. Stopping.',
 
   // terminal
   ci_success: () => 'CI passed successfully!',
@@ -274,6 +301,8 @@ const messages = {
 
   // actionable
   fix_auto_applying: () => 'Fix verified! Auto-applying...',
+  fix_auto_apply_skipped: (extra) =>
+    `Fix verified but auto-apply was skipped. ${extra?.autoApplySkipReason ? `Reason: ${extra.autoApplySkipReason}` : 'Offer to apply manually.'}`,
   fix_needs_review: () => `Fix available but needs review. Verification: ${verificationStatus || 'N/A'}`,
   fix_apply_ready: () => 'Fix available and verified. Ready to apply.',
   fix_needs_local_verify: (extra) => `Fix available. ${extra.verifiableTaskIds.length} task(s) need local verification.`,
@@ -285,7 +314,14 @@ const messages = {
 };
 
 // Codes where noProgressCount resets to 0 (genuine progress occurred)
-const resetProgressCodes = new Set(['ci_success', 'fix_auto_applying', 'fix_needs_review', 'fix_apply_ready', 'fix_needs_local_verify']);
+const resetProgressCodes = new Set([
+  'ci_success',
+  'fix_auto_applying',
+  'fix_auto_apply_skipped',
+  'fix_needs_review',
+  'fix_apply_ready',
+  'fix_needs_local_verify',
+]);
 
 function formatMessage(msg) {
   if (verbosity === 'minimal') {
@@ -333,6 +369,7 @@ function buildOutput(decision) {
   // Add extras
   if (code === 'new_cipe_detected') result.newCipeDetected = true;
   if (extra?.verifiableTaskIds) result.verifiableTaskIds = extra.verifiableTaskIds;
+  if (extra?.autoApplySkipReason) result.autoApplySkipReason = extra.autoApplySkipReason;
 
   console.log(JSON.stringify(result));
 }

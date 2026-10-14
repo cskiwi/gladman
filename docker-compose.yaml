@@ -28,23 +28,21 @@ services:
       - api
     restart: unless-stopped
 
-  typesense:
-    image: typesense/typesense:27.1
-    restart: unless-stopped
-    ports:
-      - '8208:8108'
-    networks:
-      - api
-    volumes:
-      - ./typesense-data:/data
-    environment:
-      TYPESENSE_API_KEY: 'xyz'
-      TYPESENSE_DATA_DIR: '/data'
+  # typesense:
+  #   image: typesense/typesense:30.2
+  #   restart: on-failure
+  #   ports:
+  #     - "8108:8108"
+  #   networks:
+  #     - api
+  #   volumes:
+  #     - ./typesense-data:/data
+  #   command: '--data-dir /data --api-key=xyz --enable-cors'
 
   # Tools
   pgadmin:
     container_name: pgadmin
-    image: dpage/pgadmin4:9.8
+    image: dpage/pgadmin4:9.18
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}

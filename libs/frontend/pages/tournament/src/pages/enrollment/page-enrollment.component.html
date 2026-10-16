@@ -94,7 +94,7 @@
  <label for="preferredPartner" class="block font-medium mb-2">
  {{ 'all.enrollment.preferredPartner' | translate }}
  </label>
- <p-autoComplete
+ <p-autocomplete
  formControlName="preferredPartner"
  [suggestions]="playerSuggestions()"
  (completeMethod)="searchPartners($event)"
@@ -118,7 +118,7 @@
  </div>
 
  @if (enrollError()) {
- <p-message severity="error" [text]="enrollError()!" class="w-full" />
+ <p-message severity="error" class="w-full">{{ enrollError()! }}</p-message>
  }
 
  <div class="flex gap-2">
@@ -345,7 +345,7 @@
  <label for="guestPartner" class="block font-medium mb-2">
  {{ 'all.enrollment.preferredPartner' | translate }}
  </label>
- <p-autoComplete
+ <p-autocomplete
  formControlName="preferredPartner"
  [suggestions]="playerSuggestions()"
  (completeMethod)="searchPartners($event)"
@@ -365,7 +365,7 @@
  </div>
 
  @if (enrollError()) {
- <p-message severity="error" [text]="enrollError()!" class="w-full" />
+ <p-message severity="error" class="w-full">{{ enrollError()! }}</p-message>
  }
 
  <div class="flex justify-end gap-2 pt-4">

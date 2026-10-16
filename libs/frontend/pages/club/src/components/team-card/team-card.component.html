@@ -27,7 +27,7 @@
       >{{ winRate() }}%</span>
     }
     @if (canEdit()) {
-      <button pButton icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm team__edit" (click)="onEdit($event)"></button>
+      <p-button icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm team__edit" (onClick)="onEdit($event)" />
     }
   </div>
 
@@ -71,9 +71,9 @@
           }
         </span>
         <span class="tp-row__levels">
-          @if (row.single != null) { <span class="tp-lv" data-kind="S">{{ row.single }}</span> }
-          @if (row.double != null) { <span class="tp-lv" data-kind="D">{{ row.double }}</span> }
-          @if (row.mix != null) { <span class="tp-lv" data-kind="M">{{ row.mix }}</span> }
+          @if (row.single !== null && row.single !== undefined) { <span class="tp-lv" data-kind="S">{{ row.single }}</span> }
+          @if (row.double !== null && row.double !== undefined) { <span class="tp-lv" data-kind="D">{{ row.double }}</span> }
+          @if (row.mix !== null && row.mix !== undefined) { <span class="tp-lv" data-kind="M">{{ row.mix }}</span> }
         </span>
         <span class="tp-row__form">
           @for (dot of row.form; track $index) {

@@ -8,7 +8,7 @@
     </div>
   </div>
 } @else if (service.error()) {
-  <p-message severity="error" [text]="service.error()!" />
+  <p-message severity="error">{{ service.error()! }}</p-message>
 } @else {
   <!-- Toolbar -->
   <div class="flex flex-wrap items-center gap-2 mb-4">
@@ -39,7 +39,7 @@
     }
 
     <!-- Sort controls -->
-    <p-selectButton [options]="sortOptions" [(ngModel)]="sortBy" optionLabel="label" optionValue="value" size="small" />
+    <p-selectbutton [options]="sortOptions" [(ngModel)]="sortBy" optionLabel="label" optionValue="value" size="small" />
     <label class="flex items-center gap-1 text-sm">
       <p-checkbox [(ngModel)]="separateBackups" [binary]="true" />
       Separate backups
@@ -78,7 +78,7 @@
 
         <!-- Add player -->
         <div class="mb-2">
-          <p-autoComplete
+          <p-autocomplete
             [(ngModel)]="selectedPlayer"
             [suggestions]="playerSuggestions()"
             (completeMethod)="searchPlayerToAdd($event)"
@@ -86,7 +86,7 @@
             field="fullName"
             optionLabel="fullName"
             placeholder="{{ 'all.club.teamBuilder.addPlayer' | translate }}"
-            [minLength]="2"
+            [minQueryLength]="2"
             [forceSelection]="true"
             styleClass="w-full"
             inputStyleClass="w-full"
@@ -162,8 +162,7 @@
                 @if ((service.slotAdjustments().get(player.id) ?? 0) < -1) {
                   <span class="text-xs text-muted-color">×{{ -(service.slotAdjustments().get(player.id) ?? 0) }}</span>
                 }
-                <button
-                  pButton
+                <p-button
                   icon="pi pi-undo"
                   [rounded]="true"
                   [text]="true"
@@ -171,8 +170,8 @@
                   size="small"
                   pTooltip="Restore one slot"
                   tooltipPosition="top"
-                  (click)="restorePlayer(player.id)"
-                ></button>
+                  (onClick)="restorePlayer(player.id)"
+                />
               </div>
             }
           </div>
@@ -204,6 +203,6 @@
     </div>
   </div>
 
-  <p-confirmDialog />
+  <p-confirmdialog />
   <p-toast />
 }

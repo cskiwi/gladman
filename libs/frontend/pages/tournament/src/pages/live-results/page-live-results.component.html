@@ -19,7 +19,7 @@
 
  <div class="flex flex-col gap-4">
  @for (game of recentGames(); track game.gameId; let i = $index) {
- <p-card [styleClass]="i === 0 ? 'border-2 border-primary' : ''">
+ <p-card [class]="i === 0 ? 'border-2 border-primary' : ''">
  <div class="p-4">
  <div class="flex justify-between items-center mb-4">
  @if (i === 0) {

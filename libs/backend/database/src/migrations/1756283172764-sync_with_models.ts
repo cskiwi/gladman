@@ -787,6 +787,10 @@ export class SyncWithModels1756283172764 implements MigrationInterface {
             SET NOT NULL
         `);
     await queryRunner.query(`
+            delete FROM "ranking"."RankingLastPlaces"
+            WHERE "rankingDate" IS NULL;`);
+
+    await queryRunner.query(`
             ALTER TABLE "ranking"."RankingLastPlaces"
             ALTER COLUMN "rankingDate"
             SET NOT NULL
@@ -1529,7 +1533,37 @@ export class SyncWithModels1756283172764 implements MigrationInterface {
             CREATE UNIQUE INDEX "IDX_068a64efe79abae7599848f485" ON "Players" ("slug")
         `);
     await queryRunner.query(`
-            delete from "Players" where "memberId" = '50109200' and "sub" is null
+            DELETE FROM "ClubPlayerMemberships"
+            WHERE "playerId" = '0d1829c8-e74b-4dd6-a70c-f865a899cb6d'
+        `);
+    await queryRunner.query(`
+            DELETE FROM "ranking"."RankingLastPlaces"
+            WHERE "playerId" IN (
+                '0d1829c8-e74b-4dd6-a70c-f865a899cb6d',
+                '73267409-eeca-428a-be47-f38733b8b35c'
+            )
+        `);
+    await queryRunner.query(`
+            DELETE FROM "ranking"."RankingPlaces"
+            WHERE "playerId" IN (
+                '0d1829c8-e74b-4dd6-a70c-f865a899cb6d',
+                '73267409-eeca-428a-be47-f38733b8b35c'
+            )
+        `);
+    await queryRunner.query(`
+            DELETE FROM "event"."GamePlayerMemberships"
+            WHERE "playerId" = '73267409-eeca-428a-be47-f38733b8b35c'
+        `);
+    await queryRunner.query(`
+            DELETE FROM "ranking"."RankingPoints"
+            WHERE "playerId" = '73267409-eeca-428a-be47-f38733b8b35c'
+        `);
+    await queryRunner.query(`
+            DELETE FROM "Players"
+            WHERE "id" IN (
+                '0d1829c8-e74b-4dd6-a70c-f865a899cb6d',
+                '73267409-eeca-428a-be47-f38733b8b35c'
+            )
         `);
     await queryRunner.query(`
             CREATE UNIQUE INDEX "IDX_d55be4fadce35c977029a620e6" ON "Players" ("memberId")

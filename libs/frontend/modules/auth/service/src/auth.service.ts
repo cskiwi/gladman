@@ -130,7 +130,7 @@ export class AuthService {
         }),
       );
 
-      this.tokenSignal.set(token);
+      this.tokenSignal.set(token ?? null);
     } catch (error) {
       console.error('Failed to get token:', error);
       this.tokenSignal.set(null);

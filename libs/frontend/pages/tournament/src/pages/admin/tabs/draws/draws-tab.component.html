@@ -115,7 +115,7 @@
  </div>
 
  @if (updateError()) {
- <p-message severity="error" [text]="updateError()!" styleClass="w-full" />
+ <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>
  }
 
  @if (loading()) {
@@ -422,7 +422,7 @@
  <label for="minLevel" class="text-sm font-medium text-color">
  {{ 'all.tournament.admin.draws.minLevel' | translate }}
  </label>
- <p-inputNumber
+ <p-inputnumber
  id="minLevel"
  [formControl]="drawForm.controls.minLevel"
  [min]="1"
@@ -440,7 +440,7 @@
  <label for="maxLevel" class="text-sm font-medium text-color">
  {{ 'all.tournament.admin.draws.maxLevel' | translate }}
  </label>
- <p-inputNumber
+ <p-inputnumber
  id="maxLevel"
  [formControl]="drawForm.controls.maxLevel"
  [min]="1"

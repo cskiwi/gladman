@@ -99,7 +99,7 @@ export class RankingCalcService {
 
     const batchKey = `ranking-calc:${systemId}:${periodDate}:remaining`;
     const client = await this.rankingCalcQueue.client;
-    await client.set(batchKey, String(batches.length), 'EX', 86400);
+    await client.set(batchKey, String(batches.length), { EX: 86400 });
 
     this.logger.log(`Enqueuing ${batches.length} player batches`);
 
@@ -307,7 +307,13 @@ export class RankingCalcService {
 
     // --- 7. Coordinate: DECR and enqueue FINALIZE if last batch ---
     const client = await this.rankingCalcQueue.client;
-    const remaining = await client.decr(batchKey);
+    client.defineCommand('rankingCalcDecrementCounter', {
+      numberOfKeys: 1,
+      lua: 'return redis.call("DECR", KEYS[1])',
+    });
+    const remaining = Number(
+      await client.runCommand('rankingCalcDecrementCounter', [batchKey]),
+    );
 
     if (remaining <= 0) {
       this.logger.log(`Last batch done for ${periodDate}, enqueuing finalize`);

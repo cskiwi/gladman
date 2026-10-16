@@ -37,19 +37,19 @@
       }
     },
     "migration-generate": {
-      "command": "ts-node -r tsconfig-paths/register --project libs/backend/database/tsconfig.json ./node_modules/typeorm/cli migration:generate -d libs/backend/database/src/datasource -p libs/backend/database/src/migrations/{args.name}",
+      "command": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli migration:generate -d libs/backend/database/src/datasource -p libs/backend/database/src/migrations/{args.name}",
       "options": {
         "envFile": "{workspaceRoot}/.env"
       }
     },
     "migration-run": {
-      "command": "ts-node -r tsconfig-paths/register --project libs/backend/database/tsconfig.json ./node_modules/typeorm/cli migration:run -d libs/backend/database/src/datasource",
+      "command": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d libs/backend/database/src/datasource",
       "options": {
         "envFile": "{workspaceRoot}/.env"
       }
     },
     "migration-revert": {
-      "command": "ts-node -r tsconfig-paths/register --project libs/backend/database/tsconfig.json ./node_modules/typeorm/cli migration:revert -d libs/backend/database/src/datasource",
+      "command": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d libs/backend/database/src/datasource",
       "options": {
         "envFile": "{workspaceRoot}/.env"
       }

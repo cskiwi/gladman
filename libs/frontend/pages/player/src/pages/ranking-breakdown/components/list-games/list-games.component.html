@@ -387,7 +387,7 @@
         (onSelect)="selectOpponent($event, 1)"
         optionLabel="fullName"
         [placeholder]="'all.ranking.breakdown.add-game.search-player' | translate"
-        [minLength]="2"
+        [minQueryLength]="2"
         style="w-full"
       />
       <div class="flex w-36">
@@ -410,7 +410,7 @@
           (onSelect)="selectOpponent($event, 2)"
           optionLabel="fullName"
           [placeholder]="'all.ranking.breakdown.add-game.search-player' | translate"
-          [minLength]="2"
+          [minQueryLength]="2"
           styleClass="w-full"
         />
         <div class="flex w-36">

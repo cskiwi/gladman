@@ -171,7 +171,7 @@ export class AssemblyValidationService {
     });
 
     // Process meta data
-    let meta: EntryMeta = filteredMemberships.find((m) => m.teamId === args.teamId)?.meta as EntryMeta ?? {};
+    const meta: EntryMeta = filteredMemberships.find((m) => m.teamId === args.teamId)?.meta as EntryMeta ?? {};
     if (!meta?.competition) {
       meta.competition = { players: [] };
     }

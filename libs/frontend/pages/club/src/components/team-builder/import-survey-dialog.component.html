@@ -4,7 +4,7 @@
       <div class="flex flex-col items-center gap-4 py-8">
         <i class="pi pi-file-excel text-4xl text-primary"></i>
         <p class="text-lg">{{ 'all.club.teamBuilder.import.description' | translate }}</p>
-        <p-fileUpload
+        <p-fileupload
           mode="basic"
           accept=".xlsx,.xls"
           [maxFileSize]="10000000"
@@ -90,12 +90,12 @@
                     }
                   </div>
                 } @else {
-                  <p-autoComplete
+                  <p-autocomplete
                     [suggestions]="playerSuggestions()"
                     (completeMethod)="searchPlayer($event)"
                     (onSelect)="onPlayerSelected(result, $event.value)"
                     field="fullName"
-                    [minLength]="2"
+                    [minQueryLength]="2"
                     optionLabel="fullName"
                     [placeholder]="'all.club.teamBuilder.import.searchPlayer' | translate"
                   />

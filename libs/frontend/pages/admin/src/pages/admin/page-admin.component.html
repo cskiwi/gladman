@@ -7,7 +7,7 @@
  </ng-container>
  </app-page-header>
 
- <p-message severity="error" [text]="'You need administrator permissions to access this page.'" />
+ <p-message severity="error">{{ 'You need administrator permissions to access this page.' }}</p-message>
 } @else {
  <app-page-header>
  <i avatar class="pi pi-cog text-2xl"></i>
@@ -91,7 +91,7 @@
 
  <!-- Error Message -->
  @if (error(); as errorMessage) {
- <p-message severity="error" [text]="errorMessage" />
+ <p-message severity="error">{{ errorMessage }}</p-message>
  }
  </form>
  </p-card>

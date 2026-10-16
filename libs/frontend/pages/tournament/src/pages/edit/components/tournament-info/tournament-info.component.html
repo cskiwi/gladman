@@ -87,7 +87,7 @@
 
  <!-- Error Message -->
  @if (error(); as errorMessage) {
- <p-message severity="error" [text]="errorMessage" />
+ <p-message severity="error">{{ errorMessage }}</p-message>
  }
  </form>
 </div>

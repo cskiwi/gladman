@@ -140,7 +140,7 @@ export class IdWhereOperators {
 }
 
 const whereCache = new Map<string, Type>();
-const whereCacheByClass = new Map<Function, Type>();
+const whereCacheByClass = new Map<Type, Type>();
 export const whereInputs = new Map<string, Type>();
 
 export function WhereInputType<T>(classRef: Type<T>, name: string) {

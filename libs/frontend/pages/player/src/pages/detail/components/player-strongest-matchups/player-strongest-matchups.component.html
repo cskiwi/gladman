@@ -5,7 +5,7 @@
  <div class="opp-row">
  <span class="text-sm text-color font-medium inline-flex items-center gap-1.5 min-w-0">
  <span class="truncate">{{ opp.fullName }}</span>
- @if (opp.level != null) {
+ @if (opp.level !== null && opp.level !== undefined) {
  <app-tier-badge [level]="opp.level" size="sm" />
  }
  </span>

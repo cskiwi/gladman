@@ -106,7 +106,7 @@
  </div>
 
  @if (updateError()) {
- <p-message severity="error" [text]="updateError()!" styleClass="mt-6 w-full" />
+ <p-message severity="error" class="mt-6 w-full">{{ updateError()! }}</p-message>
  }
 
  <div class="flex justify-end mt-6 pt-4 border-t border-surface">

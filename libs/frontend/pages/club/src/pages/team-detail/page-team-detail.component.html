@@ -37,14 +37,14 @@
  {{ entry()?.competitionDraw?.name || ('all.team.view-draw' | translate) }}
  </strong>
  </span>
- @if (subEvent.level != null || subEvent.maxLevel != null) {
+ @if ((subEvent.level !== null && subEvent.level !== undefined) || (subEvent.maxLevel !== null && subEvent.maxLevel !== undefined)) {
  <span
  class="t-mono text-[11px] bg-emphasis text-muted-color px-2 py-0.5 rounded-sm tracking-wider"
  [pTooltip]="'all.team.level-tooltip' | translate"
  tooltipPosition="top"
  >
  L{{
- subEvent.level != null && subEvent.maxLevel != null
+ subEvent.level !== null && subEvent.level !== undefined && subEvent.maxLevel !== null && subEvent.maxLevel !== undefined
  ? subEvent.level + '–' + subEvent.maxLevel
  : (subEvent.level ?? subEvent.maxLevel)
  }}

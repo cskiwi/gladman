@@ -155,7 +155,7 @@
  </div>
 
  @if (updateError()) {
- <p-message severity="error" [text]="updateError()!" styleClass="w-full" />
+ <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>
  }
 
  @if (loading()) {
@@ -459,7 +459,7 @@
  <label for="breakMinutes" class="text-sm font-medium text-color">
  {{ 'all.tournament.admin.schedule.breakBetween' | translate }}
  </label>
- <p-inputNumber id="breakMinutes" [formControl]="generateSlotsForm.controls.breakMinutes" suffix=" min" styleClass="w-full" />
+ <p-inputnumber id="breakMinutes" [formControl]="generateSlotsForm.controls.breakMinutes" suffix=" min" styleClass="w-full" />
  </div>
  </div>
  </div>
@@ -511,7 +511,7 @@
  <label for="minRest" class="text-sm font-medium text-color">
  {{ 'all.tournament.admin.schedule.minRestTime' | translate }}
  </label>
- <p-inputNumber id="minRest" [formControl]="autoScheduleForm.controls.minRestMinutes" suffix=" min" styleClass="w-full" />
+ <p-inputnumber id="minRest" [formControl]="autoScheduleForm.controls.minRestMinutes" suffix=" min" styleClass="w-full" />
  </div>
 
  @if (lastScheduleResult()) {

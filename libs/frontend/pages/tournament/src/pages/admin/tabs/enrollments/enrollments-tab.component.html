@@ -135,7 +135,7 @@
  </div>
 
  @if (updateError()) {
- <p-message severity="error" [text]="updateError()!" styleClass="w-full" />
+ <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>
  }
 
  @if (loading()) {

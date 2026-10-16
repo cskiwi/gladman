@@ -71,6 +71,12 @@ module.exports = [
       },
     })),
   {
-    ignores: ['node_modules\r', 'i18n.generated.ts', '**/dist/**', '**/dist/**/*.d.ts'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/eslint.config.*',
+      'tmp/**',
+      'i18n.generated.ts',
+    ],
   },
 ];

@@ -31,15 +31,15 @@
  <th pSortableColumn="name" class="font-semibold">
  <div class="flex items-center justify-between gap-2">
  {{ 'all.tournament.admin.settings.subEventName' | translate }}
- <p-sortIcon field="name" />
- <p-columnFilter type="text" field="name" display="menu" class="ml-auto" />
+ <p-sorticon field="name" />
+ <p-columnfilter type="text" field="name" display="menu" class="ml-auto" />
  </div>
  </th>
  <th pSortableColumn="eventType" class="font-semibold">
  <div class="flex items-center justify-between gap-2">
  {{ 'all.tournament.admin.settings.eventType' | translate }}
- <p-sortIcon field="eventType" />
- <p-columnFilter field="eventType" matchMode="equals" display="menu" class="ml-auto">
+ <p-sorticon field="eventType" />
+ <p-columnfilter field="eventType" matchMode="equals" display="menu" class="ml-auto">
  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
  <p-select
  [ngModel]="value"
@@ -57,14 +57,14 @@
  </ng-template>
  </p-select>
  </ng-template>
- </p-columnFilter>
+ </p-columnfilter>
  </div>
  </th>
  <th pSortableColumn="gameType" class="font-semibold">
  <div class="flex items-center justify-between gap-2">
  {{ 'all.tournament.admin.settings.gameType' | translate }}
- <p-sortIcon field="gameType" />
- <p-columnFilter field="gameType" matchMode="equals" display="menu" class="ml-auto">
+ <p-sorticon field="gameType" />
+ <p-columnfilter field="gameType" matchMode="equals" display="menu" class="ml-auto">
  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
  <p-select
  [ngModel]="value"
@@ -82,35 +82,35 @@
  </ng-template>
  </p-select>
  </ng-template>
- </p-columnFilter>
+ </p-columnfilter>
  </div>
  </th>
  <th pSortableColumn="minLevel" class="font-semibold text-center">
  <div class="flex items-center justify-center gap-2">
  {{ 'all.tournament.admin.settings.minLevel' | translate }}
- <p-sortIcon field="minLevel" />
- <p-columnFilter type="numeric" field="minLevel" display="menu" />
+ <p-sorticon field="minLevel" />
+ <p-columnfilter type="numeric" field="minLevel" display="menu" />
  </div>
  </th>
  <th pSortableColumn="maxLevel" class="font-semibold text-center">
  <div class="flex items-center justify-center gap-2">
  {{ 'all.tournament.admin.settings.maxLevel' | translate }}
- <p-sortIcon field="maxLevel" />
- <p-columnFilter type="numeric" field="maxLevel" display="menu" />
+ <p-sorticon field="maxLevel" />
+ <p-columnfilter type="numeric" field="maxLevel" display="menu" />
  </div>
  </th>
  <th pSortableColumn="maxEntries" class="font-semibold text-center">
  <div class="flex items-center justify-center gap-2">
  {{ 'all.tournament.admin.settings.maxEntries' | translate }}
- <p-sortIcon field="maxEntries" />
- <p-columnFilter type="numeric" field="maxEntries" display="menu" />
+ <p-sorticon field="maxEntries" />
+ <p-columnfilter type="numeric" field="maxEntries" display="menu" />
  </div>
  </th>
  <th pSortableColumn="waitingListEnabled" class="font-semibold text-center">
  <div class="flex items-center justify-between gap-2">
  {{ 'all.tournament.admin.settings.waitingList' | translate }}
- <p-sortIcon field="waitingListEnabled" />
- <p-columnFilter field="waitingListEnabled" matchMode="equals" display="menu" [showMatchModes]="false" class="ml-auto">
+ <p-sorticon field="waitingListEnabled" />
+ <p-columnfilter field="waitingListEnabled" matchMode="equals" display="menu" [showMatchModes]="false" class="ml-auto">
  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
  <p-select
  [ngModel]="value"
@@ -124,7 +124,7 @@
  optionValue="value"
  />
  </ng-template>
- </p-columnFilter>
+ </p-columnfilter>
  </div>
  </th>
  <th class="font-semibold text-center" style="width: 7rem">{{ 'all.tournament.admin.settings.actions' | translate }}</th>
@@ -284,14 +284,14 @@
  <label for="minLevel" class="text-sm font-medium text-color">
  {{ 'all.tournament.admin.settings.minLevel' | translate }}
  </label>
- <p-inputNumber id="minLevel" formControlName="minLevel" [min]="1" [max]="12" [showButtons]="true" styleClass="w-full" />
+ <p-inputnumber id="minLevel" formControlName="minLevel" [min]="1" [max]="12" [showButtons]="true" styleClass="w-full" />
  </div>
 
  <div class="flex flex-col gap-2">
  <label for="maxLevel" class="text-sm font-medium text-color">
  {{ 'all.tournament.admin.settings.maxLevel' | translate }}
  </label>
- <p-inputNumber id="maxLevel" formControlName="maxLevel" [min]="1" [max]="12" [showButtons]="true" styleClass="w-full" />
+ <p-inputnumber id="maxLevel" formControlName="maxLevel" [min]="1" [max]="12" [showButtons]="true" styleClass="w-full" />
  </div>
  </div>
  <small class="text-muted-color text-xs -mt-2">{{ 'all.tournament.admin.settings.levelHelp' | translate }}</small>
@@ -300,7 +300,7 @@
  <label for="maxEntries" class="text-sm font-medium text-color">
  {{ 'all.tournament.admin.settings.maxEntries' | translate }}
  </label>
- <p-inputNumber id="maxEntries" formControlName="maxEntries" [min]="2" [showButtons]="true" styleClass="w-full" />
+ <p-inputnumber id="maxEntries" formControlName="maxEntries" [min]="2" [showButtons]="true" styleClass="w-full" />
  <small class="text-muted-color text-xs">{{ 'all.tournament.admin.settings.maxEntriesHelp' | translate }}</small>
  </div>
 

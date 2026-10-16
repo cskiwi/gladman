@@ -48,7 +48,7 @@ export interface GamesListOptions {
     TooltipModule,
     ConfirmDialogModule,
   ],
-  templateUrl: './games-list.component.html'
+  templateUrl: './games-list.component.html',
   styleUrls: []
 })
 export class GamesListComponent {

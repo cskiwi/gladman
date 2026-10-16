@@ -16,7 +16,7 @@
   <div class="flex flex-col md:flex-row gap-4 items-start">
     <div class="flex flex-wrap gap-4 flex-1">
       <div class="w-40 shrink-0">
-        <p-floatLabel variant="on">
+        <p-floatlabel variant="on">
           <p-select
             [options]="seasonOptions()"
             [ngModel]="selectedSeason()"
@@ -26,11 +26,11 @@
             inputId="season-select"
           />
           <label for="season-select">{{ 'all.competition.team-assembly.season' | translate }}</label>
-        </p-floatLabel>
+        </p-floatlabel>
       </div>
 
-      <p-floatLabel variant="on" class="min-w-[180px] flex-1">
-        <p-autoComplete
+      <p-floatlabel variant="on" class="min-w-[180px] flex-1">
+        <p-autocomplete
           [suggestions]="clubSuggestions()"
           (completeMethod)="searchClub($event)"
           (onSelect)="onClubSelect($event.value)"
@@ -42,9 +42,9 @@
           class="w-full"
         />
         <label for="club-select">{{ 'all.competition.team-assembly.club' | translate }}</label>
-      </p-floatLabel>
+      </p-floatlabel>
 
-      <p-floatLabel variant="on" class="min-w-[180px] flex-1">
+      <p-floatlabel variant="on" class="min-w-[180px] flex-1">
         <p-select
           [options]="teams()"
           [ngModel]="selectedTeamId()"
@@ -59,9 +59,9 @@
           inputId="team-select"
         />
         <label for="team-select">{{ 'all.competition.team-assembly.team' | translate }}</label>
-      </p-floatLabel>
+      </p-floatlabel>
 
-      <p-floatLabel variant="on" class="min-w-[180px] flex-1">
+      <p-floatlabel variant="on" class="min-w-[180px] flex-1">
         <p-select
           [options]="encounters()"
           [ngModel]="selectedEncounterId()"
@@ -74,7 +74,7 @@
           inputId="encounter-select"
         />
         <label for="encounter-select">{{ 'all.competition.team-assembly.encounter' | translate }}</label>
-      </p-floatLabel>
+      </p-floatlabel>
     </div>
     <div class="flex gap-1 shrink-0">
       <p-button

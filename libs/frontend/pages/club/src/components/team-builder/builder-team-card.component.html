@@ -1,4 +1,4 @@
-<p-card [styleClass]="'h-full' + (team().isMarkedForRemoval ? ' opacity-60' : '')">
+<p-card [class]="'h-full' + (team().isMarkedForRemoval ? ' opacity-60' : '')">
   <ng-template #header>
     <div class="flex items-center justify-between p-3 pb-0">
       <div class="flex items-center gap-2">
@@ -10,8 +10,7 @@
         }
       </div>
       <div class="flex items-center gap-1">
-        <button
-          pButton
+        <p-button
           [icon]="team().isMarkedForRemoval ? 'pi pi-undo' : 'pi pi-ban'"
           [rounded]="true"
           [text]="true"
@@ -19,11 +18,10 @@
           size="small"
           [pTooltip]="team().isMarkedForRemoval ? 'Undo removal' : 'Mark for removal'"
           tooltipPosition="top"
-          (click)="markForRemovalClicked.emit()"
-        ></button>
+          (onClick)="markForRemovalClicked.emit()"
+        />
         @if (team().isNew) {
-          <button
-            pButton
+          <p-button
             icon="pi pi-trash"
             [rounded]="true"
             [text]="true"
@@ -31,8 +29,8 @@
             size="small"
             pTooltip="Delete team"
             tooltipPosition="top"
-            (click)="removeTeamClicked.emit()"
-          ></button>
+            (onClick)="removeTeamClicked.emit()"
+          />
         }
       </div>
     </div>
@@ -50,12 +48,12 @@
         }"
       >
         {{ team().teamIndex }}
-        @if (team().selectedSubEvent?.maxBaseIndex != null) {
+        @if (team().selectedSubEvent?.maxBaseIndex !== null && team().selectedSubEvent?.maxBaseIndex !== undefined) {
           / {{ team().selectedSubEvent?.maxBaseIndex }}
         }
       </span>
     </div>
-    @if (team().selectedSubEvent?.maxBaseIndex != null) {
+    @if (team().selectedSubEvent?.maxBaseIndex !== null && team().selectedSubEvent?.maxBaseIndex !== undefined) {
       <p-progressbar [value]="indexPercent" [showValue]="false" [style]="{ height: '0.5rem', '--p-progressbar-value-background': indexBarColor }" />
       @if (indexSeverity === 'danger') {
         <div class="text-xs mt-1" [class.text-red-500]="true">
@@ -111,7 +109,7 @@
         <span>Max level</span>
         <span>{{ levelRangeLabel }}</span>
       </div>
-      @if (team().standingPosition != null) {
+      @if (team().standingPosition !== null && team().standingPosition !== undefined) {
         <div class="flex items-center justify-between gap-2">
           <span>Standing</span>
           <span>#{{ team().standingPosition }}</span>

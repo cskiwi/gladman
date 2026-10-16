@@ -16,7 +16,7 @@
  <!-- Accent bar -->
  <div
  class="absolute inset-y-0 left-0 w-[4px] pointer-events-none"
- [class.bg-primary]="isUpcoming || res == null"
+ [class.bg-primary]="isUpcoming || res === null || res === undefined"
  [class.bg-green-500]="!isUpcoming && res === 'win'"
  [class.bg-red-500]="!isUpcoming && res === 'loss'"
  [class.bg-emphasis]="!isUpcoming && res === 'draw'"
@@ -79,13 +79,13 @@
  @let home = enc.homeScore ?? 0;
  @let away = enc.awayScore ?? 0;
  @let homeClass =
- p == null
+ p === null || p === undefined
  ? (home > away ? 'text-color' : 'text-muted-color')
  : (p === 'home'
  ? (res === 'win' ? 'text-green-600 dark:text-green-400' : res === 'loss' ? 'text-red-600 dark:text-red-400' : 'text-color')
  : (res === 'win' ? 'text-red-600 dark:text-red-400' : res === 'loss' ? 'text-green-600 dark:text-green-400' : 'text-muted-color'));
  @let awayClass =
- p == null
+ p === null || p === undefined
  ? (away > home ? 'text-color' : 'text-muted-color')
  : (p === 'away'
  ? (res === 'win' ? 'text-green-600 dark:text-green-400' : res === 'loss' ? 'text-red-600 dark:text-red-400' : 'text-color')
@@ -140,7 +140,7 @@
  class="g-card"
  [class.g-card--win]="gRes === 'win'"
  [class.g-card--loss]="gRes === 'loss'"
- [class.g-card--neutral]="gRes == null"
+ [class.g-card--neutral]="gRes === null || gRes === undefined"
  >
  <!-- Color band -->
  <div class="g-card__band"></div>

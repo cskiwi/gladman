@@ -1,58 +1,58 @@
 <section>
   <div class="flex items-baseline gap-2 mb-4">
     <span class="t-eyebrow">Players</span>
-    <span class="t-mono text-xs text-muted-color">{{ players().length }}</span>
+    <span class="t-mono text-xs text-muted-color">{{ playerRows().length }}</span>
   </div>
 
-  <p-table [value]="players()" sortMode="multiple" [multiSortMeta]="defaultSort" [tableStyle]="{ 'min-width': '40rem' }">
+  <p-table [value]="playerRows()" sortMode="multiple" [multiSortMeta]="defaultSort" [tableStyle]="{ 'min-width': '40rem' }">
     <ng-template #header>
       <tr>
         <th pSortableColumn="player.lastName">
           <div class="flex items-center gap-2">
             Player
-            <p-sortIcon field="player.lastName" />
+            <p-sorticon field="player.lastName" />
           </div>
         </th>
         <th pSortableColumn="membershipType">
           <div class="flex items-center gap-2">
             Type
-            <p-sortIcon field="membershipType" />
+            <p-sorticon field="membershipType" />
           </div>
         </th>
         <th pSortableColumn="isBase">
           <div class="flex items-center gap-2">
             {{ 'all.team.edit.membershipType.base' | translate }}
-            <p-sortIcon field="isBase" />
+            <p-sorticon field="isBase" />
           </div>
         </th>
         <th pSortableColumn="stats.played">
           <div class="flex items-center gap-2">
             Played
-            <p-sortIcon field="stats.played" />
+            <p-sorticon field="stats.played" />
           </div>
         </th>
         <th pSortableColumn="stats.won">
           <div class="flex items-center gap-2">
             Won
-            <p-sortIcon field="stats.won" />
+            <p-sorticon field="stats.won" />
           </div>
         </th>
         <th pSortableColumn="stats.lost">
           <div class="flex items-center gap-2">
             Lost
-            <p-sortIcon field="stats.lost" />
+            <p-sorticon field="stats.lost" />
           </div>
         </th>
         <th pSortableColumn="stats.winPct">
           <div class="flex items-center gap-2">
             Win %
-            <p-sortIcon field="stats.winPct" />
+            <p-sorticon field="stats.winPct" />
           </div>
         </th>
         <th pSortableColumn="stats.encounterPct">
           <div class="flex items-center gap-2">
             {{ 'all.team.edit.encounter-presence' | translate }}
-            <p-sortIcon field="stats.encounterPct" />
+            <p-sorticon field="stats.encounterPct" />
           </div>
         </th>
         @if (onAddPlayerToTeam() || onRemovePlayerFromTeam()) {

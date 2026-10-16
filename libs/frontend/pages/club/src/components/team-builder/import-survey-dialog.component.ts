@@ -9,6 +9,7 @@ import { TagModule } from 'primeng/tag';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { FileUploadModule } from 'primeng/fileupload';
+import type { FileSelectEvent } from 'primeng/fileupload';
 import { ExcelParserService } from '../../pages/detail/tabs/team-builder/services/excel-parser.service';
 import { Player } from '@app/models';
 import { MatchResult, PlayerMatcherService } from '../../pages/detail/tabs/team-builder/services/player-matcher.service';
@@ -46,7 +47,7 @@ export class ImportSurveyDialogComponent {
   matchResults = signal<MatchResult[]>([]);
   playerSuggestions = signal<Player[]>([]);
 
-  async onFileSelected(event: { files: File[] }) {
+  async onFileSelected(event: FileSelectEvent) {
     const file = event.files?.[0];
     if (!file) return;
 

@@ -22,7 +22,7 @@ export class CronJobResolver {
   @ResolveField(() => String, { nullable: true })
   nextRun(@Parent() job: CronJob): string | null {
     try {
-      const cronTime = CronJobCron.from({ cronTime: job.cronTime, start: false, onTick: () => {} });
+      const cronTime = CronJobCron.from({ cronTime: job.cronTime, start: false, onTick: () => undefined });
       return cronTime.nextDate().toISO();
     } catch {
       return null;

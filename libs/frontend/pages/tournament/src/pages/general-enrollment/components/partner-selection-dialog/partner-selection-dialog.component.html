@@ -6,7 +6,7 @@
  <i class="pi pi-users text-primary-500 mr-2"></i>
  {{ 'all.enrollment.partnerSelection.title' | translate }}
  </label>
- <p-autoComplete
+ <p-autocomplete
  formControlName="partner"
  [suggestions]="filteredPartners"
  (completeMethod)="searchPartners($event)"

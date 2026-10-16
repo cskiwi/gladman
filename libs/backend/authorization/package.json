@@ -5,10 +5,10 @@
     "@app/models": "*",
     "tslib": "^2.0.0",
     "@nestjs/common": "^11.1.5",
-    "@nestjs/config": "4.0.3",
+    "@nestjs/config": "^4.0.3",
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/core": "^11.1.5",
-    "express": "5.2.1",
+    "express": "^5.2.1",
     "jwks-rsa": "^3.2.0",
     "@nestjs/graphql": "^13.1.0"
   },

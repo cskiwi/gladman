@@ -58,7 +58,7 @@
  <label for="usedRankingAmount" class="font-medium">
  {{ 'all.competition.edit.settings.usedRankingAmount' | translate }}
  </label>
- <p-inputNumber id="usedRankingAmount" formControlName="usedRankingAmount" [min]="1" [max]="24" [showButtons]="true" />
+ <p-inputnumber id="usedRankingAmount" formControlName="usedRankingAmount" [min]="1" [max]="24" [showButtons]="true" />
  <small class="text-muted-color">
  {{ 'all.competition.edit.settings.usedRankingAmount.hint' | translate }}
  </small>
@@ -110,7 +110,7 @@
 
  <!-- Error Message -->
  @if (error(); as errorMessage) {
- <p-message severity="error" [text]="errorMessage" />
+ <p-message severity="error">{{ errorMessage }}</p-message>
  }
  </form>
 </div>

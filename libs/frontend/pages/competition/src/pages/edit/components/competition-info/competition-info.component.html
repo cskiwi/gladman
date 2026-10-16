@@ -22,7 +22,7 @@
  <!-- Season -->
  <div class="flex flex-col gap-1">
  <label for="season" class="font-medium">{{ 'all.competition.edit.info.season' | translate }}</label>
- <p-inputNumber
+ <p-inputnumber
  id="season"
  formControlName="season"
  [useGrouping]="false"
@@ -103,7 +103,7 @@
 
  <!-- Error Message -->
  @if (error(); as errorMessage) {
- <p-message severity="error" [text]="errorMessage" />
+ <p-message severity="error">{{ errorMessage }}</p-message>
  }
  </form>
 </div>

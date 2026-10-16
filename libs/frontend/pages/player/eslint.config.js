@@ -1,11 +1,13 @@
-const { FlatCompat } = require('@eslint/eslintrc');
-const js = require('@eslint/js');
+const nx = require('@nx/eslint-plugin');
+const angular = require('angular-eslint');
 const baseConfig = require('../../../../eslint.config.js');
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-});
+const compat = {
+  config: ({ extends: presets }) =>
+    presets.includes('plugin:@nx/angular')
+      ? nx.configs['flat/angular']
+      : angular.configs.templateRecommended,
+};
 
 module.exports = [
   ...baseConfig,

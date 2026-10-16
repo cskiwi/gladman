@@ -30,7 +30,7 @@
  <!-- Claims Selection -->
  <div class="space-y-6">
  @if (!canEditClaims()) {
- <p-message severity="warn" [text]="'all.player.edit.claims.messages.no-permission' | translate" />
+ <p-message severity="warn">{{ 'all.player.edit.claims.messages.no-permission' | translate }}</p-message>
  } @else if (globalClaims().length === 0) {
  <p class="text-muted-color">{{ 'all.player.edit.claims.messages.no-claims' | translate }}</p>
  } @else {
@@ -89,7 +89,7 @@
 
  <!-- Error Message -->
  @if (error(); as errorMessage) {
- <p-message severity="error" [text]="errorMessage" />
+ <p-message severity="error">{{ errorMessage }}</p-message>
  }
  </form>
 </div>

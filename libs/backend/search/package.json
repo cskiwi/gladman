@@ -7,10 +7,10 @@
     "@nestjs/common": "^11.1.5",
     "@nestjs/swagger": "^11.2.0",
     "class-validator": "^0.14.2",
-    "express": "5.2.1",
+    "express": "^5.2.1",
     "typesense": "^2.1.0",
     "@nestjs/jwt": "^11.0.0",
-    "@nestjs/config": "4.0.3",
+    "@nestjs/config": "^4.0.3",
     "dayjs": "^1.11.13"
   },
   "type": "commonjs",

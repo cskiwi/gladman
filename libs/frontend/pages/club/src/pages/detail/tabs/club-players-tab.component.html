@@ -11,7 +11,7 @@
  />
  </p-iconfield>
  @if (service.availableTeams().length > 1) {
- <p-multiSelect
+ <p-multiselect
  [options]="service.availableTeams()"
  [ngModel]="selectedTeamIds()"
  (ngModelChange)="selectedTeamIds.set($event)"

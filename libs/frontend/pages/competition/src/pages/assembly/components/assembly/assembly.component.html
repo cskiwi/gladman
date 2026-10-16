@@ -1,5 +1,5 @@
 @if (dataService.loading()) {
-  <p-progressBar mode="indeterminate" />
+  <p-progressbar mode="indeterminate" />
 } @else if (dataService.loaded()) {
   <section class="flex flex-col gap-4">
     <!-- Information Panels -->
@@ -58,8 +58,8 @@
       <div class="flex flex-col gap-4">
         <!-- Captain -->
         <div class="mb-2">
-          <p-floatLabel variant="on">
-            <p-autoComplete
+          <p-floatlabel variant="on">
+            <p-autocomplete
               [suggestions]="captainSuggestions()"
               (completeMethod)="searchCaptain($event)"
               (onSelect)="selectCaptain($event.value)"
@@ -67,7 +67,7 @@
               [forceSelection]="true"
             />
             <label>{{ 'all.competition.team-assembly.captain' | translate }}</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
 
         <!-- Game Slots with p-select -->
@@ -122,8 +122,8 @@
 
         <!-- Add player -->
         <div class="mt-2">
-          <p-floatLabel variant="on">
-            <p-autoComplete
+          <p-floatlabel variant="on">
+            <p-autocomplete
               [suggestions]="playerSuggestions()"
               (completeMethod)="searchPlayer($event)"
               (onSelect)="addPlayer($event.value)"
@@ -131,7 +131,7 @@
               [forceSelection]="true"
             />
             <label>Voeg speler toe</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
       </div>
     } @else {
@@ -140,8 +140,8 @@
         <div class="basis-1/3 shrink-0 flex flex-col gap-4">
           <!-- Captain -->
           <div class="mb-2">
-            <p-floatLabel variant="on">
-              <p-autoComplete
+            <p-floatlabel variant="on">
+              <p-autocomplete
                 [suggestions]="captainSuggestions()"
                 (completeMethod)="searchCaptain($event)"
                 (onSelect)="selectCaptain($event.value)"
@@ -149,7 +149,7 @@
                 [forceSelection]="true"
               />
               <label>{{ 'all.competition.team-assembly.captain' | translate }}</label>
-            </p-floatLabel>
+            </p-floatlabel>
           </div>
 
           <!-- Player Pool -->
@@ -226,8 +226,8 @@
 
           <!-- Add player -->
           <div class="mt-2">
-            <p-floatLabel variant="on">
-              <p-autoComplete
+            <p-floatlabel variant="on">
+              <p-autocomplete
                 [suggestions]="playerSuggestions()"
                 (completeMethod)="searchPlayer($event)"
                 (onSelect)="addPlayer($event.value)"
@@ -235,7 +235,7 @@
                 [forceSelection]="true"
               />
               <label>Voeg speler toe</label>
-            </p-floatLabel>
+            </p-floatlabel>
           </div>
 
           <!-- Change team -->
@@ -255,7 +255,7 @@
             <label class="font-bold mb-2 block">{{ 'all.competition.team-assembly.auto-generate.title' | translate }}</label>
 
             <div class="flex flex-col gap-2 mb-3">
-              <p-floatLabel variant="on">
+              <p-floatlabel variant="on">
                 <p-select
                   [options]="timeRangeOptions"
                   [(ngModel)]="selectedTimeRange"
@@ -271,10 +271,10 @@
                   </ng-template>
                 </p-select>
                 <label for="time-range-select">{{ 'all.competition.team-assembly.auto-generate.time-range' | translate }}</label>
-              </p-floatLabel>
+              </p-floatlabel>
 
               @if (selectedTimeRange() === 'last-weeks') {
-                <p-floatLabel variant="on">
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     type="number"
@@ -285,7 +285,7 @@
                     max="52"
                   />
                   <label for="weeks-input">{{ 'all.competition.team-assembly.auto-generate.weeks' | translate }}</label>
-                </p-floatLabel>
+                </p-floatlabel>
               }
             </div>
 

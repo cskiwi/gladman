@@ -124,7 +124,7 @@
       <div class="mb-4">
         <div class="flex flex-col gap-1">
           <label for="captain" class="font-medium">{{ 'all.team.edit.captain.label' | translate }}</label>
-          <p-autoComplete
+          <p-autocomplete
             id="captain"
             [ngModel]="displayCaptain()"
             (ngModelChange)="onCaptainInputChange($event)"
@@ -138,7 +138,7 @@
             [dropdown]="false"
             [showClear]="true"
             [delay]="300"
-            [minLength]="2"
+            [minQueryLength]="2"
             styleClass="w-full"
           >
             <ng-template #item let-player>
@@ -154,7 +154,7 @@
                 </div>
               </div>
             </ng-template>
-          </p-autoComplete>
+          </p-autocomplete>
         </div>
       </div>
 
@@ -215,7 +215,7 @@
     <!-- Player Selection -->
     <div>
       <label class="block text-sm font-medium mb-2">{{ 'all.team.edit.members.player' | translate }}</label>
-      <p-autoComplete
+      <p-autocomplete
         [(ngModel)]="selectedPlayerToAdd"
         [suggestions]="playerSuggestions()"
         (completeMethod)="searchPlayer($event)"
@@ -240,7 +240,7 @@
             </div>
           </div>
         </ng-template>
-      </p-autoComplete>
+      </p-autocomplete>
     </div>
 
     <!-- Membership Type Selection -->

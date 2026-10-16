@@ -10,11 +10,11 @@
       "dependsOn": ["^build"],
       "options": {
         "command": "webpack-cli build",
-        "args": ["--node-env=production"]
+        "args": ["--config-node-env=production"]
       },
       "configurations": {
         "development": {
-          "args": ["--node-env=development"]
+          "args": ["--config-node-env=development"]
         }
       }
     },

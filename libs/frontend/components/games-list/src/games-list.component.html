@@ -59,7 +59,7 @@
 
  <!-- Filters Panel -->
  @if (options().showFilters) {
- <p-card class="mb-6" styleClass="border border-surface">
+ <p-card class="mb-6" class="border border-surface">
  <ng-template pTemplate="header">
  <div class="flex items-center gap-2">
  <i class="pi pi-filter text-muted-color"></i>
@@ -157,7 +157,7 @@
  }
 
  <!-- Games Table -->
- <p-card styleClass="border border-surface">
+ <p-card class="border border-surface">
  <ng-template pTemplate="header">
  <div class="flex items-center justify-between">
  <div class="flex items-center gap-2">
@@ -196,7 +196,7 @@
  </p>
  </div>
  } @else {
- <p-dataTable
+ <p-table
  [value]="paginatedGames()"
  [paginator]="options().showPagination"
  [rows]="options().pageSize || 10"
@@ -348,7 +348,7 @@
  </td>
  </tr>
  </ng-template>
- </p-dataTable>
+ </p-table>
  }
  </p-card>
 </div>

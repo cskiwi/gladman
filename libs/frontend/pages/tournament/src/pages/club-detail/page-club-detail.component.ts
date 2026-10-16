@@ -24,6 +24,7 @@ import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { MenuItem } from 'primeng/api';
+import type { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-page-club-detail',
@@ -90,9 +91,9 @@ export class PageClubDetailComponent {
   });
 
   // Performance chart data
-  performanceChartData = computed(() => {
+  performanceChartData = computed<ChartData<'pie'> | undefined>(() => {
     const stats = this.statistics();
-    if (!stats) return null;
+    if (!stats) return undefined;
 
     return {
       labels: ['Games Won', 'Games Lost'],
@@ -107,7 +108,7 @@ export class PageClubDetailComponent {
     };
   });
 
-  performanceChartOptions = {
+  performanceChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -118,9 +119,9 @@ export class PageClubDetailComponent {
   };
 
   // Team distribution chart data
-  teamDistributionData = computed(() => {
+  teamDistributionData = computed<ChartData<'bar'> | undefined>(() => {
     const teams = this.teams();
-    if (!teams.length) return null;
+    if (!teams.length) return undefined;
 
     const seasonCounts = teams.reduce((acc: Record<string, number>, team) => {
       acc[team.season] = (acc[team.season] || 0) + 1;

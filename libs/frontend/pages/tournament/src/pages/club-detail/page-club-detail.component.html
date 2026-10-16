@@ -225,7 +225,7 @@
                 </div>
               </td>
               <td>
-                <button pButton type="button" icon="pi pi-external-link" class="p-button-text p-button-sm" [routerLink]="['/players', player.slug || player.id]" pTooltip="{{ 'all.player.viewProfile' | translate }}"></button>
+                <p-button type="button" icon="pi pi-external-link" class="p-button-text p-button-sm" [routerLink]="['/players', player.slug || player.id]" [pTooltip]="'all.player.viewProfile' | translate" />
               </td>
             </tr>
           </ng-template>
@@ -257,7 +257,7 @@
         @if (teams().length > 0) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           @for (team of teams(); track trackByTeamId($index, team)) {
-          <p-card styleClass="h-full">
+          <p-card class="h-full">
             <ng-template pTemplate="header">
               <div class="flex items-center justify-between p-4 pb-0">
                 <h4 class="font-semibold text-lg text-primary">{{ team.name }}</h4>
@@ -320,7 +320,12 @@
                 @if (team.season) {
                 <p-badge [value]="'Season ' + team.season" severity="info" />
                 }
-                <button pButton type="button" label="{{ 'all.common.viewDetails' | translate }}" icon="pi pi-external-link" class="p-button-text p-button-sm"></button>
+                <p-button
+                  type="button"
+                  [label]="'all.common.viewDetails' | translate"
+                  icon="pi pi-external-link"
+                  class="p-button-text p-button-sm"
+                />
               </div>
             </ng-template>
           </p-card>
@@ -419,10 +424,10 @@
               </td>
               <td>
                 @if (entry.tournament.drawTournaments?.[0]?.tournamentEvent) {
-                <button pButton type="button" icon="pi pi-external-link" class="p-button-text p-button-sm" [routerLink]="[
+                <p-button type="button" icon="pi pi-external-link" class="p-button-text p-button-sm" [routerLink]="[
                           '/tournament',
                           entry.tournament.drawTournaments[0].tournamentEvent.slug || entry.tournament.drawTournaments[0].tournamentEvent.id,
-                        ]" pTooltip="{{ 'all.tournament.viewDetails' | translate }}"></button>
+                        ]" [pTooltip]="'all.tournament.viewDetails' | translate" />
                 }
               </td>
             </tr>
@@ -471,6 +476,12 @@
   </div>
   <h3 class="text-xl font-medium text-color mb-2">{{ 'all.club.notFound.title' | translate }}</h3>
   <p class="text-muted-color mb-6">{{ 'all.club.notFound.description' | translate }}</p>
-  <button pButton type="button" label="{{ 'all.common.goBack' | translate }}" icon="pi pi-arrow-left" class="p-button-outlined" routerLink="/"></button>
+  <p-button
+    type="button"
+    [label]="'all.common.goBack' | translate"
+    icon="pi pi-arrow-left"
+    class="p-button-outlined"
+    routerLink="/"
+  />
 </div>
 }

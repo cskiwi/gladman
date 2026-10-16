@@ -15,7 +15,8 @@
     "migrate:create": "npx cross-env RUN_MIGRATIONS=true nx run backend-database:migration-generate",
     "migrate": "npx cross-env RUN_MIGRATIONS=true nx run backend-database:migration-run",
     "migrate:undo": "npx cross-env RUN_MIGRATIONS=true nx run backend-database:migration-revert",
-    "tunnel": "cloudflared tunnel run angular-dev"
+    "tunnel": "cloudflared tunnel run angular-dev",
+    "knip": "knip"
   },
   "private": true,
   "dependencies": {
@@ -151,6 +152,7 @@
     "jest-preset-angular": "^17.0.3",
     "jest-util": "^30.2.0",
     "jsonc-eslint-parser": "^2.4.2",
+    "knip": "^6.41.0",
     "ng-packagr": "^22.1.1",
     "nodemon": "^3.1.11",
     "nx": "^23.3.0",
@@ -163,9 +165,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.2",
+    "webpack": "^5.111.1",
     "webpack-cli": "^7.2.3",
-    "webpack-dev-server": "^5.2.6",
-    "webpack": "^5.111.1"
+    "webpack-dev-server": "^5.2.6"
   },
   "overrides": {
     "stylus": "0.0.1-security"

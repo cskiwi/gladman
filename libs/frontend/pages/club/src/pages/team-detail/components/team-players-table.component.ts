@@ -16,7 +16,7 @@ import { PlayerStats } from '../page-team-detail.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamPlayersTableComponent {
-  rawPlayers = input.required<any[]>({ alias: 'players' });
+  players = input.required<any[]>();
   playerStats = input<Map<string, PlayerStats>>(new Map());
   onAddPlayerToTeam = input<((playerId: string) => Promise<void>) | null>(null);
   onRemovePlayerFromTeam = input<((membershipId: string) => Promise<void>) | null>(null);
@@ -26,9 +26,9 @@ export class TeamPlayersTableComponent {
     { field: 'player.lastName', order: 1 },
   ];
 
-  players = computed(() => {
+  playerRows = computed(() => {
     const statsMap = this.playerStats();
-    return this.rawPlayers().map((membership) => {
+    return this.players().map((membership) => {
       const stats = statsMap.get(membership.player?.id) ?? { played: 0, won: 0, lost: 0, encountersPlayed: 0, totalEncounters: 0 };
       const winPct = stats.played > 0 ? (stats.won / stats.played) * 100 : null;
       const encounterPct = stats.totalEncounters > 0 ? (stats.encountersPlayed / stats.totalEncounters) * 100 : null;

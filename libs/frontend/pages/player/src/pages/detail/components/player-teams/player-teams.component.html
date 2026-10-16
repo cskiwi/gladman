@@ -1,6 +1,6 @@
 <div class="t-eyebrow mb-3">Teams</div>
 @if (loading()) {
- <p-progressBar mode="indeterminate" [style]="{ height: '4px' }" />
+ <p-progressbar mode="indeterminate" [style]="{ height: '4px' }" />
 } @else if (memberships().length) {
  <div class="flex flex-col gap-3">
  @for (tpm of memberships(); track tpm.id) {
@@ -18,7 +18,7 @@
  </a>
  <p-chip
  [label]="tpm.membershipType"
- [styleClass]="tpm.membershipType === 'REGULAR' ? 'g-chip--primary' : ''"
+ [class]="tpm.membershipType === 'REGULAR' ? 'g-chip--primary' : ''"
  />
  </div>
  }

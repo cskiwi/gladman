@@ -134,7 +134,12 @@ export class CompetitionEncounter extends BaseEntity {
   @SortableField({ nullable: true })
   @WhereField({ nullable: true })
   @Column({ nullable: true, type: 'timestamptz' })
-  declare synced?: Date;
+  declare dateSyncedAt?: Date;
+
+  @SortableField({ nullable: true })
+  @WhereField({ nullable: true })
+  @Column({ nullable: true, type: 'timestamptz' })
+  declare scoresSyncedAt?: Date;
 
   @SortableField({ nullable: true })
   @WhereField({ nullable: true })

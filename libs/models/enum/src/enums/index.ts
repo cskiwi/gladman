@@ -1,4 +1,6 @@
 export * from './changeEncounterAvailibilty.enum';
+export * from './changeEncounterDateStatus.enum';
+export * from './changeEncounterParty.enum';
 export * from './clubMembershipType.enum';
 export * from './days.enum';
 export * from './drawType.enum';

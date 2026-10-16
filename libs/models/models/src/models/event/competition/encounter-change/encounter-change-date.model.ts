@@ -1,4 +1,4 @@
-import { ChangeEncounterAvailability } from '@app/models-enum';
+import { ChangeEncounterAvailability, ChangeEncounterDateStatus, ChangeEncounterParty } from '@app/models-enum';
 import { SortableField, WhereField } from '@app/utils';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseEntity, Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm';
@@ -27,15 +27,18 @@ export class CompetitionEncounterChangeDate extends BaseEntity {
   @Index()
   declare encounterChangeId?: string;
 
-  @SortableField({ nullable: true })
-  @WhereField({ nullable: true })
-  @Column({ nullable: true })
-  declare selected?: boolean;
-
   @SortableField()
   @WhereField()
   @Column({ type: 'timestamptz' })
   declare date: Date;
+
+  @SortableField(() => String, { nullable: true })
+  @Column({ type: 'simple-enum', enum: ChangeEncounterParty, nullable: true })
+  declare proposedBy?: ChangeEncounterParty;
+
+  @SortableField(() => String, { nullable: true })
+  @Column({ type: 'simple-enum', enum: ChangeEncounterDateStatus, nullable: true })
+  declare status?: ChangeEncounterDateStatus;
 
   @SortableField(() => String, { nullable: true })
   @WhereField(() => String, { nullable: true })

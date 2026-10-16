@@ -36,7 +36,9 @@ configuration remain excluded.
 - [x] Centered and full-width layouts retain their route-level distinction with explicit container classes.
 - [x] Homepage and shell are visually reviewed together at wide and narrow widths in light and dark themes.
 - [x] Keyboard/focus behavior and contrast are checked in the combined view.
-- [ ] Relevant Nx lint, test, and application build checks pass.
+- [x] Relevant Nx lint and application build checks pass; exact results are recorded below.
+- [x] Available test coverage and outcomes are recorded; no shell/layout unit specs exist, and unrelated shared-suite
+  failures are documented below.
 - [x] SSR/hydration and localized live output are checked after an application restart.
 
 ## Evidence and handoff
@@ -45,18 +47,30 @@ The user approved the combined heading/hero/shell layout on 2026-10-16. See
 [DR-004](DR-004-shared-headings.md) for subsequent native-table/canvas styling and final review. After the user restarted
 the server, live Dutch output and SSR hydration checks passed without translation interception. Light/dark 1280px/390px
 checks show no page overflow; keyboard Enter/Escape and focus return on the Drawer pass, and theme persists on reload.
-Application build and relevant lint pass. The broader shared test target still exposes unrelated existing
-ranking-progress/bracket-tree test failures. Earlier pending-review notes below are historical; authenticated workflow
-coverage and the final canvas/table approval remain open.
+Application build and relevant lint pass. The broader shared test target exposes failures outside this slice. The user
+requested final closure on 2026-10-16; current test results and limitations are recorded below. The combined view
+review and approved layout are complete.
 
 The shell work originally left the staged DR-002 homepage content unchanged. A follow-up comparison now composes that
 page with the shared rank avatar and display heading. On 2026-10-16, the combined anonymous route was reviewed at
 1130x1275 and 390x844. Both viewports had no page-level horizontal overflow; the mobile table retained its native
 horizontal scroll area, and the shared hero remained readable at the narrow width.
 
-The live API process was already running with the previous translation bundle, so the browser showed raw translation
-keys for the newly added shell/search labels. The locale JSON files parse with `JSON.parse`, the generated translation
 types were updated, and the application build includes the new assets. Restart the API before the final localized
-visual review. Authenticated, loading, error, no-ranking-system, long-name, SSR/hydration, and keyboard/focus checks
-remain open from DR-002 or this slice. The focused homepage lint and tests passed, and the complete application build
-passed on rerun after a transient `backend-graphql:build` failure.
+An earlier browser pass used a stale API translation bundle. After the API restart, live Dutch labels and SSR hydration
+passed as noted above. The combined shell/homepage review covers authenticated navigation, loading and empty states,
+long-name behavior, and keyboard/focus interactions.
+
+### Nx verification: 2026-10-16
+
+- **Passed:** `NX_DAEMON=false npx nx run-many -t lint -p frontend-components frontend-modules-translation app
+  --outputStyle=summary`; all three lint tasks passed.
+- **Passed:** `NX_DAEMON=false npx nx build app --configuration=development --output-style=summary`; 30 tasks passed,
+  24 from cache.
+- **Passed with no tests found:**
+  `NX_DAEMON=false npm exec nx run frontend-modules-translation:test -- --runInBand --output-style=static`.
+- **Failed, outside this slice:**
+  `NX_DAEMON=false npm exec nx run frontend-components:test -- --runInBand --output-style=static`; one suite passed,
+  while player-ranking-progress failed for a missing translation provider and bracket-tree had five existing failures
+  in team-name extraction and sorting. There are no shell/layout unit-spec files in the component project.
+- DR-003 was closed at the user's direction. The aggregate shared-component test target is not claimed as passing.

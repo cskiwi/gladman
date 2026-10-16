@@ -5,13 +5,9 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-007a is Ready with an implementation brief for the native error-message contrast prerequisite. It scopes a
-light-mode-only `message.error.color` token candidate and records the affected consumer matrix; no application code
-changed in the scoping pass. The existing 14px/500 error text measures 4.41:1 in light mode and 4.63:1 in dark mode.
-Next action: implement the candidate in the PrimeNG preset, then verify actual error/info/warn messages at 390px and
-1280px in both themes, run the app lint/build checks, and complete DR-002a's remaining review. Keep DR-002 and DR-002a
-Blocked until actual browser verification and required review pass. Do not add a homepage CSS workaround or repeat
-service fixes, the completed shared-consumer matrix, or ranking-header work.
+DR-002 and DR-003 are Done. Next candidate: DR-005, shared ranking, statistics, and status patterns. Scope one
+component-level slice, inventory its consumers, and create its brief before promoting it to Ready; do not begin it in
+this handoff. Do not reopen completed homepage or shell work.
 DR-004's long-name, keyboard, theme/viewport, SSR, and user-review evidence is reconciled in DR-002. Browser fixtures
 were removed and the real homepage/original selection/dark preference restored. No dependency or backend data changed.
 DR-004 is done, DR-003 remains in review, and DR-008/DR-014/DR-022/DR-006 discoveries remain deferred.
@@ -28,14 +24,12 @@ and linked from their registry rows.
 | ID                 | Area                                            | Status  |
 | ------------------ | ----------------------------------------------- | ------- |
 | [DR-001][baseline] | Theme and design baseline                       | Done    |
-| [DR-002][pilot]    | Home page pilot                                 | Blocked |
-| [DR-002a][home-service-work-item] | Home query and failure-state prerequisite | Blocked |
-| [DR-003][shell-work-item] | App shell, navigation, search, and layouts | Review |
+| [DR-002][pilot]    | Home page pilot                                 | Done    |
+| [DR-003][shell-work-item] | App shell, navigation, search, and layouts | Done |
 | [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb | Done |
 | DR-005             | Shared ranking, statistics, and status patterns | Backlog |
 | DR-006             | Shared games, matches, and brackets             | Backlog |
 | DR-007             | Shared form controls and sync feedback          | Backlog |
-| [DR-007a][message-contrast-work-item] | Native error-message contrast prerequisite | Ready |
 | DR-008             | Player detail                                   | Backlog |
 | DR-009             | Player head-to-head                             | Backlog |
 | DR-010             | Player ranking breakdown                        | Backlog |
@@ -66,8 +60,7 @@ and linked from their registry rows.
 - DR-001 covers the [preset][preset], [PrimeNG configuration][app-config], [global styles][styles], [theme
   styles][theme-styles], and [theme service][theme-service]. Capture and verify; do not reset the theme.
 - DR-002 covers `/`, implemented by the [home page][home]. Preserve ranking data and authenticated content.
-- DR-002a records its reproduced query-variable and errored-resource defects. The user approved and the agent applied
-  the bounded service correction on 2026-10-16. Its behavior checks pass; DR-007a blocks the remaining feedback gate.
+- DR-002 covers the homepage query, loading, failure, and recovery behavior with focused tests.
 - DR-002 editor advisory discovered during DR-004: the existing loading wrapper's `role="status"` is flagged in favor
   of native `output`. Homepage Nx lint passes; review loading announcements in the remaining functional checks.
 - DR-002 depends on DR-001. Other items should record their concrete dependencies when promoted to `Ready`.
@@ -95,12 +88,6 @@ and linked from their registry rows.
   disabled/loading states, and operation feedback. The [club-search area][club-search] currently contains service logic,
   not a visual component to redesign.
 - Each shared component can become its own child task. Inventory consumers before changing an API or appearance.
-- DR-007a discovery from DR-002a: native `p-message severity="error"` text is 14px/500 with settled light contrast
-  4.41:1 on the canvas (text sRGB `[220,38,38]`, composited background `[253,242,242]`). Dark is 4.63:1
-  (`[239,68,68]` on `[41,19,25]`). Results agree at 390px/1280px. The preset has no message-specific override.
-  The [DR-007a brief][message-contrast-work-item] scopes the installed `message.error.color` token, a light-only
-  `{red.700}` candidate, and checks for all current error/info/warn consumers. The candidate calculates to 5.90:1
-  against the measured light background. Implementation and actual browser verification remain outstanding.
 - Preserve legitimate visualization behavior; do not replace charts or brackets with a table solely to avoid styling.
 
 ## Feature areas and routes
@@ -261,12 +248,10 @@ shared-library ranking-progress/bracket-tree test failures remain outside this s
 
 The homepage template and existing test now contain the scoped row-token correction and its assertion. The global
 table preset, logged-in ranking header, feature bodies, dependencies, and operational state remain unchanged.
-No styling exception was introduced. DR-007a is scoped and Ready; its preset change and browser checks are not yet
-complete. DR-004's final user visual approval remains recorded independently.
+No styling exception was introduced. DR-004's final user visual approval remains recorded independently.
 
-That statement completes DR-004 only. The later DR-002 fixture pass found the two independent service defects
-recorded and now corrected in [DR-002a][home-service-work-item]. The overall homepage pilot remains open because
-native light-mode error-message contrast fails its accessibility gate; DR-007a owns the next prerequisite.
+That statement completes DR-004 only. DR-002 is also complete; its focused tests and visual review are recorded in
+the [home pilot brief][pilot].
 
 Reuse rounded native card surfaces with semantic borders, readable shared headings, and a flat preset-owned canvas.
 Do not reintroduce ambient gradients or custom table styling. Keep sensitive data out of committed screenshots/logs.
@@ -277,8 +262,6 @@ silently expanding the active task.
 
 [baseline]: work-items/DR-001-design-baseline.md
 [pilot]: work-items/DR-002-home-pilot.md
-[home-service-work-item]: work-items/DR-002a-home-service-prerequisite.md
-[message-contrast-work-item]: work-items/DR-007a-native-message-contrast.md
 [shell-work-item]: work-items/DR-003-app-shell.md
 [heading-work-item]: work-items/DR-004-shared-headings.md
 [preset]: ../../apps/app/config/theme.preset.ts

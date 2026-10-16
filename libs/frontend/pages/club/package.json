@@ -19,7 +19,7 @@
     "@app/models-enum": "*",
     "@angular/cdk": "^22.1.8",
     "@app/frontend-modules-graphql": "*",
-    "xlsx": "^0.18.5"
+    "@e965/xlsx": "^0.18.5 || ^0.20.3"
   },
   "sideEffects": false
 }

@@ -5,14 +5,13 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-002a's user-approved two-line HomeService correction is implemented: declared-variable binding and guarded resource
-reads now pass switching, initial/subsequent failure, and recovery tests. All 12 homepage tests, lint, and the library
-build pass. Four safe browser theme/viewport cases also pass functional/static layout checks.
-DR-002 and DR-002a remain blocked by a newly measured native error-message contrast gate: 14px/500 text measures
-4.41:1 in light mode, below 4.5:1; dark measures 4.63:1. No styling fix was smuggled into the service-only approval.
-Next action: scope DR-007a, the native error-message semantic-token/consumer-check prerequisite, before promoting or
-implementing it. Inspect inherited PrimeNG message tokens; the application preset has no message override. Do not
-add a homepage CSS workaround or repeat service fixes, the completed shared-consumer matrix, or ranking-header work.
+DR-007a is Ready with an implementation brief for the native error-message contrast prerequisite. It scopes a
+light-mode-only `message.error.color` token candidate and records the affected consumer matrix; no application code
+changed in the scoping pass. The existing 14px/500 error text measures 4.41:1 in light mode and 4.63:1 in dark mode.
+Next action: implement the candidate in the PrimeNG preset, then verify actual error/info/warn messages at 390px and
+1280px in both themes, run the app lint/build checks, and complete DR-002a's remaining review. Keep DR-002 and DR-002a
+Blocked until actual browser verification and required review pass. Do not add a homepage CSS workaround or repeat
+service fixes, the completed shared-consumer matrix, or ranking-header work.
 DR-004's long-name, keyboard, theme/viewport, SSR, and user-review evidence is reconciled in DR-002. Browser fixtures
 were removed and the real homepage/original selection/dark preference restored. No dependency or backend data changed.
 DR-004 is done, DR-003 remains in review, and DR-008/DR-014/DR-022/DR-006 discoveries remain deferred.
@@ -36,7 +35,7 @@ and linked from their registry rows.
 | DR-005             | Shared ranking, statistics, and status patterns | Backlog |
 | DR-006             | Shared games, matches, and brackets             | Backlog |
 | DR-007             | Shared form controls and sync feedback          | Backlog |
-| DR-007a            | Native error-message contrast prerequisite      | Backlog |
+| [DR-007a][message-contrast-work-item] | Native error-message contrast prerequisite | Ready |
 | DR-008             | Player detail                                   | Backlog |
 | DR-009             | Player head-to-head                             | Backlog |
 | DR-010             | Player ranking breakdown                        | Backlog |
@@ -99,8 +98,9 @@ and linked from their registry rows.
 - DR-007a discovery from DR-002a: native `p-message severity="error"` text is 14px/500 with settled light contrast
   4.41:1 on the canvas (text sRGB `[220,38,38]`, composited background `[253,242,242]`). Dark is 4.63:1
   (`[239,68,68]` on `[41,19,25]`). Results agree at 390px/1280px. The preset has no message-specific override.
-  Scope the smallest documented semantic-token correction, enumerate message consumers, and verify both themes and
-  native severities before implementation; no global theme or page styling was changed in the discovery pass.
+  The [DR-007a brief][message-contrast-work-item] scopes the installed `message.error.color` token, a light-only
+  `{red.700}` candidate, and checks for all current error/info/warn consumers. The candidate calculates to 5.90:1
+  against the measured light background. Implementation and actual browser verification remain outstanding.
 - Preserve legitimate visualization behavior; do not replace charts or brackets with a table solely to avoid styling.
 
 ## Feature areas and routes
@@ -261,7 +261,8 @@ shared-library ranking-progress/bracket-tree test failures remain outside this s
 
 The homepage template and existing test now contain the scoped row-token correction and its assertion. The global
 table preset, logged-in ranking header, feature bodies, dependencies, and operational state remain unchanged.
-No styling exception was introduced. All technical blockers are resolved, and final user visual approval is recorded.
+No styling exception was introduced. DR-007a is scoped and Ready; its preset change and browser checks are not yet
+complete. DR-004's final user visual approval remains recorded independently.
 
 That statement completes DR-004 only. The later DR-002 fixture pass found the two independent service defects
 recorded and now corrected in [DR-002a][home-service-work-item]. The overall homepage pilot remains open because
@@ -277,6 +278,7 @@ silently expanding the active task.
 [baseline]: work-items/DR-001-design-baseline.md
 [pilot]: work-items/DR-002-home-pilot.md
 [home-service-work-item]: work-items/DR-002a-home-service-prerequisite.md
+[message-contrast-work-item]: work-items/DR-007a-native-message-contrast.md
 [shell-work-item]: work-items/DR-003-app-shell.md
 [heading-work-item]: work-items/DR-004-shared-headings.md
 [preset]: ../../apps/app/config/theme.preset.ts

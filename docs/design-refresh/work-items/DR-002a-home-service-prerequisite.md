@@ -7,7 +7,8 @@ description: 'Two reproduced service defects blocking the homepage design pilot 
 
 - ID: DR-002a; owner unassigned; authoritative status: [backlog](../backlog.md).
 - Parent: [DR-002](DR-002-home-pilot.md); service-scope approval received from the user on 2026-10-16.
-- Remaining acceptance prerequisite: DR-007a's native error-message contrast work, recorded in the backlog.
+- Remaining acceptance prerequisite: [DR-007a](DR-007a-native-message-contrast.md) is Ready for implementation;
+  native error-message contrast and final feedback-state review still block this parent.
 - Outcome: the selected ID reaches GraphQL, and request failures reach the existing native feedback branch.
 - Rules: [design refresh plan](../README.md). This is a prerequisite, not another visual implementation slice.
 
@@ -128,8 +129,9 @@ the fix; do not merely suppress the thrown error in the test environment.
 - Fixture cleanup: original Apollo query/selection restored, temporary globals removed, original dark preference
   restored through the native control, and the real homepage successfully reloaded at 1280px.
 - Reusable-pattern decision: use the existing HomeService/resource and existing native feedback, not a new wrapper.
-- Styling exceptions: none. Next action: scope DR-007a's native error-message contrast correction and consumer checks;
-  return for final feedback-state review afterward. Do not repeat the implemented service fixes or approval request.
+- Styling exceptions: none. Next action: implement [DR-007a](DR-007a-native-message-contrast.md)'s light-mode native
+  error-token correction, verify the affected themes and severities, then return for final feedback-state review. Do
+  not repeat the implemented service fixes or approval request.
 
 [service]: ../../../libs/frontend/pages/home/src/pages/home/page-home.service.ts
 [spec]: ../../../libs/frontend/pages/home/src/pages/home/page-home.component.spec.ts

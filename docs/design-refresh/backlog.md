@@ -5,9 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-002 and DR-003 are in review as a combined homepage and shell slice. The current action is to review the homepage
-and app chrome together with refreshed API translations, then complete the remaining safe fixture and SSR/hydration
-checks before marking either item done.
+DR-004 is in review. On 2026-10-16 the user approved the combined shared heading, hero, and shell as the new layout.
+The native homepage table now uses the same card treatment; the global canvas is neutral and theme-aware. Next action:
+confirm the final canvas/table appearance, then finish route-level shared-consumer checks. Do not redesign the approved
+layout again. DR-002 and DR-003 remain in review for their outstanding functional checks.
 
 Follow the [design rules and workflow](README.md) for every item. This file is the authoritative status registry. Keep
 it updated in the same change as the implementation.
@@ -23,7 +24,7 @@ only the first two are expanded now.
 | [DR-001][baseline] | Theme and design baseline                       | Done    |
 | [DR-002][pilot]    | Home page pilot                                 | Review  |
 | [DR-003][shell-work-item] | App shell, navigation, search, and layouts | Review |
-| DR-004             | Shared headings, hero, and breadcrumb           | Backlog |
+| [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb | Review |
 | DR-005             | Shared ranking, statistics, and status patterns | Backlog |
 | DR-006             | Shared games, matches, and brackets             | Backlog |
 | DR-007             | Shared form controls and sync feedback          | Backlog |
@@ -209,9 +210,14 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
-No implementation, screenshots, or styling exceptions have been recorded yet. When completing a slice, link its brief
-here with visual/check evidence and any reusable-pattern decision. Keep sensitive data out of committed screenshots and
-logs.
+DR-001 established the baseline; DR-002 and DR-003 implemented the homepage and shell. [DR-004][heading-work-item]
+records the approved shared layout, native homepage table composition, and explicitly requested neutral canvas.
+Its focused tests, lint, application build, and live light/dark narrow/wide checks pass. Final canvas/table approval and
+remaining shared-consumer checks are open. Broader shared-library tests expose existing ranking-progress/bracket-tree
+test failures; those are not styling regressions and remain outside this slice.
+
+Reuse rounded native card surfaces with semantic borders, readable shared headings, and a flat preset-owned canvas.
+Do not reintroduce ambient gradients or custom table styling. Keep sensitive data out of committed screenshots/logs.
 
 When splitting an item, add child rows to the registry with their own status and brief. Keep the parent row and mark it
 done only after its required children pass review. Add new routes or newly discovered UI surfaces here rather than
@@ -220,6 +226,7 @@ silently expanding the active task.
 [baseline]: work-items/DR-001-design-baseline.md
 [pilot]: work-items/DR-002-home-pilot.md
 [shell-work-item]: work-items/DR-003-app-shell.md
+[heading-work-item]: work-items/DR-004-shared-headings.md
 [preset]: ../../apps/app/config/theme.preset.ts
 [app-config]: ../../apps/app/config/app.config.ts
 [styles]: ../../apps/app/src/styles.scss

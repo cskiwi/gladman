@@ -1,0 +1,35 @@
+@switch (mode()) { @case ('hero') {
+<app-hero>
+  <app-hero-avatar avatar [variant]="variant()">AB</app-hero-avatar>
+  <div identity>
+    <app-hero-title>{{ title() }}</app-hero-title>
+    <p data-testid="metadata">Club and season</p>
+  </div>
+  @if (extras()) {
+  <div actions>
+    <p-button label="Follow" (onClick)="activate()" />
+    <p-button label="Compare players" />
+  </div>
+  <div stats data-testid="stats">Ranking statistics</div>
+  }
+  <p data-testid="default-content">Additional context</p>
+</app-hero>
+} @case ('page') {
+<app-page-header>
+  @if (extras()) {
+  <i avatar class="pi pi-users" aria-hidden="true"></i>
+  } @if (extras()) {
+  <span subTitle data-testid="metadata">Player context</span>
+  } @if (extras()) {
+  <p-button actions label="Edit player" (onClick)="activate()" />
+  }
+  <span title>{{ title() }}</span>
+</app-page-header>
+} @case ('section') {
+<app-section-header [title]="title()">
+  <span badge>3</span>
+  <p-button action label="View all" (onClick)="activate()" />
+</app-section-header>
+} @case ('breadcrumb') {
+<app-breadcrumb [items]="[{ label: title() }]" />
+} }

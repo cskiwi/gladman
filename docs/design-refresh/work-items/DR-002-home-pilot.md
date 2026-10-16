@@ -83,6 +83,16 @@ smoke test as proof of those behaviors.
 
 ## Evidence and handoff
 
+### Approved shared-layout follow-up
+
+On 2026-10-16 the user approved the combined shared heading/hero/shell layout and requested matching table treatment.
+[DR-004](DR-004-shared-headings.md) now owns that integration and the explicitly requested global neutral canvas.
+The homepage retains native `p-table` inside a rounded, semantic-bordered `p-card` with its shared section heading.
+Five homepage tests pass, including a native-table/card/scrollability assertion and authenticated strip projection.
+Live restarted-API translations, 1280px/390px light/dark layouts, long-name wrapping, keyboard drawer/focus return,
+theme persistence, and SSR markup/hydration checks pass. Final canvas/table styling awaits user confirmation.
+Loading/error/no-system and selected-system switching coverage remain open; this does not mark the entire pilot done.
+
 - Implementation: complete for the selected page structure and native loading/error/table presentation. The DR-001
   baseline is the only prerequisite. Service and shared component behavior remain excluded.
 - Changed scope: [home component][component], its template/style, focused component regression test, and the page test

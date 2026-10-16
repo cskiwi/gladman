@@ -52,6 +52,23 @@ and the exact next action in the repository documents before stopping.
 
 ## Design rules
 
+### Agreed layout direction
+
+On 2026-10-16 the user approved the combined shared hero, headings, and shell as the new layout direction. Use this
+composition for subsequent slices rather than reopening the decorative dashboard design:
+
+- Native styled PrimeNG cards for meaningful grouped content, with rounded corners and a semantic surface border.
+- Responsive identity rows, compact circular avatars, readable headings, and actions that wrap below on narrow screens.
+- Native PrimeNG tables inside the same content surface when a heading and dataset form one group; keep native table
+  spacing, row separators, and horizontal scrolling rather than building a custom table.
+- A flat, cool neutral canvas behind the content: pale in light mode and deeper than cards in dark mode. Keep the
+  canvas separate from content surfaces so boundaries remain visible; no ambient page gradients.
+- Define canvas colors in the PrimeNG preset, using existing surface tokens. Reserve primary color for meaningful
+  emphasis and interactive states, not page backgrounds.
+
+The layout direction is approved; the final canvas/table presentation still requires visual confirmation. Functional
+verification and the remaining feature migrations are tracked separately and must not be checked off as styling work.
+
 ### PrimeNG first
 
 - Use native PrimeNG components in styled mode and their documented inputs, templates, and design tokens.
@@ -204,8 +221,8 @@ No styling exceptions have been approved by this plan.
   compensate for that inversion; do not reset it during a page task.
 - [PrimeNG configuration][app-config] uses `.dark-theme`. [ThemeService][theme-service] manages the document class and a
   persisted preference.
-- [Global styles][global-styles] load the PrimeUI plugin and apply gradients and broad component overrides. [Additional
-  theme styles][theme-styles] define custom visual tokens and typography. Their eventual retirement needs consumer
+- [Global styles][global-styles] load the PrimeUI plugin, apply the semantic app canvas, and retain component overrides.
+  [Additional theme styles][theme-styles] define custom visual tokens and typography. Their retirement needs consumer
   checks, not a wholesale deletion at the start.
 - Root routes and feature routes are inventoried in the backlog. Existing unmounted/disabled screens are recorded, but
   redesign work must not enable or remove them implicitly.

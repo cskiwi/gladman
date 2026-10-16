@@ -66,7 +66,7 @@ composition for subsequent slices rather than reopening the decorative dashboard
 - Define canvas colors in the PrimeNG preset, using existing surface tokens. Reserve primary color for meaningful
   emphasis and interactive states, not page backgrounds.
 
-The layout direction is approved; the final canvas/table presentation still requires visual confirmation. Functional
+The layout direction and final corrected canvas/table presentation were approved on 2026-10-16. Functional
 verification and the remaining feature migrations are tracked separately and must not be checked off as styling work.
 
 ### PrimeNG first

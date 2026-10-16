@@ -5,10 +5,13 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-004 is in review. On 2026-10-16 the user approved the combined shared heading, hero, and shell as the new layout.
-The native homepage table now uses the same card treatment; the global canvas is neutral and theme-aware. Next action:
-confirm the final canvas/table appearance, then finish route-level shared-consumer checks. Do not redesign the approved
-layout again. DR-002 and DR-003 remain in review for their outstanding functional checks.
+DR-004 is done. On 2026-10-16 the user approved the corrected homepage canvas/table treatment. The scoped native
+table token, focused tests/lint/library build, nine hero consumers, and three mounted page-header consumers are
+verified within the shared-header scope. No technical blocker or styling exception remains.
+Next candidate: resume DR-002's safe-fixture checks for loading, failure, no ranking system, and selected-system
+switching; reconcile its earlier open visual entries with DR-004's evidence before repeating checks. Do not start
+that slice in this invocation. Leave the logged-in ranking header for player/profile work. Existing DR-008/DR-014
+and bracket-body DR-022/DR-006 findings remain deferred; DR-002/DR-003 remain in review.
 
 Follow the [design rules and workflow](README.md) for every item. This file is the authoritative status registry. Keep
 it updated in the same change as the implementation.
@@ -16,15 +19,15 @@ it updated in the same change as the implementation.
 ## Work registry
 
 Each row is a trackable area, not a promise to migrate that entire area in one change. Split multi-route or multi-tab
-areas into child items before starting them. Briefs are created on demand from the [template](work-item-template.md);
-only the first two are expanded now.
+areas into child items before starting them. Briefs are created on demand from the [template](work-item-template.md)
+and linked from their registry rows.
 
 | ID                 | Area                                            | Status  |
 | ------------------ | ----------------------------------------------- | ------- |
 | [DR-001][baseline] | Theme and design baseline                       | Done    |
 | [DR-002][pilot]    | Home page pilot                                 | Review  |
 | [DR-003][shell-work-item] | App shell, navigation, search, and layouts | Review |
-| [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb | Review |
+| [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb | Done |
 | DR-005             | Shared ranking, statistics, and status patterns | Backlog |
 | DR-006             | Shared games, matches, and brackets             | Backlog |
 | DR-007             | Shared form controls and sync feedback          | Backlog |
@@ -58,6 +61,8 @@ only the first two are expanded now.
 - DR-001 covers the [preset][preset], [PrimeNG configuration][app-config], [global styles][styles], [theme
   styles][theme-styles], and [theme service][theme-service]. Capture and verify; do not reset the theme.
 - DR-002 covers `/`, implemented by the [home page][home]. Preserve ranking data and authenticated content.
+- DR-002 editor advisory discovered during DR-004: the existing loading wrapper's `role="status"` is flagged in favor
+  of native `output`. Homepage Nx lint passes; review loading announcements in the remaining functional checks.
 - DR-002 depends on DR-001. Other items should record their concrete dependencies when promoted to `Ready`.
 - DR-029 is the final cleanup, after relevant legacy consumers have migrated and shared/global regression checks pass.
 
@@ -95,6 +100,10 @@ embedded workflows are tracked even where they do not have their own URL.
 Project: `frontend-pages-player`. Source: [player feature][players]; [routes][player-routes].
 
 - DR-008: `/players/:playerId`. Include current form, season record, strongest matchups, teams, and ranking summaries.
+- DR-008 discovery from DR-004 verification: the player hero's existing icon-only overflow menu lacks an accessible
+  name. Add a localized label and verify keyboard/menu behavior in the player slice; no shared API change is needed.
+- The user explicitly deferred the logged-in homepage ranking header to player/profile work; leave it unchanged in
+  DR-004's table-surface correction.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-010: `/players/:playerId/ranking/:type`. Include period selection, game lists, and ranking explanations.
 - DR-011: `/players/:playerId/edit`. Include profile, claims, and ranking forms; split by form when needed.
@@ -109,6 +118,8 @@ Project: `frontend-pages-club`. Source: [club feature][clubs]; [routes][club-rou
 - DR-013: the team-builder tab and its dialogs, survey import/editing, player chips, settings, and sub-event selection.
   Include relevant team-edit interactions; split the builder and individual dialogs into child tasks.
 - DR-014: `/clubs/:clubId/teams/:teamId`. Cover team information, players table, encounters, and relevant edit actions.
+- DR-014 discovery from DR-004 verification: the consumer's existing `text-4xl`/`truncate` team title clips at 390px
+  in both themes. Shared hero and action bounds pass. Address title wrapping when migrating the team page.
 - Preserve team selection, survey handling, drag/drop or equivalent interactions, and data-editing behavior.
 
 ### Competition
@@ -150,6 +161,9 @@ Parent: DR-022. Project: `frontend-pages-tournament`.
 - `/tournament/:tournamentId/sub-events/:subEventId/draws/:drawId`.
 - Cover the draw page, games, knockout tree, and standings table, splitting each view if needed.
 - Preserve the full-width layout, score/result meaning, navigation, and any pan/zoom interaction.
+- DR-022 discovery from DR-004: the existing bracket-tree body overflows at 390px and 1280px while the shared hero
+  and its actions fit. At 1280px the bracket host is 1302px wide and extends to x=1284. Investigate bracket sizing
+  with DR-006; do not hide this by clipping the page or changing shared headings.
 
 ### Tournament administration
 
@@ -212,9 +226,29 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 DR-001 established the baseline; DR-002 and DR-003 implemented the homepage and shell. [DR-004][heading-work-item]
 records the approved shared layout, native homepage table composition, and explicitly requested neutral canvas.
-Its focused tests, lint, application build, and live light/dark narrow/wide checks pass. Final canvas/table approval and
-remaining shared-consumer checks are open. Broader shared-library tests expose existing ranking-progress/bracket-tree
-test failures; those are not styling regressions and remain outside this slice.
+Its implementation evidence records passing focused tests, lint, application build, and live light/dark narrow/wide
+checks. This continuation reproduced the focused tests (Nx cache hit), the homepage's four theme/viewport cases,
+and seven hero consumers' four-case geometry checks in the integrated browser. Homepage contrast, table scrolling,
+drawer keyboard/focus return, and dark preference after reload pass. Two safe homepage screenshots were reviewed;
+no feature-data screenshots were committed. A later SSR timeout/HTTP 500 was resolved before this resume; the three
+mounted page-header consumers now pass all 12 theme/viewport cases. The user then supplied a tournament URL, and its
+detail and linked draw heroes passed eight more shared-boundary checks. A homepage-local row token resolves the
+requested table/card background mismatch; five homepage tests, homepage lint, and the library build pass. The user
+approved the final canvas/table treatment on 2026-10-16; whole feature bodies are not claimed as migrated. Broader
+shared-library ranking-progress/bracket-tree test failures remain outside this slice.
+
+### DR-004 verification prerequisites discovered on 2026-10-16
+
+- Resolved: the user enabled integrated-browser tools. Successful checks followed the shared player route and its
+  existing links; do not repeat anonymous broad collection discovery or resume terminal-driven browser automation.
+- Resolved: the earlier SSR timeout/HTTP 500 did not recur during resumed player, editing, head-to-head, admin, and
+  homepage navigation. Its cause remains uninvestigated; no server or backend changes were needed for this pass.
+- Resolved: the user supplied an approved tournament detail URL. Its existing links supplied a draw URL, and both
+  heroes passed their four-case checks. No collection discovery or operational mutations were needed.
+
+The homepage template and existing test now contain the scoped row-token correction and its assertion. The global
+table preset, logged-in ranking header, feature bodies, dependencies, and operational state remain unchanged.
+No styling exception was introduced. All technical blockers are resolved, and final user visual approval is recorded.
 
 Reuse rounded native card surfaces with semantic borders, readable shared headings, and a flat preset-owned canvas.
 Do not reintroduce ambient gradients or custom table styling. Keep sensitive data out of committed screenshots/logs.

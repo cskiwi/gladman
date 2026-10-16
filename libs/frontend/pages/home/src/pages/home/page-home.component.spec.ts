@@ -94,6 +94,9 @@ describe('PageHomeComponent', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(table).not.toBeNull();
     expect(table.componentInstance.scrollable()).toBe(true);
+    expect(table.componentInstance.dt()).toEqual({
+      row: { background: '{content.background}' },
+    });
     expect(element.querySelector('section .p-card p-table')).not.toBeNull();
     expect(element.querySelectorAll('thead th')).toHaveLength(4);
   });

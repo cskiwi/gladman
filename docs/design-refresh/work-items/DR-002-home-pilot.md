@@ -90,7 +90,8 @@ On 2026-10-16 the user approved the combined shared heading/hero/shell layout an
 The homepage retains native `p-table` inside a rounded, semantic-bordered `p-card` with its shared section heading.
 Five homepage tests pass, including a native-table/card/scrollability assertion and authenticated strip projection.
 Live restarted-API translations, 1280px/390px light/dark layouts, long-name wrapping, keyboard drawer/focus return,
-theme persistence, and SSR markup/hydration checks pass. Final canvas/table styling awaits user confirmation.
+theme persistence, and SSR markup/hydration checks pass. The user approved the final corrected canvas/table treatment
+in DR-004 on 2026-10-16; its homepage-local row token aligns the table with the native card background.
 Loading/error/no-system and selected-system switching coverage remain open; this does not mark the entire pilot done.
 
 - Implementation: complete for the selected page structure and native loading/error/table presentation. The DR-001

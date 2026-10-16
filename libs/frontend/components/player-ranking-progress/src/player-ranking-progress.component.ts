@@ -18,8 +18,9 @@ interface DisciplineProgress {
   downgradeThreshold: number | null;
   pointsToUpgrade: number | null;
   pointsBeforeDowngrade: number | null;
-  /** Which direction the player is closer to (or only side that exists). */
+  /** Direction to show: a crossed threshold or the nearest available one. */
   nearer: 'upgrade' | 'downgrade' | null;
+  reachedThreshold: 'upgrade' | 'downgrade' | null;
   atTop: boolean;
   atFloor: boolean;
 }
@@ -131,23 +132,41 @@ export class PlayerRankingProgressComponent {
 
       const pointsToUpgrade =
         upgradeThreshold !== null && points !== null && points !== undefined
-          ? Math.max(0, upgradeThreshold - points + 1)
+          ? Math.max(0, upgradeThreshold - points)
           : null;
       const pointsBeforeDowngrade =
         downgradeThreshold !== null && downPoints !== null && downPoints !== undefined
-          ? downPoints - downgradeThreshold
+          ? Math.max(0, downPoints - downgradeThreshold + 1)
           : null;
 
-      // Decide which side is "nearer" — i.e. show only the most relevant
-      // distance for the player. If only one side has data, pick that one;
-      // otherwise the smaller absolute distance wins.
-      let nearer: 'upgrade' | 'downgrade' | null = null;
-      if (pointsToUpgrade !== null && pointsBeforeDowngrade !== null) {
-        nearer = pointsToUpgrade <= pointsBeforeDowngrade ? 'upgrade' : 'downgrade';
-      } else if (pointsToUpgrade !== null) {
-        nearer = 'upgrade';
-      } else if (pointsBeforeDowngrade !== null) {
-        nearer = 'downgrade';
+      const upgradeReached =
+        upgradeThreshold !== null &&
+        points !== null &&
+        points !== undefined &&
+        points >= upgradeThreshold;
+      const downgradeReached =
+        downgradeThreshold !== null &&
+        downPoints !== null &&
+        downPoints !== undefined &&
+        downPoints < downgradeThreshold;
+
+      let reachedThreshold: 'upgrade' | 'downgrade' | null = null;
+      if (upgradeReached) {
+        reachedThreshold = 'upgrade';
+      } else if (downgradeReached) {
+        reachedThreshold = 'downgrade';
+      }
+
+      // A crossed threshold takes precedence over distance to the other one.
+      let nearer = reachedThreshold;
+      if (nearer === null) {
+        if (pointsToUpgrade !== null && pointsBeforeDowngrade !== null) {
+          nearer = pointsToUpgrade <= pointsBeforeDowngrade ? 'upgrade' : 'downgrade';
+        } else if (pointsToUpgrade !== null) {
+          nearer = 'upgrade';
+        } else if (pointsBeforeDowngrade !== null) {
+          nearer = 'downgrade';
+        }
       }
 
       return {
@@ -161,6 +180,7 @@ export class PlayerRankingProgressComponent {
         pointsToUpgrade,
         pointsBeforeDowngrade,
         nearer,
+        reachedThreshold,
         atTop: upgradeThreshold === null,
         atFloor: downgradeThreshold === null,
       };

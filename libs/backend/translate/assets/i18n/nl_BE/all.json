@@ -906,6 +906,8 @@
       "title": "Mijn klassement",
       "to-upgrade": "{{points}} pt tot promotie",
       "to-downgrade": "{{points}} pt tot degradatie",
+      "upgrade-reached": "Promotiedrempel bereikt",
+      "downgrade-reached": "Degradatiedrempel bereikt",
       "at-top": "TOP",
       "at-floor": "BODEM"
     }

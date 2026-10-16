@@ -37,8 +37,16 @@
             }
           </div>
 
-          <!-- Single summary line: closer of upgrade/downgrade -->
-          @if (d.nearer === 'upgrade' && d.pointsToUpgrade !== null) {
+          <!-- Prefer a reached threshold over the distance to the other one. -->
+          @if (d.reachedThreshold === 'upgrade') {
+          <span class="t-mono text-[11px] text-muted-color">
+            {{ 'all.ranking.progress.upgrade-reached' | translate }}
+          </span>
+          } @else if (d.reachedThreshold === 'downgrade') {
+          <span class="t-mono text-[11px] text-muted-color">
+            {{ 'all.ranking.progress.downgrade-reached' | translate }}
+          </span>
+          } @else if (d.nearer === 'upgrade' && d.pointsToUpgrade !== null) {
           <span class="t-mono text-[11px] text-muted-color">
             {{ 'all.ranking.progress.to-upgrade' | translate: { points: d.pointsToUpgrade } }}
           </span>

@@ -906,6 +906,8 @@
       "title": "Your ranking",
       "to-upgrade": "{{points}} pts to upgrade",
       "to-downgrade": "{{points}} pts to downgrade",
+      "upgrade-reached": "Upgrade threshold reached",
+      "downgrade-reached": "Downgrade threshold reached",
       "at-top": "TOP",
       "at-floor": "FLOOR"
     }

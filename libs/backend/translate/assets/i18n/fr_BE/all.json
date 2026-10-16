@@ -906,6 +906,8 @@
       "title": "Mon classement",
       "to-upgrade": "{{points}} pts pour monter",
       "to-downgrade": "{{points}} pts pour descendre",
+      "upgrade-reached": "Seuil de montée atteint",
+      "downgrade-reached": "Seuil de descente atteint",
       "at-top": "TOP",
       "at-floor": "FOND"
     }

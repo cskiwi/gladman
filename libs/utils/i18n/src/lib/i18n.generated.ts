@@ -913,6 +913,8 @@ export type I18nTranslations = {
                 "title": string;
                 "to-upgrade": string;
                 "to-downgrade": string;
+                "upgrade-reached": string;
+                "downgrade-reached": string;
                 "at-top": string;
                 "at-floor": string;
             };

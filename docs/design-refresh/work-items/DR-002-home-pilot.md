@@ -79,13 +79,23 @@ smoke test as proof of those behaviors.
 
 ## Evidence and handoff
 
-- Implementation: not started.
-- Before/after browser evidence: not captured.
-- Utility/style comparison: not measured.
-- Validation results: not run.
+- Implementation: not started. The DR-001 baseline is complete and is the only prerequisite.
+- Before browser evidence: captured on 2026-10-16 from the anonymous loaded route at 1280x900 and 390x844 in both
+  themes. Wide and narrow layouts had no page-level horizontal overflow. Native autocomplete overlay behavior and theme
+  persistence were also checked.
+- Safe state evidence: anonymous and loaded success are available live. Authenticated, loading, error, and
+  no-ranking-system states require focused fixtures or component tests; do not use operational mutations or a real
+  account for visual testing.
+- Utility/style comparison: baseline is 22 class-bearing elements in the home template plus a page stylesheet with a
+  host flex/gap rule and an unused `.rank-number` rule. Existing non-semantic color pairs and arbitrary values are
+  constraints for the pilot to remove or replace, not new work for DR-001.
+- Validation results: `npx nx lint frontend-pages-home app`, `npx nx test frontend-pages-home --runInBand`, and
+  `npx nx build app --configuration=development` each reported one successful Nx task. Their wrappers remained alive
+  after reporting success and were stopped explicitly; no task failure was reported.
 - Visual review: pending implementation.
 - Styling exceptions: none.
-- Reusable-pattern decision: record what worked before promoting shared-pattern backlog items.
+- Reusable-pattern decision: keep the result page-local until the pilot review; do not alter shared hero,
+  section-header, ranking-progress, theme, or shell components in this slice.
 
 [template]: ../../../libs/frontend/pages/home/src/pages/home/page-home.component.html
 [component]: ../../../libs/frontend/pages/home/src/pages/home/page-home.component.ts

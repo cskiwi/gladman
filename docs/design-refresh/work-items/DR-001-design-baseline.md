@@ -12,7 +12,7 @@ description: 'Verify theme semantics and define a safe baseline before implement
 - Rules: [design refresh plan](../README.md).
 
 This is an investigation/documentation slice, not a global theme rewrite. The existing source inventory is complete
-enough to plan the work; browser verification has not yet been done.
+enough to plan the work. Browser verification was completed on 2026-10-16 without changing application code.
 
 ## Scope
 
@@ -43,21 +43,57 @@ upgrade packages or remove global CSS in this task.
 
 ## Acceptance
 
-- [ ] Before evidence identifies theme, viewport, authentication state, and safe data/fixture assumptions.
-- [ ] Semantic utilities and native component colors are verified in both themes, including readable contrast.
-- [ ] The document theme class, preference persistence, and overlay behavior are understood.
-- [ ] The custom dark palette and compensating overrides are recorded as constraints, not silently reset.
-- [ ] DR-002 has a concrete native-component approach and a reproducible behavior/visual verification checklist.
-- [ ] Any blocker is tracked with a scoped follow-up; no unsupported claim of successful verification is made.
+- [x] Before evidence identifies theme, viewport, authentication state, and safe data/fixture assumptions.
+- [x] Semantic utilities and native component colors are verified in both themes, including readable contrast.
+- [x] The document theme class, preference persistence, and overlay behavior are understood.
+- [x] The custom dark palette and compensating overrides are recorded as constraints, not silently reset.
+- [x] DR-002 has a concrete native-component approach and a reproducible behavior/visual verification checklist.
+- [x] Any blocker is tracked with a scoped follow-up; no unsupported claim of successful verification is made.
 
 ## Evidence and handoff
 
-- Browser baseline: not captured yet.
-- Semantic color and contrast checks: not run yet.
-- Utility/style baseline: not measured yet.
-- Prerequisites discovered beyond this task: none recorded yet.
-- Styling exceptions: none.
-- Next proposed slice: [DR-002: Home page pilot](DR-002-home-pilot.md).
+- Browser baseline: captured from the running app at 1280x900 and 390x844 on 2026-10-16 using the anonymous,
+  loaded BBF Rating data. Both light and dark full-page captures were taken. The wide layout had no horizontal
+  overflow; the narrow layout moved the shell search to a second row and kept all table columns reachable without
+  page-level overflow. The level table rendered ascending levels 1 through 12, preserved numeric zero if present in
+  data, and rendered null thresholds as an em dash in the observed safe fixture.
+- Authentication and state coverage: anonymous content was verified with the login action visible and no player
+  ranking strip. The authenticated strip is gated by `user()?.id` and was not forced with a real account. The loaded
+  success state was verified. Loading and error are supported by `HomeService` and the template, but were not forced
+  against live data. No-ranking-system data would leave the page without an explicit empty message when not loading or
+  errored; DR-002 must cover that state with a safe fixture and should add focused behavior tests. An error can render
+  alongside previously loaded content because the error signal is independent of the ranking signal.
+- Semantic color and contrast checks: computed values were inspected in both themes. Light mode resolved text to
+  `oklch(0.14 0.02 250)`, muted text to `oklch(0.55 0.015 250)`, borders to
+  `oklch(0.93 0.008 250)`, primary to `oklch(0.58 0.17 210)`, and highlight to
+  `oklch(0.58 0.17 210 / 0.12)`. Dark mode resolved text to `oklch(0.94 0.005 250)`, muted text to
+  `oklch(0.68 0.012 250)`, borders to `oklch(0.24 0.025 250)`, primary to `oklch(0.78 0.15 210)`, and
+  highlight to `oklch(0.78 0.15 210 / 0.16)`. Heading, table header, table cell, and muted text remained readable in
+  both visual checks; no authored color was changed by this slice.
+- Theme integration: `ThemeService` applies `light-theme` or `dark-theme` and `data-theme` to the document root and
+  persists `gladman:theme` in a one-year cookie. Toggling to light persisted through a reload. PrimeNG uses
+  `.dark-theme` through `darkModeSelector`. The global autocomplete popup was appended below `body` and resolved to
+  the light content surface in light mode and `oklch(0.17 0.02 250)` with light text in dark mode.
+- Dark-palette constraint: the preset intentionally inverts the dark surface scale (`surface.0` is dark and
+  `surface.950` is light) so existing surface utilities retain their intended direction. Form fields, select/popover/
+  modal overlays, list and navigation items, secondary button variants, data-table rows, and toggle buttons contain
+  compensating dark overrides. The pilot should use semantic utilities and native components rather than introducing
+  additional palette classes or changing this global contract.
+- Utility/style baseline: the home template currently contains 22 class-bearing elements, including `t-eyebrow`,
+  `t-mono`, semantic surface/border utilities, layout utilities, arbitrary values, and two authored palette pairs
+  (`text-green-600 dark:text-green-400` and `text-red-600 dark:text-red-400`). The page stylesheet contains a host
+  flex/gap rule and a gradient `.rank-number` rule that is not referenced by the current template. DR-002 may remove
+  only the proven-unused rule and should replace page-level table/feedback decoration with native PrimeNG behavior.
+- DR-002 approach: use native `p-table` templates for the reference data, `p-message` for failure feedback, and a
+  native progress or skeleton component for loading. Keep semantic headings, ranking metadata, the existing
+  authenticated ranking-progress component, translated labels, sort order, null placeholders, and numeric zero.
+- Validation: `npx nx lint frontend-pages-home app`, `npx nx test frontend-pages-home --runInBand`, and
+  `npx nx build app --configuration=development` each reported one successful Nx task. Their wrappers remained alive
+  after reporting success and were stopped explicitly; no task failure was reported. Browser console showed zero errors
+  and one existing warning on route loads.
+- Styling exceptions: none introduced. The existing page/global styles and palette remain unchanged.
+- Next slice: [DR-002: Home page pilot](DR-002-home-pilot.md), with focused fixtures/tests for authenticated,
+  loading, error, and no-ranking-system states.
 
 [app-config]: ../../../apps/app/config/app.config.ts
 [preset]: ../../../apps/app/config/theme.preset.ts

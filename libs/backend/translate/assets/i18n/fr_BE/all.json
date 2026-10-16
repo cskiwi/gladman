@@ -770,9 +770,15 @@
     "needed-for-upgrade": "Dégradation",
     "table": {
       "level": "Niveau",
+      "levels": "niveaux",
+      "loading-ranking-system": "Chargement du système de classement",
+      "no-level-data": "Aucune donnée de niveau disponible.",
+      "no-ranking-system": "Aucun système de classement disponible.",
       "points-needed-down": "Limite inférieure",
       "points-needed-up": "Limite pour l'augmentation",
-      "points-won": "Points gagnés contre ce niveau"
+      "points-won": "Points gagnés contre ce niveau",
+      "ranking-system": "Système de classement",
+      "reference": "Référence des niveaux"
     }
   },
   "ranking": {

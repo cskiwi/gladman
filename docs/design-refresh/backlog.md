@@ -5,9 +5,9 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-001 is complete. The next action is to start [DR-002](work-items/DR-002-home-pilot.md): implement and verify the
-native PrimeNG home-page pilot using the recorded baseline and safe fixtures for states not available anonymously.
-All other areas remain queued; their order can be adjusted after reviewing the pilot.
+DR-002 is in review. The current action is to review the native PrimeNG home-page pilot and complete the remaining
+safe fixture and SSR/hydration checks before marking it done. All other areas remain queued; their order can be adjusted
+after reviewing the pilot.
 
 Follow the [design rules and workflow](README.md) for every item. This file is the authoritative status registry. Keep
 it updated in the same change as the implementation.
@@ -21,7 +21,7 @@ only the first two are expanded now.
 | ID                 | Area                                            | Status  |
 | ------------------ | ----------------------------------------------- | ------- |
 | [DR-001][baseline] | Theme and design baseline                       | Done    |
-| [DR-002][pilot]    | Home page pilot                                 | Ready   |
+| [DR-002][pilot]    | Home page pilot                                 | Review  |
 | DR-003             | App shell, navigation, search, and layouts      | Backlog |
 | DR-004             | Shared headings, hero, and breadcrumb           | Backlog |
 | DR-005             | Shared ranking, statistics, and status patterns | Backlog |

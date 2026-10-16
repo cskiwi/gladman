@@ -777,9 +777,15 @@ export type I18nTranslations = {
             "needed-for-upgrade": string;
             "table": {
                 "level": string;
+                "levels": string;
+                "loading-ranking-system": string;
+                "no-level-data": string;
+                "no-ranking-system": string;
                 "points-needed-down": string;
                 "points-needed-up": string;
                 "points-won": string;
+                "ranking-system": string;
+                "reference": string;
             };
         };
         "ranking": {

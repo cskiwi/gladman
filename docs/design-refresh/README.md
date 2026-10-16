@@ -8,9 +8,9 @@ description: 'PrimeNG-first design principles and an incremental frontend redesi
 Modernize Gladman without a big-bang rewrite. The result should feel like a considered badminton application, not a
 generic dashboard: clear information hierarchy, useful data density, predictable actions, and restrained decoration.
 
-This folder is the persistent source of truth for the redesign. It contains a plan, not an implemented redesign. The
-initial inventory is based on source inspection on 2026-10-16; browser baselines are still to be captured. No
-application code, behavior, theme, or dependencies are changed by this planning work.
+This folder is the persistent source of truth for the redesign. It contains the rollout plan and the evidence for each
+implemented slice. The initial inventory and browser baseline are based on source inspection on 2026-10-16. DR-001
+established the baseline without changing application behavior; DR-002 is the first implementation slice.
 
 ## Start here
 

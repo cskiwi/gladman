@@ -770,9 +770,15 @@
     "needed-for-upgrade": "Degradatie",
     "table": {
       "level": "Level",
+      "levels": "niveaus",
+      "loading-ranking-system": "Rankingsysteem wordt geladen",
+      "no-level-data": "Geen niveaugegevens beschikbaar.",
+      "no-ranking-system": "Geen rankingsysteem beschikbaar.",
       "points-needed-down": "Grenswaarde voor dalen",
       "points-needed-up": "Grenswaarde voor stijgen",
-      "points-won": "Punten gewonnen tegen dit niveau"
+      "points-won": "Punten gewonnen tegen dit niveau",
+      "ranking-system": "Rankingsysteem",
+      "reference": "Niveaureferentie"
     }
   },
   "ranking": {

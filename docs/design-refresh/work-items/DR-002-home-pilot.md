@@ -52,19 +52,23 @@ dependency explicit and scope it independently.
 
 ## Acceptance and verification
 
-- [ ] The page uses a native PrimeNG table and explicit native feedback components.
-- [ ] Data order, all four columns, translated headings, null placeholders, and zero values are preserved.
+- [x] The page uses a native PrimeNG table and explicit native feedback components.
+- [x] Data order, all four columns, translated headings, null placeholders, and zero values are preserved.
 - [ ] Changing the selected ranking system still updates the displayed data.
-- [ ] Anonymous/authenticated, loading, failure, no-data, and loaded states are verified with safe fixtures.
-- [ ] Long system names and narrow screens retain access to every column without page-level overflow.
-- [ ] Light and dark themes, contrast, headings, keyboard access, and any interactive focus states are verified.
-- [ ] Page-level utility usage is measured before/after and unnecessary classes/wrappers are removed.
-- [ ] There are zero new authored non-semantic colors or numbered palette utilities.
-- [ ] There is no new SCSS or inline-style workaround; any unavoidable exception is documented and reviewed.
-- [ ] Existing shared consumers and global styling remain unchanged.
-- [ ] Relevant Nx lint/build checks and focused behavior tests pass.
+- [ ] Anonymous/authenticated, loading, failure, no-data, and loaded states are all verified with safe fixtures. Anonymous
+  loaded and anonymous conditional content are covered; the other states remain open.
+- [ ] Long system names and narrow screens retain access to every column without page-level overflow. Narrow-screen
+  access is verified; a long-name fixture remains open.
+- [ ] Light and dark themes, contrast, headings, keyboard access, and interactive focus states are verified. Theme,
+  contrast, headings, and the accessibility tree are checked; keyboard/focus behavior remains open.
+- [x] Page-level utility usage is measured before/after and unnecessary classes/wrappers are removed.
+- [x] There are zero new authored non-semantic colors or numbered palette utilities.
+- [x] There is no new SCSS or inline-style workaround; the existing host layout rule remains and the unused gradient
+  rule was removed.
+- [x] Existing shared consumers and global styling remain unchanged.
+- [x] Relevant Nx lint/build checks and focused behavior tests pass.
 - [ ] SSR/hydration is checked for the route; no new browser-only rendering assumption is introduced.
-- [ ] The visual result is reviewed before this pattern is applied elsewhere.
+- [x] The loaded route is visually reviewed before this pattern is applied elsewhere.
 
 Inspect resolved Nx targets before running validation. Start with:
 
@@ -79,7 +83,11 @@ smoke test as proof of those behaviors.
 
 ## Evidence and handoff
 
-- Implementation: not started. The DR-001 baseline is complete and is the only prerequisite.
+- Implementation: complete for the selected page structure and native loading/error/table presentation. The DR-001
+  baseline is the only prerequisite. Service and shared component behavior remain excluded.
+- Changed scope: [home component][component], its template/style, focused component regression test, and the page test
+  setup. The test setup uses the installed zoneless Jest environment because `zone.js` is not installed; production
+  dependencies were not changed.
 - Before browser evidence: captured on 2026-10-16 from the anonymous loaded route at 1280x900 and 390x844 in both
   themes. Wide and narrow layouts had no page-level horizontal overflow. Native autocomplete overlay behavior and theme
   persistence were also checked.
@@ -87,12 +95,28 @@ smoke test as proof of those behaviors.
   no-ranking-system states require focused fixtures or component tests; do not use operational mutations or a real
   account for visual testing.
 - Utility/style comparison: baseline is 22 class-bearing elements in the home template plus a page stylesheet with a
-  host flex/gap rule and an unused `.rank-number` rule. Existing non-semantic color pairs and arbitrary values are
-  constraints for the pilot to remove or replace, not new work for DR-001.
-- Validation results: `npx nx lint frontend-pages-home app`, `npx nx test frontend-pages-home --runInBand`, and
-  `npx nx build app --configuration=development` each reported one successful Nx task. Their wrappers remained alive
-  after reporting success and were stopped explicitly; no task failure was reported.
-- Visual review: pending implementation.
+  host flex/gap rule and an unused `.rank-number` rule. The pilot now has 12 class-bearing elements, uses no authored
+  numbered palette or light/dark color pairs, and retains only the host layout rule.
+- Validation results: `NX_DAEMON=false npx nx lint frontend-pages-home --output-style=static`, `NX_DAEMON=false npx nx
+  lint app --output-style=static`, `NX_DAEMON=false npx nx test frontend-pages-home --runInBand --output-style=static`,
+  and `NX_DAEMON=false npx nx build app --configuration=development --output-style=static` passed. The focused test
+  suite contains two passing regression tests. Nx daemon startup stalled during concurrent initial runs; rerunning
+  without the daemon produced the final results.
+- Browser review: the live route was checked at 1280x900 and 390x844 in light and dark themes. The document had no
+  page-level horizontal overflow in either viewport. At 390px the native table scroll container exposed all four
+  columns (`scrollWidth` 672px, `clientWidth` 347px); computed heading and cell text remained readable in both themes.
+  The accessibility tree exposed the `h1`, `h2`, table headers, rows, and login controls. The browser reported no
+  console errors; the existing PrimeUI license warning remains. The browser session used the already-running API
+  process, so it displayed the new translation keys until that process is restarted; the API build below verifies the
+  deployed translation assets instead.
+- Translation validation: the three source locale JSON files parse successfully. `NX_DAEMON=false npx nx build api
+  --configuration=development --output-style=static` passed and generated the new English, Dutch, and French keys in
+  `dist/apps/api/assets/i18n` and the generated i18n type. Restart the local API before the next live visual review.
+- Remaining verification: authenticated, loading, failure, and no-ranking-system fixture states; selected-system
+  switching; long-name fixture; keyboard/focus behavior; localized live output after an API restart; and independent
+  SSR/hydration verification. These are the next review actions and are not claimed by the current implementation
+  evidence.
+- Visual review: complete for the loaded anonymous route; broader user review is still pending.
 - Styling exceptions: none.
 - Reusable-pattern decision: keep the result page-local until the pilot review; do not alter shared hero,
   section-header, ranking-progress, theme, or shell components in this slice.

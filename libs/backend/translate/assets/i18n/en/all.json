@@ -770,9 +770,15 @@
     "needed-for-upgrade": "Degradation",
     "table": {
       "level": "Level",
+      "levels": "levels",
+      "loading-ranking-system": "Loading ranking system",
+      "no-level-data": "No level data is available.",
+      "no-ranking-system": "No ranking system is available.",
       "points-needed-down": "Points needed to go down",
       "points-needed-up": "Points needed to go up",
-      "points-won": "Points won against this level"
+      "points-won": "Points won against this level",
+      "ranking-system": "Ranking system",
+      "reference": "Level reference"
     }
   },
   "ranking": {

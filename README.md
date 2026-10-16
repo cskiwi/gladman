@@ -4,6 +4,11 @@
 
 This project is a Angular (With SSR) + Nestjs monorepo using Nx. It is a full-stack application that demonstrates how to structure and manage frontend and backend applications within a single Nx workspace.
 
+## Design refresh
+
+The [design refresh plan](docs/design-refresh/README.md) defines the PrimeNG-first design rules and rollout.
+Use the [redesign backlog](docs/design-refresh/backlog.md) to choose and track one small area at a time.
+
 ## TODO
 
 Feel free to contribute to this project by creating a pull request.

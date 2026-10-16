@@ -1,6 +1,6 @@
 @if (isBrowser()) {
   <p-table [value]="dataSource()" [loading]="loading()" [sortField]="'winRate'" [sortOrder]="-1" styleClass="p-datatable-sm">
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         @for (col of columns(); track col) {
           <th [pSortableColumn]="col.field">
@@ -10,7 +10,7 @@
         }
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-rowData>
+    <ng-template #body let-rowData>
       <tr>
         @for (col of columns(); track col) {
           <td>
@@ -45,7 +45,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="footer">
+    <ng-template #footer>
       <tr>
         @for (col of columns(); track col) {
           <td class="font-bold text-right">

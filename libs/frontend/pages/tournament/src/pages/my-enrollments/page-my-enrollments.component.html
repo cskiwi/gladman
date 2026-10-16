@@ -54,7 +54,7 @@
  <span class="t-mono text-xs text-muted-color">{{ enrollments().length }}</span>
  </div>
  <p-table [value]="enrollments()" [scrollable]="true" styleClass="p-datatable-sm">
- <ng-template pTemplate="header">
+ <ng-template #header>
  <tr>
  <th>{{ 'all.enrollment.subEvent' | translate }}</th>
  <th>{{ 'all.enrollment.status' | translate }}</th>
@@ -63,7 +63,7 @@
  <th style="width: 8rem"></th>
  </tr>
  </ng-template>
- <ng-template pTemplate="body" let-enrollment>
+ <ng-template #body let-enrollment>
  <tr>
  <td>
  <div class="font-medium">{{ enrollment.tournamentSubEvent?.name }}</div>
@@ -114,7 +114,7 @@
  </td>
  </tr>
  </ng-template>
- <ng-template pTemplate="emptymessage">
+ <ng-template #emptymessage>
  <tr>
  <td colspan="5" class="text-center text-muted-color py-8">
  {{ 'all.enrollment.noEnrollmentsYet' | translate }}

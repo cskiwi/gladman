@@ -193,7 +193,7 @@
  <p-card header="{{ 'all.enrollment.confirmedEntries' | translate }} ({{ confirmedEnrollments().length }})">
  @if (confirmedEnrollments().length > 0) {
  <p-table [value]="confirmedEnrollments()" [scrollable]="true" styleClass="p-datatable-sm">
- <ng-template pTemplate="header">
+ <ng-template #header>
  <tr>
  <th>{{ 'all.enrollment.player' | translate }}</th>
  @if (isDoubles()) {
@@ -201,7 +201,7 @@
  }
  </tr>
  </ng-template>
- <ng-template pTemplate="body" let-enrollment>
+ <ng-template #body let-enrollment>
  <tr>
  <td>
  @if (enrollment.isGuest) {
@@ -218,7 +218,7 @@
  }
  </tr>
  </ng-template>
- <ng-template pTemplate="emptymessage">
+ <ng-template #emptymessage>
  <tr>
  <td [attr.colspan]="isDoubles() ? 2 : 1" class="text-center text-muted-color">
  {{ 'all.enrollment.noConfirmed' | translate }}
@@ -237,13 +237,13 @@
  @if (isDoubles() && lookingForPartner().length > 0) {
  <p-card header="{{ 'all.enrollment.lookingForPartner' | translate }} ({{ lookingForPartner().length }})">
  <p-table [value]="lookingForPartner()" [scrollable]="true" styleClass="p-datatable-sm">
- <ng-template pTemplate="header">
+ <ng-template #header>
  <tr>
  <th>{{ 'all.enrollment.player' | translate }}</th>
  <th>{{ 'all.enrollment.preferredPartner' | translate }}</th>
  </tr>
  </ng-template>
- <ng-template pTemplate="body" let-enrollment>
+ <ng-template #body let-enrollment>
  <tr>
  <td>{{ enrollment.player?.fullName }}</td>
  <td>
@@ -266,13 +266,13 @@
  @if (subEvent.waitingListEnabled && waitingListEnrollments().length > 0) {
  <p-card header="{{ 'all.enrollment.waitingList' | translate }} ({{ waitingListEnrollments().length }})">
  <p-table [value]="waitingListEnrollments()" [scrollable]="true" styleClass="p-datatable-sm">
- <ng-template pTemplate="header">
+ <ng-template #header>
  <tr>
  <th style="width: 3rem">#</th>
  <th>{{ 'all.enrollment.player' | translate }}</th>
  </tr>
  </ng-template>
- <ng-template pTemplate="body" let-enrollment>
+ <ng-template #body let-enrollment>
  <tr>
  <td>{{ enrollment.waitingListPosition }}</td>
  <td>

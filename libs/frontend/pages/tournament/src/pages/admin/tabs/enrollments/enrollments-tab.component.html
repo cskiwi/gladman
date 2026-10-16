@@ -181,7 +181,7 @@
  [rowsPerPageOptions]="[10, 25, 50]"
  styleClass="p-datatable-sm"
  >
- <ng-template pTemplate="header">
+ <ng-template #header>
  <tr class="text-sm">
  <th class="font-semibold">{{ 'all.tournament.admin.enrollments.player' | translate }}</th>
  @if (isDoublesEvent()) {
@@ -193,7 +193,7 @@
  <th class="font-semibold text-center" style="width: 8rem">{{ 'all.tournament.admin.enrollments.actions' | translate }}</th>
  </tr>
  </ng-template>
- <ng-template pTemplate="body" let-enrollment>
+ <ng-template #body let-enrollment>
  <tr class="hover:bg-emphasis transition-colors">
  <td>
  <div class="flex items-center gap-3">
@@ -275,7 +275,7 @@
  </td>
  </tr>
  </ng-template>
- <ng-template pTemplate="emptymessage">
+ <ng-template #emptymessage>
  <tr>
  <td [attr.colspan]="isDoublesEvent() ? 6 : 5" class="text-center py-12">
  <div class="flex flex-col items-center">

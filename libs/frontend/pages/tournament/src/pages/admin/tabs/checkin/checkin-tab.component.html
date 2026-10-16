@@ -205,7 +205,7 @@
  [rowsPerPageOptions]="[10, 25, 50]"
  styleClass="p-datatable-sm"
  >
- <ng-template pTemplate="header">
+ <ng-template #header>
  <tr>
  <th style="width: 3rem" class="bg-emphasis"></th>
  <th class="bg-emphasis font-semibold text-color">
@@ -225,7 +225,7 @@
  </th>
  </tr>
  </ng-template>
- <ng-template pTemplate="body" let-checkIn>
+ <ng-template #body let-checkIn>
  <tr
  class="hover:bg-emphasis transition-colors"
  [class.bg-green-50]="checkIn.status === 'CHECKED_IN'"
@@ -322,7 +322,7 @@
  </td>
  </tr>
  </ng-template>
- <ng-template pTemplate="emptymessage">
+ <ng-template #emptymessage>
  <tr>
  <td colspan="6" class="text-center py-8">
  <div class="flex flex-col items-center gap-2">

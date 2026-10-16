@@ -103,7 +103,7 @@
             (onLazyLoad)="onUnmatchedLazyLoad($event)"
             styleClass="p-datatable-sm"
           >
-            <ng-template pTemplate="header">
+            <ng-template #header>
               <tr>
                 <th>External Team</th>
                 <th>Tournament</th>
@@ -112,7 +112,7 @@
               </tr>
             </ng-template>
 
-            <ng-template pTemplate="body" let-team>
+            <ng-template #body let-team>
               <tr>
                 <td>
                   <div>
@@ -200,7 +200,7 @@
             (onLazyLoad)="onMatchedLazyLoad($event)"
             styleClass="p-datatable-sm"
           >
-            <ng-template pTemplate="header">
+            <ng-template #header>
               <tr>
                 <th>External Team</th>
                 <th>Matched Team</th>
@@ -209,7 +209,7 @@
               </tr>
             </ng-template>
 
-            <ng-template pTemplate="body" let-match>
+            <ng-template #body let-match>
               <tr>
                 <td>
                   <div>
@@ -260,7 +260,7 @@
     </div>
 
     <p-table [value]="selectedTeam()!.suggestions">
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th>Team</th>
           <th>Club</th>
@@ -269,7 +269,7 @@
           <th>Action</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-suggestion>
+      <ng-template #body let-suggestion>
         <tr>
           <td>{{ suggestion.teamName }}</td>
           <td>{{ suggestion.clubName }}</td>

@@ -162,14 +162,14 @@
       <div class="mb-4">
         <label class="font-medium block mb-2">{{ 'all.team.edit.basePlayers' | translate }}</label>
         <p-table [value]="sortedTeamPlayerMemberships()" [tableStyle]="{ 'min-width': '50rem' }">
-          <ng-template pTemplate="header">
+          <ng-template #header>
             <tr>
               <th>{{ 'all.team.edit.members.player' | translate }}</th>
               <th>{{ 'all.team.edit.members.type' | translate }}</th>
               <th style="width: 100px">{{ 'all.team.edit.members.actions' | translate }}</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-membership>
+          <ng-template #body let-membership>
             <tr>
               <td>{{ membership.player?.fullName }}</td>
               <td>

@@ -51,7 +51,7 @@
       [globalFilterFields]="['player1.firstName', 'player1.lastName', 'player2.firstName', 'player2.lastName']"
       styleClass="p-datatable-sm p-datatable-striped"
     >
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th pSortableColumn="player1.lastName">{{ 'all.competition.team-assembly.stats.player1' | translate }} <p-sorticon field="player1.lastName" /></th>
           <th pSortableColumn="player2.lastName">{{ 'all.competition.team-assembly.stats.player2' | translate }} <p-sorticon field="player2.lastName" /></th>
@@ -60,7 +60,7 @@
           <th pSortableColumn="winPct">{{ 'all.competition.team-assembly.stats.win-pct' | translate }} <p-sorticon field="winPct" /></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-row>
+      <ng-template #body let-row>
         <tr>
           <td>{{ row.player1.firstName }} {{ row.player1.lastName }}</td>
           <td>{{ row.player2.firstName }} {{ row.player2.lastName }}</td>
@@ -69,7 +69,7 @@
           <td [class]="row.winPct >= 50 ? 'text-green-500' : 'text-red-500'">{{ row.winPct }}%</td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr>
           <td colspan="5" class="text-center text-muted-color">{{ 'all.competition.team-assembly.stats.no-data' | translate }}</td>
         </tr>

@@ -172,7 +172,7 @@
       <div class="mt-4">
         @if (playerRoster().length > 0) {
         <p-table [value]="playerRoster()" [paginator]="true" [rows]="25" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} players" styleClass="p-datatable-sm">
-          <ng-template pTemplate="header">
+          <ng-template #header>
             <tr>
               <th>{{ 'all.player.name' | translate }}</th>
               <th>{{ 'all.player.gender' | translate }}</th>
@@ -182,7 +182,7 @@
             </tr>
           </ng-template>
 
-          <ng-template pTemplate="body" let-player>
+          <ng-template #body let-player>
             <tr>
               <td>
                 <div class="flex items-center gap-3">
@@ -230,7 +230,7 @@
             </tr>
           </ng-template>
 
-          <ng-template pTemplate="emptymessage">
+          <ng-template #emptymessage>
             <tr>
               <td colspan="5" class="text-center py-8">
                 <div class="flex flex-col items-center gap-2 text-muted-color">
@@ -346,7 +346,7 @@
       <div class="mt-4">
         @if (tournamentEntries().length > 0) {
         <p-table [value]="tournamentEntries()" [paginator]="true" [rows]="20" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} tournament entries" styleClass="p-datatable-sm">
-          <ng-template pTemplate="header">
+          <ng-template #header>
             <tr>
               <th>{{ 'all.tournament.name' | translate }}</th>
               <th>{{ 'all.tournament.event' | translate }}</th>
@@ -359,7 +359,7 @@
             </tr>
           </ng-template>
 
-          <ng-template pTemplate="body" let-entry>
+          <ng-template #body let-entry>
             <tr>
               <td>
                 <div class="font-medium">
@@ -433,7 +433,7 @@
             </tr>
           </ng-template>
 
-          <ng-template pTemplate="emptymessage">
+          <ng-template #emptymessage>
             <tr>
               <td colspan="8" class="text-center py-8">
                 <div class="flex flex-col items-center gap-2 text-muted-color">

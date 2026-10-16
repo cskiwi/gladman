@@ -39,7 +39,7 @@
 <!-- Data Table -->
 <div class="overflow-x-auto">
   <p-table [value]="displayGames()" [loading]="loading()" [paginator]="false" styleClass="p-datatable-sm" [scrollable]="true">
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         @if (showRemoveColumn()) {
           <th style="min-width: 32px"></th>
@@ -108,7 +108,7 @@
         }
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-game>
+    <ng-template #body let-game>
       <tr
         [class.bg-highlight]="game.highestAvgUpgrade || game.highestAvgDowngrade"
         [class.opacity-50]="!game.inLatestX && game.type !== 'LOST_IGNORED'"
@@ -260,7 +260,7 @@
         }
       </tr>
     </ng-template>
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr>
         <td [attr.colspan]="totalColumns()">
           <div class="flex flex-col items-center justify-center py-8 text-center">

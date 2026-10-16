@@ -2,7 +2,7 @@
 
 <!-- Ranking Systems Table -->
 <p-table [value]="systems()" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
-  <ng-template pTemplate="header">
+  <ng-template #header>
     <tr>
       <th>Name</th>
       <th>Type</th>
@@ -15,7 +15,7 @@
   </ng-template>
 
   @if (loading()) {
-  <ng-template pTemplate="body">
+  <ng-template #body>
     @for (i of [1, 2, 3]; track i) {
     <tr>
       @for (col of [1, 2, 3, 4, 5, 6, 7]; track col) {
@@ -26,7 +26,7 @@
   </ng-template>
   }
 
-  <ng-template pTemplate="body" let-system>
+  <ng-template #body let-system>
     @if (!loading()) {
     <tr>
       <td class="font-medium">{{ system.name }}</td>
@@ -74,7 +74,7 @@
     }
   </ng-template>
 
-  <ng-template pTemplate="emptymessage">
+  <ng-template #emptymessage>
     @if (!loading() && systems().length === 0) {
     <tr>
       <td colspan="7" class="text-center text-muted-color py-4">No ranking systems found</td>

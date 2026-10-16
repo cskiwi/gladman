@@ -4,7 +4,7 @@
   </div>
 
   <p-table [value]="cronJobs()" [loading]="loading()" [tableStyle]="{ 'min-width': '60rem' }" styleClass="p-datatable-sm">
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Name</th>
         <th>Type</th>
@@ -19,7 +19,7 @@
     </ng-template>
 
     @if (loading()) {
-      <ng-template pTemplate="body">
+      <ng-template #body>
         @for (i of [1, 2, 3, 4, 5]; track i) {
           <tr>
             @for (col of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track col) {
@@ -30,7 +30,7 @@
       </ng-template>
     }
 
-    <ng-template pTemplate="body" let-job>
+    <ng-template #body let-job>
       @if (!loading()) {
         <tr>
           <td>
@@ -110,7 +110,7 @@
       }
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       @if (!loading() && cronJobs().length === 0) {
         <tr>
           <td colspan="9" class="text-center text-muted-color py-4">No cron jobs found</td>

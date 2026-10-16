@@ -26,7 +26,7 @@
  sortMode="multiple"
  [multiSortMeta]="multiSortMeta"
  >
- <ng-template pTemplate="header">
+ <ng-template #header>
  <tr class="text-sm">
  <th pSortableColumn="name" class="font-semibold">
  <div class="flex items-center justify-between gap-2">
@@ -40,7 +40,7 @@
  {{ 'all.tournament.admin.settings.eventType' | translate }}
  <p-sorticon field="eventType" />
  <p-columnfilter field="eventType" matchMode="equals" display="menu" class="ml-auto">
- <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+ <ng-template #filter let-value let-filter="filterCallback">
  <p-select
  [ngModel]="value"
  [options]="eventTypeOptions"
@@ -65,7 +65,7 @@
  {{ 'all.tournament.admin.settings.gameType' | translate }}
  <p-sorticon field="gameType" />
  <p-columnfilter field="gameType" matchMode="equals" display="menu" class="ml-auto">
- <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+ <ng-template #filter let-value let-filter="filterCallback">
  <p-select
  [ngModel]="value"
  [options]="gameTypeOptions"
@@ -111,7 +111,7 @@
  {{ 'all.tournament.admin.settings.waitingList' | translate }}
  <p-sorticon field="waitingListEnabled" />
  <p-columnfilter field="waitingListEnabled" matchMode="equals" display="menu" [showMatchModes]="false" class="ml-auto">
- <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+ <ng-template #filter let-value let-filter="filterCallback">
  <p-select
  [ngModel]="value"
  [options]="[
@@ -130,7 +130,7 @@
  <th class="font-semibold text-center" style="width: 7rem">{{ 'all.tournament.admin.settings.actions' | translate }}</th>
  </tr>
  </ng-template>
- <ng-template pTemplate="body" let-subEvent>
+ <ng-template #body let-subEvent>
  <tr class="hover:bg-emphasis transition-colors">
  <td>
  <span class="font-medium text-color">{{ subEvent.name }}</span>

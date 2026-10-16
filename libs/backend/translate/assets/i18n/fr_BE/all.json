@@ -661,15 +661,24 @@
     "players": "Le chargement des joueurs..."
   },
   "navigation": {
+    "account": "Compte",
+    "admin": "Panneau d'administration",
     "clubs": "Clubs",
     "competitions": "Concours",
     "home": "ACCUEIL",
     "login": "Connexion",
+    "logout": "Déconnexion",
+    "menu": "Menu",
+    "notifications": "Notifications",
     "players": "Joueurs",
+    "openMenu": "Ouvrir le menu de navigation",
+    "primary": "Navigation principale",
     "searchClubs": "Recherche de clubs",
     "searchClubsDescription": "Trouvez et découvrez les clubs de badminton près de chez vous",
     "searchPlayers": "Recherche de joueurs",
-    "searchPlayersDescription": "Découvrez les joueurs, les classements et les statistiques"
+    "searchPlayersDescription": "Découvrez les joueurs, les classements et les statistiques",
+    "toggleDark": "Passer au mode sombre",
+    "toggleLight": "Passer au mode clair"
   },
   "player": {
     "allGames": "Tous les matchs",
@@ -919,8 +928,19 @@
     }
   },
   "search": {
+    "loading": "Recherche en cours...",
     "noResults": "Aucun résultat trouvé",
-    "results": "Résultats de la recherche"
+    "placeholder": "Rechercher des joueurs, clubs, compétitions...",
+    "results": "Résultats de la recherche",
+    "types": {
+      "club": "Club",
+      "competition": "Compétition",
+      "event": "Événement",
+      "player": "Joueur",
+      "result": "Résultat",
+      "team": "Équipe",
+      "tournament": "Tournoi"
+    }
   },
   "settings": {
     "general": {

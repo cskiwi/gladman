@@ -17,6 +17,8 @@ established the baseline without changing application behavior; DR-002 is the fi
 - [Backlog](backlog.md): authoritative statuses, current focus, frontend project coverage, and deferred work.
 - [DR-001: Design baseline](work-items/DR-001-design-baseline.md): the first small, ready-to-start task.
 - [DR-002: Home page pilot](work-items/DR-002-home-pilot.md): the proposed first implementation slice.
+- [DR-003: App shell and layouts](work-items/DR-003-app-shell.md): the companion chrome slice for reviewing the pilot
+  in context.
 - [Work-item template](work-item-template.md): copy when an area is ready to be broken into an executable task.
 
 ## Continue in a fresh chat

@@ -668,15 +668,24 @@ export type I18nTranslations = {
             "players": string;
         };
         "navigation": {
+            "account": string;
+            "admin": string;
             "clubs": string;
             "competitions": string;
             "home": string;
             "login": string;
+            "logout": string;
+            "menu": string;
+            "notifications": string;
             "players": string;
+            "openMenu": string;
+            "primary": string;
             "searchClubs": string;
             "searchClubsDescription": string;
             "searchPlayers": string;
             "searchPlayersDescription": string;
+            "toggleDark": string;
+            "toggleLight": string;
         };
         "player": {
             "allGames": string;
@@ -926,8 +935,19 @@ export type I18nTranslations = {
             };
         };
         "search": {
+            "loading": string;
             "noResults": string;
+            "placeholder": string;
             "results": string;
+            "types": {
+                "club": string;
+                "competition": string;
+                "event": string;
+                "player": string;
+                "result": string;
+                "team": string;
+                "tournament": string;
+            };
         };
         "settings": {
             "general": {

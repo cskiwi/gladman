@@ -661,15 +661,24 @@
     "players": "Spelers laden..."
   },
   "navigation": {
+    "account": "Account",
+    "admin": "Beheerpaneel",
     "clubs": "Clubs",
     "competitions": "Competities",
     "home": "Home",
     "login": "Inloggen",
+    "logout": "Uitloggen",
+    "menu": "Menu",
+    "notifications": "Meldingen",
     "players": "Spelers",
+    "openMenu": "Navigatiemenu openen",
+    "primary": "Hoofdnavigatie",
     "searchClubs": "Zoek Clubs",
     "searchClubsDescription": "Vind en ontdek badmintonclubs in je buurt",
     "searchPlayers": "Zoek Spelers",
-    "searchPlayersDescription": "Ontdek spelers, rankings en statistieken"
+    "searchPlayersDescription": "Ontdek spelers, rankings en statistieken",
+    "toggleDark": "Donkere modus inschakelen",
+    "toggleLight": "Lichte modus inschakelen"
   },
   "player": {
     "allGames": "Alle Wedstrijden",
@@ -919,8 +928,19 @@
     }
   },
   "search": {
+    "loading": "Zoeken...",
     "noResults": "Geen resultaten gevonden",
-    "results": "Zoekresultaten"
+    "placeholder": "Zoek spelers, clubs, competities...",
+    "results": "Zoekresultaten",
+    "types": {
+      "club": "Club",
+      "competition": "Competitie",
+      "event": "Evenement",
+      "player": "Speler",
+      "result": "Resultaat",
+      "team": "Team",
+      "tournament": "Toernooi"
+    }
   },
   "settings": {
     "general": {

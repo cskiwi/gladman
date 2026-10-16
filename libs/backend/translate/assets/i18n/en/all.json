@@ -661,15 +661,24 @@
     "players": "Loading players..."
   },
   "navigation": {
+    "account": "Account",
+    "admin": "Admin Panel",
     "clubs": "Clubs",
     "competitions": "Competitions",
     "home": "Home",
     "login": "Log in",
+    "logout": "Log out",
+    "menu": "Menu",
+    "notifications": "Notifications",
     "players": "Players",
+    "openMenu": "Open navigation menu",
+    "primary": "Primary navigation",
     "searchClubs": "Search Clubs",
     "searchClubsDescription": "Find and explore badminton clubs in your area",
     "searchPlayers": "Search Players",
-    "searchPlayersDescription": "Discover players, rankings and statistics"
+    "searchPlayersDescription": "Discover players, rankings and statistics",
+    "toggleDark": "Switch to dark mode",
+    "toggleLight": "Switch to light mode"
   },
   "player": {
     "allGames": "All Games",
@@ -919,8 +928,19 @@
     }
   },
   "search": {
+    "loading": "Searching...",
     "noResults": "No results found",
-    "results": "Search Results"
+    "placeholder": "Search players, clubs, competitions...",
+    "results": "Search Results",
+    "types": {
+      "club": "Club",
+      "competition": "Competition",
+      "event": "Event",
+      "player": "Player",
+      "result": "Result",
+      "team": "Team",
+      "tournament": "Tournament"
+    }
   },
   "settings": {
     "general": {

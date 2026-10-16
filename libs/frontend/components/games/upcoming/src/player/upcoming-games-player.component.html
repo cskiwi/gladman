@@ -39,13 +39,13 @@
       </div>
       <div class="font-semibold text-lg text-color" style="font-family: 'Space Grotesk', sans-serif">
         @if (game?.homeTeam?.club?.slug) {
-        <a [routerLink]="['/clubs', game!.homeTeam!.club!.slug!, 'teams', game!.homeTeam!.id!]" class="text-color no-underline hover:text-primary">{{ game?.homeTeam?.name || game?.homeTeam?.abbreviation }}</a>
+        <a [routerLink]="['/clubs', game!.homeTeam!.club!.slug!, 'teams', game!.homeTeam!.id!]" class="text-color no-underline hover:text-primary">{{ game?.homeTeam.name || game?.homeTeam.abbreviation }}</a>
         } @else {
         {{ game?.homeTeam?.name || game?.homeTeam?.abbreviation }}
         }
         <span class="text-muted-color font-medium mx-1.5">vs</span>
         @if (game?.awayTeam?.club?.slug) {
-        <a [routerLink]="['/clubs', game!.awayTeam!.club!.slug!, 'teams', game!.awayTeam!.id!]" class="text-color no-underline hover:text-primary">{{ game?.awayTeam?.name || game?.awayTeam?.abbreviation }}</a>
+        <a [routerLink]="['/clubs', game!.awayTeam!.club!.slug!, 'teams', game!.awayTeam!.id!]" class="text-color no-underline hover:text-primary">{{ game?.awayTeam.name || game?.awayTeam.abbreviation }}</a>
         } @else {
         {{ game?.awayTeam?.name || game?.awayTeam?.abbreviation }}
         }

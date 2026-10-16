@@ -44,7 +44,7 @@
  <td class="p-3 font-semibold text-primary pl-4">{{ entry.standing?.position }}</td>
  <td class="p-3">
  @if (entry.team?.club?.slug) {
- <a [routerLink]="['/clubs', entry.team!.club!.slug!]" class="text-color hover:text-primary no-underline">{{ entry.team?.name }}</a>
+ <a [routerLink]="['/clubs', entry.team!.club!.slug!]" class="text-color hover:text-primary no-underline">{{ entry.team.name }}</a>
  } @else {
  <span>{{ entry.team?.name }}</span>
  }

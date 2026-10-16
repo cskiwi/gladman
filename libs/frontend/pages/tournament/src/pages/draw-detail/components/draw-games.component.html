@@ -80,12 +80,12 @@
                 @if (team1.length > 0) {
                   @for (m of team1; track m.id) {
                     <span class="inline-flex items-center gap-1.5 text-sm max-w-full text-color font-semibold">
-                      @if (m.gamePlayer?.id) {
+                      @if (m.gamePlayer.id) {
                         <a class="text-inherit no-underline hover:text-primary truncate" [routerLink]="['/players', m.gamePlayer.id]">
                           {{ m.gamePlayer.fullName || 'Unknown' }}
                         </a>
                       } @else {
-                        <span class="truncate">{{ m.gamePlayer?.fullName || 'Unknown' }}</span>
+                        <span class="truncate">{{ m.gamePlayer.fullName || 'Unknown' }}</span>
                       }
                       @if (getPlayerLevel(m, game.gameType); as lvl) {
                         <app-tier-badge [level]="lvl" size="sm" />
@@ -109,12 +109,12 @@
                 @if (team2.length > 0) {
                   @for (m of team2; track m.id) {
                     <span class="inline-flex items-center gap-1.5 text-sm max-w-full text-color font-semibold">
-                      @if (m.gamePlayer?.id) {
+                      @if (m.gamePlayer.id) {
                         <a class="text-inherit no-underline hover:text-primary truncate" [routerLink]="['/players', m.gamePlayer.id]">
                           {{ m.gamePlayer.fullName || 'Unknown' }}
                         </a>
                       } @else {
-                        <span class="truncate">{{ m.gamePlayer?.fullName || 'Unknown' }}</span>
+                        <span class="truncate">{{ m.gamePlayer.fullName || 'Unknown' }}</span>
                       }
                       @if (getPlayerLevel(m, game.gameType); as lvl) {
                         <app-tier-badge [level]="lvl" size="sm" />
@@ -140,7 +140,7 @@
                     [class.font-semibold]="team1Won"
                     [class.text-muted-color]="!team1Won"
                   >
-                    @if (m.gamePlayer?.id) {
+                    @if (m.gamePlayer.id) {
                       <a
                         class="text-inherit no-underline hover:text-primary truncate"
                         [routerLink]="['/players', m.gamePlayer.id]"
@@ -148,7 +148,7 @@
                         {{ m.gamePlayer.fullName || 'Unknown' }}
                       </a>
                     } @else {
-                      <span class="truncate">{{ m.gamePlayer?.fullName || 'Unknown' }}</span>
+                      <span class="truncate">{{ m.gamePlayer.fullName || 'Unknown' }}</span>
                     }
                     @if (getPlayerLevel(m, game.gameType); as lvl) {
                       <app-tier-badge [level]="lvl" size="sm" />
@@ -168,7 +168,7 @@
                     [class.font-semibold]="team2Won"
                     [class.text-muted-color]="!team2Won"
                   >
-                    @if (m.gamePlayer?.id) {
+                    @if (m.gamePlayer.id) {
                       <a
                         class="text-inherit no-underline hover:text-primary truncate"
                         [routerLink]="['/players', m.gamePlayer.id]"
@@ -176,7 +176,7 @@
                         {{ m.gamePlayer.fullName || 'Unknown' }}
                       </a>
                     } @else {
-                      <span class="truncate">{{ m.gamePlayer?.fullName || 'Unknown' }}</span>
+                      <span class="truncate">{{ m.gamePlayer.fullName || 'Unknown' }}</span>
                     }
                     @if (getPlayerLevel(m, game.gameType); as lvl) {
                       <app-tier-badge [level]="lvl" size="sm" />

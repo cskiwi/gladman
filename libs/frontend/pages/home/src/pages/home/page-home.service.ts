@@ -40,7 +40,7 @@ export class HomeService {
               }
             `,
             variables: {
-              id: params.rankingSystemId,
+              rankingSystemId: params.rankingSystemId,
             },
             context: { signal: abortSignal },
           }),
@@ -57,7 +57,7 @@ export class HomeService {
   });
 
   // Public selectors
-  rankingSystem = computed(() => this.rankingSystemResource.value());
+  rankingSystem = computed(() => this.rankingSystemResource.hasValue() ? this.rankingSystemResource.value() : null);
   loading = computed(() => this.rankingSystemResource.isLoading());
   error = computed(() => this.rankingSystemResource.error()?.message || null);
   loadedAndError = computed(() => {

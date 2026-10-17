@@ -127,6 +127,10 @@ utilities resolve to PrimeNG theme tokens; verify their actual light and dark re
 
 ### Reuse where it earns its place
 
+- Refresh only components with confirmed current application consumers. Record a mounted route or real consumer
+  before selecting work; exports, tests, previews, and unused call chains do not establish application use.
+- Leave unused components unchanged. Record them as deferred in the backlog; do not add consumers just to justify
+  redesign work or visual verification.
 - Search the [existing shared components][components] before introducing a new abstraction.
 - Prefer direct PrimeNG usage for UI primitives; avoid one-to-one wrappers around every PrimeNG component.
 - Extract a reusable component when multiple real consumers share meaningful structure, behavior, or domain semantics.
@@ -179,6 +183,13 @@ rather than maintaining conflicting copies in individual briefs.
 - `Blocked`: record the specific blocker and the work needed to unblock it.
 - `Review`: implementation and checks are complete, but visual or functional review is pending.
 - `Done`: acceptance checks and review have passed, with evidence linked.
+
+The user may explicitly approve completion with disclosed verification limits. Record that approval and the accepted
+limits, retaining unchecked criteria; acceptance is not evidence that an unperformed check passed.
+
+User approval of a DR item also authorizes committing its scoped implementation, tests, and repository handoff without
+a separate commit request. Use a Conventional Commit, preserve unrelated work, and include workflow changes only when
+requested. Do not commit an unapproved item or push without a separate request.
 
 When an area is too large, retain its original ID as a parent and add child IDs such as `DR-021a`. Track children
 independently and finish the parent only when all required children are done. Keep completed rows and briefs as history.

@@ -5,6 +5,20 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006e is Done with explicit user approval on 2026-10-17: mounted player recent-games initial/loading-more
+placeholders now share a local native
+PrimeNG Card/Skeleton template with a named busy section. Six initial/three appended placeholders and existing
+services, filters, and pagination are preserved. All 26 focused tests and library lint/build pass (32 existing
+lint warnings). Both states fit at 390px/1280px in light/dark, without overflow or focusable placeholders.
+Dark desktop pixels were inspected; light/mobile capture returned the stale dark desktop frame, so that pixel
+check remains unverified. Settled player SSR returns HTTP 200 with ten games; loading SSR and exhaustive hydration
+were not verified. Browser fixtures are removed and the original player route, dark class, 1487x1252 viewport,
+and ten games restored. The user requested "Approve and commit" with these limits disclosed; acceptance is not
+a light/mobile pixel pass. The workflow now limits redesign to components with real application consumers and
+treats DR approval as authorization for a scoped commit. Exact next action: scope the mounted player upcoming-game
+card presentation as a separate DR-006 child, confirm its consumer, and preserve data/actions/pagination. Do not
+start it here. Keep DR-006 open. See the [brief](work-items/DR-006e-recent-game-loading.md).
+
 DR-006d is Done with explicit user approval on 2026-10-17: the mounted player recent-games header is a semantic
 heading and labels its native compact,
 wrapping SelectButton. Native item templating with semantic text fixes measured inactive light-label contrast
@@ -14,8 +28,8 @@ options. Programmatic native clicks preserve filtering, but browser key attempts
 the screenshot showed unrelated chrome. No keyboard-selection or visual/pixel pass is claimed.
 The user requested "Approved, commit" after these limits were disclosed; approval accepts completion with those
 limits, not an unperformed keyboard or pixel pass. See the [brief](work-items/DR-006d-recent-game-filters.md).
-Keep DR-006 open and prioritize used components. Exact next action: scope the mounted recent-games initial and
-loading-more skeleton presentation as a separate child, preserving services and pagination. Do not start it here.
+Keep DR-006 open and prioritize used components. Its proposed mounted initial/loading-more skeleton follow-up
+is now DR-006e above, preserving services and pagination; DR-006d's completed scope remains unchanged.
 
 DR-006c is Done with explicit user approval on 2026-10-17 after revision: the user rejected won/lost Tags
 widening the points column and requested
@@ -132,6 +146,7 @@ and linked from their registry rows.
 | [DR-006b](work-items/DR-006b-recent-game-scores.md) | Mounted player recent-game set scores | Done |
 | [DR-006c](work-items/DR-006c-recent-game-results.md) | Mounted player recent-game result indicator | Done |
 | [DR-006d](work-items/DR-006d-recent-game-filters.md) | Mounted player recent-game heading and filters | Done |
+| [DR-006e](work-items/DR-006e-recent-game-loading.md) | Mounted player recent-game loading presentation | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |

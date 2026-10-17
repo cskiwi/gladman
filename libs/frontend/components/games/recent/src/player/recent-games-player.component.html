@@ -224,36 +224,30 @@
 
     <!-- Loading more skeletons -->
     @if (loadingMore()) {
-      @for (i of [1, 2, 3]; track i) {
-        <div class="g-card">
-          <div class="g-card__band"></div>
-          <div class="p-4 space-y-2">
-            <p-skeleton width="12rem" height="0.875rem" />
-            <p-skeleton width="16rem" height="1rem" />
-            <p-skeleton width="8rem" height="0.75rem" />
-          </div>
-          <div class="g-card__right">
-            <p-skeleton width="1.5rem" height="2rem" />
-            <p-skeleton width="1.5rem" height="2rem" />
-          </div>
-        </div>
-      }
+      <ng-container [ngTemplateOutlet]="loadingGames" [ngTemplateOutletContext]="{ $implicit: [1, 2, 3] }" />
     }
   } @else {
     <!-- Initial loading skeletons -->
-    @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-      <div class="g-card">
-        <div class="g-card__band"></div>
-        <div class="p-4 space-y-2">
-          <p-skeleton width="12rem" height="0.875rem" />
-          <p-skeleton width="16rem" height="1rem" />
-          <p-skeleton width="8rem" height="0.75rem" />
-        </div>
-        <div class="g-card__right">
-          <p-skeleton width="1.5rem" height="2rem" />
-          <p-skeleton width="1.5rem" height="2rem" />
-        </div>
-      </div>
-    }
+    <ng-container [ngTemplateOutlet]="loadingGames" [ngTemplateOutletContext]="{ $implicit: [1, 2, 3, 4, 5, 6] }" />
   }
+
+  <ng-template #loadingGames let-placeholders>
+    <section aria-busy="true" [attr.aria-labelledby]="recentGamesTitle.id" class="flex flex-col gap-3 mt-3">
+      @for (placeholder of placeholders; track placeholder) {
+        <p-card [pt]="{ root: { class: 'border border-surface' } }">
+          <div class="flex items-center gap-4">
+            <div class="flex flex-col gap-2 min-w-0 flex-1">
+              <p-skeleton width="60%" height="0.875rem" />
+              <p-skeleton width="100%" height="1rem" />
+              <p-skeleton width="40%" height="0.75rem" />
+            </div>
+            <div class="flex gap-2 shrink-0">
+              <p-skeleton width="1.5rem" height="2rem" />
+              <p-skeleton width="1.5rem" height="2rem" />
+            </div>
+          </div>
+        </p-card>
+      }
+    </section>
+  </ng-template>
 </div>

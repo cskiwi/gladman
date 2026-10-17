@@ -17,15 +17,19 @@ describe('RecentGamesPlayerComponent indicators', () => {
   let fixture: ComponentFixture<RecentGamesPlayerComponent>;
   const games = signal<Game[]>([]);
   const loading = signal(false);
+  const loadingMore = signal(false);
+  const hasMore = signal(false);
 
   beforeEach(async () => {
     games.set([]);
     loading.set(false);
+    loadingMore.set(false);
+    hasMore.set(false);
     (PlayerRecentGamesService as jest.Mock).mockImplementation(() => ({
       games,
       loading,
-      loadingMore: signal(false),
-      hasMore: signal(false),
+      loadingMore,
+      hasMore,
       counts: signal({ total: 1, singles: 1, doubles: 0, mixed: 0 }),
       setPageSize: jest.fn(),
       filter: { patchValue: jest.fn() },
@@ -41,6 +45,45 @@ describe('RecentGamesPlayerComponent indicators', () => {
 
     fixture = TestBed.createComponent(RecentGamesPlayerComponent);
     fixture.componentRef.setInput('for', 'current-player');
+  });
+
+  it('renders six native initial placeholders in a named busy section, then removes them', () => {
+    loading.set(true);
+    fixture.detectChanges();
+
+    const section = fixture.nativeElement.querySelector('section[aria-busy="true"]');
+    expect(section.getAttribute('aria-labelledby')).toBe(fixture.nativeElement.querySelector('h2').id);
+    expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(6);
+    expect(section.querySelectorAll('p-skeleton[aria-hidden="true"]')).toHaveLength(30);
+    expect(section.querySelectorAll('a, button, [tabindex]')).toHaveLength(0);
+    expect(fixture.nativeElement.querySelector('.g-card')).toBeNull();
+    expect(fixture.nativeElement.textContent).not.toContain('all.game.recent.noGamesFound');
+
+    loading.set(false);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[aria-busy]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('p-skeleton')).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('all.game.recent.noGamesFound');
+  });
+
+  it('appends three native placeholders while retaining games and the loading button', () => {
+    games.set([{ id: 'single', gameType: 'S' } as Game]);
+    loadingMore.set(true);
+    hasMore.set(true);
+    fixture.detectChanges();
+
+    const section = fixture.nativeElement.querySelector('section[aria-busy="true"]');
+    expect(section.querySelectorAll('p-card')).toHaveLength(3);
+    expect(section.querySelectorAll('p-skeleton[aria-hidden="true"]')).toHaveLength(15);
+    expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(1);
+    expect(fixture.nativeElement.querySelector('p-button button').disabled).toBe(true);
+    expect(fixture.debugElement.query(By.directive(SelectButton))).not.toBeNull();
+
+    loadingMore.set(false);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[aria-busy]')).toBeNull();
+    expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(1);
+    expect(fixture.nativeElement.querySelector('p-button button').disabled).toBe(false);
   });
 
   it('labels the compact native filter group with the translated section heading', () => {

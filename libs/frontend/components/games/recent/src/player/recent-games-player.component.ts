@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, afterRenderEffect, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 
+import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TierBadgeComponent } from '@app/frontend-components/tier-badge';
@@ -16,6 +17,7 @@ import { PlayerRecentGamesService } from './recent-games-player.service';
 @Component({
   selector: 'app-recent-games-player',
   imports: [
+    NgTemplateOutlet,
     DayjsFormatPipe,
     RouterLink,
     FormsModule,

@@ -5,6 +5,17 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006b is Done with explicit user approval on 2026-10-17: mounted player recent-game set scores use success/secondary Tags,
+with a check icon for winning scores. Nine focused tests, shared-library lint (32 existing warnings), and build pass.
+All 50 score Tags fit at 390px/1280px in light/dark; contrast is at least 4.57:1. Keyboard link focus and HTTP 200
+SSR with 50 scores/25 winner icons pass. The dark desktop screenshot was inspected; the light/mobile capture was
+stale, so no light/mobile pixel pass is claimed. Cards, result bands, filters, points, and services are unchanged.
+Original route, dark class, 1487x1252 viewport, and ten articles are restored after a read-only reload; no fixtures,
+persistence changes, or backend mutations. The user approved completion and requested a commit with the screenshot
+limit disclosed; this is not an unperformed light/mobile pixel pass. Next action: scope the mounted player's
+result-band presentation as a separate DR-006 child, keeping the parent open and preferring production consumers
+over unused match-row. Do not start that next slice here. See the [brief](work-items/DR-006b-recent-game-scores.md).
+
 DR-006a is Done with explicit user approval on 2026-10-17 and the screenshot limit retained:
 the mounted player recent-games ranking-point chips now use native PrimeNG success/danger Tags.
 Four focused tests, shared-library lint (32 existing warnings), and shared-library build pass. Positive and temporary
@@ -13,9 +24,8 @@ keyboard link focus remains visible. Dark desktop Tag pixels were inspected, but
 unrelated content, so no light/mobile pixel pass is claimed. The temporary method fixture is removed; real points,
 the original player route, dark class, and 1487x1252 viewport are restored. No persistence or backend mutation occurred.
 The user approved completion with the light/mobile screenshot coverage limit disclosed, not a light/mobile pixel pass.
-Next action: scope the next DR-006 child around the remaining mounted player recent-game presentation;
-prefer existing production consumers over unused match-row. Scores, cards, filters, and services were not migrated.
-Keep DR-006 open; do not start that next implementation slice in this invocation.
+The subsequent score slice is now DR-006b above; the completed point scope is unchanged.
+Keep DR-006 open. Cards, filters, and services remain unmigrated.
 See the [brief](work-items/DR-006a-recent-game-points.md) for exact commands and coverage limits.
 
 DR-005e (shared ranking progress) is Done with explicit user visual approval on 2026-10-17. The user preferred the
@@ -92,6 +102,7 @@ and linked from their registry rows.
 | [DR-005e](work-items/DR-005e-ranking-progress.md) | Shared ranking progress              | Done |
 | DR-006                      | Shared games, matches, and brackets             | Backlog |
 | [DR-006a](work-items/DR-006a-recent-game-points.md) | Mounted player recent-game point indicators | Done |
+| [DR-006b](work-items/DR-006b-recent-game-scores.md) | Mounted player recent-game set scores | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |
@@ -167,6 +178,10 @@ and linked from their registry rows.
   [brief](work-items/DR-005e-ranking-progress.md). Its calculations and relative links remain unchanged.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
   Keep score readability, result meaning, and responsive draw behavior.
+- DR-006b discovery: resizing the mounted player list to mobile refreshes its page size; returning to desktop
+  retained five articles for at least ten seconds. Reloading at desktop restores ten. Investigate breakpoint/page-size
+  behavior separately before claiming responsive pagination coverage; score-only tests do not validate that workflow.
+  Services, breakpoint logic, and pagination were unchanged in DR-006b.
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,
   disabled/loading states, and operation feedback. The [club-search area][club-search] currently contains service logic,
   not a visual component to redesign.

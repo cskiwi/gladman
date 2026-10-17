@@ -168,61 +168,21 @@
 
         <!-- Right row: scores -->
         <div class="col-start-3 lg:col-start-4 row-start-2 flex items-center justify-end gap-3 px-5 pb-4 pt-2 border-l border-surface">
-          <div class="flex gap-2.5 t-mono tabular-nums font-semibold leading-tight">
-            <!-- Own sets -->
-            <div class="flex flex-col items-end gap-0.5 min-w-[1.25rem]">
-              @if (isSetPlayed(game?.set1Team1, game?.set1Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set1Team1, game?.set1Team2) === myCol"
-                  [class.text-muted-color]="getSetWinner(game?.set1Team1, game?.set1Team2) !== myCol"
-                  >{{ myCol === 2 ? game?.set1Team2 : game?.set1Team1 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set2Team1, game?.set2Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set2Team1, game?.set2Team2) === myCol"
-                  [class.text-muted-color]="getSetWinner(game?.set2Team1, game?.set2Team2) !== myCol"
-                  >{{ myCol === 2 ? game?.set2Team2 : game?.set2Team1 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set3Team1, game?.set3Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set3Team1, game?.set3Team2) === myCol"
-                  [class.text-muted-color]="getSetWinner(game?.set3Team1, game?.set3Team2) !== myCol"
-                  >{{ myCol === 2 ? game?.set3Team2 : game?.set3Team1 }}</span
-                >
-              }
-            </div>
-            <!-- Opponent sets -->
-            <div class="flex flex-col items-end gap-0.5 min-w-[1.25rem]">
-              @if (isSetPlayed(game?.set1Team1, game?.set1Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set1Team1, game?.set1Team2) === oppCol"
-                  [class.text-muted-color]="getSetWinner(game?.set1Team1, game?.set1Team2) !== oppCol"
-                  >{{ myCol === 2 ? game?.set1Team1 : game?.set1Team2 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set2Team1, game?.set2Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set2Team1, game?.set2Team2) === oppCol"
-                  [class.text-muted-color]="getSetWinner(game?.set2Team1, game?.set2Team2) !== oppCol"
-                  >{{ myCol === 2 ? game?.set2Team1 : game?.set2Team2 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set3Team1, game?.set3Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set3Team1, game?.set3Team2) === oppCol"
-                  [class.text-muted-color]="getSetWinner(game?.set3Team1, game?.set3Team2) !== oppCol"
-                  >{{ myCol === 2 ? game?.set3Team1 : game?.set3Team2 }}</span
-                >
-              }
-            </div>
+          <div class="flex gap-2 tabular-nums">
+            @for (side of [myCol, oppCol]; track side) {
+              <div class="flex flex-col items-end gap-1">
+                @for (set of [[game?.set1Team1, game?.set1Team2], [game?.set2Team1, game?.set2Team2], [game?.set3Team1, game?.set3Team2]]; track $index) {
+                  @if (isSetPlayed(set[0], set[1])) {
+                    @let setWon = getSetWinner(set[0], set[1]) === side;
+                    <p-tag
+                      [value]="(side === 2 ? set[1] : set[0])?.toString()"
+                      [severity]="setWon ? 'success' : 'secondary'"
+                      [icon]="setWon ? 'pi pi-check' : undefined"
+                    />
+                  }
+                }
+              </div>
+            }
           </div>
         </div>
       </article>

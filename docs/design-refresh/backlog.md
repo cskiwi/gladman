@@ -5,6 +5,18 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-005d (shared stat-card) is Done at the user's explicit request on 2026-10-17 with coverage limits retained.
+Native PrimeNG Card/Tag replace its custom surface, oversized typography,
+and legacy delta colors; inputs and projected content are preserved, and local SCSS is removed. Eight focused
+tests and shared-library lint/build pass. Synthetic layout checks pass at 390px/1280px in light/dark; text
+contrast is at least 4.57:1. One dark desktop fixture screenshot captured correctly, but the mobile/light
+attempt returned that stale dark desktop frame. No mobile/light pixel pass or mounted-consumer/SSR pass is claimed.
+The user approved completion with those limits, not a successful mobile/light pixel or routed/SSR pass; see the
+[brief](work-items/DR-005d-stat-card.md). The temporary fixture is removed; the original player route, dark class,
+and 1487x1252 viewport are restored. Keep DR-005 open.
+Next action: scope ranking progress as the next DR-005 candidate, inspect its consumers, and create its brief
+before implementation. No other child has started in this invocation.
+
 DR-005c (shared sparkline) is Done at the user's explicit request on 2026-10-17 after the verification limits
 were presented. The component now uses SVG geometry, native semantic result colors with
 semantic fallbacks, and a translated accessible description; its local SCSS was removed. Six focused tests and
@@ -13,15 +25,14 @@ without Tag variables. There is no production caller, so routed/SSR verification
 attempts captured the underlying page instead of the temporary preview; no visual/pixel pass is claimed.
 The user accepted completion with those limits retained; see the [brief](work-items/DR-005c-sparkline.md).
 The fixture is removed, the player route and dark class are unchanged, and the viewport is 1487x1252.
-Next action: scope one remaining DR-005 child, with stat-card the next candidate; inspect its consumers and
-create its brief before implementation. No next child has started. DR-005 remains open.
+The next child is now scoped as DR-005d below. DR-005 remains open.
 
 DR-005b is Done at the user's explicit request on 2026-10-17 after the verification limits were presented.
 The shared form sequence uses native success/danger tags; four focused tests and shared-library lint/build pass.
 There is no production caller, so no routed/SSR visual pass is claimed. The light screenshot/computed-color
 discrepancy remains a documented coverage limit, not a resolved technical finding. The temporary preview was removed
 and the original player route, dark theme, and 1487x1252 viewport restored.
-The next child, DR-005c, is now scoped below. DR-005 remains open for its other components;
+DR-005c and DR-005d are also complete. DR-005 remains open for its other components;
 shared stat-card also has no production caller.
 
 DR-001 through DR-005a are Done. The shared badge's theme-aware styling, focused tests, lint/build, player-route
@@ -51,6 +62,7 @@ and linked from their registry rows.
 | [DR-005a][tier-badge-work-item] | Shared tier badge                            | Done    |
 | [DR-005b][form-sequence-work-item] | Shared form sequence                      | Done    |
 | [DR-005c](work-items/DR-005c-sparkline.md) | Shared sparkline                       | Done    |
+| [DR-005d](work-items/DR-005d-stat-card.md) | Shared stat-card                       | Done    |
 | DR-006                      | Shared games, matches, and brackets             | Backlog |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
@@ -105,19 +117,24 @@ and linked from their registry rows.
 - DR-005: [stat card][stat-card], [tier badge][tier-badge], [form sequence][form-sequence], [sparkline][sparkline], and
   [ranking progress][ranking-progress]. Keep useful domain meaning; prefer native severity and semantic text over a
   custom color system.
-- DR-005a scopes only the shared tier badge and its five consumer groups; the other DR-005 patterns remain unscoped.
+- DR-005a scopes only the shared tier badge and its five consumer groups; other patterns have separate child scopes.
   Keep the global rank-gradient token because other components still consume it. Its `match-row` call site has no
   production import; the inspected club/team and tournament poule routes did not render level badges with available
   safe data. See the [DR-005a brief][tier-badge-work-item] for exact test, browser, and review status.
 - DR-005b scopes the form sequence only. It has no production caller; focused Angular tests cover its rendering
   contract and isolated native-tag markup supplies limited theme/viewport evidence. See its
   [brief][form-sequence-work-item] for user approval and the retained screenshot limitation. Stat-card
-  and ranking progress remain unscoped; sparkline is scoped as DR-005c. Do not add a consumer solely for verification.
+  is scoped as DR-005d; ranking progress remains unscoped. Do not add a consumer solely for verification.
 - DR-005c retains the miniature chart using SVG attributes and PrimeNG semantic tokens, with primary/text fallbacks
   when Tag-specific variables have not been injected. Its accessible title exposes translated outcomes as well as
   numeric heights. Six tests and isolated four-case geometry/contrast checks pass; no production caller exists.
   Screenshot capture did not include the fixture; the user accepted completion with that limit recorded in its
   [brief](work-items/DR-005c-sparkline.md). Global legacy result tokens remain for unmigrated consumers.
+- DR-005d scopes stat-card only: native Card/Tag, wrapping text, directional icons, and preserved projection/inputs.
+  Eight focused tests and shared-library lint/build pass. It has no production caller; isolated markup checks are
+  not mounted Angular/SSR checks. The user explicitly approved completion with the stale mobile/light screenshot
+  and consumer coverage limits retained in its [brief](work-items/DR-005d-stat-card.md).
+  Ranking progress remains unscoped; do not add a verification-only caller.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
   Keep score readability, result meaning, and responsive draw behavior.
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,

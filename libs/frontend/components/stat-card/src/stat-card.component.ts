@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Card } from 'primeng/card';
+import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'app-stat-card',
+  imports: [Card, Tag],
   templateUrl: './stat-card.component.html',
-  styleUrl: './stat-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatCardComponent {

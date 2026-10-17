@@ -5,6 +5,15 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-005b is Done at the user's explicit request on 2026-10-17 after the verification limits were presented.
+The shared form sequence uses native success/danger tags; four focused tests and shared-library lint/build pass.
+There is no production caller, so no routed/SSR visual pass is claimed. The light screenshot/computed-color
+discrepancy remains a documented coverage limit, not a resolved technical finding. The temporary preview was removed
+and the original player route, dark theme, and 1487x1252 viewport restored.
+Next action: scope one remaining DR-005 child, with sparkline the next candidate; inspect its consumers and create
+its brief before implementation. No next child has been started.
+DR-005 remains open for its other unscoped components; shared stat-card also has no production caller.
+
 DR-001 through DR-005a are Done. The shared badge's theme-aware styling, focused tests, lint/build, player-route
 contrast checks, and user-requested completion are recorded in its brief. Some consumer routes lack populated badge
 data or a production caller; those remain documented coverage limits, not verified visual passes. Do not reopen
@@ -30,6 +39,7 @@ and linked from their registry rows.
 | [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb           | Done    |
 | DR-005                      | Shared ranking, statistics, and status patterns | Backlog |
 | [DR-005a][tier-badge-work-item] | Shared tier badge                            | Done    |
+| [DR-005b][form-sequence-work-item] | Shared form sequence                      | Done    |
 | DR-006                      | Shared games, matches, and brackets             | Backlog |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
@@ -88,6 +98,10 @@ and linked from their registry rows.
   Keep the global rank-gradient token because other components still consume it. Its `match-row` call site has no
   production import; the inspected club/team and tournament poule routes did not render level badges with available
   safe data. See the [DR-005a brief][tier-badge-work-item] for exact test, browser, and review status.
+- DR-005b scopes the form sequence only. It has no production caller; focused Angular tests cover its rendering
+  contract and isolated native-tag markup supplies limited theme/viewport evidence. See its
+  [brief][form-sequence-work-item] for user approval and the retained screenshot limitation. Stat-card, sparkline,
+  and ranking progress remain unscoped; do not add a consumer solely for design verification.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
   Keep score readability, result meaning, and responsive draw behavior.
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,
@@ -271,6 +285,7 @@ silently expanding the active task.
 [shell-work-item]: work-items/DR-003-app-shell.md
 [heading-work-item]: work-items/DR-004-shared-headings.md
 [tier-badge-work-item]: work-items/DR-005a-tier-badge.md
+[form-sequence-work-item]: work-items/DR-005b-form-sequence.md
 [preset]: ../../apps/app/config/theme.preset.ts
 [app-config]: ../../apps/app/config/app.config.ts
 [styles]: ../../apps/app/src/styles.scss

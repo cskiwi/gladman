@@ -1,10 +1,26 @@
-<div class="flex items-end gap-0.5 h-6">
-  @for (bar of bars(); track $index) {
-    <div
-      class="g-spark-bar w-[3px] rounded-sm"
-      [class.g-spark-bar--win]="bar.status === 'win'"
-      [class.g-spark-bar--loss]="bar.status === 'loss'"
-      [style.height.%]="bar.height"
-    ></div>
-  }
-</div>
+@if (bars().length) {
+  <svg
+    role="img"
+    height="24"
+    [attr.width]="bars().length * 5 - 2"
+    [attr.viewBox]="'0 0 ' + (bars().length * 5 - 2) + ' 24'"
+    preserveAspectRatio="none"
+    class="max-w-full"
+  >
+    <title>{{ description() }}</title>
+    @for (bar of bars(); track $index) {
+      <rect
+        [attr.x]="$index * 5"
+        [attr.y]="24 - bar.height * 0.24"
+        width="3"
+        [attr.height]="bar.height * 0.24"
+        rx="1"
+        [attr.fill]="bar.status === 'win'
+          ? 'var(--p-tag-success-color, var(--p-primary-color))'
+          : bar.status === 'loss'
+            ? 'var(--p-tag-danger-color, var(--p-text-color))'
+            : 'var(--p-text-muted-color)'"
+      />
+    }
+  </svg>
+}

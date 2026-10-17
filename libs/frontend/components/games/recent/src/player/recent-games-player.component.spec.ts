@@ -6,6 +6,7 @@ import { IS_MOBILE } from '@app/frontend-utils';
 import { Game } from '@app/models';
 import { TranslateModule } from '@ngx-translate/core';
 import { Card } from 'primeng/card';
+import { SelectButton } from 'primeng/selectbutton';
 import { Tag } from 'primeng/tag';
 import { RecentGamesPlayerComponent } from './recent-games-player.component';
 import { PlayerRecentGamesService } from './recent-games-player.service';
@@ -15,12 +16,14 @@ jest.mock('./recent-games-player.service');
 describe('RecentGamesPlayerComponent indicators', () => {
   let fixture: ComponentFixture<RecentGamesPlayerComponent>;
   const games = signal<Game[]>([]);
+  const loading = signal(false);
 
   beforeEach(async () => {
     games.set([]);
+    loading.set(false);
     (PlayerRecentGamesService as jest.Mock).mockImplementation(() => ({
       games,
-      loading: signal(false),
+      loading,
       loadingMore: signal(false),
       hasMore: signal(false),
       counts: signal({ total: 1, singles: 1, doubles: 0, mixed: 0 }),
@@ -38,6 +41,69 @@ describe('RecentGamesPlayerComponent indicators', () => {
 
     fixture = TestBed.createComponent(RecentGamesPlayerComponent);
     fixture.componentRef.setInput('for', 'current-player');
+  });
+
+  it('labels the compact native filter group with the translated section heading', () => {
+    games.set([{ id: 'single', gameType: 'S' } as Game]);
+    fixture.detectChanges();
+
+    const heading = fixture.nativeElement.querySelector('h2');
+    const filter = fixture.debugElement.query(By.directive(SelectButton));
+    expect(heading.textContent.trim()).toBe('all.game.recent.title');
+    expect(filter.nativeElement.getAttribute('aria-labelledby')).toBe(heading.id);
+    expect(filter.componentInstance.size()).toBe('small');
+    expect(filter.componentInstance.allowEmpty()).toBe(false);
+    expect(filter.componentInstance.options().map((option: { label: string }) => option.label)).toEqual([
+      'all.game.filter.all · 1', 'all.game.filter.singles · 1',
+      'all.game.filter.doubles · 0', 'all.game.filter.mixed · 0',
+    ]);
+  });
+
+  it.each(['all', 'S', 'D', 'MX'])('preserves native %s selection and local filtering', async (type) => {
+    games.set(['S', 'D', 'MX'].map(gameType => ({ id: gameType, gameType }) as Game));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const index = ['all', 'S', 'D', 'MX'].indexOf(type);
+    const buttons = fixture.nativeElement.querySelectorAll('p-selectbutton [role="button"]');
+    buttons[index].click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.selectedGameType()).toBe(type);
+    expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(type === 'all' ? 3 : 1);
+    expect(buttons[index].getAttribute('aria-pressed')).toBe('true');
+    buttons[index].click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.selectedGameType()).toBe(type);
+  });
+
+  it('retains filters and the empty message when a discipline has no loaded games', () => {
+    games.set([{ id: 'single', gameType: 'S' } as Game]);
+    fixture.componentInstance.selectGameType('MX');
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.directive(SelectButton))).not.toBeNull();
+    expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(0);
+    expect(fixture.nativeElement.textContent).toContain('all.game.recent.noGamesFound');
+  });
+
+  it.each([true, false])('keeps the heading but hides filters with loading=%s and no games', (isLoading) => {
+    loading.set(isLoading);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('h2')).not.toBeNull();
+    expect(fixture.debugElement.query(By.directive(SelectButton))).toBeNull();
+  });
+
+  it('hides filters while previously loaded games are refreshing', () => {
+    games.set([{ id: 'single', gameType: 'S' } as Game]);
+    loading.set(true);
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.directive(SelectButton))).toBeNull();
   });
 
   it.each([

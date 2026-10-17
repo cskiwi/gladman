@@ -1,23 +1,25 @@
 <div>
-  <!-- Section header -->
-  <div class="flex items-center justify-between mb-4">
-    <div class="flex items-center gap-3">
-      <span class="t-eyebrow">{{ 'all.game.recent.title' | translate }}</span>
-    </div>
-  </div>
+  <h2 #recentGamesTitle [id]="'recent-games-title-' + for()" class="text-base font-semibold text-color mb-3">
+    {{ 'all.game.recent.title' | translate }}
+  </h2>
 
   <!-- Filter: All / Singles / Doubles / Mixed -->
   @if (!loading() && games().length > 0) {
-    <div class="flex items-center flex-wrap gap-2 mb-4">
       <p-selectbutton
+        class="mb-4 flex-wrap"
+        size="small"
+        [ariaLabelledBy]="recentGamesTitle.id"
         [options]="filterOptions()"
         [ngModel]="selectedGameType()"
         (ngModelChange)="selectGameType($event)"
         optionLabel="label"
         optionValue="value"
         [allowEmpty]="false"
-      />
-    </div>
+      >
+        <ng-template #item let-option>
+          <span class="text-color">{{ option.label }}</span>
+        </ng-template>
+      </p-selectbutton>
   }
 
   @if (!loading()) {

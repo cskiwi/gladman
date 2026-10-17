@@ -5,6 +5,18 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006d is Done with explicit user approval on 2026-10-17: the mounted player recent-games header is a semantic
+heading and labels its native compact,
+wrapping SelectButton. Native item templating with semantic text fixes measured inactive light-label contrast
+from 4.46:1 to 18.2:1, without global changes. All 24 focused tests, library lint (32 existing warnings), and
+library build pass. Final 390px/1280px light/dark geometry and contrast pass; SSR returns 200 with all four named
+options. Programmatic native clicks preserve filtering, but browser key attempts did not activate options, and
+the screenshot showed unrelated chrome. No keyboard-selection or visual/pixel pass is claimed.
+The user requested "Approved, commit" after these limits were disclosed; approval accepts completion with those
+limits, not an unperformed keyboard or pixel pass. See the [brief](work-items/DR-006d-recent-game-filters.md).
+Keep DR-006 open and prioritize used components. Exact next action: scope the mounted recent-games initial and
+loading-more skeleton presentation as a separate child, preserving services and pagination. Do not start it here.
+
 DR-006c is Done with explicit user approval on 2026-10-17 after revision: the user rejected won/lost Tags
 widening the points column and requested
 distinct light card surfaces. Results now use compact metadata icons with translated hidden text/title;
@@ -119,6 +131,7 @@ and linked from their registry rows.
 | [DR-006a](work-items/DR-006a-recent-game-points.md) | Mounted player recent-game point indicators | Done |
 | [DR-006b](work-items/DR-006b-recent-game-scores.md) | Mounted player recent-game set scores | Done |
 | [DR-006c](work-items/DR-006c-recent-game-results.md) | Mounted player recent-game result indicator | Done |
+| [DR-006d](work-items/DR-006d-recent-game-filters.md) | Mounted player recent-game heading and filters | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |
@@ -201,6 +214,9 @@ and linked from their registry rows.
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,
   disabled/loading states, and operation feedback. The [club-search area][club-search] currently contains service logic,
   not a visual component to redesign.
+- DR-006d discovery for later shared-control work: native inactive SelectButton labels measured 4.46:1 in light
+  mode against this preset's canvas. DR-006d fixes only its own label template with semantic `text-color`.
+  Check other mounted SelectButton consumers when scoped; do not alter global theme tokens implicitly.
 - Each shared component can become its own child task. Inventory consumers before changing an API or appearance.
 - Preserve legitimate visualization behavior; do not replace charts or brackets with a table solely to avoid styling.
 

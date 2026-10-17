@@ -21,37 +21,37 @@ Each row is a trackable area, not a promise to migrate that entire area in one c
 areas into child items before starting them. Briefs are created on demand from the [template](work-item-template.md)
 and linked from their registry rows.
 
-| ID                 | Area                                            | Status  |
-| ------------------ | ----------------------------------------------- | ------- |
-| [DR-001][baseline] | Theme and design baseline                       | Done    |
-| [DR-002][pilot]    | Home page pilot                                 | Done    |
-| [DR-003][shell-work-item] | App shell, navigation, search, and layouts | Done |
-| [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb | Done |
-| DR-005             | Shared ranking, statistics, and status patterns | Backlog |
-| DR-006             | Shared games, matches, and brackets             | Backlog |
-| DR-007             | Shared form controls and sync feedback          | Backlog |
-| DR-008             | Player detail                                   | Backlog |
-| DR-009             | Player head-to-head                             | Backlog |
-| DR-010             | Player ranking breakdown                        | Backlog |
-| DR-011             | Player editing                                  | Backlog |
-| DR-012             | Club detail and browsing tabs                   | Backlog |
-| DR-013             | Club team builder                               | Backlog |
-| DR-014             | Club team detail                                | Backlog |
-| DR-015             | Competition detail and sub-event presentation   | Backlog |
-| DR-016             | Competition draws                               | Backlog |
-| DR-017             | Competition assembly                            | Backlog |
-| DR-018             | Competition editing                             | Backlog |
-| DR-019             | Tournament detail and club tournaments          | Backlog |
-| DR-020             | Tournament creation and editing                 | Backlog |
-| DR-021             | Tournament enrollment workflows                 | Backlog |
-| DR-022             | Tournament draw detail                          | Backlog |
-| DR-023             | Tournament admin: enrollments and check-in      | Backlog |
-| DR-024             | Tournament admin: draws and scheduling          | Backlog |
-| DR-025             | Tournament admin: settings and phase controls   | Backlog |
-| DR-026             | Tournament live displays and kiosk              | Backlog |
-| DR-027             | Global admin and search indexing                | Backlog |
-| DR-028             | Sync administration and team matching           | Backlog |
-| DR-029             | Legacy styling retirement and final regression  | Backlog |
+| ID                          | Area                                            | Status  |
+| --------------------------- | ----------------------------------------------- | ------- |
+| [DR-001][baseline]          | Theme and design baseline                       | Done    |
+| [DR-002][pilot]             | Home page pilot                                 | Done    |
+| [DR-003][shell-work-item]   | App shell, navigation, search, and layouts      | Done    |
+| [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb           | Done    |
+| DR-005                      | Shared ranking, statistics, and status patterns | Backlog |
+| DR-006                      | Shared games, matches, and brackets             | Backlog |
+| DR-007                      | Shared form controls and sync feedback          | Backlog |
+| DR-008                      | Player detail                                   | Backlog |
+| DR-009                      | Player head-to-head                             | Backlog |
+| DR-010                      | Player ranking breakdown                        | Backlog |
+| DR-011                      | Player editing                                  | Backlog |
+| DR-012                      | Club detail and browsing tabs                   | Backlog |
+| DR-013                      | Club team builder                               | Backlog |
+| DR-014                      | Club team detail                                | Backlog |
+| DR-015                      | Competition detail and sub-event presentation   | Backlog |
+| DR-016                      | Competition draws                               | Backlog |
+| DR-017                      | Competition assembly                            | Backlog |
+| DR-018                      | Competition editing                             | Backlog |
+| DR-019                      | Tournament detail and club tournaments          | Backlog |
+| DR-020                      | Tournament creation and editing                 | Backlog |
+| DR-021                      | Tournament enrollment workflows                 | Backlog |
+| DR-022                      | Tournament draw detail                          | Backlog |
+| DR-023                      | Tournament admin: enrollments and check-in      | Backlog |
+| DR-024                      | Tournament admin: draws and scheduling          | Backlog |
+| DR-025                      | Tournament admin: settings and phase controls   | Backlog |
+| DR-026                      | Tournament live displays and kiosk              | Backlog |
+| DR-027                      | Global admin and search indexing                | Backlog |
+| DR-028                      | Sync administration and team matching           | Backlog |
+| DR-029                      | Legacy styling retirement and final regression  | Backlog |
 
 ## App and shared surfaces
 

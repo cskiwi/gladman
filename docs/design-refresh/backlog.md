@@ -5,6 +5,22 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-005e (shared ranking progress) is Done with explicit user visual approval on 2026-10-17. The user preferred the
+revised header layout, then requested bigger level numbers with no underline. Native large outlined secondary
+PrimeNG button-links now show the level beside its discipline; point tags share a row and the visible points label
+is removed. Actual level font is 15.75px instead of the interim 12.25px, with a 42px-high native target and no underline.
+Its two existing consumers are the homepage and player detail route. Calculations, relative destinations, inputs,
+translations, and projection are preserved; no tier-badge or global theme changes were made.
+Nine focused component tests, 12 homepage tests, shared-library lint, and shared-library build pass. Both mounted
+consumers pass 390px/1280px light/dark geometry and contrast checks; homepage authenticated presentation uses a
+disposable browser-memory fixture, not a real login. Player SSR HTML returns 200 with all three links and six tags.
+Final dark desktop and light mobile screenshots were inspected; no authenticated SSR or exhaustive hydration pass
+is claimed. The fixture is removed and the original player route, dark class, and 1487x1252 viewport are restored.
+Next action: scope a DR-006 child without reopening completed DR-005 children.
+See the [brief](work-items/DR-005e-ranking-progress.md) for evidence and limits. Scope that DR-006 child
+for the player route's already-mounted recent-games presentation, inventorying its consumers before implementation.
+Keep DR-005 open; do not begin that next slice in this invocation.
+
 DR-005d (shared stat-card) is Done at the user's explicit request on 2026-10-17 with coverage limits retained.
 Native PrimeNG Card/Tag replace its custom surface, oversized typography,
 and legacy delta colors; inputs and projected content are preserved, and local SCSS is removed. Eight focused
@@ -14,8 +30,7 @@ attempt returned that stale dark desktop frame. No mobile/light pixel pass or mo
 The user approved completion with those limits, not a successful mobile/light pixel or routed/SSR pass; see the
 [brief](work-items/DR-005d-stat-card.md). The temporary fixture is removed; the original player route, dark class,
 and 1487x1252 viewport are restored. Keep DR-005 open.
-Next action: scope ranking progress as the next DR-005 candidate, inspect its consumers, and create its brief
-before implementation. No other child has started in this invocation.
+Ranking progress is now scoped separately as DR-005e; the completed stat-card scope remains unchanged.
 
 DR-005c (shared sparkline) is Done at the user's explicit request on 2026-10-17 after the verification limits
 were presented. The component now uses SVG geometry, native semantic result colors with
@@ -63,6 +78,7 @@ and linked from their registry rows.
 | [DR-005b][form-sequence-work-item] | Shared form sequence                      | Done    |
 | [DR-005c](work-items/DR-005c-sparkline.md) | Shared sparkline                       | Done    |
 | [DR-005d](work-items/DR-005d-stat-card.md) | Shared stat-card                       | Done    |
+| [DR-005e](work-items/DR-005e-ranking-progress.md) | Shared ranking progress              | Done |
 | DR-006                      | Shared games, matches, and brackets             | Backlog |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
@@ -124,7 +140,7 @@ and linked from their registry rows.
 - DR-005b scopes the form sequence only. It has no production caller; focused Angular tests cover its rendering
   contract and isolated native-tag markup supplies limited theme/viewport evidence. See its
   [brief][form-sequence-work-item] for user approval and the retained screenshot limitation. Stat-card
-  is scoped as DR-005d; ranking progress remains unscoped. Do not add a consumer solely for verification.
+  is complete as DR-005d; ranking progress is scoped as DR-005e. Do not add a consumer solely for verification.
 - DR-005c retains the miniature chart using SVG attributes and PrimeNG semantic tokens, with primary/text fallbacks
   when Tag-specific variables have not been injected. Its accessible title exposes translated outcomes as well as
   numeric heights. Six tests and isolated four-case geometry/contrast checks pass; no production caller exists.
@@ -134,7 +150,9 @@ and linked from their registry rows.
   Eight focused tests and shared-library lint/build pass. It has no production caller; isolated markup checks are
   not mounted Angular/SSR checks. The user explicitly approved completion with the stale mobile/light screenshot
   and consumer coverage limits retained in its [brief](work-items/DR-005d-stat-card.md).
-  Ranking progress remains unscoped; do not add a verification-only caller.
+  Ranking progress is scoped separately as DR-005e with two existing production consumers.
+- DR-005e replaces ranking-progress decoration only, with focused and mounted-consumer evidence in its
+  [brief](work-items/DR-005e-ranking-progress.md). Its calculations and relative links remain unchanged.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
   Keep score readability, result meaning, and responsive draw behavior.
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,
@@ -157,6 +175,10 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   name. Add a localized label and verify keyboard/menu behavior in the player slice; no shared API change is needed.
 - The user explicitly deferred the logged-in homepage ranking header to player/profile work; leave it unchanged in
   DR-004's table-surface correction.
+- DR-005e discovery for DR-008/DR-002 follow-up: the shared ranking strip's existing relative links resolve to
+  `/ranking/single`, `/ranking/double`, and `/ranking/mix` on the homepage. Root routes do not mount `ranking`;
+  player-detail links resolve correctly and keyboard activation passes. Scope a separate destination fix using the
+  player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-010: `/players/:playerId/ranking/:type`. Include period selection, game lists, and ranking explanations.
 - DR-011: `/players/:playerId/edit`. Include profile, claims, and ranking forms; split by form when needed.
@@ -276,6 +298,10 @@ routes][admin-routes] and [sync routes][sync-routes].
 - Record any remaining justified styling exceptions and remaining unmigrated surfaces.
 
 ## Progress, evidence, and discoveries
+
+DR-005e navigation also logged `InvalidStateError: Transition was aborted because of invalid state` while routes
+still loaded. No global transition change was made; investigate only if reproducible in the relevant route/shell
+follow-up. This is not a claimed clean-console or exhaustive hydration pass.
 
 DR-001 established the baseline; DR-002 and DR-003 implemented the homepage and shell. [DR-004][heading-work-item]
 records the approved shared layout, native homepage table composition, and explicitly requested neutral canvas.

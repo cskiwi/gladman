@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 import { IS_MOBILE } from '@app/frontend-utils';
 import { Game } from '@app/models';
 import { TranslateModule } from '@ngx-translate/core';
+import { Card } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { RecentGamesPlayerComponent } from './recent-games-player.component';
 import { PlayerRecentGamesService } from './recent-games-player.service';
@@ -99,6 +100,31 @@ describe('RecentGamesPlayerComponent indicators', () => {
       expect(tag.componentInstance.icon()).toBe(expectedWinners[index] ? 'pi pi-check' : undefined);
       expect(tag.nativeElement.hasAttribute('tabindex')).toBe(false);
     });
+  });
+
+  it.each([
+    [1, 1, 'all.competition.won', 'pi-check'],
+    [2, 2, 'all.competition.won', 'pi-check'],
+    [1, 2, 'all.competition.lost', 'pi-times'],
+    [2, 1, 'all.competition.lost', 'pi-times'],
+    [1, undefined, 'all.common.unknown', 'pi-question'],
+    [undefined, 1, 'all.common.unknown', 'pi-question'],
+  ])('renders the player-relative result for team %s and winner %s', (team, winner, label, icon) => {
+    games.set([{
+      id: 'game', gameType: 'S', winner,
+      gamePlayerMemberships: team ? [{ team, gamePlayer: { id: 'current-player' } }] : [],
+    } as Game]);
+    fixture.detectChanges();
+
+    const result = fixture.debugElement.query(By.css('article [data-game-result]'));
+    expect(result).not.toBeNull();
+    expect(result.nativeElement.querySelector('i').classList.contains(icon)).toBe(true);
+    expect(result.nativeElement.querySelector('i').getAttribute('aria-hidden')).toBe('true');
+    expect(result.nativeElement.textContent.trim()).toBe(label);
+    expect(result.nativeElement.getAttribute('title')).toBe(label);
+    expect(result.nativeElement.hasAttribute('tabindex')).toBe(false);
+    expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(1);
+    expect(fixture.debugElement.queryAll(By.css('article > div:nth-last-child(2) p-tag'))).toHaveLength(0);
   });
 
   it.each([

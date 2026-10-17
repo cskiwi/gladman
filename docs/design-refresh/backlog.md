@@ -5,6 +5,21 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006c is Done with explicit user approval on 2026-10-17 after revision: the user rejected won/lost Tags
+widening the points column and requested
+distinct light card surfaces. Results now use compact metadata icons with translated hidden text/title;
+the points column contains only points again. Native PrimeNG Cards are white against the light canvas and
+distinct from the dark canvas; no global theme changes. Fifteen focused tests, final library lint
+(32 existing warnings), and build pass. Icons/scores fit at 390px/1280px in light/dark; result-icon contrast is
+4.87:1 light / 6.65:1 dark. Keyboard focus and HTTP 200 SSR with ten Cards/result labels pass.
+Dark desktop pixels show the compact `+452` column correctly. Light/mobile screenshot capture remains stale;
+no light/mobile pixel pass or mounted unknown-state pass is claimed. The original player route, dark class,
+1487x1252 viewport, and ten games are restored; no fixtures, persistence, or backend mutations.
+The user explicitly requested "Approve & commit" with those verification limits disclosed; this is not a
+light/mobile pixel pass. Next candidate: scope the mounted player recent-games header/filter presentation as
+a separate DR-006 child, preserving filtering, services, and pagination. Do not start that next slice here.
+See the [brief](work-items/DR-006c-recent-game-results.md); keep DR-006 open and prioritize used components.
+
 DR-006b is Done with explicit user approval on 2026-10-17: mounted player recent-game set scores use success/secondary Tags,
 with a check icon for winning scores. Nine focused tests, shared-library lint (32 existing warnings), and build pass.
 All 50 score Tags fit at 390px/1280px in light/dark; contrast is at least 4.57:1. Keyboard link focus and HTTP 200
@@ -12,9 +27,9 @@ SSR with 50 scores/25 winner icons pass. The dark desktop screenshot was inspect
 stale, so no light/mobile pixel pass is claimed. Cards, result bands, filters, points, and services are unchanged.
 Original route, dark class, 1487x1252 viewport, and ten articles are restored after a read-only reload; no fixtures,
 persistence changes, or backend mutations. The user approved completion and requested a commit with the screenshot
-limit disclosed; this is not an unperformed light/mobile pixel pass. Next action: scope the mounted player's
-result-band presentation as a separate DR-006 child, keeping the parent open and preferring production consumers
-over unused match-row. Do not start that next slice here. See the [brief](work-items/DR-006b-recent-game-scores.md).
+limit disclosed; this is not an unperformed light/mobile pixel pass. Its result-band follow-up is now DR-006c above,
+keeping the parent open and preferring production consumers over unused match-row.
+See the [brief](work-items/DR-006b-recent-game-scores.md).
 
 DR-006a is Done with explicit user approval on 2026-10-17 and the screenshot limit retained:
 the mounted player recent-games ranking-point chips now use native PrimeNG success/danger Tags.
@@ -103,6 +118,7 @@ and linked from their registry rows.
 | DR-006                      | Shared games, matches, and brackets             | Backlog |
 | [DR-006a](work-items/DR-006a-recent-game-points.md) | Mounted player recent-game point indicators | Done |
 | [DR-006b](work-items/DR-006b-recent-game-scores.md) | Mounted player recent-game set scores | Done |
+| [DR-006c](work-items/DR-006c-recent-game-results.md) | Mounted player recent-game result indicator | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |

@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, afterRenderEffect, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 
-import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TierBadgeComponent } from '@app/frontend-components/tier-badge';
@@ -9,6 +8,7 @@ import { DayjsFormatPipe } from '@app/frontend-utils/dayjs/fmt';
 import { Game } from '@app/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
@@ -16,12 +16,12 @@ import { PlayerRecentGamesService } from './recent-games-player.service';
 @Component({
   selector: 'app-recent-games-player',
   imports: [
-    NgClass,
     DayjsFormatPipe,
     RouterLink,
     FormsModule,
     SkeletonModule,
     ButtonModule,
+    CardModule,
     SelectButtonModule,
     TagModule,
     TranslateModule,

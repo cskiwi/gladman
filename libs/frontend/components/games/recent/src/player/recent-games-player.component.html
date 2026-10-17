@@ -23,25 +23,15 @@
   @if (!loading()) {
     @for (game of filteredGames(); track game.id) {
       @let won = didCurrentPlayerWin(game);
+      @let resultLabel = (won === true ? 'all.competition.won' : won === false ? 'all.competition.lost' : 'all.common.unknown') | translate;
       @let ownTeam = getCurrentPlayerTeam(game);
       @let ownPoints = getCurrentPlayerPoints(game);
       @let isComp = isCompetitionGame(game);
       @let myCol = ownTeam === 2 ? 2 : 1;
       @let oppCol = ownTeam === 2 ? 1 : 2;
 
-      <article
-        class="grid grid-cols-[4px_1fr_auto] lg:grid-cols-[4px_auto_1fr_auto] grid-rows-[auto_1fr] bg-emphasis border border-surface rounded-border overflow-hidden mt-3 first:mt-0"
-      >
-        <!-- Color band -->
-        <div
-          class="row-span-2"
-          [ngClass]="{
-            'bg-[var(--g-win)]': won === true,
-            'bg-[var(--g-loss)]': won === false,
-            'bg-primary': won === null,
-          }"
-        ></div>
-
+      <p-card class="block mt-3 first:mt-0" [pt]="{ root: { class: 'border border-surface overflow-hidden' }, body: { class: 'p-0' } }">
+      <article class="grid grid-cols-[1fr_auto] lg:grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr]">
         <!-- Date column (hidden on mobile) -->
         <div class="row-span-2 hidden lg:flex flex-col items-center justify-center gap-1 px-4 py-4 pl-5 border-r border-surface min-w-[72px]">
           <span class="t-eyebrow">{{ game?.playedAt | dayjsFormat: 'ddd' }}</span>
@@ -50,9 +40,19 @@
         </div>
 
         <!-- Top row: meta + teams (right-aligned) -->
-        <div class="col-start-2 lg:col-start-3 row-start-1 flex items-center justify-between gap-3 min-w-0 px-5 pt-3">
+        <div class="col-start-1 lg:col-start-2 row-start-1 flex items-center justify-between gap-3 min-w-0 px-5 pt-3">
           <!-- Meta: tag + competition/tournament name -->
           <div class="flex items-center gap-2 text-xs text-muted-color min-w-0">
+            <span data-game-result class="inline-flex shrink-0" [attr.title]="resultLabel">
+              <i
+                class="pi"
+                [class.pi-check]="won === true"
+                [class.pi-times]="won === false"
+                [class.pi-question]="won === null"
+                aria-hidden="true"
+              ></i>
+              <span class="sr-only">{{ resultLabel }}</span>
+            </span>
             @if (game?.tournamentDraw?.name) {
               <a
                 class="no-underline shrink-0"
@@ -119,7 +119,7 @@
         </div>
 
         <!-- Pairs row -->
-        <div class="col-start-2 lg:col-start-3 row-start-2 grid grid-cols-[1fr_auto_1fr] gap-2.5 items-center px-5 pb-4 pt-2">
+        <div class="col-start-1 lg:col-start-2 row-start-2 grid grid-cols-[1fr_auto_1fr] gap-2.5 items-center px-5 pb-4 pt-2">
           <div class="flex flex-col gap-0.5 min-w-0">
             @for (m of getTeamMembers(game, myCol); track m?.id) {
               <span
@@ -156,8 +156,8 @@
           </div>
         </div>
 
-        <!-- Right top: points chip + extends border next to teams -->
-        <div class="col-start-3 lg:col-start-4 row-start-1 flex items-center justify-center px-5 pt-3 border-l border-surface">
+        <!-- Right top: points -->
+        <div class="col-start-2 lg:col-start-3 row-start-1 flex items-center justify-center px-5 pt-3 border-l border-surface">
           @if (ownPoints !== 0) {
             <p-tag
               [value]="formatPoints(ownPoints)"
@@ -167,7 +167,7 @@
         </div>
 
         <!-- Right row: scores -->
-        <div class="col-start-3 lg:col-start-4 row-start-2 flex items-center justify-end gap-3 px-5 pb-4 pt-2 border-l border-surface">
+        <div class="col-start-2 lg:col-start-3 row-start-2 flex items-center justify-end gap-3 px-5 pb-4 pt-2 border-l border-surface">
           <div class="flex gap-2 tabular-nums">
             @for (side of [myCol, oppCol]; track side) {
               <div class="flex flex-col items-end gap-1">
@@ -186,6 +186,7 @@
           </div>
         </div>
       </article>
+      </p-card>
     } @empty {
       <div class="p-8 text-center">
         <i class="pi pi-search text-4xl text-muted-color mb-4"></i>

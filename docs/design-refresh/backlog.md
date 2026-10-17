@@ -5,12 +5,13 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-002 and DR-003 are Done. Next candidate: DR-005, shared ranking, statistics, and status patterns. Scope one
-component-level slice, inventory its consumers, and create its brief before promoting it to Ready; do not begin it in
-this handoff. Do not reopen completed homepage or shell work.
-DR-004's long-name, keyboard, theme/viewport, SSR, and user-review evidence is reconciled in DR-002. Browser fixtures
-were removed and the real homepage/original selection/dark preference restored. No dependency or backend data changed.
-DR-004 is done, DR-003 remains in review, and DR-008/DR-014/DR-022/DR-006 discoveries remain deferred.
+DR-001 through DR-005a are Done. The shared badge's theme-aware styling, focused tests, lint/build, player-route
+contrast checks, and user-requested completion are recorded in its brief. Some consumer routes lack populated badge
+data or a production caller; those remain documented coverage limits, not verified visual passes. Do not reopen
+completed work or expand DR-005 without separately scoping the next child.
+DR-004's long-name, keyboard, theme/viewport, SSR, and user-review evidence is reconciled in its brief. Browser
+fixtures were removed and the homepage's original selection and dark preference restored; no dependency or backend
+data changed. DR-008/DR-014/DR-022/DR-006 discoveries remain deferred.
 
 Follow the [design rules and workflow](README.md) for every item. This file is the authoritative status registry. Keep
 it updated in the same change as the implementation.
@@ -28,6 +29,7 @@ and linked from their registry rows.
 | [DR-003][shell-work-item]   | App shell, navigation, search, and layouts      | Done    |
 | [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb           | Done    |
 | DR-005                      | Shared ranking, statistics, and status patterns | Backlog |
+| [DR-005a][tier-badge-work-item] | Shared tier badge                            | Done    |
 | DR-006                      | Shared games, matches, and brackets             | Backlog |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
@@ -82,6 +84,10 @@ and linked from their registry rows.
 - DR-005: [stat card][stat-card], [tier badge][tier-badge], [form sequence][form-sequence], [sparkline][sparkline], and
   [ranking progress][ranking-progress]. Keep useful domain meaning; prefer native severity and semantic text over a
   custom color system.
+- DR-005a scopes only the shared tier badge and its five consumer groups; the other DR-005 patterns remain unscoped.
+  Keep the global rank-gradient token because other components still consume it. Its `match-row` call site has no
+  production import; the inspected club/team and tournament poule routes did not render level badges with available
+  safe data. See the [DR-005a brief][tier-badge-work-item] for exact test, browser, and review status.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
   Keep score readability, result meaning, and responsive draw behavior.
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,
@@ -264,6 +270,7 @@ silently expanding the active task.
 [pilot]: work-items/DR-002-home-pilot.md
 [shell-work-item]: work-items/DR-003-app-shell.md
 [heading-work-item]: work-items/DR-004-shared-headings.md
+[tier-badge-work-item]: work-items/DR-005a-tier-badge.md
 [preset]: ../../apps/app/config/theme.preset.ts
 [app-config]: ../../apps/app/config/app.config.ts
 [styles]: ../../apps/app/src/styles.scss

@@ -5,6 +5,19 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006a is Done with explicit user approval on 2026-10-17 and the screenshot limit retained:
+the mounted player recent-games ranking-point chips now use native PrimeNG success/danger Tags.
+Four focused tests, shared-library lint (32 existing warnings), and shared-library build pass. Positive and temporary
+negative values fit at 390px/1280px in light/dark, with contrast at least 4.57:1. SSR returns 200 with the native Tag;
+keyboard link focus remains visible. Dark desktop Tag pixels were inspected, but the light/mobile screenshot captured
+unrelated content, so no light/mobile pixel pass is claimed. The temporary method fixture is removed; real points,
+the original player route, dark class, and 1487x1252 viewport are restored. No persistence or backend mutation occurred.
+The user approved completion with the light/mobile screenshot coverage limit disclosed, not a light/mobile pixel pass.
+Next action: scope the next DR-006 child around the remaining mounted player recent-game presentation;
+prefer existing production consumers over unused match-row. Scores, cards, filters, and services were not migrated.
+Keep DR-006 open; do not start that next implementation slice in this invocation.
+See the [brief](work-items/DR-006a-recent-game-points.md) for exact commands and coverage limits.
+
 DR-005e (shared ranking progress) is Done with explicit user visual approval on 2026-10-17. The user preferred the
 revised header layout, then requested bigger level numbers with no underline. Native large outlined secondary
 PrimeNG button-links now show the level beside its discipline; point tags share a row and the visible points label
@@ -16,10 +29,8 @@ consumers pass 390px/1280px light/dark geometry and contrast checks; homepage au
 disposable browser-memory fixture, not a real login. Player SSR HTML returns 200 with all three links and six tags.
 Final dark desktop and light mobile screenshots were inspected; no authenticated SSR or exhaustive hydration pass
 is claimed. The fixture is removed and the original player route, dark class, and 1487x1252 viewport are restored.
-Next action: scope a DR-006 child without reopening completed DR-005 children.
-See the [brief](work-items/DR-005e-ranking-progress.md) for evidence and limits. Scope that DR-006 child
-for the player route's already-mounted recent-games presentation, inventorying its consumers before implementation.
-Keep DR-005 open; do not begin that next slice in this invocation.
+The next component slice is now scoped as DR-006a above, without reopening completed DR-005 children.
+See the [brief](work-items/DR-005e-ranking-progress.md) for evidence and limits. Keep DR-005 open.
 
 DR-005d (shared stat-card) is Done at the user's explicit request on 2026-10-17 with coverage limits retained.
 Native PrimeNG Card/Tag replace its custom surface, oversized typography,
@@ -80,6 +91,7 @@ and linked from their registry rows.
 | [DR-005d](work-items/DR-005d-stat-card.md) | Shared stat-card                       | Done    |
 | [DR-005e](work-items/DR-005e-ranking-progress.md) | Shared ranking progress              | Done |
 | DR-006                      | Shared games, matches, and brackets             | Backlog |
+| [DR-006a](work-items/DR-006a-recent-game-points.md) | Mounted player recent-game point indicators | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |

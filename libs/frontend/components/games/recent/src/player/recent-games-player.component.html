@@ -159,14 +159,10 @@
         <!-- Right top: points chip + extends border next to teams -->
         <div class="col-start-3 lg:col-start-4 row-start-1 flex items-center justify-center px-5 pt-3 border-l border-surface">
           @if (ownPoints !== 0) {
-            <span
-              class="t-mono text-[0.8125rem] font-bold tabular-nums px-2 py-0.5 rounded-sm"
-              [ngClass]="{
-                'text-[var(--g-win)] bg-[var(--g-win-muted)]': ownPoints > 0,
-                'text-[var(--g-loss)] bg-[var(--g-loss-muted)]': ownPoints < 0,
-              }"
-              >{{ formatPoints(ownPoints) }}</span
-            >
+            <p-tag
+              [value]="formatPoints(ownPoints)"
+              [severity]="ownPoints > 0 ? 'success' : 'danger'"
+            />
           }
         </div>
 

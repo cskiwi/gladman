@@ -3,6 +3,60 @@
 @let res = result();
 @let isUpcoming = variant() === 'upcoming';
 
+@if (isUpcoming) {
+  <p-card class="block border border-surface overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+    <article class="grid grid-cols-1 sm:grid-cols-[72px_minmax(0,1fr)]">
+      <div class="flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r">
+        <time
+          class="flex items-baseline gap-2 sm:flex-col sm:items-center sm:gap-1"
+          [attr.datetime]="enc.date | date: 'yyyy-MM-dd'"
+          [attr.aria-label]="enc.date | date: 'fullDate'"
+        >
+          <span class="text-xs font-bold uppercase tracking-widest text-muted-color">{{ enc.date | date: 'EEE' }}</span>
+          <span class="font-bold text-2xl leading-none text-color">{{ enc.date | date: 'dd' }}</span>
+          <span class="font-mono text-sm text-muted-color">{{ enc.date | date: 'MMM' }}</span>
+        </time>
+        <time class="font-mono text-xs text-muted-color" [attr.datetime]="enc.date | date: 'HH:mm'">
+          {{ enc.date | date: 'HH:mm' }}
+        </time>
+      </div>
+      <div class="flex min-w-0 flex-col justify-center gap-2 px-4 py-4 sm:px-5">
+        <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm font-semibold text-color">
+          @if (enc.homeTeam?.club?.slug) {
+            <a
+              [routerLink]="['/clubs', enc.homeTeam.club.slug, 'teams', enc.homeTeam.id]"
+              class="min-w-0 break-words text-color no-underline hover:text-primary"
+            >
+              {{ enc.homeTeam.name || enc.homeTeam.abbreviation }}
+            </a>
+          } @else {
+            <span class="min-w-0 break-words">{{ enc.homeTeam?.name || enc.homeTeam?.abbreviation || 'TBD' }}</span>
+          }
+          <span class="font-normal text-muted-color">vs</span>
+          @if (enc.awayTeam?.club?.slug) {
+            <a
+              [routerLink]="['/clubs', enc.awayTeam.club.slug, 'teams', enc.awayTeam.id]"
+              class="min-w-0 break-words text-color no-underline hover:text-primary"
+            >
+              {{ enc.awayTeam.name || enc.awayTeam.abbreviation }}
+            </a>
+          } @else {
+            <span class="min-w-0 break-words">{{ enc.awayTeam?.name || enc.awayTeam?.abbreviation || 'TBD' }}</span>
+          }
+        </div>
+        @if (p) {
+          <span class="font-mono text-xs text-muted-color">
+            @if (p === 'home') {
+              {{ 'all.game.location.home' | translate }}
+            } @else {
+              {{ 'all.game.location.away' | translate }}
+            }
+          </span>
+        }
+      </div>
+    </article>
+  </p-card>
+} @else {
 <div class="enc-card rounded-xl overflow-hidden transition-colors bg-emphasis">
   <!-- Collapsed row -->
   <div
@@ -30,7 +84,6 @@
         {{ enc.date | date: (isUpcoming ? 'HH:mm' : 'MMM') }}
       </span>
     </div>
-
     <!-- Info column -->
     <div class="flex flex-col gap-1 min-w-0 px-5 py-4">
       <div class="font-['Space_Grotesk',sans-serif] font-semibold text-lg text-color truncate">
@@ -248,3 +301,4 @@
     </div>
   }
 </div>
+}

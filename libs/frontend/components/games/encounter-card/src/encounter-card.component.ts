@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { CompetitionEncounter, Game } from '@app/models';
 import { TranslateModule } from '@ngx-translate/core';
 import { SkeletonModule } from 'primeng/skeleton';
+import { CardModule } from 'primeng/card';
 import { TierBadgeComponent } from '@app/frontend-components/tier-badge';
 
 type Variant = 'played' | 'upcoming';
@@ -11,7 +12,7 @@ type Variant = 'played' | 'upcoming';
 @Component({
   selector: 'app-encounter-card',
   standalone: true,
-  imports: [DatePipe, TranslateModule, SkeletonModule, RouterModule, TierBadgeComponent],
+  imports: [DatePipe, TranslateModule, SkeletonModule, CardModule, RouterModule, TierBadgeComponent],
   templateUrl: './encounter-card.component.html',
   styles: [
     `

@@ -5,6 +5,20 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006h is Done with explicit user approval on 2026-10-21: shared upcoming encounter cards use native
+PrimeNG Cards and the compact date-rail
+direction from the user's `/players/axelle-de-prest` reference. Team links, home/away context, time, and
+non-expandable behavior are preserved; dates include the month and an accessible full-date label. Played
+cards, expanded games, services, and global styling are unchanged. Seven focused tests, component lint/build,
+and app build pass (31 existing lint warnings). Team detail (11 cards), club schedule (37), and competition
+draw (60) fit at 390px/1280px in light/dark without card overflow; all four team-card screenshots were inspected.
+Muted-text contrast is 4.87:1 light / 6.65:1 dark. Keyboard team-link navigation and settled SSR pass.
+Alternate locales, exhaustive hydration, and screen-reader output remain unverified.
+The user approved completion and its scoped commit with these verification limits disclosed; unchecked
+criteria are not claimed as passed. Next action: inspect and scope a separate mounted played-encounter-card
+child under DR-006, preserving expansion and services. Do not start it in this invocation.
+See the [brief](work-items/DR-006h-upcoming-encounter-cards.md). Parent DR-006 stays open. No push is authorized.
+
 DR-006g is Done with explicit user approval on 2026-10-21: the mounted player upcoming heading is semantic, loading
 placeholders use native Cards/Skeletons, the settled empty state uses a native Card, populated dates group
 weekday/day/month separately from the hour, and the assembly action uses native `button pButton` with its translated
@@ -176,6 +190,7 @@ and linked from their registry rows.
 | [DR-006e](work-items/DR-006e-recent-game-loading.md) | Mounted player recent-game loading presentation | Done |
 | [DR-006f](work-items/DR-006f-upcoming-game-cards.md) | Mounted player populated upcoming-game cards | Done   |
 | [DR-006g](work-items/DR-006g-upcoming-game-states.md) | Mounted player upcoming-games presentation | Done |
+| [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md) | Shared upcoming encounter cards | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |
@@ -261,10 +276,11 @@ and linked from their registry rows.
 - DR-006d discovery for later shared-control work: native inactive SelectButton labels measured 4.46:1 in light
   mode against this preset's canvas. DR-006d fixes only its own label template with semantic `text-color`.
   Check other mounted SelectButton consumers when scoped; do not alter global theme tokens implicitly.
-- DR-006f preserves the existing upcoming-list header, loading placeholders, and empty state. Scope those as a
-  separate mounted child after DR-006f review; legacy `.upcoming*` SCSS is still required by the loading branch.
-  Existing RouterLink on `p-button` also exposes a focusable host before its inner button; investigate native
-  anchor/button-link semantics separately rather than silently changing the assembly navigation contract here.
+- DR-006g completed the player upcoming-list header/loading/empty follow-up, removed legacy `.upcoming*` SCSS,
+  and replaced the assembly `p-button` host with native `button pButton`. Its approved scope stays complete.
+- DR-006h refreshes only the shared encounter card's upcoming variant across club schedule, team detail, and
+  competition draw. Played encounter surfaces and expanded game rows remain candidates for separate DR-006
+  children after DR-006h approval; do not fold their palette/keyboard/legacy styling work into this slice.
 - Each shared component can become its own child task. Inventory consumers before changing an API or appearance.
 - Preserve legitimate visualization behavior; do not replace charts or brackets with a table solely to avoid styling.
 

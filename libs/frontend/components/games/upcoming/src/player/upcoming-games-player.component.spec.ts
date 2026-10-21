@@ -24,7 +24,7 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     drawCompetition: {
       id: 'draw', name: 'Division A',
       competitionSubEvent: {
-        id: 'sub', competitionEvent: { id: 'event', season: 2026 },
+        id: 'sub', competitionEvent: { id: 'event', name: 'Competition season', season: 2026 },
       },
     },
   } as CompetitionEncounter;
@@ -51,7 +51,7 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     expect(fixture.nativeElement.querySelector('.upcoming')).toBeNull();
     expect(fixture.nativeElement.querySelector('[style]')).toBeNull();
     const text = fixture.nativeElement.textContent;
-    ['Home team', 'Away team', 'Division A', '17', 'Oct', '19:00'].forEach(value => {
+    ['Home team', 'Away team', 'Division A', 'Competition season', '17', 'Oct', '19:00'].forEach(value => {
       expect(text).toContain(value);
     });
     const dateAndTime = fixture.nativeElement.querySelectorAll('p-card time');
@@ -69,6 +69,18 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     expect(button.nativeElement.tagName).toBe('BUTTON');
     expect(button.nativeElement.textContent).toContain('all.competition.team-assembly.title');
     expect(button.nativeElement.querySelector('.pi-list')).not.toBeNull();
+  });
+
+  it('uses the same compact card, date rail and content grid as recent games', () => {
+    games.set([encounter]);
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector('p-card');
+    expect(card.classList.contains('border-surface')).toBe(true);
+    expect(card.querySelector('.p-card-body').classList.contains('p-0!')).toBe(true);
+    expect(card.querySelector('article').classList.contains('sm:grid-cols-[72px_minmax(0,1fr)_auto]')).toBe(true);
+    expect(card.querySelector('time').getAttribute('datetime')).toBe('2026-10-17');
+    expect(card.querySelector('time').classList.contains('hidden')).toBe(false);
   });
 
   it('shows three games initially and reveals all games when requested', () => {

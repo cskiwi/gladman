@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 
 import { IS_MOBILE } from '@app/frontend-utils';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -11,10 +11,13 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
+import { CardModule } from 'primeng/card';
+
+const INITIAL_VISIBLE_GAMES = 3;
 
 @Component({
   selector: 'app-upcoming-games-player',
-  imports: [DayjsFormatPipe, SkeletonModule, TranslateModule, RouterModule, ButtonModule, ChipModule, TagModule],
+  imports: [DayjsFormatPipe, SkeletonModule, TranslateModule, RouterModule, ButtonModule, ChipModule, TagModule, CardModule],
   templateUrl: './upcoming-games-player.component.html',
   styleUrls: ['./upcoming-games-player.component.scss'],
 })
@@ -25,6 +28,12 @@ export class UpcomingGamesPlayerComponent {
   private playerGamesService = new PlayerUpcommingGamesService();
 
   games = this.playerGamesService.games;
+  expanded = signal(false);
+  visibleGames = computed(() => {
+    const games = this.games();
+    return this.expanded() ? games : games.slice(0, INITIAL_VISIBLE_GAMES);
+  });
+  hasMoreGames = computed(() => this.games().length > INITIAL_VISIBLE_GAMES);
   loading = this.playerGamesService.loading;
   private teamIds = this.playerGamesService.teamIds;
 
@@ -36,8 +45,13 @@ export class UpcomingGamesPlayerComponent {
         id = id[0];
       }
 
+      this.expanded.set(false);
       this.playerGamesService.filter.patchValue({ playerId: id });
     });
+  }
+
+  toggleGames(): void {
+    this.expanded.update((expanded) => !expanded);
   }
 
   getAssemblyParams(game: CompetitionEncounter): Record<string, string> {

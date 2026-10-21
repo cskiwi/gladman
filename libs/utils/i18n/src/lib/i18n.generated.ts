@@ -200,6 +200,7 @@ export type I18nTranslations = {
             "unknown": string;
             "viewAll": string;
             "viewDetails": string;
+            "viewLess": string;
             "yes": string;
         };
         "competition": {

@@ -5,6 +5,21 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006f is in Review: populated player upcoming-game cards now use native PrimeNG Cards and a wrapping layout.
+Three upcoming cards are shown initially; outlined View All/View Less buttons expand and collapse the fetched
+encounters. Dates, draw/team
+destinations, home/away labels, and assembly query parameters are preserved. Seven focused component tests and
+library lint/build pass (32 existing lint warnings); the broader library test target still reports six unrelated
+bracket-tree failures. The earlier layout check showed ten real encounters fitting at
+390px/1280px in light/dark; ordinary card text contrast is at least 4.87:1 and keyboard focus is visible.
+The earlier settled SSR check returned ten Cards before the three-card initial display limit was added.
+Dark desktop and light mobile screenshots were inspected. Loading/empty markup, header, services, and global
+styling are unchanged; real assembly navigation, alternate locales, and exhaustive hydration were not verified.
+The original player route, dark class, and 1487x1252 viewport are restored; no fixtures or backend mutations.
+Exact next action: obtain user review of DR-006f and its disclosed limits; after approval, record it and create
+a scoped Conventional Commit containing implementation, tests, and handoff. Do not start another slice before
+review. Keep DR-006 open. See the [brief](work-items/DR-006f-upcoming-game-cards.md).
+
 DR-006e is Done with explicit user approval on 2026-10-17: mounted player recent-games initial/loading-more
 placeholders now share a local native
 PrimeNG Card/Skeleton template with a named busy section. Six initial/three appended placeholders and existing
@@ -15,9 +30,9 @@ check remains unverified. Settled player SSR returns HTTP 200 with ten games; lo
 were not verified. Browser fixtures are removed and the original player route, dark class, 1487x1252 viewport,
 and ten games restored. The user requested "Approve and commit" with these limits disclosed; acceptance is not
 a light/mobile pixel pass. The workflow now limits redesign to components with real application consumers and
-treats DR approval as authorization for a scoped commit. Exact next action: scope the mounted player upcoming-game
-card presentation as a separate DR-006 child, confirm its consumer, and preserve data/actions/pagination. Do not
-start it here. Keep DR-006 open. See the [brief](work-items/DR-006e-recent-game-loading.md).
+treats DR approval as authorization for a scoped commit. Its proposed populated upcoming-game follow-up is now
+DR-006f above; DR-006e remains complete and is not reopened. Keep DR-006 open.
+See the [brief](work-items/DR-006e-recent-game-loading.md).
 
 DR-006d is Done with explicit user approval on 2026-10-17: the mounted player recent-games header is a semantic
 heading and labels its native compact,
@@ -147,6 +162,7 @@ and linked from their registry rows.
 | [DR-006c](work-items/DR-006c-recent-game-results.md) | Mounted player recent-game result indicator | Done |
 | [DR-006d](work-items/DR-006d-recent-game-filters.md) | Mounted player recent-game heading and filters | Done |
 | [DR-006e](work-items/DR-006e-recent-game-loading.md) | Mounted player recent-game loading presentation | Done |
+| [DR-006f](work-items/DR-006f-upcoming-game-cards.md) | Mounted player populated upcoming-game cards | Review |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |
@@ -232,6 +248,10 @@ and linked from their registry rows.
 - DR-006d discovery for later shared-control work: native inactive SelectButton labels measured 4.46:1 in light
   mode against this preset's canvas. DR-006d fixes only its own label template with semantic `text-color`.
   Check other mounted SelectButton consumers when scoped; do not alter global theme tokens implicitly.
+- DR-006f preserves the existing upcoming-list header, loading placeholders, and empty state. Scope those as a
+  separate mounted child after DR-006f review; legacy `.upcoming*` SCSS is still required by the loading branch.
+  Existing RouterLink on `p-button` also exposes a focusable host before its inner button; investigate native
+  anchor/button-link semantics separately rather than silently changing the assembly navigation contract here.
 - Each shared component can become its own child task. Inventory consumers before changing an API or appearance.
 - Preserve legitimate visualization behavior; do not replace charts or brackets with a table solely to avoid styling.
 

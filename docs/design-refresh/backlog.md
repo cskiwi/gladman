@@ -5,6 +5,17 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006g is Done with explicit user approval on 2026-10-21: the mounted player upcoming heading is semantic, loading
+placeholders use native Cards/Skeletons, the settled empty state uses a native Card, populated dates group
+weekday/day/month separately from the hour, and the assembly action uses native `button pButton` with its translated
+name and destinations preserved. Translations and service behavior remain unchanged. Three placeholder cards, 21
+decorative skeletons, and no focus targets are covered by the focused spec. Seven tests, component lint/build, and app
+build pass; 31 existing lint warnings remain. Earlier light/dark narrow/wide screenshots predate the final date/time
+refinement; the user reviewed the latest version on their port-3000 instance and requested completion. SSR/hydration
+and alternate locales remain unverified. Parent DR-006 remains open. Next action: inspect mounted consumers and scope
+the next DR-006 child before implementation.
+See the [brief](work-items/DR-006g-upcoming-game-states.md).
+
 DR-006f is Done with explicit user approval on 2026-10-21: populated player upcoming-game cards use native
 PrimeNG Cards and a wrapping layout. Three upcoming cards are shown initially; outlined View All/View Less
 buttons expand and collapse the fetched encounters. Dates, draw/team destinations, home/away labels, and
@@ -16,9 +27,9 @@ three-card initial display limit was added. Dark desktop and light mobile screen
 user reviewed the current player route and approved completion with the limits disclosed. Loading/empty markup,
 header, services, and global styling are unchanged; real assembly navigation, alternate locales, exhaustive
 hydration, and screen-reader output remain unverified. The six unrelated bracket-tree test failures also remain
-an accepted limit, not a passing check. The original player route, dark class, and 1487x1252 viewport were
-restored; no fixtures or backend mutations. No implementation follow-up starts in this invocation. Next action:
-scope the mounted upcoming header/loading/empty presentation as a separate child item. Keep DR-006 open.
+an accepted limit, not a passing check. The original player route, dark class, and 1487x1252 viewport were restored;
+no fixtures or backend mutations were needed. The next child is scoped as DR-006g; its implementation has not started.
+Keep DR-006 open.
 See the [brief](work-items/DR-006f-upcoming-game-cards.md).
 
 DR-006e is Done with explicit user approval on 2026-10-17: mounted player recent-games initial/loading-more
@@ -164,6 +175,7 @@ and linked from their registry rows.
 | [DR-006d](work-items/DR-006d-recent-game-filters.md) | Mounted player recent-game heading and filters | Done |
 | [DR-006e](work-items/DR-006e-recent-game-loading.md) | Mounted player recent-game loading presentation | Done |
 | [DR-006f](work-items/DR-006f-upcoming-game-cards.md) | Mounted player populated upcoming-game cards | Done   |
+| [DR-006g](work-items/DR-006g-upcoming-game-states.md) | Mounted player upcoming-games presentation | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |

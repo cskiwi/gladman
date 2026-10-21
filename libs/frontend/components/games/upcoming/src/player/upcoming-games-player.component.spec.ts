@@ -5,7 +5,7 @@ import { provideRouter, RouterLink } from '@angular/router';
 import { IS_MOBILE } from '@app/frontend-utils';
 import { CompetitionEncounter } from '@app/models';
 import { TranslateModule } from '@ngx-translate/core';
-import { Button } from 'primeng/button';
+import { ButtonDirective } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { UpcomingGamesPlayerComponent } from './upcoming-games-player.component';
 import { PlayerUpcommingGamesService } from './upcoming-games-player.service';
@@ -51,9 +51,13 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     expect(fixture.nativeElement.querySelector('.upcoming')).toBeNull();
     expect(fixture.nativeElement.querySelector('[style]')).toBeNull();
     const text = fixture.nativeElement.textContent;
-    ['Home team', 'Away team', 'Division A', '17', '19:00'].forEach(value => {
+    ['Home team', 'Away team', 'Division A', '17', 'Oct', '19:00'].forEach(value => {
       expect(text).toContain(value);
     });
+    const dateAndTime = fixture.nativeElement.querySelectorAll('p-card time');
+    expect(dateAndTime).toHaveLength(2);
+    expect(dateAndTime[0].textContent).toContain('Oct');
+    expect(dateAndTime[1].textContent.trim()).toBe('19:00');
     const links = fixture.debugElement.queryAll(By.directive(RouterLink));
     expect(links.map(link => link.injector.get(RouterLink).urlTree?.toString())).toEqual([
       '/competition/event/sub-events/sub/draws/draw',
@@ -61,7 +65,8 @@ describe('UpcomingGamesPlayerComponent cards', () => {
       '/competition/assembly?encounter=encounter&season=2026',
     ]);
     expect(fixture.nativeElement.querySelector('.upcoming-games__expand')).toBeNull();
-    const button = fixture.debugElement.query(By.directive(Button));
+    const button = fixture.debugElement.query(By.directive(ButtonDirective));
+    expect(button.nativeElement.tagName).toBe('BUTTON');
     expect(button.nativeElement.textContent).toContain('all.competition.team-assembly.title');
     expect(button.nativeElement.querySelector('.pi-list')).not.toBeNull();
   });
@@ -140,15 +145,30 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     expect(fixture.componentInstance.isHomeGame(encounter)).toBeNull();
   });
 
-  it('preserves the three legacy loading placeholders and settled empty message', () => {
+  it('renders a named busy section, then the semantic empty state', () => {
     loading.set(true);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelectorAll('.upcoming')).toHaveLength(3);
-    expect(fixture.nativeElement.querySelectorAll('p-skeleton')).toHaveLength(18);
-    expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(0);
+
+    const heading = fixture.nativeElement.querySelector('h2');
+    const section = fixture.nativeElement.querySelector('section[aria-busy="true"]');
+    expect(heading.textContent.trim()).toBe('all.game.upcoming.title');
+    expect(section.getAttribute('aria-labelledby')).toBe(heading.id);
+    expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(3);
+    expect(section.querySelectorAll('p-skeleton[aria-hidden="true"]')).toHaveLength(21);
+    expect(section.querySelectorAll('a, button, [tabindex]')).toHaveLength(0);
+    expect(fixture.nativeElement.textContent).not.toContain('all.game.upcoming.noGamesFound');
+    expect(fixture.nativeElement.querySelector('.upcoming')).toBeNull();
+
     loading.set(false);
     fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[aria-busy]')).toBeNull();
     expect(fixture.nativeElement.querySelector('p-skeleton')).toBeNull();
-    expect(fixture.nativeElement.textContent).toContain('all.game.upcoming.noGamesFound');
+    expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(1);
+    expect(fixture.nativeElement.querySelector('h3')?.textContent.trim())
+      .toBe('all.game.upcoming.noGamesFound');
+    expect(fixture.nativeElement.querySelector('p')?.textContent.trim())
+      .toBe('all.game.upcoming.noGamesDescription');
+    expect(fixture.nativeElement.querySelector('.pi-calendar')?.getAttribute('aria-hidden'))
+      .toBe('true');
   });
 });

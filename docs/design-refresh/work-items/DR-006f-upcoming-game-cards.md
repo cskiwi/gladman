@@ -46,10 +46,11 @@ description: 'Native PrimeNG populated encounter cards in the mounted player upc
 - [x] Keyboard/focus and translated action names are verified; ordinary card text exceeds 4.5:1 contrast.
 - [x] Loading and empty branches remain unchanged; focused tests cover their rendering.
 - [x] Focused upcoming-games spec passes; Nx lint/build pass; SSR and hydration limits are recorded honestly.
-- [ ] Full `frontend-components` test target is clean; six unrelated bracket-tree failures remain.
+- [ ] Full `frontend-components` test target is clean; six unrelated bracket-tree failures remain and
+      were accepted as a disclosed limit.
 - [x] No new CSS, non-semantic colors, dependency, or global change; utility changes are explained.
 - [x] Actual dark desktop and light mobile pixels are inspected.
-- [ ] User visual review is obtained before completion or propagation.
+- [x] User visual review is obtained before completion or propagation; approval recorded 2026-10-21.
 - [ ] Actual assembly navigation, alternate locales, exhaustive hydration, and screen-reader output are verified.
 
 ## Evidence and handoff
@@ -102,8 +103,12 @@ description: 'Native PrimeNG populated encounter cards in the mounted player upc
 - Reusable decision: direct native Card and a local responsive layout; no shared wrapper or global styling changes.
     PrimeNG generated Card metadata was consulted; installed APIs are also validated by the package build.
 - Exceptions: none. Deferred existing loading styles are not a new styling exception.
-- Exact next action: obtain user review with the limits above disclosed; after approval, record it, reconcile the
-    backlog, and commit only this slice's implementation, tests, and handoff. Do not start a second slice here.
+- User decision: on 2026-10-21, the user confirmed DR-006f was finished and approved completion after the
+    remaining limits were disclosed: six unrelated bracket-tree test failures, real assembly navigation,
+    alternate locales, exhaustive hydration, and screen-reader output remain unverified. The unchecked criteria
+    above remain unchecked; approval does not claim those checks passed.
+- Exact next action: no follow-on implementation in this invocation. On the next invocation, scope the mounted
+    upcoming header/loading/empty presentation as a separate child item before implementation.
 - Subsequent candidate, not started: scope the mounted upcoming header/loading/empty presentation separately,
     preserving services and addressing native assembly-link semantics only in its own explicitly bounded scope.
 

@@ -5,6 +5,23 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-015d is Done with explicit user approval on 2026-10-23: the mounted competition sub-event metadata row
+now uses native secondary PrimeNG Tags.
+Maximum level, index bounds/separator, event type, truthy visibility conditions, translations,
+ordering, and draw destinations are preserved; sync behavior is unchanged.
+All 12 Cards retain identical normalized metadata and all 52 ordered draw destinations.
+Nineteen component tests, library lint (41 existing warnings), and app build with 29 prerequisites pass.
+Light/dark at 390px/1280px fit without overflow; all four final screenshots were inspected.
+Minimum metadata contrast is 7.74:1 light / 9.50:1 dark. Static semantics, existing keyboard focus,
+and SSR markup pass. Mounted alternate locale, live absent/zero metadata, exhaustive hydration,
+screen-reader output, and operational sync actions remain unverified; edge cases/locale are component-tested.
+See the [brief](work-items/DR-015d-competition-metadata.md).
+The user selected "Approve completion and commit", accepting the disclosed verification limits;
+unchecked checks remain unverified. Its scoped implementation/tests/handoff commit is authorized.
+Exact next action: inspect and scope remaining competition hero external-link/action presentation as the
+next DR-015 candidate, confirming mounted consumers and preserving behavior. Do not start it here.
+Keep parent DR-015 open. No push is authorized.
+
 DR-015c is Done with explicit user approval on 2026-10-23: competition draw lists use native PrimeNG
 anchor Buttons and a native empty Message. The user selected "Approve completion and commit",
 accepting the disclosed verification limits; unchecked checks remain unverified.
@@ -17,8 +34,7 @@ SSR markup, and final screenshot inspection pass. Normal/hover text contrast is 
 and 6.28:1 dark. Mounted alternate locale, live empty data, exhaustive hydration, and screen-reader
 output remain unverified; empty/fallback/locale behavior has component-test coverage.
 See the [brief](work-items/DR-015c-competition-draw-links.md) for approval and verification details.
-Exact next action: inspect and scope the remaining mounted sub-event metadata-chip presentation as the next
-DR-015 child, preserving values and conditionals. Do not start it in this invocation.
+Its metadata-chip follow-up is now scoped as DR-015d above, preserving values and conditionals.
 Keep parent DR-015 open. The scoped implementation/tests/handoff commit is approved; no push is authorized.
 
 DR-015b is Done with explicit user approval on 2026-10-23 following the formatting/SCSS-removal request.
@@ -279,6 +295,7 @@ and linked from their registry rows.
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                             | Done    |
 | [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement       | Done    |
 | [DR-015c](work-items/DR-015c-competition-draw-links.md)       | Competition draw links and empty presentation           | Done    |
+| [DR-015d](work-items/DR-015d-competition-metadata.md)         | Competition sub-event metadata Tags                     | Done    |
 | DR-016                                                        | Competition draws                                       | Backlog |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |

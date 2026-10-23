@@ -179,30 +179,28 @@
                     </header>
 
                     <!-- Meta row -->
-                    <div class="flex items-center gap-2 flex-wrap text-xs">
+                    <div class="flex flex-wrap items-center gap-2">
                       @if (subEvent.maxLevel) {
-                        <span class="font-mono text-color bg-emphasis px-2 py-0.5 rounded-sm">
-                          {{ 'all.competition.maxLevel' | translate }} {{ subEvent.maxLevel }}
-                        </span>
+                        <p-tag severity="secondary" [value]="('all.competition.maxLevel' | translate) + ' ' + subEvent.maxLevel" />
                       }
                       @if (subEvent.minBaseIndex || subEvent.maxBaseIndex) {
-                        <span class="font-mono text-muted-color bg-emphasis px-2 py-0.5 rounded-sm">
-                          Idx
-                          @if (subEvent.minBaseIndex) {
-                            {{ subEvent.minBaseIndex }}
-                          }
-                          @if (subEvent.minBaseIndex && subEvent.maxBaseIndex) {
-                            –
-                          }
-                          @if (subEvent.maxBaseIndex) {
-                            {{ subEvent.maxBaseIndex }}
-                          }
-                        </span>
+                        <p-tag severity="secondary">
+                          <span>
+                            Idx
+                            @if (subEvent.minBaseIndex) {
+                              {{ subEvent.minBaseIndex }}
+                            }
+                            @if (subEvent.minBaseIndex && subEvent.maxBaseIndex) {
+                              –
+                            }
+                            @if (subEvent.maxBaseIndex) {
+                              {{ subEvent.maxBaseIndex }}
+                            }
+                          </span>
+                        </p-tag>
                       }
                       @if (subEvent.eventType) {
-                        <span class="font-mono text-muted-color bg-emphasis px-2 py-0.5 rounded-sm">
-                          {{ subEvent.eventType }}
-                        </span>
+                        <p-tag severity="secondary" [value]="subEvent.eventType" />
                       }
                     </div>
 

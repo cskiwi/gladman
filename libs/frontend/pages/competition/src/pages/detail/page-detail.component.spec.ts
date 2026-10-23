@@ -36,6 +36,9 @@ const createCompetition = () => ({
       id: 'men',
       name: 'Men event',
       eventType: 'M',
+      maxLevel: 4,
+      minBaseIndex: 32,
+      maxBaseIndex: 48,
       visualCode: 'men-code',
       competitionDraws: [
         {
@@ -103,6 +106,7 @@ describe('Competition detail presentation', () => {
           subEvents: 'Sub-events',
           draws: 'Draws',
           noDrawsYet: 'No draws configured yet',
+          maxLevel: 'Max level',
           types: { men: 'Men', women: 'Women', mix: 'Mixed' },
         },
       },
@@ -289,6 +293,53 @@ describe('Competition detail presentation', () => {
     translations.use('nl');
     harness.detectChanges();
     expect(message?.textContent?.trim()).toBe('Nog geen reeksen');
+  });
+
+  it('renders static secondary metadata Tags in order and updates the translated label', () => {
+    const tags = [...element.querySelectorAll('article')][0].querySelectorAll('p-tag');
+    const text = () => [...tags].map((tag) => tag.textContent?.trim().replace(/\s+/g, ' '));
+    expect(text()).toEqual(['Max level 4', 'Idx 32 – 48', 'M']);
+    tags.forEach((tag) => {
+      expect(tag.classList.contains('p-tag-secondary')).toBe(true);
+      expect(tag.hasAttribute('tabindex')).toBe(false);
+      expect(tag.hasAttribute('style')).toBe(false);
+      expect(tag.querySelector('button, a, [tabindex]')).toBeNull();
+    });
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation('nl', {
+      all: { competition: { maxLevel: 'Max niveau' } },
+    });
+    translations.use('nl');
+    harness.detectChanges();
+    expect(text()).toEqual(['Max niveau 4', 'Idx 32 – 48', 'M']);
+  });
+
+  it.each([
+    { name: 'lower bound only', maxLevel: 4, minBaseIndex: 32, maxBaseIndex: null, eventType: 'M', expected: ['Max level 4', 'Idx 32', 'M'] },
+    { name: 'upper bound only', maxLevel: null, minBaseIndex: null, maxBaseIndex: 48, eventType: 'F', expected: ['Idx 48', 'F'] },
+    { name: 'zero lower bound', maxLevel: 0, minBaseIndex: 0, maxBaseIndex: 48, eventType: 'MX', expected: ['Idx 48', 'MX'] },
+    { name: 'zero upper bound', maxLevel: 4, minBaseIndex: 32, maxBaseIndex: 0, eventType: '', expected: ['Max level 4', 'Idx 32'] },
+    { name: 'all zeros', maxLevel: 0, minBaseIndex: 0, maxBaseIndex: 0, eventType: '', expected: [] },
+    { name: 'null metadata', maxLevel: null, minBaseIndex: null, maxBaseIndex: null, eventType: null, expected: [] },
+    { name: 'missing metadata', maxLevel: undefined, minBaseIndex: undefined, maxBaseIndex: undefined, eventType: undefined, expected: [] },
+  ])('preserves metadata visibility for $name', async ({ maxLevel, minBaseIndex, maxBaseIndex, eventType, expected }) => {
+    const competition = createCompetition();
+    query.mockReturnValue(
+      of({
+        data: {
+          competitionEvent: {
+            ...competition,
+            competitionSubEvents: [{ ...competition.competitionSubEvents[1], maxLevel, minBaseIndex, maxBaseIndex, eventType }],
+          },
+        },
+      }),
+    );
+    await harness.navigateByUrl('/competition/metadata-conditions');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    const tags = [...element.querySelectorAll('article p-tag')];
+    expect(tags.map((tag) => tag.textContent?.trim().replace(/\s+/g, ' '))).toEqual(expected);
+    expect(element.querySelector('article a')?.getAttribute('href')).toBe('/competition/test-competition/sub-events/men/draws/draw-men');
   });
 
   it('omits the section and shortcuts when there are no groups', async () => {

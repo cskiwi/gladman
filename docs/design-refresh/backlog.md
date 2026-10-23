@@ -5,6 +5,20 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006j is Done with explicit user approval on 2026-10-23.
+The shared knockout bracket remains a horizontal visualization, but its 1000px centered canvas starts at
+negative x positions at 390px, hiding the first rounds behind the viewport. The scoped follow-up will make
+the bracket's own horizontal scroll usable without changing bracket ordering, connectors, player links, scores,
+or draw-game behavior. Before captures are in `tmp/design-refresh/DR-006j-bracket-{390,1280}-before.png`;
+no implementation has started. See the [brief](work-items/DR-006j-bracket-tree-responsive.md).
+The routed host now shrinks to the content width while the existing bracket canvas remains horizontally scrollable.
+Focused layout tests and relevant library/app lint/build checks pass. The full bracket-tree suite retains six
+pre-existing failures unrelated to this change. Light/dark 390px/1280px geometry and keyboard link focus pass;
+pixel contrast remains unverified. The user approved completion with this limit disclosed. See the
+[brief](work-items/DR-006j-bracket-tree-responsive.md).
+Exact next action: choose the next DR-006 child; parent DR-006 stays open.
+Parent DR-006 stays open.
+
 DR-006i is Done with explicit user approval on 2026-10-23 after the inline-style removal request.
 Summaries and expanded games
 use native Cards, Tailwind layout, and semantic text; all component CSS is removed, with no SCSS or inline-style
@@ -210,6 +224,7 @@ and linked from their registry rows.
 | [DR-006g](work-items/DR-006g-upcoming-game-states.md) | Mounted player upcoming-games presentation | Done |
 | [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md) | Shared upcoming encounter cards | Done |
 | [DR-006i](work-items/DR-006i-played-encounter-cards.md) | Shared played encounter cards and expanded presentation | Done |
+| [DR-006j](work-items/DR-006j-bracket-tree-responsive.md) | Shared bracket responsive layout | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |

@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006i is Done with explicit user approval on 2026-10-23 after the inline-style removal request.
+Summaries and expanded games
+use native Cards, Tailwind layout, and semantic text; all component CSS is removed, with no SCSS or inline-style
+replacement. Plain encounter scores retain their large format and centered separator. Player groups, routes,
+levels, game order/results, played-set pairs, loading, and expansion are preserved. Upcoming markup, services,
+and global styling are unchanged. All 20 focused tests, component lint/build, and app build pass
+(31 existing lint warnings). Final expanded eight-game lists fit at 390px/1280px in light/dark on team detail,
+club schedule, and the user's current draw. Four expanded screenshots were inspected; final collapsed SSR passes.
+Earlier keyboard checks passed; the named native button still intentionally replaces mouse-only whole-row activation.
+Available live games lack player memberships/set scores: populated names, badges, result labels, and set pairs have
+focused-test coverage, not mounted pixel verification. Alternate locales, exhaustive hydration, and screen-reader
+output remain unverified.
+The user requested "commit and push", accepting completion with the disclosed verification limits;
+unchecked criteria remain unverified. The scoped commit and branch push are authorized.
+Exact next action: inspect mounted shared match/bracket consumers and scope the next DR-006 child.
+Do not start another implementation here. Parent DR-006 stays open.
+See the [brief](work-items/DR-006i-played-encounter-cards.md).
+
 DR-006h is Done with explicit user approval on 2026-10-21: shared upcoming encounter cards use native
 PrimeNG Cards and the compact date-rail
 direction from the user's `/players/axelle-de-prest` reference. Team links, home/away context, time, and
@@ -191,6 +209,7 @@ and linked from their registry rows.
 | [DR-006f](work-items/DR-006f-upcoming-game-cards.md) | Mounted player populated upcoming-game cards | Done   |
 | [DR-006g](work-items/DR-006g-upcoming-game-states.md) | Mounted player upcoming-games presentation | Done |
 | [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md) | Shared upcoming encounter cards | Done |
+| [DR-006i](work-items/DR-006i-played-encounter-cards.md) | Shared played encounter cards and expanded presentation | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
 | DR-009                      | Player head-to-head                             | Backlog |
@@ -266,6 +285,10 @@ and linked from their registry rows.
   [brief](work-items/DR-005e-ranking-progress.md). Its calculations and relative links remain unchanged.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
   Keep score readability, result meaning, and responsive draw behavior.
+- DR-006i started with the shared played summary. At the user's request it also removes all inline component CSS,
+  migrating expanded games to native Cards with wrapping player names, semantic winner emphasis, translated
+  perspective results, and paired plain-text set scores. Native Button replaces mouse-only expansion.
+  Populated expanded-game pixels remain unverified because the available live games omit membership/set data.
 - DR-006b discovery: resizing the mounted player list to mobile refreshes its page size; returning to desktop
   retained five articles for at least ten seconds. Reloading at desktop restores ten. Investigate breakpoint/page-size
   behavior separately before claiming responsive pagination coverage; score-only tests do not validate that workflow.

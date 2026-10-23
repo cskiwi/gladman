@@ -1,9 +1,9 @@
 ---
+name: continue-design-refresh
 description: 'Resume one design refresh task, verify the outcome, and persist progress for the next fresh chat.'
+disable-model-invocation: true
 argument-hint: 'Optional work-item ID, for example DR-002'
-agent: 'agent'
 ---
-
 Continue Gladman's incremental design refresh. Complete one small, reviewable slice and leave an accurate,
 repository-backed handoff so the same prompt works again in a fresh chat.
 

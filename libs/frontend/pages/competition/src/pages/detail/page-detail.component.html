@@ -172,7 +172,8 @@
  <!-- Events Grid -->
  <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
  @for (subEvent of group.events; track subEvent.id) {
- <article class="g-subevent bg-emphasis border border-surface rounded-border p-5 flex flex-col gap-4">
+ <p-card class="block h-full border border-surface">
+ <article class="flex h-full flex-col gap-4">
  <header class="flex items-start justify-between gap-2">
  <div class="flex flex-col gap-1 min-w-0">
  <span class="t-eyebrow">Event</span>
@@ -266,6 +267,7 @@
  </div>
  }
  </article>
+ </p-card>
  }
  </div>
  </div>

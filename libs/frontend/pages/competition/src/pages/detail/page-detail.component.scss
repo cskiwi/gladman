@@ -86,11 +86,3 @@
   letter-spacing: -0.01em;
   color: var(--p-text-color);
 }
-
-.g-subevent {
-  transition: border-color 150ms ease;
-
-  &:hover {
-    border-color: var(--p-content-border-color);
-  }
-}

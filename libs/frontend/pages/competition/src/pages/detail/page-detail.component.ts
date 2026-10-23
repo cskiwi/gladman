@@ -11,6 +11,7 @@ import { injectParams } from 'ngxtension/inject-params';
 import { DetailService } from './page-detail.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-page-detail',
@@ -25,6 +26,7 @@ import { ButtonModule } from 'primeng/button';
     SyncButtonComponent,
     SyncStatusIndicatorComponent,
     ButtonModule,
+    CardModule,
   ],
   templateUrl: './page-detail.component.html',
   styleUrl: './page-detail.component.scss',

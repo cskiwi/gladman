@@ -16,8 +16,14 @@ Focused layout tests and relevant library/app lint/build checks pass. The full b
 pre-existing failures unrelated to this change. Light/dark 390px/1280px geometry and keyboard link focus pass;
 pixel contrast remains unverified. The user approved completion with this limit disclosed. See the
 [brief](work-items/DR-006j-bracket-tree-responsive.md).
-Exact next action: choose the next DR-006 child; parent DR-006 stays open.
-Parent DR-006 stays open.
+Exact next action: review DR-015a and either approve the scoped competition-card slice or request revisions.
+Parent DR-015 remains open for the remaining competition-detail presentation work.
+
+DR-015a is in Review after replacing the mounted competition detail's custom sub-event article surface with
+native PrimeNG Cards. Existing grouping, draw links, metadata, sync controls, and responsive grid behavior are
+preserved. The supplied competition route was inspected after the app rebuild; narrow/light pixel review and
+keyboard, SSR, locale, and screen-reader checks remain pending. See the
+[brief](work-items/DR-015a-competition-event-cards.md).
 
 The mounted DR-006 consumer inventory found no production callers for the legacy `match-row` or `upcoming-match`
 components. No redesign child was created for unused components; adding a consumer only for verification would
@@ -242,6 +248,7 @@ and linked from their registry rows.
 | DR-013                      | Club team builder                               | Backlog |
 | DR-014                      | Club team detail                                | Backlog |
 | DR-015                      | Competition detail and sub-event presentation   | Backlog |
+| [DR-015a](work-items/DR-015a-competition-event-cards.md) | Competition sub-event Cards              | Review |
 | DR-016                      | Competition draws                               | Backlog |
 | DR-017                      | Competition assembly                            | Backlog |
 | DR-018                      | Competition editing                             | Backlog |

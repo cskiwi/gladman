@@ -1,7 +1,7 @@
 import { DatePipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HeroComponent } from '@app/frontend-components/hero';
+import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { SyncButtonComponent, SyncButtonConfig, SyncStatusIndicatorComponent, SyncStatusConfig } from '@app/frontend-components/sync';
 import { SeoService } from '@app/frontend-modules-seo/service';
@@ -12,6 +12,8 @@ import { DetailService } from './page-detail.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-page-detail',
@@ -23,13 +25,17 @@ import { CardModule } from 'primeng/card';
     RouterModule,
     TranslateModule,
     HeroComponent,
+    HeroAvatarComponent,
+    HeroTitleComponent,
     SyncButtonComponent,
     SyncStatusIndicatorComponent,
     ButtonModule,
     CardModule,
+    TagModule,
+    MessageModule,
   ],
   templateUrl: './page-detail.component.html',
-  styleUrl: './page-detail.component.scss',
+  host: { class: 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageDetailComponent {

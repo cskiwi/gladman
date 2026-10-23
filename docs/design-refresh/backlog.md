@@ -5,18 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-015b is Done with explicit user approval on 2026-10-23 following the formatting/SCSS-removal request.
+The user confirmed "we are done. mark it so and commit", accepting the disclosed verification limits.
+The entire competition detail
+template is formatted; its local SCSS and reference are deleted. The hero uses existing shared avatar/title
+components, totals/headings use Tailwind and semantic classes, official/type statuses use native Tags,
+and the existing error presentation uses a native Message. No custom CSS replacement was introduced.
+The competition detail's group shortcuts use native PrimeNG buttons,
+translated names/counts, associated targets, and semantic section/group/event headings.
+Eight component tests, library lint (41 existing warnings), app build, and Prettier HTML check pass.
+Light/dark 390px/1280px document/hero/Card/navigation geometry, keyboard activation, settled text contrast
+(4.57:1 light / 6.65:1 dark minimum across the expanded styling scope), and SSR markup pass.
+Final light-mobile hero/Card and dark-desktop hero screenshots were inspected.
+Alternate-locale coverage is a component test, not a mounted locale pass;
+exhaustive hydration and screen-reader output remain unverified. See the
+[brief](work-items/DR-015b-competition-group-navigation.md).
+Exact next action: scope the remaining competition draw-link presentation as a separate DR-015 child
+in the next invocation. Parent DR-015 remains open. Do not start it here or push without a separate request.
+
 DR-006j is Done with explicit user approval on 2026-10-23.
-The shared knockout bracket remains a horizontal visualization, but its 1000px centered canvas starts at
-negative x positions at 390px, hiding the first rounds behind the viewport. The scoped follow-up will make
-the bracket's own horizontal scroll usable without changing bracket ordering, connectors, player links, scores,
-or draw-game behavior. Before captures are in `tmp/design-refresh/DR-006j-bracket-{390,1280}-before.png`;
-no implementation has started. See the [brief](work-items/DR-006j-bracket-tree-responsive.md).
 The routed host now shrinks to the content width while the existing bracket canvas remains horizontally scrollable.
 Focused layout tests and relevant library/app lint/build checks pass. The full bracket-tree suite retains six
 pre-existing failures unrelated to this change. Light/dark 390px/1280px geometry and keyboard link focus pass;
 pixel contrast remains unverified. The user approved completion with this limit disclosed. See the
 [brief](work-items/DR-006j-bracket-tree-responsive.md).
-Exact next action: choose the next DR-015 child before starting another competition-detail implementation slice.
 Parent DR-015 remains open for the remaining competition-detail presentation work.
 
 DR-015a is Done with explicit user approval on 2026-10-23 after replacing the mounted competition detail's custom
@@ -249,6 +261,7 @@ and linked from their registry rows.
 | DR-014                                                    | Club team detail                                        | Backlog |
 | DR-015                                                    | Competition detail and sub-event presentation           | Backlog |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)  | Competition sub-event Cards                             | Done    |
+| [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement  | Done |
 | DR-016                                                    | Competition draws                                       | Backlog |
 | DR-017                                                    | Competition assembly                                    | Backlog |
 | DR-018                                                    | Competition editing                                     | Backlog |

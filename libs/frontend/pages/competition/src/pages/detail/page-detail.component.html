@@ -159,7 +159,7 @@
             <!-- Events Grid -->
             <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               @for (subEvent of group.events; track subEvent.id) {
-                <p-card class="block h-full border border-surface">
+                <p-card class="block min-w-0 h-full border border-surface">
                   <article class="flex h-full flex-col gap-4">
                     <header class="flex items-start justify-between gap-2">
                       <div class="flex flex-col gap-1 min-w-0">
@@ -215,45 +215,54 @@
                           </span>
                           <span class="font-mono text-xs text-muted-color">{{ subEvent.competitionDraws.length }}</span>
                         </div>
-                        <div class="flex flex-col gap-1.5">
+                        <ul class="m-0 flex list-none flex-col gap-2 p-0">
                           @for (draw of subEvent.competitionDraws; track draw.id) {
-                            <div class="flex items-center gap-1.5">
+                            <li class="flex items-center gap-2">
                               <a
+                                pButton
+                                severity="secondary"
+                                [outlined]="true"
+                                size="small"
                                 [routerLink]="['/', 'competition', competition.slug, 'sub-events', subEvent.id, 'draws', draw.id]"
-                                class="flex-1 flex items-center justify-between rounded-md bg-emphasis border border-surface px-3 py-2 text-sm hover:border-primary transition-colors no-underline"
+                                class="min-w-0 flex-1 no-underline"
                               >
-                                <span class="font-medium text-color truncate">{{ draw.name || 'Draw ' + (draw.id | slice: 0 : 8) }}</span>
-                                <span class="text-muted-color text-xs flex items-center gap-2 flex-shrink-0 font-mono">
-                                  @if (draw.type) {
-                                    <span>{{ draw.type }}</span>
-                                  }
-                                  @if (draw.size) {
-                                    <span>S{{ draw.size }}</span>
+                                <span pButtonLabel class="min-w-0 w-full text-left text-color">
+                                  <span class="block whitespace-normal break-words">{{ draw.name || 'Draw ' + (draw.id | slice: 0 : 8) }}</span>
+                                  @if (draw.type || draw.size) {
+                                    <span class="flex flex-wrap gap-2 text-xs font-normal text-muted-color">
+                                      @if (draw.type) {
+                                        <span>{{ draw.type }}</span>
+                                      }
+                                      @if (draw.size) {
+                                        <span>S{{ draw.size }}</span>
+                                      }
+                                    </span>
                                   }
                                 </span>
                               </a>
                               @if (competition.visualCode && draw.visualCode) {
                                 <a
+                                  pButton
+                                  severity="secondary"
+                                  variant="text"
+                                  size="small"
                                   [href]="'https://www.toernooi.nl/sport/league/draw?id=' + competition.visualCode + '&draw=' + draw.visualCode"
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  class="inline-flex items-center justify-center w-7 h-7 rounded-md text-muted-color hover:text-primary hover:bg-emphasis transition-colors no-underline flex-shrink-0"
-                                  title="View draw on toernooi.nl"
+                                  class="shrink-0"
+                                  [attr.aria-label]="(draw.name || 'Draw ' + (draw.id | slice: 0 : 8)) + ' (toernooi.nl)'"
                                 >
-                                  <i class="pi pi-external-link text-xs"></i>
+                                  <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>
                                 </a>
                               }
-                            </div>
+                            </li>
                           }
-                        </div>
+                        </ul>
                       </div>
                     } @else {
-                      <div
-                        class="flex items-center gap-2 px-3 py-2 rounded-md bg-emphasis border border-dashed border-surface text-xs text-muted-color"
-                      >
-                        <i class="pi pi-info-circle"></i>
+                      <p-message severity="secondary" size="small" icon="pi pi-info-circle">
                         {{ 'all.competition.noDrawsYet' | translate: { default: 'No draws configured yet' } }}
-                      </div>
+                      </p-message>
                     }
                   </article>
                 </p-card>

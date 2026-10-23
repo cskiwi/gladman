@@ -5,6 +5,22 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-015c is Done with explicit user approval on 2026-10-23: competition draw lists use native PrimeNG
+anchor Buttons and a native empty Message. The user selected "Approve completion and commit",
+accepting the disclosed verification limits; unchecked checks remain unverified.
+Draw metadata remains visible, external links have draw-specific accessible names, and long names wrap.
+One Card `min-w-0` utility prevents unbroken names from widening the mobile grid; no custom CSS was added.
+All 26 internal and 26 external destinations retain the same ordered SHA-256 fingerprint.
+Eleven component tests, library lint (41 existing warnings), and app build pass.
+Light/dark at 390px/1280px, a browser-only 240-character name stress check, keyboard activation/focus,
+SSR markup, and final screenshot inspection pass. Normal/hover text contrast is at least 4.66:1 light
+and 6.28:1 dark. Mounted alternate locale, live empty data, exhaustive hydration, and screen-reader
+output remain unverified; empty/fallback/locale behavior has component-test coverage.
+See the [brief](work-items/DR-015c-competition-draw-links.md) for approval and verification details.
+Exact next action: inspect and scope the remaining mounted sub-event metadata-chip presentation as the next
+DR-015 child, preserving values and conditionals. Do not start it in this invocation.
+Keep parent DR-015 open. The scoped implementation/tests/handoff commit is approved; no push is authorized.
+
 DR-015b is Done with explicit user approval on 2026-10-23 following the formatting/SCSS-removal request.
 The user confirmed "we are done. mark it so and commit", accepting the disclosed verification limits.
 The entire competition detail
@@ -20,8 +36,8 @@ Final light-mobile hero/Card and dark-desktop hero screenshots were inspected.
 Alternate-locale coverage is a component test, not a mounted locale pass;
 exhaustive hydration and screen-reader output remain unverified. See the
 [brief](work-items/DR-015b-competition-group-navigation.md).
-Exact next action: scope the remaining competition draw-link presentation as a separate DR-015 child
-in the next invocation. Parent DR-015 remains open. Do not start it here or push without a separate request.
+Its draw-link follow-up is now scoped and implemented as DR-015c above.
+Parent DR-015 remains open. No push is authorized.
 
 DR-006j is Done with explicit user approval on 2026-10-23.
 The routed host now shrinks to the content width while the existing bracket canvas remains horizontally scrollable.
@@ -227,55 +243,56 @@ Each row is a trackable area, not a promise to migrate that entire area in one c
 areas into child items before starting them. Briefs are created on demand from the [template](work-item-template.md)
 and linked from their registry rows.
 
-| ID                                                        | Area                                                    | Status  |
-| --------------------------------------------------------- | ------------------------------------------------------- | ------- |
-| [DR-001][baseline]                                        | Theme and design baseline                               | Done    |
-| [DR-002][pilot]                                           | Home page pilot                                         | Done    |
-| [DR-003][shell-work-item]                                 | App shell, navigation, search, and layouts              | Done    |
-| [DR-004][heading-work-item]                               | Shared headings, hero, and breadcrumb                   | Done    |
-| DR-005                                                    | Shared ranking, statistics, and status patterns         | Backlog |
-| [DR-005a][tier-badge-work-item]                           | Shared tier badge                                       | Done    |
-| [DR-005b][form-sequence-work-item]                        | Shared form sequence                                    | Done    |
-| [DR-005c](work-items/DR-005c-sparkline.md)                | Shared sparkline                                        | Done    |
-| [DR-005d](work-items/DR-005d-stat-card.md)                | Shared stat-card                                        | Done    |
-| [DR-005e](work-items/DR-005e-ranking-progress.md)         | Shared ranking progress                                 | Done    |
-| DR-006                                                    | Shared games, matches, and brackets                     | Backlog |
-| [DR-006a](work-items/DR-006a-recent-game-points.md)       | Mounted player recent-game point indicators             | Done    |
-| [DR-006b](work-items/DR-006b-recent-game-scores.md)       | Mounted player recent-game set scores                   | Done    |
-| [DR-006c](work-items/DR-006c-recent-game-results.md)      | Mounted player recent-game result indicator             | Done    |
-| [DR-006d](work-items/DR-006d-recent-game-filters.md)      | Mounted player recent-game heading and filters          | Done    |
-| [DR-006e](work-items/DR-006e-recent-game-loading.md)      | Mounted player recent-game loading presentation         | Done    |
-| [DR-006f](work-items/DR-006f-upcoming-game-cards.md)      | Mounted player populated upcoming-game cards            | Done    |
-| [DR-006g](work-items/DR-006g-upcoming-game-states.md)     | Mounted player upcoming-games presentation              | Done    |
-| [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md) | Shared upcoming encounter cards                         | Done    |
-| [DR-006i](work-items/DR-006i-played-encounter-cards.md)   | Shared played encounter cards and expanded presentation | Done    |
-| [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)  | Shared bracket responsive layout                        | Done    |
-| DR-007                                                    | Shared form controls and sync feedback                  | Backlog |
-| DR-008                                                    | Player detail                                           | Backlog |
-| [DR-008a](work-items/DR-008a-player-hero-actions.md)      | Player hero actions                                     | Done    |
-| DR-009                                                    | Player head-to-head                                     | Backlog |
-| DR-010                                                    | Player ranking breakdown                                | Backlog |
-| DR-011                                                    | Player editing                                          | Backlog |
-| DR-012                                                    | Club detail and browsing tabs                           | Backlog |
-| DR-013                                                    | Club team builder                                       | Backlog |
-| DR-014                                                    | Club team detail                                        | Backlog |
-| DR-015                                                    | Competition detail and sub-event presentation           | Backlog |
-| [DR-015a](work-items/DR-015a-competition-event-cards.md)  | Competition sub-event Cards                             | Done    |
-| [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement  | Done |
-| DR-016                                                    | Competition draws                                       | Backlog |
-| DR-017                                                    | Competition assembly                                    | Backlog |
-| DR-018                                                    | Competition editing                                     | Backlog |
-| DR-019                                                    | Tournament detail and club tournaments                  | Backlog |
-| DR-020                                                    | Tournament creation and editing                         | Backlog |
-| DR-021                                                    | Tournament enrollment workflows                         | Backlog |
-| DR-022                                                    | Tournament draw detail                                  | Backlog |
-| DR-023                                                    | Tournament admin: enrollments and check-in              | Backlog |
-| DR-024                                                    | Tournament admin: draws and scheduling                  | Backlog |
-| DR-025                                                    | Tournament admin: settings and phase controls           | Backlog |
-| DR-026                                                    | Tournament live displays and kiosk                      | Backlog |
-| DR-027                                                    | Global admin and search indexing                        | Backlog |
-| DR-028                                                    | Sync administration and team matching                   | Backlog |
-| DR-029                                                    | Legacy styling retirement and final regression          | Backlog |
+| ID                                                            | Area                                                    | Status  |
+| ------------------------------------------------------------- | ------------------------------------------------------- | ------- |
+| [DR-001][baseline]                                            | Theme and design baseline                               | Done    |
+| [DR-002][pilot]                                               | Home page pilot                                         | Done    |
+| [DR-003][shell-work-item]                                     | App shell, navigation, search, and layouts              | Done    |
+| [DR-004][heading-work-item]                                   | Shared headings, hero, and breadcrumb                   | Done    |
+| DR-005                                                        | Shared ranking, statistics, and status patterns         | Backlog |
+| [DR-005a][tier-badge-work-item]                               | Shared tier badge                                       | Done    |
+| [DR-005b][form-sequence-work-item]                            | Shared form sequence                                    | Done    |
+| [DR-005c](work-items/DR-005c-sparkline.md)                    | Shared sparkline                                        | Done    |
+| [DR-005d](work-items/DR-005d-stat-card.md)                    | Shared stat-card                                        | Done    |
+| [DR-005e](work-items/DR-005e-ranking-progress.md)             | Shared ranking progress                                 | Done    |
+| DR-006                                                        | Shared games, matches, and brackets                     | Backlog |
+| [DR-006a](work-items/DR-006a-recent-game-points.md)           | Mounted player recent-game point indicators             | Done    |
+| [DR-006b](work-items/DR-006b-recent-game-scores.md)           | Mounted player recent-game set scores                   | Done    |
+| [DR-006c](work-items/DR-006c-recent-game-results.md)          | Mounted player recent-game result indicator             | Done    |
+| [DR-006d](work-items/DR-006d-recent-game-filters.md)          | Mounted player recent-game heading and filters          | Done    |
+| [DR-006e](work-items/DR-006e-recent-game-loading.md)          | Mounted player recent-game loading presentation         | Done    |
+| [DR-006f](work-items/DR-006f-upcoming-game-cards.md)          | Mounted player populated upcoming-game cards            | Done    |
+| [DR-006g](work-items/DR-006g-upcoming-game-states.md)         | Mounted player upcoming-games presentation              | Done    |
+| [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md)     | Shared upcoming encounter cards                         | Done    |
+| [DR-006i](work-items/DR-006i-played-encounter-cards.md)       | Shared played encounter cards and expanded presentation | Done    |
+| [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)      | Shared bracket responsive layout                        | Done    |
+| DR-007                                                        | Shared form controls and sync feedback                  | Backlog |
+| DR-008                                                        | Player detail                                           | Backlog |
+| [DR-008a](work-items/DR-008a-player-hero-actions.md)          | Player hero actions                                     | Done    |
+| DR-009                                                        | Player head-to-head                                     | Backlog |
+| DR-010                                                        | Player ranking breakdown                                | Backlog |
+| DR-011                                                        | Player editing                                          | Backlog |
+| DR-012                                                        | Club detail and browsing tabs                           | Backlog |
+| DR-013                                                        | Club team builder                                       | Backlog |
+| DR-014                                                        | Club team detail                                        | Backlog |
+| DR-015                                                        | Competition detail and sub-event presentation           | Backlog |
+| [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                             | Done    |
+| [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement       | Done    |
+| [DR-015c](work-items/DR-015c-competition-draw-links.md)       | Competition draw links and empty presentation           | Done    |
+| DR-016                                                        | Competition draws                                       | Backlog |
+| DR-017                                                        | Competition assembly                                    | Backlog |
+| DR-018                                                        | Competition editing                                     | Backlog |
+| DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
+| DR-020                                                        | Tournament creation and editing                         | Backlog |
+| DR-021                                                        | Tournament enrollment workflows                         | Backlog |
+| DR-022                                                        | Tournament draw detail                                  | Backlog |
+| DR-023                                                        | Tournament admin: enrollments and check-in              | Backlog |
+| DR-024                                                        | Tournament admin: draws and scheduling                  | Backlog |
+| DR-025                                                        | Tournament admin: settings and phase controls           | Backlog |
+| DR-026                                                        | Tournament live displays and kiosk                      | Backlog |
+| DR-027                                                        | Global admin and search indexing                        | Backlog |
+| DR-028                                                        | Sync administration and team matching                   | Backlog |
+| DR-029                                                        | Legacy styling retirement and final regression          | Backlog |
 
 ## App and shared surfaces
 
@@ -487,6 +504,13 @@ routes][admin-routes] and [sync routes][sync-routes].
 - Record any remaining justified styling exceptions and remaining unmigrated surfaces.
 
 ## Progress, evidence, and discoveries
+
+- DR-015c (2026-10-23): native anchor Buttons are appropriate for draw navigation; retain anchor semantics,
+  semantic label colors, wrapping text, and a shrinking Card/grid item. No shared abstraction is needed.
+- DR-003 follow-up observation during DR-015c keyboard navigation: immediate return navigation emitted
+  `AbortError: Transition was skipped. New ViewTransition started`. The intended route and return both succeeded;
+  the detail page had no errors after reload. Recheck rapid route transitions in a separate shell/router slice;
+  no router/theme changes were made here.
 
 DR-005e navigation also logged `InvalidStateError: Transition was aborted because of invalid state` while routes
 still loaded. No global transition change was made; investigate only if reproducible in the relevant route/shell

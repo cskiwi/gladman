@@ -6,6 +6,7 @@ description: 'Use native PrimeNG Cards for competition sub-event presentation.'
 ## Identity
 
 - ID: DR-015a; parent [DR-015](../backlog.md). Status is authoritative in the [backlog](../backlog.md).
+- Review status: Done with explicit user approval on 2026-10-23.
 - Area: the mounted competition detail route at `/competition/:competitionSlug`.
 - Project: `frontend-pages-competition`.
 - Dependencies: completed DR-004 shared hero and page-header work.
@@ -37,7 +38,8 @@ description: 'Use native PrimeNG Cards for competition sub-event presentation.'
 - [x] `git diff --check` passes.
 - [ ] Narrow viewport and light-theme pixel review are pending.
 - [ ] Keyboard, SSR/hydration, alternate-locale, and screen-reader checks are pending.
-- [ ] User approval is pending; status remains Review.
+- [x] User approved completion by requesting `commit` on 2026-10-23; the unchecked verification limits remain
+      unverified and accepted.
 
 ## Evidence and handoff
 

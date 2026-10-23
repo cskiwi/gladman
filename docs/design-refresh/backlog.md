@@ -16,14 +16,14 @@ Focused layout tests and relevant library/app lint/build checks pass. The full b
 pre-existing failures unrelated to this change. Light/dark 390px/1280px geometry and keyboard link focus pass;
 pixel contrast remains unverified. The user approved completion with this limit disclosed. See the
 [brief](work-items/DR-006j-bracket-tree-responsive.md).
-Exact next action: review DR-015a and either approve the scoped competition-card slice or request revisions.
+Exact next action: choose the next DR-015 child before starting another competition-detail implementation slice.
 Parent DR-015 remains open for the remaining competition-detail presentation work.
 
-DR-015a is in Review after replacing the mounted competition detail's custom sub-event article surface with
-native PrimeNG Cards. Existing grouping, draw links, metadata, sync controls, and responsive grid behavior are
-preserved. The supplied competition route was inspected after the app rebuild; narrow/light pixel review and
-keyboard, SSR, locale, and screen-reader checks remain pending. See the
-[brief](work-items/DR-015a-competition-event-cards.md).
+DR-015a is Done with explicit user approval on 2026-10-23 after replacing the mounted competition detail's custom
+sub-event article surface with native PrimeNG Cards. Existing grouping, draw links, metadata, sync controls, and
+responsive grid behavior are preserved. The supplied competition route was inspected after the app rebuild;
+narrow/light pixel review and keyboard, SSR, locale, and screen-reader checks remain pending and were accepted as
+disclosed limits. See the [brief](work-items/DR-015a-competition-event-cards.md).
 
 The mounted DR-006 consumer inventory found no production callers for the legacy `match-row` or `upcoming-match`
 components. No redesign child was created for unused components; adding a consumer only for verification would
@@ -215,54 +215,54 @@ Each row is a trackable area, not a promise to migrate that entire area in one c
 areas into child items before starting them. Briefs are created on demand from the [template](work-item-template.md)
 and linked from their registry rows.
 
-| ID                          | Area                                            | Status  |
-| --------------------------- | ----------------------------------------------- | ------- |
-| [DR-001][baseline]          | Theme and design baseline                       | Done    |
-| [DR-002][pilot]             | Home page pilot                                 | Done    |
-| [DR-003][shell-work-item]   | App shell, navigation, search, and layouts      | Done    |
-| [DR-004][heading-work-item] | Shared headings, hero, and breadcrumb           | Done    |
-| DR-005                      | Shared ranking, statistics, and status patterns | Backlog |
-| [DR-005a][tier-badge-work-item] | Shared tier badge                            | Done    |
-| [DR-005b][form-sequence-work-item] | Shared form sequence                      | Done    |
-| [DR-005c](work-items/DR-005c-sparkline.md) | Shared sparkline                       | Done    |
-| [DR-005d](work-items/DR-005d-stat-card.md) | Shared stat-card                       | Done    |
-| [DR-005e](work-items/DR-005e-ranking-progress.md) | Shared ranking progress              | Done |
-| DR-006                      | Shared games, matches, and brackets             | Backlog |
-| [DR-006a](work-items/DR-006a-recent-game-points.md) | Mounted player recent-game point indicators | Done |
-| [DR-006b](work-items/DR-006b-recent-game-scores.md) | Mounted player recent-game set scores | Done |
-| [DR-006c](work-items/DR-006c-recent-game-results.md) | Mounted player recent-game result indicator | Done |
-| [DR-006d](work-items/DR-006d-recent-game-filters.md) | Mounted player recent-game heading and filters | Done |
-| [DR-006e](work-items/DR-006e-recent-game-loading.md) | Mounted player recent-game loading presentation | Done |
-| [DR-006f](work-items/DR-006f-upcoming-game-cards.md) | Mounted player populated upcoming-game cards | Done   |
-| [DR-006g](work-items/DR-006g-upcoming-game-states.md) | Mounted player upcoming-games presentation | Done |
-| [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md) | Shared upcoming encounter cards | Done |
-| [DR-006i](work-items/DR-006i-played-encounter-cards.md) | Shared played encounter cards and expanded presentation | Done |
-| [DR-006j](work-items/DR-006j-bracket-tree-responsive.md) | Shared bracket responsive layout | Done |
-| DR-007                      | Shared form controls and sync feedback          | Backlog |
-| DR-008                      | Player detail                                   | Backlog |
-| [DR-008a](work-items/DR-008a-player-hero-actions.md) | Player hero actions                 | Done    |
-| DR-009                      | Player head-to-head                             | Backlog |
-| DR-010                      | Player ranking breakdown                        | Backlog |
-| DR-011                      | Player editing                                  | Backlog |
-| DR-012                      | Club detail and browsing tabs                   | Backlog |
-| DR-013                      | Club team builder                               | Backlog |
-| DR-014                      | Club team detail                                | Backlog |
-| DR-015                      | Competition detail and sub-event presentation   | Backlog |
-| [DR-015a](work-items/DR-015a-competition-event-cards.md) | Competition sub-event Cards              | Review |
-| DR-016                      | Competition draws                               | Backlog |
-| DR-017                      | Competition assembly                            | Backlog |
-| DR-018                      | Competition editing                             | Backlog |
-| DR-019                      | Tournament detail and club tournaments          | Backlog |
-| DR-020                      | Tournament creation and editing                 | Backlog |
-| DR-021                      | Tournament enrollment workflows                 | Backlog |
-| DR-022                      | Tournament draw detail                          | Backlog |
-| DR-023                      | Tournament admin: enrollments and check-in      | Backlog |
-| DR-024                      | Tournament admin: draws and scheduling          | Backlog |
-| DR-025                      | Tournament admin: settings and phase controls   | Backlog |
-| DR-026                      | Tournament live displays and kiosk              | Backlog |
-| DR-027                      | Global admin and search indexing                | Backlog |
-| DR-028                      | Sync administration and team matching           | Backlog |
-| DR-029                      | Legacy styling retirement and final regression  | Backlog |
+| ID                                                        | Area                                                    | Status  |
+| --------------------------------------------------------- | ------------------------------------------------------- | ------- |
+| [DR-001][baseline]                                        | Theme and design baseline                               | Done    |
+| [DR-002][pilot]                                           | Home page pilot                                         | Done    |
+| [DR-003][shell-work-item]                                 | App shell, navigation, search, and layouts              | Done    |
+| [DR-004][heading-work-item]                               | Shared headings, hero, and breadcrumb                   | Done    |
+| DR-005                                                    | Shared ranking, statistics, and status patterns         | Backlog |
+| [DR-005a][tier-badge-work-item]                           | Shared tier badge                                       | Done    |
+| [DR-005b][form-sequence-work-item]                        | Shared form sequence                                    | Done    |
+| [DR-005c](work-items/DR-005c-sparkline.md)                | Shared sparkline                                        | Done    |
+| [DR-005d](work-items/DR-005d-stat-card.md)                | Shared stat-card                                        | Done    |
+| [DR-005e](work-items/DR-005e-ranking-progress.md)         | Shared ranking progress                                 | Done    |
+| DR-006                                                    | Shared games, matches, and brackets                     | Backlog |
+| [DR-006a](work-items/DR-006a-recent-game-points.md)       | Mounted player recent-game point indicators             | Done    |
+| [DR-006b](work-items/DR-006b-recent-game-scores.md)       | Mounted player recent-game set scores                   | Done    |
+| [DR-006c](work-items/DR-006c-recent-game-results.md)      | Mounted player recent-game result indicator             | Done    |
+| [DR-006d](work-items/DR-006d-recent-game-filters.md)      | Mounted player recent-game heading and filters          | Done    |
+| [DR-006e](work-items/DR-006e-recent-game-loading.md)      | Mounted player recent-game loading presentation         | Done    |
+| [DR-006f](work-items/DR-006f-upcoming-game-cards.md)      | Mounted player populated upcoming-game cards            | Done    |
+| [DR-006g](work-items/DR-006g-upcoming-game-states.md)     | Mounted player upcoming-games presentation              | Done    |
+| [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md) | Shared upcoming encounter cards                         | Done    |
+| [DR-006i](work-items/DR-006i-played-encounter-cards.md)   | Shared played encounter cards and expanded presentation | Done    |
+| [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)  | Shared bracket responsive layout                        | Done    |
+| DR-007                                                    | Shared form controls and sync feedback                  | Backlog |
+| DR-008                                                    | Player detail                                           | Backlog |
+| [DR-008a](work-items/DR-008a-player-hero-actions.md)      | Player hero actions                                     | Done    |
+| DR-009                                                    | Player head-to-head                                     | Backlog |
+| DR-010                                                    | Player ranking breakdown                                | Backlog |
+| DR-011                                                    | Player editing                                          | Backlog |
+| DR-012                                                    | Club detail and browsing tabs                           | Backlog |
+| DR-013                                                    | Club team builder                                       | Backlog |
+| DR-014                                                    | Club team detail                                        | Backlog |
+| DR-015                                                    | Competition detail and sub-event presentation           | Backlog |
+| [DR-015a](work-items/DR-015a-competition-event-cards.md)  | Competition sub-event Cards                             | Done    |
+| DR-016                                                    | Competition draws                                       | Backlog |
+| DR-017                                                    | Competition assembly                                    | Backlog |
+| DR-018                                                    | Competition editing                                     | Backlog |
+| DR-019                                                    | Tournament detail and club tournaments                  | Backlog |
+| DR-020                                                    | Tournament creation and editing                         | Backlog |
+| DR-021                                                    | Tournament enrollment workflows                         | Backlog |
+| DR-022                                                    | Tournament draw detail                                  | Backlog |
+| DR-023                                                    | Tournament admin: enrollments and check-in              | Backlog |
+| DR-024                                                    | Tournament admin: draws and scheduling                  | Backlog |
+| DR-025                                                    | Tournament admin: settings and phase controls           | Backlog |
+| DR-026                                                    | Tournament live displays and kiosk                      | Backlog |
+| DR-027                                                    | Global admin and search indexing                        | Backlog |
+| DR-028                                                    | Sync administration and team matching                   | Backlog |
+| DR-029                                                    | Legacy styling retirement and final regression          | Backlog |
 
 ## App and shared surfaces
 

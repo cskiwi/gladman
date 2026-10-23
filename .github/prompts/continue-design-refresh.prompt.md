@@ -61,8 +61,10 @@ Apply the full design rules, especially:
 Capture relevant before/after evidence using safe test data. Keep changes scoped and record unrelated discoveries as
 backlog items rather than expanding the task. Do not add dependencies, run operational/admin mutations for visual
 testing, or create commits before user approval. The user's approval of a DR item authorizes committing that item's
-implementation, tests, and repository handoff without a separate commit request. Include workflow changes only when
-requested; preserve unrelated changes and never stage them in the DR commit. Do not push unless requested.
+implementation, tests, and repository handoff without a separate commit request. An explicit user request to `commit`
+is also approval: mark the active slice `Done`, preserve any unchecked verification limits, and commit its
+implementation, tests, and handoff. Include workflow changes only when requested; preserve unrelated changes and
+never stage them in the DR commit. Do not push unless requested.
 
 ## Verify before checking off work
 

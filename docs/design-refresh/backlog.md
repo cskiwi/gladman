@@ -19,6 +19,13 @@ pixel contrast remains unverified. The user approved completion with this limit 
 Exact next action: choose the next DR-006 child; parent DR-006 stays open.
 Parent DR-006 stays open.
 
+The mounted DR-006 consumer inventory found no production callers for the legacy `match-row` or `upcoming-match`
+components. No redesign child was created for unused components; adding a consumer only for verification would
+violate the consumer-first scope rule. The next mounted slice is [DR-008a](work-items/DR-008a-player-hero-actions.md),
+which gives the player detail hero's icon-only actions a localized accessible name without changing its behavior.
+DR-008a is Done with explicit user approval on 2026-10-23; mounted light/dark narrow/wide geometry and keyboard
+menu activation pass. No pixel-contrast measurement or alternate-locale browser pass is claimed.
+
 DR-006i is Done with explicit user approval on 2026-10-23 after the inline-style removal request.
 Summaries and expanded games
 use native Cards, Tailwind layout, and semantic text; all component CSS is removed, with no SCSS or inline-style
@@ -227,6 +234,7 @@ and linked from their registry rows.
 | [DR-006j](work-items/DR-006j-bracket-tree-responsive.md) | Shared bracket responsive layout | Done |
 | DR-007                      | Shared form controls and sync feedback          | Backlog |
 | DR-008                      | Player detail                                   | Backlog |
+| [DR-008a](work-items/DR-008a-player-hero-actions.md) | Player hero actions                 | Done    |
 | DR-009                      | Player head-to-head                             | Backlog |
 | DR-010                      | Player ranking breakdown                        | Backlog |
 | DR-011                      | Player editing                                  | Backlog |

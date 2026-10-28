@@ -206,6 +206,8 @@
     "dates": "Belangrijke Data",
     "details": "Competitie Details",
     "draw": "Poule",
+    "drawFallbackName": "Poule {{id}}",
+    "noDrawsYet": "Nog geen poules ingesteld",
     "draws": "Poules",
     "edit": {
       "actions": {

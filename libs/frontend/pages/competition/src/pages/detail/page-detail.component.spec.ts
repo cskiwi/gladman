@@ -10,7 +10,19 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { ButtonDirective } from 'primeng/button';
 import { of } from 'rxjs';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { PageDetailComponent } from './page-detail.component';
+
+const drawCopyLocales = [
+  { locale: 'en', fallback: 'Draw 12345678', empty: 'No draws configured yet' },
+  { locale: 'nl_BE', fallback: 'Poule 12345678', empty: 'Nog geen poules ingesteld' },
+  { locale: 'fr_BE', fallback: 'Calendrier 12345678', empty: 'Aucun calendrier configuré pour le moment' },
+].map((copy) => {
+  const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', copy.locale, 'all.json');
+  const asset: { competition: { drawFallbackName: string; noDrawsYet: string } } = JSON.parse(readFileSync(assetPath, 'utf8'));
+  return { ...copy, asset };
+});
 
 const createCompetition = () => ({
   id: 'competition',
@@ -107,6 +119,7 @@ describe('Competition detail presentation', () => {
         competition: {
           subEvents: 'Sub-events',
           draws: 'Draws',
+          drawFallbackName: 'Draw {{id}}',
           noDrawsYet: 'No draws configured yet',
           maxLevel: 'Max level',
           summary: {
@@ -450,6 +463,95 @@ describe('Competition detail presentation', () => {
     translations.use('nl');
     harness.detectChanges();
     expect(message?.textContent?.trim()).toBe('Nog geen reeksen');
+  });
+
+  it.each(drawCopyLocales)('renders fallback and empty copy from the real $locale asset', async ({ locale, fallback, empty, asset }) => {
+    expect(asset.competition.drawFallbackName.match(/\{\{\w+\}\}/g)).toEqual(['{{id}}']);
+    expect(asset.competition.noDrawsYet).toBe(empty);
+    const competition = createCompetition();
+    competition.competitionSubEvents[1].competitionDraws = [{ id: '12345678-rest', name: '', visualCode: 'fallback-code' }];
+    query.mockReturnValue(of({ data: { competitionEvent: competition } }));
+    await harness.navigateByUrl('/competition/localized-draw-copy');
+    await harness.fixture.whenStable();
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    harness.detectChanges();
+    const link = element.querySelector('article a[href*="/draws/12345678-rest"]');
+    expect(link?.textContent?.trim()).toBe(fallback);
+    expect(link?.getAttribute('href')).toBe('/competition/test-competition/sub-events/men/draws/12345678-rest');
+    const external = link?.parentElement?.querySelector('a[target="_blank"]');
+    expect(external?.getAttribute('aria-label')).toBe(`${fallback} (toernooi.nl)`);
+    expect(external?.getAttribute('href')).toBe('https://www.toernooi.nl/sport/league/draw?id=competition-code&draw=fallback-code');
+    expect(external?.getAttribute('rel')).toBe('noopener noreferrer');
+    const message = element.querySelector('article p-message');
+    expect(message?.classList.contains('p-message-secondary')).toBe(true);
+    expect(message?.textContent?.trim()).toBe(empty);
+    expect(element.querySelector('article a[href*="/draws/draw-mixed"]')?.textContent?.trim()).toBe('Mixed draw');
+  });
+
+  it.each([
+    { name: '', id: '12345678-rest', expected: 'Draw 12345678' },
+    { name: null, id: '12345678-rest', expected: 'Draw 12345678' },
+    { name: undefined, id: 'short', expected: 'Draw short' },
+    { name: '   ', id: '12345678-rest', expected: '   ' },
+    { name: 'Named draw', id: '12345678-rest', expected: 'Named draw' },
+  ])('preserves truthy names and ID slicing for $name / $id', async ({ name, id, expected }) => {
+    const competition = createCompetition();
+    query.mockReturnValue(
+      of({
+        data: {
+          competitionEvent: {
+            ...competition,
+            competitionSubEvents: [{ ...competition.competitionSubEvents[1], competitionDraws: [{ id, name, visualCode: 'fallback-code' }] }],
+          },
+        },
+      }),
+    );
+    await harness.navigateByUrl('/competition/draw-name-edges');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('article [pButtonLabel] > span')?.textContent).toBe(expected);
+    expect(element.querySelector('article a[target="_blank"]')?.getAttribute('aria-label')).toBe(`${expected} (toernooi.nl)`);
+  });
+
+  it.each([null, undefined, []])('localizes empty or absent draw arrays (%s)', async (competitionDraws) => {
+    const competition = createCompetition();
+    query.mockReturnValue(
+      of({
+        data: {
+          competitionEvent: {
+            ...competition,
+            competitionSubEvents: [{ ...competition.competitionSubEvents[1], competitionDraws }],
+          },
+        },
+      }),
+    );
+    await harness.navigateByUrl('/competition/empty-draw-copy');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('article ul')).toBeNull();
+    expect(element.querySelector('article p-message')?.textContent?.trim()).toBe('No draws configured yet');
+  });
+
+  it('updates both fallback names and the empty message on mounted language changes', async () => {
+    const competition = createCompetition();
+    competition.competitionSubEvents[1].competitionDraws = [{ id: '12345678-rest', name: '', visualCode: 'fallback-code' }];
+    query.mockReturnValue(of({ data: { competitionEvent: competition } }));
+    await harness.navigateByUrl('/competition/draw-copy-language-change');
+    await harness.fixture.whenStable();
+    const translations = TestBed.inject(TranslateService);
+    const link = element.querySelector('article a[href*="/draws/12345678-rest"]');
+    const external = link?.parentElement?.querySelector('a[target="_blank"]');
+    const message = element.querySelector('article p-message');
+    drawCopyLocales.forEach(({ locale, fallback, empty, asset }) => {
+      translations.setTranslation(locale, { all: asset });
+      translations.use(locale);
+      harness.detectChanges();
+      expect(link?.textContent?.trim()).toBe(fallback);
+      expect(external?.getAttribute('aria-label')).toBe(`${fallback} (toernooi.nl)`);
+      expect(message?.textContent?.trim()).toBe(empty);
+    });
   });
 
   it('renders static info metadata Tags in order and updates the translated label', () => {

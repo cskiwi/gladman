@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-015g is Done with explicit user approval on 2026-10-28: competition detail's unnamed-draw labels,
+matching external-link accessible names,
+and empty Card copy now use two real competition keys in all three locales.
+The supplied route retains 12 Cards, 26 internal/external pairs, and the exact ordered link/name fingerprint.
+All 46 component tests, focused competition/translation lint, and app build with 29 prerequisites pass.
+After approval, repository-required lint across all 34 projects passes with existing warnings.
+Synthetic Angular-resource edge fixtures render the real localized fallback and Message without backend writes.
+Measured light/dark 390px/1280px geometry, keyboard focus, contrast, mounted locale reloads, and populated SSR pass.
+French synthetic narrow screenshots were inspected; full-page screenshot sizing limits are recorded in the brief.
+Operational unnamed/empty records, screen-reader output, and exhaustive hydration remain unverified.
+The user selected "Approve completion and commit with the disclosed verification limits";
+unchecked criteria remain unchecked. This authorizes only the scoped implementation/tests/handoff commit.
+No class, shared terminology, tournament value, permission, global theme, or application TypeScript changed.
+See the [brief](work-items/DR-015g-competition-draw-copy.md).
+Exact next action for a fresh invocation: scope DR-016's mounted competition draw page as one bounded child,
+confirm its real route/consumer, and create its brief before editing. Do not restart DR-015g.
+Parent DR-015 remains open pending parent-level acceptance. No second implementation slice was started.
+No push is authorized.
+
 DR-015f is Done with explicit user approval on 2026-10-28: "mark as done and commit".
 Statistics retain the existing div/span vocabulary, restrained totals, readable dates, and localized context.
 The user confirmed keeping concurrent competition metadata edits and updating the affected tests.
@@ -19,8 +38,8 @@ Live absent-date/zero-count data, screen-reader output, exhaustive hydration, an
 of retained shared terminology remain unverified; applicable component coverage and historical locale checks
 are recorded in the brief. Unchecked criteria stay unchecked despite explicit completion approval.
 See the [brief](work-items/DR-015f-competition-statistics.md) for exact evidence and limits.
-Exact next action for a fresh invocation: scope remaining competition draw fallback-name/empty-copy localization
-under DR-015, confirming mounted consumers and preserving behavior. Do not restart DR-015f.
+Its competition draw fallback-name/empty-copy localization follow-up is now scoped as DR-015g above.
+Do not restart DR-015f.
 Parent DR-015 remains open. The scoped commit is approved; no push is authorized.
 
 DR-015e is Done with explicit user approval on 2026-10-28: the mounted competition hero's toernooi.nl
@@ -340,6 +359,7 @@ and linked from their registry rows.
 | [DR-015d](work-items/DR-015d-competition-metadata.md)         | Competition sub-event metadata Tags                     | Done    |
 | [DR-015e](work-items/DR-015e-competition-hero-link.md)        | Competition hero external link                          | Done    |
 | [DR-015f](work-items/DR-015f-competition-statistics.md)       | Competition hero statistics and localization            | Done    |
+| [DR-015g](work-items/DR-015g-competition-draw-copy.md)        | Competition draw fallback and empty copy                | Done    |
 | DR-016                                                        | Competition draws                                       | Backlog |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |

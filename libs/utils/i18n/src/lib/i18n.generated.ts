@@ -213,6 +213,8 @@ export type I18nTranslations = {
             "dates": string;
             "details": string;
             "draw": string;
+            "drawFallbackName": string;
+            "noDrawsYet": string;
             "draws": string;
             "edit": {
                 "actions": {

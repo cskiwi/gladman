@@ -207,6 +207,7 @@
                       <div class="flex flex-col gap-2">
                         <ul class="m-0 flex list-none flex-col gap-2 p-0">
                           @for (draw of subEvent.competitionDraws; track draw.id) {
+                            @let drawName = draw.name || ('all.competition.drawFallbackName' | translate: { id: (draw.id | slice: 0 : 8) });
                             <li class="flex items-center gap-2">
                               <a
                                 pButton
@@ -217,7 +218,7 @@
                                 class="min-w-0 flex-1 no-underline"
                               >
                                 <span pButtonLabel class="min-w-0 w-full text-left text-color">
-                                  <span class="block whitespace-normal break-words">{{ draw.name || 'Draw ' + (draw.id | slice: 0 : 8) }}</span>
+                                  <span class="block whitespace-normal break-words">{{ drawName }}</span>
                                   @if (draw.type || draw.size) {
                                     <span class="flex flex-wrap gap-2 text-xs font-normal text-muted-color">
                                       @if (draw.type) {
@@ -240,7 +241,7 @@
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   class="shrink-0 no-underline"
-                                  [attr.aria-label]="(draw.name || 'Draw ' + (draw.id | slice: 0 : 8)) + ' (toernooi.nl)'"
+                                  [attr.aria-label]="drawName + ' (toernooi.nl)'"
                                 >
                                   <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>
                                 </a>
@@ -251,7 +252,7 @@
                       </div>
                     } @else {
                       <p-message severity="secondary" size="small" icon="pi pi-info-circle">
-                        {{ 'all.competition.noDrawsYet' | translate: { default: 'No draws configured yet' } }}
+                        {{ 'all.competition.noDrawsYet' | translate }}
                       </p-message>
                     }
                   </article>

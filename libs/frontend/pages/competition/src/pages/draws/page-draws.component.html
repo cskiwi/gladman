@@ -3,33 +3,33 @@
     @if (this.subEvent(); as subEvent) {
       @if (this.draw(); as draw) {
         <!-- Breadcrumb -->
-        <app-breadcrumb [items]="[
-          { label: competition.name, routerLink: ['/', 'competition', competition.slug] },
-          { label: subEvent.name },
-          { label: draw.name || ('all.competition.draw' | translate) },
-        ]" />
+        <app-breadcrumb
+          [items]="[
+            { label: competition.name, routerLink: ['/', 'competition', competition.slug] },
+            { label: subEvent.name },
+            { label: draw.name || ('all.competition.draw' | translate) },
+          ]"
+        />
 
         <!-- Draw Hero -->
         <app-hero>
           <app-hero-avatar avatar>{{ (draw.type || 'D').substring(0, 1) }}</app-hero-avatar>
 
           <div identity>
-            <span class="t-eyebrow">{{ subEvent.name }}</span>
+            <span class="text-sm text-muted-color">{{ subEvent.name }}</span>
             <app-hero-title>{{ draw.name || ('all.competition.draw' | translate) + ' ' + (draw.id | slice: 0 : 8) }}</app-hero-title>
             <div class="flex items-center gap-2 flex-wrap">
               @if (draw.type) {
-                <span class="t-mono text-xs text-color bg-emphasis px-2 py-0.5 rounded-sm tracking-wider">{{ draw.type }}</span>
+                <p-tag severity="secondary" [value]="draw.type" />
               }
               @if (draw.size) {
-                <span class="t-mono text-xs text-color bg-emphasis px-2 py-0.5 rounded-sm tracking-wider">Size {{ draw.size }}</span>
+                <p-tag severity="secondary" [value]="('all.competition.size' | translate) + ' ' + draw.size" />
               }
               @if (subEvent.maxLevel) {
-                <span class="t-mono text-xs text-color bg-emphasis px-2 py-0.5 rounded-sm tracking-wider">
-                  {{ 'all.competition.maxLevel' | translate }} {{ subEvent.maxLevel }}
-                </span>
+                <p-tag severity="secondary" [value]="('all.competition.maxLevel' | translate) + ' ' + subEvent.maxLevel" />
               }
               @if (subEvent.eventType) {
-                <span class="t-mono text-xs text-muted-color bg-emphasis px-2 py-0.5 rounded-sm tracking-wider">{{ subEvent.eventType }}</span>
+                <p-tag severity="secondary" [value]="subEvent.eventType" />
               }
             </div>
           </div>
@@ -37,14 +37,18 @@
           <div actions class="flex items-center gap-2 flex-wrap justify-end">
             @if (competition.visualCode && draw.visualCode) {
               <a
+                pButton
+                severity="secondary"
+                variant="text"
+                size="small"
                 [href]="'https://www.toernooi.nl/sport/league/draw?id=' + competition.visualCode + '&draw=' + draw.visualCode"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1 px-2 py-1 rounded-sm text-muted-color hover:text-primary hover:bg-emphasis transition-colors text-xs no-underline"
-                title="View draw on toernooi.nl"
+                class="no-underline focus-visible:outline-none! focus-visible:ring-2! focus-visible:ring-primary"
+                [attr.aria-label]="(draw.name || ('all.competition.draw' | translate) + ' ' + (draw.id | slice: 0 : 8)) + ' (toernooi.nl)'"
               >
-                <i class="pi pi-external-link text-xs"></i>
-                <span>toernooi.nl</span>
+                <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>
+                <span pButtonLabel>toernooi.nl</span>
               </a>
             }
             @if (syncConfig(); as config) {

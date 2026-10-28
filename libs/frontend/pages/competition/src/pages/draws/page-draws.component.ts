@@ -13,11 +13,15 @@ import { PouleDrawComponent } from './components/poule-draw.component';
 import { QualificationDrawComponent } from './components/qualification-draw.component';
 import { DrawsService } from './page-draws.service';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
+import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-page-draws',
   imports: [
     BreadcrumbComponent,
+    ButtonModule,
+    TagModule,
     SlicePipe,
     ProgressBarModule,
     RouterModule,

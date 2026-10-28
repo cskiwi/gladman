@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-016b is Done with explicit user approval on 2026-10-28: the mounted competition draw hero identity/actions use
+native secondary Tags and an
+external-link Button, preserving the title/fallback, optional metadata, destination, and sync configuration.
+All 74 competition tests, focused lint (41 existing warnings), and app build with 29 prerequisites pass.
+Identity/action utility tokens drop from 57 to 17. All 158 ordered page links, nine standings, and statistics
+match baseline. Light/dark 390px/1280px fit, keyboard focus/intercepted Enter, accessible naming, contrast,
+three localized mounted reloads, and populated SSR pass. Four screenshots were inspected.
+Actual screen-reader output, operational missing metadata, sync/role workflows, exhaustive hydration, and
+every hover/active state remain unverified. No backend, translation assets, shared components, or theme changed.
+The user selected "Approve completion and commit with the recorded verification limits".
+Unchecked criteria remain unverified; approval is not evidence that they passed.
+Repository-required lint passes across all 34 projects with existing warnings and no errors.
+Only the scoped implementation/tests/handoff commit is authorized; no push is authorized.
+Exact next action after that commit: scope a separate DR-016 draw-statistics child on the recorded mounted route,
+confirm current consumers, and create its brief before editing. Do not restart DR-016b.
+See the [brief](work-items/DR-016b-draw-hero.md) for precise commands and evidence.
+Do not restart DR-016a or begin a second implementation slice. DR-016 remains open.
+
 DR-016a is Done with explicit user approval on 2026-10-28: the mounted competition poule standings use native Table/Card,
 named success/danger direction Tags, and a neutral secondary empty Message.
 All nine rows and club links match baseline. All 63 competition tests, focused lint (41 existing warnings),
@@ -22,8 +40,8 @@ The user selected "Approve completion and commit with the recorded verification 
 Unchecked criteria remain unverified; approval is not evidence that they passed.
 Repository-required lint passes across all 34 projects (34 cached results, existing warnings).
 The scoped implementation/tests/handoff commit is authorized; no push is authorized.
-Exact next action for a fresh invocation: scope a separate DR-016 draw-chrome child on the recorded mounted draw route,
-confirm current consumers, and create its brief before editing. Do not restart DR-016a.
+The historical next action to scope a separate mounted draw-chrome child is fulfilled by DR-016b above.
+Do not restart DR-016a.
 Qualification still requires confirming a mounted live consumer.
 DR-016 remains open pending remaining children and parent acceptance. No second implementation slice was started.
 See the [brief](work-items/DR-016a-poule-standings.md) for precise evidence and limits.
@@ -401,6 +419,7 @@ and linked from their registry rows.
 | [DR-015g](work-items/DR-015g-competition-draw-copy.md)        | Competition draw fallback and empty copy                | Done    |
 | DR-016                                                        | Competition draws                                       | Backlog |
 | [DR-016a](work-items/DR-016a-poule-standings.md)              | Competition poule standings                             | Done    |
+| [DR-016b](work-items/DR-016b-draw-hero.md)                    | Competition draw hero identity and actions              | Done    |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
@@ -538,6 +557,9 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   consumers before including migration or retirement; do not add a new route.
 - DR-016: `/competition/:competitionId/sub-events/:subEventId/draws/:drawId`. Cover poule/qualification presentations
   and encounter cards.
+  DR-016a covers standings; DR-016b covers only hero identity/actions. Next, scope draw statistics
+  (including existing hardcoded English labels and legacy statistic styling), section chrome, loading/error states,
+  and encounters separately. Qualification still requires a confirmed mounted consumer.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.
 - Preserve calculations, draw/encounter navigation, synchronization controls, and permission-dependent actions.

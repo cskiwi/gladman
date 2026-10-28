@@ -103,14 +103,13 @@
         @if (encounters().length > 0) {
           <section class="grid gap-6 lg:grid-cols-[minmax(0,_1fr)_360px]">
             <!-- Played encounters -->
-            <div class="bg-emphasis border border-surface rounded-border p-5">
-              <div class="flex items-center justify-between mb-4">
-                <div class="flex flex-col gap-1">
-                  <span class="t-eyebrow">{{ 'all.competition.played_encounters' | translate }}</span>
-                  <h3 class="encounters-title m-0">Played</h3>
+            <p-card class="min-w-0">
+              <ng-template #title>
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <h2 class="m-0 text-xl font-semibold">{{ 'all.competition.played_encounters' | translate }}</h2>
+                  <span class="text-sm text-muted-color tabular-nums">{{ playedEncounters().length }}</span>
                 </div>
-                <span class="t-mono text-xs text-muted-color bg-emphasis px-2 py-0.5 rounded-sm">{{ playedEncounters().length }}</span>
-              </div>
+              </ng-template>
               @if (playedEncounters().length > 0) {
                 <div class="flex flex-col gap-3">
                   @for (encounter of playedEncounters(); track encounter.id) {
@@ -120,17 +119,16 @@
               } @else {
                 <p class="text-muted-color text-sm py-4">{{ 'all.competition.no_played_encounters' | translate }}</p>
               }
-            </div>
+            </p-card>
 
             <!-- Upcoming encounters -->
-            <div class="bg-emphasis border border-surface rounded-border p-5">
-              <div class="flex items-center justify-between mb-4">
-                <div class="flex flex-col gap-1">
-                  <span class="t-eyebrow">{{ 'all.competition.upcoming_encounters' | translate }}</span>
-                  <h3 class="encounters-title m-0">Upcoming</h3>
+            <p-card class="min-w-0">
+              <ng-template #title>
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <h2 class="m-0 text-xl font-semibold">{{ 'all.competition.upcoming_encounters' | translate }}</h2>
+                  <span class="text-sm text-muted-color tabular-nums">{{ upcomingEncounters().length }}</span>
                 </div>
-                <span class="t-mono text-xs text-muted-color bg-emphasis px-2 py-0.5 rounded-sm">{{ upcomingEncounters().length }}</span>
-              </div>
+              </ng-template>
               @if (upcomingEncounters().length > 0) {
                 <div class="flex flex-col gap-3">
                   @for (encounter of upcomingEncounters(); track encounter.id) {
@@ -140,7 +138,7 @@
               } @else {
                 <p class="text-muted-color text-sm py-4">{{ 'all.competition.no_upcoming_encounters' | translate }}</p>
               }
-            </div>
+            </p-card>
           </section>
         } @else {
           <div class="text-center py-12 bg-emphasis border border-surface rounded-border">

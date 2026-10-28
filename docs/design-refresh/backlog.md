@@ -5,6 +5,27 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-016d is Done with explicit user approval on 2026-10-28: the mounted competition draw's played/upcoming chrome
+uses native Cards
+and single localized semantic headings/counts. Authored shell/header utilities drop from 44 to 24.
+All 88 competition tests, focused lint (41 existing warnings), and app build with 29 prerequisites pass.
+All 158 ordered links, nine standings, 20/52 encounter cards, and 72/20/52/9 statistics match baseline.
+Light/dark at 390px/1280px, six inspected header screenshots, header/count contrast, accessible headings,
+three mounted locales, and localized populated SSR pass on the isolated port-3001 app preview.
+The original port-3000 watcher retained an earlier corrected template error; it was preserved, not restarted.
+The validation helper is stopped after checks. No shared source, translation asset, backend, or theme changed.
+Adjacent shared expansion Button keyboard reachability passes, but its unchanged dark focus outline is only 1.40:1.
+Actual screen-reader output, operational empty records, role/sync workflows, and exhaustive hydration remain unverified.
+The user selected "Approve completion and commit with the recorded verification limits".
+Unchecked criteria remain unverified; approval is not evidence that they passed.
+Repository-required lint passes across all 34 projects (34 cached results, existing warnings, no errors).
+Only the scoped implementation/tests/handoff commit is authorized; no push is authorized.
+The stale port-3000 watcher may still need restarting under user control for local inspection.
+Exact next action after this commit: scope one bounded mounted DR-016 loading/error/overall-empty child
+and create its brief before editing. Do not restart DR-016d or begin another slice in this invocation.
+DR-016a/b/c remain Done; DR-016 remains open.
+See the [brief](work-items/DR-016d-encounter-section-chrome.md) for exact evidence and remaining checks.
+
 DR-016c is Done with explicit user approval on 2026-10-28: the four mounted competition draw hero statistics
 use restrained div/span totals
 and existing translations, preserving counts/order/team fallback.
@@ -19,8 +40,8 @@ The user selected "Approve completion and commit with the recorded verification 
 Unchecked criteria remain unverified; approval is not evidence that they passed.
 After approval, repository-required lint passes across all 34 projects with existing warnings and no errors.
 Only the scoped implementation/tests/handoff commit is authorized; no push is authorized.
-Exact next action after that commit: scope one bounded mounted DR-016 section-chrome child,
-confirm current consumers, and create its brief before editing. Do not restart DR-016c.
+The historical next action to scope one mounted section-chrome child is fulfilled by DR-016d above.
+Do not restart DR-016c.
 See the [brief](work-items/DR-016c-draw-statistics.md) for precise commands and evidence.
 Do not begin another implementation slice in this invocation; DR-016 remains open.
 
@@ -440,6 +461,7 @@ and linked from their registry rows.
 | [DR-016a](work-items/DR-016a-poule-standings.md)              | Competition poule standings                             | Done    |
 | [DR-016b](work-items/DR-016b-draw-hero.md)                    | Competition draw hero identity and actions              | Done    |
 | [DR-016c](work-items/DR-016c-draw-statistics.md)              | Competition draw hero statistics                        | Done    |
+| [DR-016d](work-items/DR-016d-encounter-section-chrome.md)     | Competition draw encounter section chrome               | Done    |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
@@ -521,6 +543,10 @@ and linked from their registry rows.
   At the user's request DR-015e uses no `[dt]`. Its hero-only keyboard ring addresses focus without an outline;
   the light active-text contrast limit remains.
   Scope and check any shared correction separately; sync controls and draw links remain unchanged.
+- DR-016d discovery for shared-control/theme follow-up: the unchanged played encounter expansion Button is
+  keyboard-reachable with a named focus-visible state, but its settled native 1px outline is 1.40:1
+  against its own dark encounter Card (8.46:1 light). Scope any correction with the shared encounter consumers
+  and theme checks; no shared-control CSS or token was changed by the page-chrome slice.
 - DR-006d discovery for later shared-control work: native inactive SelectButton labels measured 4.46:1 in light
   mode against this preset's canvas. DR-006d fixes only its own label template with semantic `text-color`.
   Check other mounted SelectButton consumers when scoped; do not alter global theme tokens implicitly.
@@ -578,7 +604,8 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
 - DR-016: `/competition/:competitionId/sub-events/:subEventId/draws/:drawId`. Cover poule/qualification presentations
   and encounter cards.
   DR-016a covers standings; DR-016b covers only hero identity/actions; DR-016c covers hero statistics.
-  Scope section chrome, loading/error states, and encounters separately.
+  DR-016d covers only played/upcoming panel surfaces and localized headings/counts.
+  Scope standings outer section chrome and loading/error/overall-empty states separately.
   Qualification still requires a confirmed mounted consumer.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.

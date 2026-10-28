@@ -13,6 +13,8 @@ import { of } from 'rxjs';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PageDrawsComponent } from './page-draws.component';
+import { EncounterCardComponent } from '@app/frontend-components/games/encounter-card';
+import { Card } from 'primeng/card';
 
 const statisticLocales = [
   { locale: 'en', labels: ['Encounters', 'Played', 'Upcoming', 'Teams'] },
@@ -214,5 +216,65 @@ describe('Competition draw hero', () => {
     refresh();
     expect([...element.querySelectorAll('[stats] > div > span:first-child')].map((label) => label.textContent)).toEqual(labels);
     expect([...element.querySelectorAll('[stats] > div > span:last-child')].map((value) => value.textContent)).toEqual(['0', '0', '0', '–']);
+  });
+
+  function setEncounterPartitions(played = [{ id: 'played-1' }, { id: 'played-2' }], upcoming = [{ id: 'upcoming-1' }]): void {
+    component.encounters = signal([...played, ...upcoming]);
+    component.playedEncounters = signal(played);
+    component.upcomingEncounters = signal(upcoming);
+    refresh();
+  }
+
+  it('uses native Cards with one localized heading and count for each encounter partition', () => {
+    TestBed.inject(TranslateService).setTranslation('en', { all: statisticLocales[0].asset });
+    setEncounterPartitions();
+    const panels = [...element.querySelectorAll('section.grid > p-card')];
+    expect(panels).toHaveLength(2);
+    expect(panels.map((panel) => panel.querySelector('h2')?.textContent)).toEqual(['Played', 'Upcoming']);
+    expect(panels.map((panel) => panel.querySelector('.p-card-title span')?.textContent)).toEqual(['2', '1']);
+    expect(panels.every((panel) => panel.querySelectorAll('.t-eyebrow, .encounters-title, h3').length === 0)).toBe(true);
+    expect(panels.every((panel) => panel.classList.contains('min-w-0'))).toBe(true);
+    const cards = harness.fixture.debugElement.queryAll(By.css('section.grid > p-card'));
+    cards.forEach((card) => {
+      expect(card.injector.get(Card).pt()).toBeUndefined();
+      expect(card.injector.get(Card).dt()).toBeUndefined();
+    });
+  });
+
+  it('preserves encounter order, input variants and the game-loading callback', () => {
+    setEncounterPartitions();
+    const cards = harness.fixture.debugElement.queryAll(By.directive(EncounterCardComponent));
+    const encounters = cards.map((card) => card.componentInstance as EncounterCardComponent);
+    expect(encounters.map((card) => card.encounter().id)).toEqual(['played-1', 'played-2', 'upcoming-1']);
+    expect(encounters.map((card) => card.variant())).toEqual(['played', 'played', 'upcoming']);
+    expect(encounters.every((card) => card.onLoadGames() === component.onLoadGames)).toBe(true);
+  });
+
+  it.each(statisticLocales)('localizes encounter panel headings from the real $locale asset', ({ locale, asset }) => {
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    setEncounterPartitions();
+    expect([...element.querySelectorAll('section.grid > p-card h2')].map((heading) => heading.textContent)).toEqual([
+      asset.competition['played_encounters'],
+      asset.competition['upcoming_encounters'],
+    ]);
+  });
+
+  it.each(['played', 'upcoming'] as const)('preserves the %s-empty panel, zero count and localized copy', (empty) => {
+    TestBed.inject(TranslateService).setTranslation('en', { all: statisticLocales[0].asset });
+    setEncounterPartitions(empty === 'played' ? [] : [{ id: 'played' }], empty === 'upcoming' ? [] : [{ id: 'upcoming' }]);
+    const panels = [...element.querySelectorAll('section.grid > p-card')];
+    const emptyPanel = required(panels[empty === 'played' ? 0 : 1]);
+    expect(emptyPanel.querySelector('.p-card-title span')?.textContent).toBe('0');
+    expect(emptyPanel.querySelector('app-encounter-card')).toBeNull();
+    expect(emptyPanel.querySelector('p')?.textContent).toBe(statisticLocales[0].asset.competition[`no_${empty}_encounters`]);
+    expect(element.querySelectorAll('section.grid app-encounter-card')).toHaveLength(1);
+  });
+
+  it('keeps encounter panels hidden when the entire draw has no encounters', () => {
+    setEncounterPartitions([], []);
+    expect(element.querySelector('section.grid')).toBeNull();
+    expect(element.textContent).toContain('all.competition.no_encounters');
   });
 });

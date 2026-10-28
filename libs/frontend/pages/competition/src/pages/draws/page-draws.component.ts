@@ -15,6 +15,7 @@ import { DrawsService } from './page-draws.service';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-page-draws',
@@ -22,6 +23,7 @@ import { TagModule } from 'primeng/tag';
     BreadcrumbComponent,
     ButtonModule,
     TagModule,
+    CardModule,
     SlicePipe,
     ProgressBarModule,
     RouterModule,

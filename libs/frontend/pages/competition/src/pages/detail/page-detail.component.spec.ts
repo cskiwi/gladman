@@ -1,12 +1,14 @@
 import { ChangeDetectorRef, Component, input, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { provideRouter, RouterLink } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { AuthService } from '@app/frontend-modules-auth/service';
 import { SeoService } from '@app/frontend-modules-seo/service';
 import { SyncButtonComponent, SyncStatusIndicatorComponent } from '@app/frontend-components/sync';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
+import { ButtonDirective } from 'primeng/button';
 import { of } from 'rxjs';
 import { PageDetailComponent } from './page-detail.component';
 
@@ -165,6 +167,59 @@ describe('Competition detail presentation', () => {
     expect(element.querySelectorAll('[identity] .p-tag-secondary')).toHaveLength(2);
     expect(element.querySelector('[identity] .p-tag-success')).toBeNull();
     expect(element.querySelector('[identity]')?.textContent).toContain('all.common.no');
+  });
+
+  it('uses a named native hero link Button with the same external destination and safety', () => {
+    const link = element.querySelector('[actions] a');
+    expect(link?.getAttribute('href')).toBe('https://www.toernooi.nl/sport/league?id=competition-code');
+    expect(link?.getAttribute('target')).toBe('_blank');
+    expect(link?.getAttribute('rel')).toBe('noopener noreferrer');
+    expect(link?.getAttribute('aria-label')).toBe('Test competition (toernooi.nl)');
+    expect(link?.querySelector('[pButtonLabel]')?.textContent).toBe('toernooi.nl');
+    expect(link?.querySelector('[pButtonIcon]')?.getAttribute('aria-hidden')).toBe('true');
+    expect(link?.classList.contains('p-button')).toBe(true);
+    expect(link?.classList.contains('p-button-secondary')).toBe(true);
+    expect(link?.classList.contains('p-button-text')).toBe(true);
+    expect(link?.classList.contains('p-button-sm')).toBe(true);
+    expect(link?.classList.contains('p-button-outlined')).toBe(false);
+    expect(link?.classList.contains('focus-visible:outline-none!')).toBe(true);
+    expect(link?.classList.contains('focus-visible:ring-2!')).toBe(true);
+    expect(link?.classList.contains('focus-visible:ring-primary')).toBe(true);
+    expect([...element.querySelectorAll('a[href*="toernooi.nl"]')].every((anchor) => anchor.classList.contains('no-underline'))).toBe(true);
+    expect(link?.getAttribute('role')).not.toBe('button');
+    expect(link?.hasAttribute('title')).toBe(false);
+    expect(link?.hasAttribute('style')).toBe(false);
+    const directive = harness.routeDebugElement?.query(By.css('[actions] a')).injector.get(ButtonDirective);
+    expect(directive?.dt()).toBeUndefined();
+    const actions = element.querySelector('[actions]');
+    if (!actions) throw new Error('Hero actions did not render');
+    expect([...actions.children].map((child) => child.tagName)).toEqual(['A', 'APP-SYNC-STATUS-INDICATOR', 'APP-SYNC-BUTTON']);
+  });
+
+  it('preserves the permission-gated edit action before the external link and updates its name', async () => {
+    jest.spyOn(TestBed.inject(AuthService), 'hasAnyPermission').mockReturnValue(true);
+    query.mockReturnValue(of({ data: { competitionEvent: { ...createCompetition(), name: 'Gewijzigde competitie' } } }));
+    await harness.navigateByUrl('/competition/renamed-competition');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    const actions = element.querySelector('[actions]');
+    expect(actions?.firstElementChild?.tagName).toBe('P-BUTTON');
+    const editLink = harness.routeDebugElement?.query(By.css('[actions] p-button')).injector.get(RouterLink);
+    expect(editLink?.urlTree?.toString()).toBe('/competition/renamed-competition/edit');
+    expect(actions?.querySelector('a')?.getAttribute('aria-label')).toBe('Gewijzigde competitie (toernooi.nl)');
+    expect(actions?.querySelectorAll('app-sync-button')).toHaveLength(1);
+    expect(actions?.querySelectorAll('app-sync-status-indicator')).toHaveLength(1);
+  });
+
+  it.each([null, undefined, ''])('omits the hero external link without visual code (%s)', async (visualCode) => {
+    // Missing-code sync status validation is existing behavior outside this presentation slice.
+    component.syncStatusConfig = signal(null);
+    query.mockReturnValue(of({ data: { competitionEvent: { ...createCompetition(), visualCode } } }));
+    await harness.navigateByUrl('/competition/no-visual-code');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('[actions] a')).toBeNull();
+    expect(element.querySelector('[actions] app-sync-button')).not.toBeNull();
   });
 
   it('keeps loading and error presentation native without inline styling', () => {

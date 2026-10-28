@@ -5,6 +5,32 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-015e is Done with explicit user approval on 2026-10-28: the mounted competition hero's toernooi.nl
+anchor now uses a native PrimeNG
+secondary text Button with a competition-specific accessible name. Visibility, destination, new-tab safety,
+action order, and edit/sync behavior are preserved. All 55 ordered page links and hero text match the baseline.
+Twenty-four component tests, library lint (41 existing warnings), and app build with 29 prerequisites pass.
+Light/dark at 390px/1280px fit; keyboard access, safely intercepted Enter activation, and SSR markup pass.
+The user approved completion/commit, then requested no `[dt]` on 2026-10-28 before any commit.
+The local token override is removed and a regression assertion requires undefined `dt`.
+The user then requested no button outline and no underlining on any toernooi.nl icons on the page.
+All 27 external anchors use `no-underline`; the hero's native outline is replaced only for keyboard focus
+by a semantic primary 2px ring (3.65:1 light / 10.22:1 dark). No resting border/ring is visible.
+Two focused important utilities are documented in the brief because native unlayered rules otherwise win.
+One native contrast limit remains: light active text 4.46:1 fails 4.5:1.
+Normal/hover text passes (minimum 4.66:1 light / 6.28:1 dark); no replacement styling was introduced.
+Final tests, lint, build, and four-case geometry/focus pass apart from the light active-text contrast failure.
+Four final screenshots were inspected; earlier screenshots with the removed override remain historical.
+Mounted alternate locale, authenticated edit interaction, live missing-code data, exhaustive hydration,
+screen-reader output, and operational sync remain unverified; relevant presentation branches have component coverage.
+See the [brief](work-items/DR-015e-competition-hero-link.md) for exact evidence and limits.
+The user selected "Approve completion and commit" after reviewing the outline/underline corrections and
+disclosed light active-text contrast failure and other verification limits. Unchecked criteria remain unverified
+or failed; approval is not evidence that they passed. The scoped implementation/tests/handoff commit is authorized.
+Exact next action for a fresh invocation: inspect and scope remaining competition hero statistics
+presentation/localization as the next DR-015 candidate, confirming mounted consumers and preserving behavior.
+Keep parent DR-015 open. No push is authorized.
+
 DR-015d is Done with explicit user approval on 2026-10-23: the mounted competition sub-event metadata row
 now uses native secondary PrimeNG Tags.
 Maximum level, index bounds/separator, event type, truthy visibility conditions, translations,
@@ -18,8 +44,7 @@ screen-reader output, and operational sync actions remain unverified; edge cases
 See the [brief](work-items/DR-015d-competition-metadata.md).
 The user selected "Approve completion and commit", accepting the disclosed verification limits;
 unchecked checks remain unverified. Its scoped implementation/tests/handoff commit is authorized.
-Exact next action: inspect and scope remaining competition hero external-link/action presentation as the
-next DR-015 candidate, confirming mounted consumers and preserving behavior. Do not start it here.
+The competition hero external-link follow-up is now scoped as DR-015e above, preserving mounted behavior.
 Keep parent DR-015 open. No push is authorized.
 
 DR-015c is Done with explicit user approval on 2026-10-23: competition draw lists use native PrimeNG
@@ -296,6 +321,7 @@ and linked from their registry rows.
 | [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement       | Done    |
 | [DR-015c](work-items/DR-015c-competition-draw-links.md)       | Competition draw links and empty presentation           | Done    |
 | [DR-015d](work-items/DR-015d-competition-metadata.md)         | Competition sub-event metadata Tags                     | Done    |
+| [DR-015e](work-items/DR-015e-competition-hero-link.md)        | Competition hero external link                          | Done    |
 | DR-016                                                        | Competition draws                                       | Backlog |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
@@ -373,6 +399,11 @@ and linked from their registry rows.
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,
   disabled/loading states, and operation feedback. The [club-search area][club-search] currently contains service logic,
   not a visual component to redesign.
+- DR-015e discovery for shared-control/theme follow-up: native secondary text Button active text measured
+  4.46:1 in light mode, and its default dark focus ring measured 1.40:1 against the content surface.
+  At the user's request DR-015e uses no `[dt]`. Its hero-only keyboard ring addresses focus without an outline;
+  the light active-text contrast limit remains.
+  Scope and check any shared correction separately; sync controls and draw links remain unchanged.
 - DR-006d discovery for later shared-control work: native inactive SelectButton labels measured 4.46:1 in light
   mode against this preset's canvas. DR-006d fixes only its own label template with semantic `text-color`.
   Check other mounted SelectButton consumers when scoped; do not alter global theme tokens implicitly.
@@ -432,6 +463,9 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.
 - Preserve calculations, draw/encounter navigation, synchronization controls, and permission-dependent actions.
+- DR-015e confirms an existing missing-visual-code sync-status exception in the detail component.
+  Its external-link visibility tests isolate that unrelated validation; a missing-code live route is not claimed
+  to work. Review missing-code sync behavior separately before changing its contract.
 
 ### Tournament browsing and editing
 

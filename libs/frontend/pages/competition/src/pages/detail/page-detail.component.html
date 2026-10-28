@@ -50,14 +50,18 @@
         }
         @if (competition.visualCode) {
           <a
+            pButton
+            severity="secondary"
+            variant="text"
+            size="small"
             [href]="'https://www.toernooi.nl/sport/league?id=' + competition.visualCode"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1 px-2 py-1 rounded-sm text-muted-color hover:text-primary hover:bg-emphasis transition-colors text-xs no-underline"
-            title="View on toernooi.nl"
+            class="no-underline focus-visible:outline-none! focus-visible:ring-2! focus-visible:ring-primary"
+            [attr.aria-label]="competition.name + ' (toernooi.nl)'"
           >
-            <i class="pi pi-external-link text-xs"></i>
-            <span>toernooi.nl</span>
+            <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>
+            <span pButtonLabel>toernooi.nl</span>
           </a>
         }
         @if (syncStatusConfig(); as statusConfig) {
@@ -247,7 +251,7 @@
                                   [href]="'https://www.toernooi.nl/sport/league/draw?id=' + competition.visualCode + '&draw=' + draw.visualCode"
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  class="shrink-0"
+                                  class="shrink-0 no-underline"
                                   [attr.aria-label]="(draw.name || 'Draw ' + (draw.id | slice: 0 : 8)) + ' (toernooi.nl)'"
                                 >
                                   <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>

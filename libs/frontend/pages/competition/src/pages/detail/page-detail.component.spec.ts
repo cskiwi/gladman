@@ -15,9 +15,9 @@ import { join } from 'node:path';
 import { PageDetailComponent } from './page-detail.component';
 
 const drawCopyLocales = [
-  { locale: 'en', fallback: 'Draw 12345678', empty: 'No draws configured yet' },
-  { locale: 'nl_BE', fallback: 'Poule 12345678', empty: 'Nog geen poules ingesteld' },
-  { locale: 'fr_BE', fallback: 'Calendrier 12345678', empty: 'Aucun calendrier configuré pour le moment' },
+  { locale: 'en', fallback: 'Draw 1', empty: 'No draws configured yet' },
+  { locale: 'nl_BE', fallback: 'Poule 1', empty: 'Nog geen poules ingesteld' },
+  { locale: 'fr_BE', fallback: 'Calendrier 1', empty: 'Aucun calendrier configuré pour le moment' },
 ].map((copy) => {
   const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', copy.locale, 'all.json');
   const asset: { competition: { drawFallbackName: string; noDrawsYet: string } } = JSON.parse(readFileSync(assetPath, 'utf8'));
@@ -119,7 +119,7 @@ describe('Competition detail presentation', () => {
         competition: {
           subEvents: 'Sub-events',
           draws: 'Draws',
-          drawFallbackName: 'Draw {{id}}',
+          drawFallbackName: 'Draw {{number}}',
           noDrawsYet: 'No draws configured yet',
           maxLevel: 'Max level',
           summary: {
@@ -440,14 +440,14 @@ describe('Competition detail presentation', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
     const links = [...element.querySelectorAll('article ul a[href*="/draws/"]')];
-    expect(links.map((link) => link.textContent?.trim())).toEqual(['Draw 12345678', longName.trim(), 'Mixed draw']);
+    expect(links.map((link) => link.textContent?.trim())).toEqual(['Draw 1', longName.trim(), 'Mixed draw']);
     expect(links[0].getAttribute('href')).toBe('/competition/test-competition/sub-events/men/draws/12345678-rest');
     const name = links[1].querySelector('[pButtonLabel] > span');
     expect(name?.classList.contains('whitespace-normal')).toBe(true);
     expect(name?.classList.contains('break-words')).toBe(true);
     expect(name?.classList.contains('truncate')).toBe(false);
     expect(links[1].closest('p-card')?.classList.contains('min-w-0')).toBe(true);
-    expect(element.querySelector('article a[target="_blank"]')?.getAttribute('aria-label')).toBe('Draw 12345678 (toernooi.nl)');
+    expect(element.querySelector('article a[target="_blank"]')?.getAttribute('aria-label')).toBe('Draw 1 (toernooi.nl)');
   });
 
   it('uses the existing translated empty copy in a native secondary Message', () => {
@@ -466,7 +466,7 @@ describe('Competition detail presentation', () => {
   });
 
   it.each(drawCopyLocales)('renders fallback and empty copy from the real $locale asset', async ({ locale, fallback, empty, asset }) => {
-    expect(asset.competition.drawFallbackName.match(/\{\{\w+\}\}/g)).toEqual(['{{id}}']);
+    expect(asset.competition.drawFallbackName.match(/\{\{\w+\}\}/g)).toEqual(['{{number}}']);
     expect(asset.competition.noDrawsYet).toBe(empty);
     const competition = createCompetition();
     competition.competitionSubEvents[1].competitionDraws = [{ id: '12345678-rest', name: '', visualCode: 'fallback-code' }];
@@ -491,12 +491,12 @@ describe('Competition detail presentation', () => {
   });
 
   it.each([
-    { name: '', id: '12345678-rest', expected: 'Draw 12345678' },
-    { name: null, id: '12345678-rest', expected: 'Draw 12345678' },
-    { name: undefined, id: 'short', expected: 'Draw short' },
+    { name: '', id: '12345678-rest', expected: 'Draw 1' },
+    { name: null, id: '12345678-rest', expected: 'Draw 1' },
+    { name: undefined, id: 'short', expected: 'Draw 1' },
     { name: '   ', id: '12345678-rest', expected: '   ' },
     { name: 'Named draw', id: '12345678-rest', expected: 'Named draw' },
-  ])('preserves truthy names and ID slicing for $name / $id', async ({ name, id, expected }) => {
+  ])('preserves truthy names and numbers unnamed draws independently of $id', async ({ name, id, expected }) => {
     const competition = createCompetition();
     query.mockReturnValue(
       of({
@@ -512,7 +512,35 @@ describe('Competition detail presentation', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
     expect(element.querySelector('article [pButtonLabel] > span')?.textContent).toBe(expected);
+    expect(element.querySelector('article a[href*="/draws/"]')?.getAttribute('href')).toBe(
+      `/competition/test-competition/sub-events/men/draws/${id}`,
+    );
     expect(element.querySelector('article a[target="_blank"]')?.getAttribute('aria-label')).toBe(`${expected} (toernooi.nl)`);
+  });
+
+  it.each(drawCopyLocales)('numbers sorted rows from one and resets per sub-event in $locale', async ({ locale, asset }) => {
+    const competition = createCompetition();
+    competition.competitionSubEvents[1].competitionDraws = [
+      { id: 'named', name: 'Named draw' },
+      { id: 'first-guid', name: '', visualCode: 'first-code' },
+      { id: 'second-guid', name: '', visualCode: 'second-code' },
+    ];
+    competition.competitionSubEvents[0].competitionDraws = [{ id: 'other-guid', name: '' }];
+    query.mockReturnValue(of({ data: { competitionEvent: competition } }));
+    await harness.navigateByUrl('/competition/numbered-draws');
+    await harness.fixture.whenStable();
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    harness.detectChanges();
+    const label = (number: number) => translations.instant('all.competition.drawFallbackName', { number });
+    const links = [...element.querySelectorAll('article a[href*="/draws/"]')];
+    expect(links.map((link) => link.textContent?.trim())).toEqual([label(1), label(2), 'Named draw', label(1)]);
+    expect(links.map((link) => link.getAttribute('href')?.split('/').pop())).toEqual(['first-guid', 'second-guid', 'named', 'other-guid']);
+    expect([...element.querySelectorAll('article a[target="_blank"]')].map((link) => link.getAttribute('aria-label'))).toEqual([
+      `${label(1)} (toernooi.nl)`,
+      `${label(2)} (toernooi.nl)`,
+    ]);
   });
 
   it.each([null, undefined, []])('localizes empty or absent draw arrays (%s)', async (competitionDraws) => {

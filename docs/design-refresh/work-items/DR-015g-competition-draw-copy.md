@@ -16,8 +16,11 @@ description: 'Localized unnamed-draw labels and empty messages on the mounted co
 ## Scope
 
 - Localize only unnamed draw labels, their external-link accessible names, and the empty Card message.
-- Preserve truthy-name selection, the first eight ID characters, ordering, routes, metadata, external-link
+- Preserve truthy-name selection, ordering, routes, metadata, external-link
   visibility/security attributes, native PrimeNG Buttons/Message, and responsive layout.
+- User-requested correction: replace GUID fragments with the draw's one-based displayed position within
+  its sub-event. Restart numbering per sub-event; real names remain unchanged. Numbers are positional,
+  not persistent identifiers, and may change if draw order changes.
 - Use competition-specific keys in English, Dutch, and French. Keep existing singular terminology.
 - Exclude tournament pages, shared terminology, hero statistics, other Card content, services, sync,
   permissions, global styles/theme, and backend behavior. No dependencies or operational mutations.
@@ -44,8 +47,8 @@ description: 'Localized unnamed-draw labels and empty messages on the mounted co
 
 ## Acceptance and verification
 
-- [x] Empty, null, and missing names use the localized first-eight-character ID fallback (component tests).
-- [x] Truthy names, including whitespace, remain unchanged; short IDs are not padded (component tests).
+- [x] Empty, null, and missing names use localized one-based displayed positions, resetting per sub-event.
+- [x] Truthy names, including whitespace, remain unchanged; GUID/short-ID routes remain unchanged.
 - [x] Visible fallback and external accessible name agree in all three locales; mounted language changes
       are component-tested. Browser locale checks use reloads, not the live language selector.
 - [x] Empty and missing draw arrays render the localized native secondary Message without raw keys (tests).
@@ -56,9 +59,49 @@ description: 'Localized unnamed-draw labels and empty messages on the mounted co
 - [x] Relevant Nx test/lint/build checks pass; exact results are recorded.
 - [x] SSR and mounted locale loading are checked without overstating edge-case/hydration evidence.
 - [ ] Operational unnamed/empty records, screen-reader output, and exhaustive hydration checks.
-- [x] User approved completion and scoped commit on 2026-10-28 with the disclosed verification limits.
+- [x] User approved the initial version and scoped commit on 2026-10-28 with disclosed verification limits.
+- [x] User approved the numbered-label correction and separate commit with the recorded limits on 2026-10-28.
 
 ## Evidence and handoff
+
+### Numbered-label review correction
+
+- The initial approved version was committed as `7382cbb8`.
+- The user then noted that IDs are GUIDs and selected "Localized numbered label, such as Poule 1".
+  This authorizes implementing the numbered correction, not amending the original commit.
+- New scope: use the existing sorted loop index for fallback copy, replace `{{id}}` with `{{number}}`
+  in all three locale assets, remove the now-unused SlicePipe import, and update regression coverage.
+- Corrected validation: 49/49 component tests pass. The three added cases verify sorted numbering, multiple
+  unnamed draws, preserved names/destinations, matching external names, and per-sub-event resets with each
+  real locale asset. Existing null/missing/empty-name cases now require numbered copy, independently of IDs.
+- The same focused Nx test/lint and app build commands below pass after the correction, including all 29
+  build prerequisites. Competition lint retains 41 existing warnings; translation lint passes.
+  Repository-required lint was rerun after correction approval and passes across all 34 projects.
+  The app build/API restart briefly prevented browser loading; ports 5000 and 3000 recovered before checks.
+- Mounted browser-only cloned-resource fixtures produce Dutch `Poule 1`, `Poule 2`, and a fresh `Poule 1`
+  in the other sub-event. English/French reloads produce `Draw 1`/`Draw 2` and `Calendrier 1`/`Calendrier 2`,
+  including matching external accessible names. No API/database mutations were made.
+- Corrected light/dark geometry at explicitly measured 390px/1280px (client 375/1265) has no document overflow
+  or anchors outside Cards. Tab reaches the named external fallback anchor with native focus-visible outline.
+  Styling/contrast tokens are unchanged from the initial measured values.
+- Both corrected 390px Card captures were inspected:
+  `tmp/design-refresh/DR-015g-numbered-{light,dark}-card.png`.
+- Before synthetic changes, all 52 ordered populated article link records retain the initial fingerprint.
+  Reload restores actual data, Dutch, and dark theme. Corrected populated SSR responds HTTP 200 with 12 Cards
+  and 52 article anchors. Operational unnamed records, exhaustive hydration, and screen-reader output remain
+  unverified; initial screenshot-size limits still apply.
+- Format commands additionally include
+  `libs\frontend\pages\competition\src\pages\detail\page-detail.component.ts` for the SlicePipe removal.
+  No new translation keys/types, styles, or dependencies were added by the correction.
+- Initial evidence below is historical where it refers to GUID-based fallback copy, not proof of numbering.
+- Approval: the user selected "Approve correction and commit with the recorded verification limits"
+  on 2026-10-28. The backlog is Done on this explicit approval; unchecked checks remain unverified.
+  The original `7382cbb8` is not amended; this correction and its handoff are approved for a separate commit.
+- Next action for a fresh invocation: scope DR-016's mounted competition draw page as one bounded child,
+  confirm its real route/consumer, and create a brief before editing. Parent DR-015 remains open pending
+  parent-level acceptance. No second implementation slice was started; no push is authorized.
+
+### Initial approved GUID-version evidence
 
 - Worktree was clean before selection.
 - Playwright MCP browser was occupied; integrated VS Code browser successfully mounted the supplied route.

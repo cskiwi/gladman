@@ -5,7 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-015g is Done with explicit user approval on 2026-10-28: competition detail's unnamed-draw labels,
+DR-015g is Done with explicit approval of the numbered-label correction on 2026-10-28.
+The originally approved localization was committed as `7382cbb8`. The user then rejected GUID fragments
+and selected "Localized numbered label, such as Poule 1". Use each draw's one-based displayed position
+within its sub-event for unnamed labels and matching accessible names; preserve real names and URLs.
+The corrected version passes 49/49 component tests, focused competition/translation lint, and app build.
+Repository-required lint after correction approval passes across all 34 projects with existing warnings.
+Mounted synthetic fixtures confirm localized numbering/reset in all three locales, light/dark 390px/1280px
+fit, keyboard focus, and inspected narrow screenshots. All 52 populated link records retain their fingerprint;
+restored populated SSR responds HTTP 200. No backend records were changed.
+The user selected "Approve correction and commit with the recorded verification limits".
+Operational unnamed records, screen-reader output, exhaustive hydration, and screenshot-size limits remain
+unverified/disclosed; approval is not evidence that these passed. A separate follow-up commit is authorized.
+Exact next action for a fresh invocation: scope DR-016's mounted competition draw page as one bounded child,
+confirm the real route/consumer, and create its brief before editing. Do not restart DR-015g.
+Parent DR-015 remains open pending parent-level acceptance. No second implementation slice was started.
+See the [brief](work-items/DR-015g-competition-draw-copy.md). No push is authorized.
+
+Historical initial-version completion: DR-015g was approved on 2026-10-28; competition detail's unnamed-draw labels,
 matching external-link accessible names,
 and empty Card copy now use two real competition keys in all three locales.
 The supplied route retains 12 Cards, 26 internal/external pairs, and the exact ordered link/name fingerprint.
@@ -19,8 +36,8 @@ The user selected "Approve completion and commit with the disclosed verification
 unchecked criteria remain unchecked. This authorizes only the scoped implementation/tests/handoff commit.
 No class, shared terminology, tournament value, permission, global theme, or application TypeScript changed.
 See the [brief](work-items/DR-015g-competition-draw-copy.md).
-Exact next action for a fresh invocation: scope DR-016's mounted competition draw page as one bounded child,
-confirm its real route/consumer, and create its brief before editing. Do not restart DR-015g.
+The next candidate after the numbered correction is approved remains scoping DR-016's mounted competition
+draw page as one bounded child, confirming its real route/consumer and creating its brief before editing.
 Parent DR-015 remains open pending parent-level acceptance. No second implementation slice was started.
 No push is authorized.
 

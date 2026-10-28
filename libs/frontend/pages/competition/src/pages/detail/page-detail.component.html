@@ -206,8 +206,8 @@
                     @if (subEvent.competitionDraws && subEvent.competitionDraws.length > 0) {
                       <div class="flex flex-col gap-2">
                         <ul class="m-0 flex list-none flex-col gap-2 p-0">
-                          @for (draw of subEvent.competitionDraws; track draw.id) {
-                            @let drawName = draw.name || ('all.competition.drawFallbackName' | translate: { id: (draw.id | slice: 0 : 8) });
+                          @for (draw of subEvent.competitionDraws; track draw.id; let drawIndex = $index) {
+                            @let drawName = draw.name || ('all.competition.drawFallbackName' | translate: { number: drawIndex + 1 });
                             <li class="flex items-center gap-2">
                               <a
                                 pButton

@@ -1,4 +1,4 @@
-import { DatePipe, SlicePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
@@ -20,7 +20,6 @@ import { MessageModule } from 'primeng/message';
   imports: [
     BreadcrumbComponent,
     DatePipe,
-    SlicePipe,
     ProgressBarModule,
     RouterModule,
     TranslateModule,

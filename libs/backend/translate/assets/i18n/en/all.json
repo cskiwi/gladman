@@ -206,7 +206,7 @@
     "dates": "Important Dates",
     "details": "Competition Details",
     "draw": "Draw",
-    "drawFallbackName": "Draw {{id}}",
+    "drawFallbackName": "Draw {{number}}",
     "noDrawsYet": "No draws configured yet",
     "draws": "Draws",
     "edit": {

@@ -206,7 +206,7 @@
     "dates": "Dates importantes",
     "details": "Détails du concours",
     "draw": "Calendrier",
-    "drawFallbackName": "Calendrier {{id}}",
+    "drawFallbackName": "Calendrier {{number}}",
     "noDrawsYet": "Aucun calendrier configuré pour le moment",
     "draws": "Série",
     "edit": {

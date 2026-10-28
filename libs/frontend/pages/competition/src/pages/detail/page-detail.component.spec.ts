@@ -109,6 +109,16 @@ describe('Competition detail presentation', () => {
           draws: 'Draws',
           noDrawsYet: 'No draws configured yet',
           maxLevel: 'Max level',
+          summary: {
+            typeCountOne: 'across {{count}} type',
+            typeCountOther: 'across {{count}} types',
+            registration: 'Registration',
+            teamChanges: 'Team changes',
+            opens: 'Opens {{date}}',
+            closes: 'Closes {{date}}',
+            from: 'From {{date}}',
+            periodOneEnds: 'P1 ends {{date}}',
+          },
           types: { men: 'Men', women: 'Women', mix: 'Mixed' },
         },
       },
@@ -167,6 +177,98 @@ describe('Competition detail presentation', () => {
     expect(element.querySelectorAll('[identity] .p-tag-secondary')).toHaveLength(2);
     expect(element.querySelector('[identity] .p-tag-success')).toBeNull();
     expect(element.querySelector('[identity]')?.textContent).toContain('all.common.no');
+  });
+
+  it('keeps the existing div/span statistic groups without introducing list markup or interactive decoration', () => {
+    const stats = element.querySelector('div[stats]');
+    expect([...element.querySelectorAll('[stats] > div > span')].map((label) => label.textContent?.trim())).toEqual([
+      'Sub-events',
+      'Draws',
+      'Registration',
+      'Team changes',
+    ]);
+    expect(stats?.querySelectorAll(':scope > div > div')).toHaveLength(4);
+    stats?.querySelectorAll(':scope > div').forEach((group) => {
+      expect(group.querySelector('span')?.nextElementSibling?.tagName).toBe('DIV');
+    });
+    expect(stats?.querySelector('a, button, [tabindex], [style]')).toBeNull();
+    expect(stats?.querySelector('dl, dt, dd, ul, ol, li')).toBeNull();
+    expect(stats?.textContent).toContain('across 3 types');
+  });
+
+  it.each([
+    { count: 0, expected: ['0 across 0 types', '0'] },
+    { count: 1, expected: ['1 across 1 type', '1'] },
+    { count: 3, expected: ['3 across 3 types', '2'] },
+  ])('preserves totals and type-count copy for $count groups', async ({ count, expected }) => {
+    const competition = createCompetition();
+    competition.competitionSubEvents = competition.competitionSubEvents.slice(0, count);
+    query.mockReturnValue(of({ data: { competitionEvent: competition } }));
+    await harness.navigateByUrl('/competition/statistic-totals');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect([...element.querySelectorAll('[stats] > div > div')].slice(0, 2).map((value) => value.textContent?.trim().replace(/\s+/g, ' '))).toEqual(
+      expected,
+    );
+  });
+
+  it.each([
+    { openDate: null, closeDate: null, changeOpenDate: null, changeCloseDatePeriod1: null, expected: ['-', '-'] },
+    { openDate: undefined, closeDate: undefined, changeOpenDate: undefined, changeCloseDatePeriod1: undefined, expected: ['-', '-'] },
+    { openDate: '', closeDate: '', changeOpenDate: '', changeCloseDatePeriod1: '', expected: ['-', '-'] },
+    {
+      openDate: '2026-05-01',
+      closeDate: null,
+      changeOpenDate: '2026-07-27',
+      changeCloseDatePeriod1: null,
+      expected: ['Opens 1 May 2026', 'From 27 Jul'],
+    },
+    { openDate: null, closeDate: '2026-05-22', changeOpenDate: null, changeCloseDatePeriod1: '2026-08-25', expected: ['Closes 22 May 2026', '-'] },
+  ])('preserves partial or absent date-window visibility: $expected', async ({ expected, ...dates }) => {
+    query.mockReturnValue(of({ data: { competitionEvent: { ...createCompetition(), ...dates } } }));
+    await harness.navigateByUrl('/competition/statistic-dates');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect([...element.querySelectorAll('[stats] > div > div')].slice(2).map((value) => value.textContent?.trim().replace(/\s+/g, ' '))).toEqual(
+      expected,
+    );
+  });
+
+  it('updates all statistic labels and interpolated context when the language changes', () => {
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation('nl_BE', {
+      all: {
+        competition: {
+          subEvents: 'Reeksen',
+          draws: 'Reeks',
+          summary: {
+            typeCountOther: 'over {{count}} types',
+            registration: 'Inschrijving',
+            teamChanges: 'Ploegwijzigingen',
+            opens: 'Opent {{date}}',
+            closes: 'Sluit {{date}}',
+            from: 'Vanaf {{date}}',
+            periodOneEnds: 'P1 eindigt {{date}}',
+          },
+        },
+      },
+    });
+    translations.use('nl_BE');
+    harness.detectChanges();
+    expect([...element.querySelectorAll('[stats] > div > span')].map((label) => label.textContent?.trim())).toEqual([
+      'Reeksen',
+      'Reeks',
+      'Inschrijving',
+      'Ploegwijzigingen',
+    ]);
+    expect([...element.querySelectorAll('[stats] > div > div span')].map((value) => value.textContent?.trim())).toEqual([
+      '3',
+      'over 3 types',
+      'Opent 1 May 2026',
+      'Sluit 22 May 2026',
+      'Vanaf 27 Jul',
+      'P1 eindigt 25 Aug',
+    ]);
   });
 
   it('uses a named native hero link Button with the same external destination and safety', () => {
@@ -350,12 +452,12 @@ describe('Competition detail presentation', () => {
     expect(message?.textContent?.trim()).toBe('Nog geen reeksen');
   });
 
-  it('renders static secondary metadata Tags in order and updates the translated label', () => {
+  it('renders static info metadata Tags in order and updates the translated label', () => {
     const tags = [...element.querySelectorAll('article')][0].querySelectorAll('p-tag');
     const text = () => [...tags].map((tag) => tag.textContent?.trim().replace(/\s+/g, ' '));
-    expect(text()).toEqual(['Max level 4', 'Idx 32 – 48', 'M']);
+    expect(text()).toEqual(['Max level 4', '32 - 48', 'M']);
     tags.forEach((tag) => {
-      expect(tag.classList.contains('p-tag-secondary')).toBe(true);
+      expect(tag.classList.contains('p-tag-info')).toBe(true);
       expect(tag.hasAttribute('tabindex')).toBe(false);
       expect(tag.hasAttribute('style')).toBe(false);
       expect(tag.querySelector('button, a, [tabindex]')).toBeNull();
@@ -366,14 +468,14 @@ describe('Competition detail presentation', () => {
     });
     translations.use('nl');
     harness.detectChanges();
-    expect(text()).toEqual(['Max niveau 4', 'Idx 32 – 48', 'M']);
+    expect(text()).toEqual(['Max niveau 4', '32 - 48', 'M']);
   });
 
   it.each([
-    { name: 'lower bound only', maxLevel: 4, minBaseIndex: 32, maxBaseIndex: null, eventType: 'M', expected: ['Max level 4', 'Idx 32', 'M'] },
-    { name: 'upper bound only', maxLevel: null, minBaseIndex: null, maxBaseIndex: 48, eventType: 'F', expected: ['Idx 48', 'F'] },
-    { name: 'zero lower bound', maxLevel: 0, minBaseIndex: 0, maxBaseIndex: 48, eventType: 'MX', expected: ['Idx 48', 'MX'] },
-    { name: 'zero upper bound', maxLevel: 4, minBaseIndex: 32, maxBaseIndex: 0, eventType: '', expected: ['Max level 4', 'Idx 32'] },
+    { name: 'lower bound only', maxLevel: 4, minBaseIndex: 32, maxBaseIndex: null, eventType: 'M', expected: ['Max level 4', '32', 'M'] },
+    { name: 'upper bound only', maxLevel: null, minBaseIndex: null, maxBaseIndex: 48, eventType: 'F', expected: ['48', 'F'] },
+    { name: 'zero lower bound', maxLevel: 0, minBaseIndex: 0, maxBaseIndex: 48, eventType: 'MX', expected: ['48', 'MX'] },
+    { name: 'zero upper bound', maxLevel: 4, minBaseIndex: 32, maxBaseIndex: 0, eventType: '', expected: ['Max level 4', '32'] },
     { name: 'all zeros', maxLevel: 0, minBaseIndex: 0, maxBaseIndex: 0, eventType: '', expected: [] },
     { name: 'null metadata', maxLevel: null, minBaseIndex: null, maxBaseIndex: null, eventType: null, expected: [] },
     { name: 'missing metadata', maxLevel: undefined, minBaseIndex: undefined, maxBaseIndex: undefined, eventType: undefined, expected: [] },

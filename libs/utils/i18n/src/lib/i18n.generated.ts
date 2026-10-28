@@ -214,7 +214,6 @@ export type I18nTranslations = {
             "details": string;
             "draw": string;
             "draws": string;
-            "maxLevel": string;
             "edit": {
                 "actions": {
                     "cancel": string;
@@ -331,6 +330,7 @@ export type I18nTranslations = {
             "level": string;
             "location": string;
             "lost": string;
+            "maxLevel": string;
             "no_bracket": string;
             "no_bracket_description": string;
             "no_encounters": string;
@@ -367,6 +367,16 @@ export type I18nTranslations = {
             "status": string;
             "subEvent": string;
             "subEvents": string;
+            "summary": {
+                "closes": string;
+                "from": string;
+                "opens": string;
+                "periodOneEnds": string;
+                "registration": string;
+                "teamChanges": string;
+                "typeCountOne": string;
+                "typeCountOther": string;
+            };
             "team": string;
             "team-assembly": {
                 "auto-generate": {
@@ -678,8 +688,8 @@ export type I18nTranslations = {
             "logout": string;
             "menu": string;
             "notifications": string;
-            "players": string;
             "openMenu": string;
+            "players": string;
             "primary": string;
             "searchClubs": string;
             "searchClubsDescription": string;
@@ -926,13 +936,13 @@ export type I18nTranslations = {
                 "updates": string;
             };
             "progress": {
-                "title": string;
-                "to-upgrade": string;
-                "to-downgrade": string;
-                "upgrade-reached": string;
-                "downgrade-reached": string;
-                "at-top": string;
                 "at-floor": string;
+                "at-top": string;
+                "downgrade-reached": string;
+                "title": string;
+                "to-downgrade": string;
+                "to-upgrade": string;
+                "upgrade-reached": string;
             };
         };
         "search": {

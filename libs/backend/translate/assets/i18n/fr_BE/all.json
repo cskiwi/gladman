@@ -207,7 +207,6 @@
     "details": "Détails du concours",
     "draw": "Calendrier",
     "draws": "Série",
-    "maxLevel": "Niveau max",
     "edit": {
       "actions": {
         "cancel": "Annuler",
@@ -324,6 +323,7 @@
     "level": "Niveau",
     "location": "Localisation",
     "lost": "Perdu",
+    "maxLevel": "Niveau max",
     "no_bracket": "Pas d'horaire disponible",
     "no_bracket_description": "Ce régime d'élimination n'a pas encore de données.",
     "no_encounters": "Aucune correspondance",
@@ -360,6 +360,16 @@
     "status": "Statut",
     "subEvent": "Section",
     "subEvents": "Série",
+    "summary": {
+      "closes": "Clôture le {{date}}",
+      "from": "À partir du {{date}}",
+      "opens": "Ouverture le {{date}}",
+      "periodOneEnds": "Fin de P1 le {{date}}",
+      "registration": "Inscription",
+      "teamChanges": "Changements d'équipe",
+      "typeCountOne": "sur {{count}} type",
+      "typeCountOther": "sur {{count}} types"
+    },
     "team": "L'équipe",
     "team-assembly": {
       "auto-generate": {
@@ -671,8 +681,8 @@
     "logout": "Déconnexion",
     "menu": "Menu",
     "notifications": "Notifications",
-    "players": "Joueurs",
     "openMenu": "Ouvrir le menu de navigation",
+    "players": "Joueurs",
     "primary": "Navigation principale",
     "searchClubs": "Recherche de clubs",
     "searchClubsDescription": "Trouvez et découvrez les clubs de badminton près de chez vous",
@@ -919,13 +929,13 @@
       "updates": "Mises à jour"
     },
     "progress": {
-      "title": "Mon classement",
-      "to-upgrade": "{{points}} pts pour monter",
-      "to-downgrade": "{{points}} pts pour descendre",
-      "upgrade-reached": "Seuil de montée atteint",
-      "downgrade-reached": "Seuil de descente atteint",
+      "at-floor": "FOND",
       "at-top": "TOP",
-      "at-floor": "FOND"
+      "downgrade-reached": "Seuil de descente atteint",
+      "title": "Mon classement",
+      "to-downgrade": "{{points}} pts pour descendre",
+      "to-upgrade": "{{points}} pts pour monter",
+      "upgrade-reached": "Seuil de montée atteint"
     }
   },
   "search": {

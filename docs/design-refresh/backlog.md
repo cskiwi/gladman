@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-015f is Done with explicit user approval on 2026-10-28: "mark as done and commit".
+Statistics retain the existing div/span vocabulary, restrained totals, readable dates, and localized context.
+The user confirmed keeping concurrent competition metadata edits and updating the affected tests.
+Info Tags, removed redundant Card labels/`Idx`, ASCII separators/fallbacks, and competition terminology edits
+are retained. The unrelated `gladman.babel` edit is excluded from the scoped commit.
+Final 34/34 tests, focused competition/translation lint, app build with 29 prerequisites,
+and repository-wide lint across all 34 projects pass (existing warnings remain).
+Corrected light/dark at 390px/1280px fit; all four corrected screenshots were inspected.
+Summary contrast remains at least 4.87:1 light / 6.65:1 dark; adjacent keyboard access and SSR markup pass.
+No list markup was added to statistics. DatePipe's English month formatting remains unchanged.
+Live absent-date/zero-count data, screen-reader output, exhaustive hydration, and cross-consumer visual checks
+of retained shared terminology remain unverified; applicable component coverage and historical locale checks
+are recorded in the brief. Unchecked criteria stay unchecked despite explicit completion approval.
+See the [brief](work-items/DR-015f-competition-statistics.md) for exact evidence and limits.
+Exact next action for a fresh invocation: scope remaining competition draw fallback-name/empty-copy localization
+under DR-015, confirming mounted consumers and preserving behavior. Do not restart DR-015f.
+Parent DR-015 remains open. The scoped commit is approved; no push is authorized.
+
 DR-015e is Done with explicit user approval on 2026-10-28: the mounted competition hero's toernooi.nl
 anchor now uses a native PrimeNG
 secondary text Button with a competition-specific accessible name. Visibility, destination, new-tab safety,
@@ -27,8 +45,7 @@ See the [brief](work-items/DR-015e-competition-hero-link.md) for exact evidence 
 The user selected "Approve completion and commit" after reviewing the outline/underline corrections and
 disclosed light active-text contrast failure and other verification limits. Unchecked criteria remain unverified
 or failed; approval is not evidence that they passed. The scoped implementation/tests/handoff commit is authorized.
-Exact next action for a fresh invocation: inspect and scope remaining competition hero statistics
-presentation/localization as the next DR-015 candidate, confirming mounted consumers and preserving behavior.
+Its competition hero statistics follow-up is now scoped as DR-015f above.
 Keep parent DR-015 open. No push is authorized.
 
 DR-015d is Done with explicit user approval on 2026-10-23: the mounted competition sub-event metadata row
@@ -322,6 +339,7 @@ and linked from their registry rows.
 | [DR-015c](work-items/DR-015c-competition-draw-links.md)       | Competition draw links and empty presentation           | Done    |
 | [DR-015d](work-items/DR-015d-competition-metadata.md)         | Competition sub-event metadata Tags                     | Done    |
 | [DR-015e](work-items/DR-015e-competition-hero-link.md)        | Competition hero external link                          | Done    |
+| [DR-015f](work-items/DR-015f-competition-statistics.md)       | Competition hero statistics and localization            | Done    |
 | DR-016                                                        | Competition draws                                       | Backlog |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |

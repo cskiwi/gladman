@@ -207,7 +207,6 @@
     "details": "Competition Details",
     "draw": "Draw",
     "draws": "Draws",
-    "maxLevel": "Max level",
     "edit": {
       "actions": {
         "cancel": "Cancel",
@@ -324,6 +323,7 @@
     "level": "Level",
     "location": "Location",
     "lost": "Lost",
+    "maxLevel": "Max level",
     "no_bracket": "No Bracket Available",
     "no_bracket_description": "This knockout draw doesn't have bracket data yet.",
     "no_encounters": "No Encounters",
@@ -358,8 +358,18 @@
     "standings": "Standings",
     "statistics": "Statistics",
     "status": "Status",
-    "subEvent": "Section",
+    "subEvent": "Series",
     "subEvents": "Series",
+    "summary": {
+      "closes": "Closes {{date}}",
+      "from": "From {{date}}",
+      "opens": "Opens {{date}}",
+      "periodOneEnds": "P1 ends {{date}}",
+      "registration": "Registration",
+      "teamChanges": "Team changes",
+      "typeCountOne": "across {{count}} type",
+      "typeCountOther": "across {{count}} types"
+    },
     "team": "Team",
     "team-assembly": {
       "auto-generate": {
@@ -671,8 +681,8 @@
     "logout": "Log out",
     "menu": "Menu",
     "notifications": "Notifications",
-    "players": "Players",
     "openMenu": "Open navigation menu",
+    "players": "Players",
     "primary": "Primary navigation",
     "searchClubs": "Search Clubs",
     "searchClubsDescription": "Find and explore badminton clubs in your area",
@@ -919,13 +929,13 @@
       "updates": "updates"
     },
     "progress": {
-      "title": "Your ranking",
-      "to-upgrade": "{{points}} pts to upgrade",
-      "to-downgrade": "{{points}} pts to downgrade",
-      "upgrade-reached": "Upgrade threshold reached",
-      "downgrade-reached": "Downgrade threshold reached",
+      "at-floor": "FLOOR",
       "at-top": "TOP",
-      "at-floor": "FLOOR"
+      "downgrade-reached": "Downgrade threshold reached",
+      "title": "Your ranking",
+      "to-downgrade": "{{points}} pts to downgrade",
+      "to-upgrade": "{{points}} pts to upgrade",
+      "upgrade-reached": "Upgrade threshold reached"
     }
   },
   "search": {

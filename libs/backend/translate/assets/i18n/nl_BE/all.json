@@ -205,9 +205,8 @@
     "closeDate": "Inschrijvingen Sluiten",
     "dates": "Belangrijke Data",
     "details": "Competitie Details",
-    "draw": "Schema",
-    "draws": "Reeks",
-    "maxLevel": "Max niveau",
+    "draw": "Poule",
+    "draws": "Poules",
     "edit": {
       "actions": {
         "cancel": "Annuleren",
@@ -324,6 +323,7 @@
     "level": "Niveau",
     "location": "Locatie",
     "lost": "Verloren",
+    "maxLevel": "Max niveau",
     "no_bracket": "Geen Schema Beschikbaar",
     "no_bracket_description": "Dit eliminatie schema heeft nog geen schema gegevens.",
     "no_encounters": "Geen Wedstrijden",
@@ -358,8 +358,18 @@
     "standings": "Klassement",
     "statistics": "Statistieken",
     "status": "Status",
-    "subEvent": "Onderdeel",
+    "subEvent": "Reeks",
     "subEvents": "Reeksen",
+    "summary": {
+      "closes": "Sluit {{date}}",
+      "from": "Vanaf {{date}}",
+      "opens": "Opent {{date}}",
+      "periodOneEnds": "P1 eindigt {{date}}",
+      "registration": "Inschrijving",
+      "teamChanges": "Ploegwijzigingen",
+      "typeCountOne": "over {{count}} type",
+      "typeCountOther": "over {{count}} types"
+    },
     "team": "Team",
     "team-assembly": {
       "auto-generate": {
@@ -671,8 +681,8 @@
     "logout": "Uitloggen",
     "menu": "Menu",
     "notifications": "Meldingen",
-    "players": "Spelers",
     "openMenu": "Navigatiemenu openen",
+    "players": "Spelers",
     "primary": "Hoofdnavigatie",
     "searchClubs": "Zoek Clubs",
     "searchClubsDescription": "Vind en ontdek badmintonclubs in je buurt",
@@ -919,13 +929,13 @@
       "updates": "updates"
     },
     "progress": {
-      "title": "Mijn klassement",
-      "to-upgrade": "{{points}} pt tot promotie",
-      "to-downgrade": "{{points}} pt tot degradatie",
-      "upgrade-reached": "Promotiedrempel bereikt",
-      "downgrade-reached": "Degradatiedrempel bereikt",
+      "at-floor": "BODEM",
       "at-top": "TOP",
-      "at-floor": "BODEM"
+      "downgrade-reached": "Degradatiedrempel bereikt",
+      "title": "Mijn klassement",
+      "to-downgrade": "{{points}} pt tot degradatie",
+      "to-upgrade": "{{points}} pt tot promotie",
+      "upgrade-reached": "Promotiedrempel bereikt"
     }
   },
   "search": {

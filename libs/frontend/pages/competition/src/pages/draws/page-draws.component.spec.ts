@@ -10,7 +10,19 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { ButtonDirective } from 'primeng/button';
 import { of } from 'rxjs';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { PageDrawsComponent } from './page-draws.component';
+
+const statisticLocales = [
+  { locale: 'en', labels: ['Encounters', 'Played', 'Upcoming', 'Teams'] },
+  { locale: 'nl_BE', labels: ['Ontmoetingen', 'Gespeeld', 'Komende wedstrijden', 'Teams'] },
+  { locale: 'fr_BE', labels: ['Réunions', 'Joue', 'Prochains matches', 'Les équipes'] },
+].map((copy) => {
+  const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', copy.locale, 'all.json');
+  const asset: { competition: Record<string, unknown> } = JSON.parse(readFileSync(assetPath, 'utf8'));
+  return { ...copy, asset };
+});
 
 const createData = () => ({
   competitionEvent: {
@@ -41,7 +53,7 @@ class SyncStubComponent {
   readonly config = input<unknown>();
 }
 
-describe('Competition draw hero identity and actions', () => {
+describe('Competition draw hero', () => {
   let harness: RouterTestingHarness;
   let component: PageDrawsComponent;
   let element: HTMLElement;
@@ -169,5 +181,38 @@ describe('Competition draw hero identity and actions', () => {
       subEventName: 'First division',
       drawName: 'First division - A',
     });
+  });
+
+  it('uses restrained div/span statistics without legacy components, lists or interactive controls', () => {
+    const stats = required(element.querySelector('[stats]'));
+    expect([...stats.children].map((group) => group.tagName)).toEqual(['DIV', 'DIV', 'DIV', 'DIV']);
+    expect(stats.querySelectorAll('app-hero-stat-value, .t-eyebrow, dl, dt, dd, ul, ol, button, a')).toHaveLength(0);
+    expect(stats.querySelectorAll('.text-2xl.text-color.tabular-nums')).toHaveLength(4);
+    expect(stats.classList.contains('grid-cols-2')).toBe(true);
+    expect(stats.classList.contains('lg:grid-cols-4')).toBe(true);
+  });
+
+  it('preserves total, played, upcoming and team bindings in order', () => {
+    const encounter = { id: 'encounter' };
+    const entry = { id: 'entry' };
+    component.encounters = signal(Array.from({ length: 5 }, () => encounter));
+    component.playedEncounters = signal(Array.from({ length: 2 }, () => encounter));
+    component.upcomingEncounters = signal(Array.from({ length: 3 }, () => encounter));
+    component.standings = signal(Array.from({ length: 4 }, () => entry));
+    refresh();
+    expect([...element.querySelectorAll('[stats] > div > span:last-child')].map((value) => value.textContent)).toEqual(['5', '2', '3', '4']);
+  });
+
+  it('keeps zero encounter counts and the existing absent-team dash fallback', () => {
+    expect([...element.querySelectorAll('[stats] > div > span:last-child')].map((value) => value.textContent)).toEqual(['0', '0', '0', '–']);
+  });
+
+  it.each(statisticLocales)('renders existing $locale asset labels without changing values', ({ locale, labels, asset }) => {
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    refresh();
+    expect([...element.querySelectorAll('[stats] > div > span:first-child')].map((label) => label.textContent)).toEqual(labels);
+    expect([...element.querySelectorAll('[stats] > div > span:last-child')].map((value) => value.textContent)).toEqual(['0', '0', '0', '–']);
   });
 });

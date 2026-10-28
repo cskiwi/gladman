@@ -8,7 +8,7 @@ import { injectParams } from 'ngxtension/inject-params';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { EncounterCardComponent } from '@app/frontend-components/games/encounter-card';
-import { HeroComponent, HeroAvatarComponent, HeroTitleComponent, HeroStatValueComponent } from '@app/frontend-components/hero';
+import { HeroComponent, HeroAvatarComponent, HeroTitleComponent } from '@app/frontend-components/hero';
 import { PouleDrawComponent } from './components/poule-draw.component';
 import { QualificationDrawComponent } from './components/qualification-draw.component';
 import { DrawsService } from './page-draws.service';
@@ -34,7 +34,6 @@ import { TagModule } from 'primeng/tag';
     HeroComponent,
     HeroAvatarComponent,
     HeroTitleComponent,
-    HeroStatValueComponent,
   ],
   templateUrl: './page-draws.component.html',
   styleUrl: './page-draws.component.scss',

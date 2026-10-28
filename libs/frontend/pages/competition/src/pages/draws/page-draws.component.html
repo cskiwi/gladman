@@ -57,22 +57,22 @@
           </div>
 
           <!-- Stat strip -->
-          <div stats class="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-5 pt-5 border-t border-surface relative z-[1]">
+          <div stats class="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-5 pt-5 border-t border-surface">
             <div class="flex flex-col gap-2">
-              <span class="t-eyebrow">Encounters</span>
-              <app-hero-stat-value>{{ encounters().length }}</app-hero-stat-value>
+              <span class="text-sm text-muted-color">{{ 'all.competition.encounters' | translate }}</span>
+              <span class="text-2xl font-semibold tabular-nums text-color">{{ encounters().length }}</span>
             </div>
             <div class="flex flex-col gap-2">
-              <span class="t-eyebrow">Played</span>
-              <app-hero-stat-value variant="win">{{ playedEncounters().length }}</app-hero-stat-value>
+              <span class="text-sm text-muted-color">{{ 'all.competition.played' | translate }}</span>
+              <span class="text-2xl font-semibold tabular-nums text-color">{{ playedEncounters().length }}</span>
             </div>
             <div class="flex flex-col gap-2">
-              <span class="t-eyebrow">Upcoming</span>
-              <app-hero-stat-value>{{ upcomingEncounters().length }}</app-hero-stat-value>
+              <span class="text-sm text-muted-color">{{ 'all.competition.upcoming_encounters' | translate }}</span>
+              <span class="text-2xl font-semibold tabular-nums text-color">{{ upcomingEncounters().length }}</span>
             </div>
             <div class="flex flex-col gap-2">
-              <span class="t-eyebrow">Teams</span>
-              <app-hero-stat-value>{{ standings().length || '–' }}</app-hero-stat-value>
+              <span class="text-sm text-muted-color">{{ 'all.competition.teams' | translate }}</span>
+              <span class="text-2xl font-semibold tabular-nums text-color">{{ standings().length || '–' }}</span>
             </div>
           </div>
         </app-hero>

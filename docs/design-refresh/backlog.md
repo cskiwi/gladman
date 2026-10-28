@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-016a is Done with explicit user approval on 2026-10-28: the mounted competition poule standings use native Table/Card,
+named success/danger direction Tags, and a neutral secondary empty Message.
+All nine rows and club links match baseline. All 63 competition tests, focused lint (41 existing warnings),
+and app build with 29 prerequisites pass. Utility tokens drop from 96 to 16.
+The user's "don't use [pt]" correction is applied: accessible naming and keyboard scrolling live on a semantic
+outer region; the native Table has no pass-through options. Corrected four-case geometry/focus, row/link equality,
+screenshots, and SSR pass. Native table semantics and column headers remain inside the named region.
+Light/dark at 390px/1280px fit with keyboard-scrollable local overflow; populated and French empty screenshots
+were inspected. Three mounted locales and twelve synthetic empty theme/width/locale combinations pass.
+The native info Message failed dark contrast (4.32:1); secondary now passes at 7.74:1 light / 9.51:1 dark.
+Populated text/status contrast, named accessibility-tree content, keyboard focus, and populated SSR pass.
+Actual screen-reader output, operational missing/empty records, exhaustive hydration, and every hover/active state
+remain unverified. No backend records, translations, shared components, or theme were changed.
+The user selected "Approve completion and commit with the recorded verification limits" after the no-[pt] correction.
+Unchecked criteria remain unverified; approval is not evidence that they passed.
+Repository-required lint passes across all 34 projects (34 cached results, existing warnings).
+The scoped implementation/tests/handoff commit is authorized; no push is authorized.
+Exact next action for a fresh invocation: scope a separate DR-016 draw-chrome child on the recorded mounted draw route,
+confirm current consumers, and create its brief before editing. Do not restart DR-016a.
+Qualification still requires confirming a mounted live consumer.
+DR-016 remains open pending remaining children and parent acceptance. No second implementation slice was started.
+See the [brief](work-items/DR-016a-poule-standings.md) for precise evidence and limits.
+
 DR-015g is Done with explicit approval of the numbered-label correction on 2026-10-28.
 The originally approved localization was committed as `7382cbb8`. The user then rejected GUID fragments
 and selected "Localized numbered label, such as Poule 1". Use each draw's one-based displayed position
@@ -17,8 +40,8 @@ restored populated SSR responds HTTP 200. No backend records were changed.
 The user selected "Approve correction and commit with the recorded verification limits".
 Operational unnamed records, screen-reader output, exhaustive hydration, and screenshot-size limits remain
 unverified/disclosed; approval is not evidence that these passed. A separate follow-up commit is authorized.
-Exact next action for a fresh invocation: scope DR-016's mounted competition draw page as one bounded child,
-confirm the real route/consumer, and create its brief before editing. Do not restart DR-015g.
+The historical next action to scope one mounted DR-016 child is now fulfilled by DR-016a above.
+Do not restart DR-015g.
 Parent DR-015 remains open pending parent-level acceptance. No second implementation slice was started.
 See the [brief](work-items/DR-015g-competition-draw-copy.md). No push is authorized.
 
@@ -36,8 +59,7 @@ The user selected "Approve completion and commit with the disclosed verification
 unchecked criteria remain unchecked. This authorizes only the scoped implementation/tests/handoff commit.
 No class, shared terminology, tournament value, permission, global theme, or application TypeScript changed.
 See the [brief](work-items/DR-015g-competition-draw-copy.md).
-The next candidate after the numbered correction is approved remains scoping DR-016's mounted competition
-draw page as one bounded child, confirming its real route/consumer and creating its brief before editing.
+The historical next candidate was one bounded mounted DR-016 child; DR-016a now records that scope and evidence.
 Parent DR-015 remains open pending parent-level acceptance. No second implementation slice was started.
 No push is authorized.
 
@@ -378,6 +400,7 @@ and linked from their registry rows.
 | [DR-015f](work-items/DR-015f-competition-statistics.md)       | Competition hero statistics and localization            | Done    |
 | [DR-015g](work-items/DR-015g-competition-draw-copy.md)        | Competition draw fallback and empty copy                | Done    |
 | DR-016                                                        | Competition draws                                       | Backlog |
+| [DR-016a](work-items/DR-016a-poule-standings.md)              | Competition poule standings                             | Done    |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |

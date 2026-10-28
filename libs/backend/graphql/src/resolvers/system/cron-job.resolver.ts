@@ -2,7 +2,7 @@ import { PermGuard, User } from '@app/backend-authorization';
 import { SyncService } from '@app/backend-sync';
 import { CronJob, CronJobMeta, CronJobMetaType, CronJobUpdateInput, Player } from '@app/models';
 import { ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, Field, ID, InputType, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Field, ID, InputType, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CronJob as CronJobCron } from 'cron';
 import { CronJobArgs } from '../../args';
 
@@ -69,7 +69,11 @@ export class CronJobResolver {
 
   @Mutation(() => CronJob)
   @UseGuards(PermGuard)
-  async triggerCronJob(@User() user: Player, @Args('id', { type: () => ID }) id: string): Promise<CronJob> {
+  async triggerCronJob(
+    @User() user: Player,
+    @Args('id', { type: () => ID }) id: string,
+    @Args('year', { type: () => Int, nullable: true }) year?: number,
+  ): Promise<CronJob> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger cron jobs');
     }
@@ -77,7 +81,7 @@ export class CronJobResolver {
     if (!cronJob) {
       throw new NotFoundException(`Cron job with id ${id} not found`);
     }
-    await this.syncService.triggerCronJob(cronJob.name);
+    await this.syncService.triggerCronJob(cronJob.name, year);
     return CronJob.findOneOrFail({ where: { id } });
   }
 

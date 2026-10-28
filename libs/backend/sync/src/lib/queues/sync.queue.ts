@@ -259,6 +259,8 @@ export interface TournamentScrapeEventJobData {
   year: number;
   eventUrl: string;
   eventName: string;
+  visualCode?: string;
+  category?: string;
   metadata?: JobDisplayMetadata;
 }
 

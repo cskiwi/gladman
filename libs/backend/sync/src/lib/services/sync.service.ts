@@ -44,7 +44,7 @@ export class SyncService implements OnModuleInit {
   private readonly logger = new Logger(SyncService.name);
 
   /** Maps jobFunction name → bound handler */
-  private readonly cronHandlers: Record<string, () => Promise<void>>;
+  private readonly cronHandlers: Record<string, (year?: number) => Promise<void>>;
 
   constructor(
     @InjectQueue(SYNC_QUEUE)
@@ -78,6 +78,12 @@ export class SyncService implements OnModuleInit {
   ) {
     this.cronHandlers = {
       scheduleTournamentDiscovery: () => this.queueTournamentDiscovery(),
+      scheduleTournamentScrape: (year?: number) =>
+        this.queueTournamentScrapeYear({
+          year: year ?? new Date().getFullYear(),
+          runAdding: true,
+          runCleanup: true,
+        }),
       scheduleCompetitionSync: () => this.queueCompetitionSync(),
       scheduleTournamentSync: () => this.queueTournamentSync(),
       scheduleRankingSync: () => this.queueRankingSync(),
@@ -136,7 +142,7 @@ export class SyncService implements OnModuleInit {
   /**
    * Execute a cron job, updating tracking fields in the database
    */
-  private async executeCronJob(name: string, handler: () => Promise<void>): Promise<void> {
+  private async executeCronJob(name: string, handler: (year?: number) => Promise<void>, year?: number): Promise<void> {
     const cronJob = await CronJob.findOne({ where: { name } });
     if (!cronJob || !cronJob.active) return;
 
@@ -145,7 +151,7 @@ export class SyncService implements OnModuleInit {
     await cronJob.save();
 
     try {
-      await handler();
+      await handler(year);
     } catch (error) {
       this.logger.error(`Cron job ${name} failed: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
@@ -157,7 +163,7 @@ export class SyncService implements OnModuleInit {
   /**
    * Trigger a specific cron job by name (manual trigger)
    */
-  async triggerCronJob(name: string): Promise<void> {
+  async triggerCronJob(name: string, year?: number): Promise<void> {
     const cronJob = await CronJob.findOne({ where: { name } });
     if (!cronJob) {
       throw new NotFoundException(`Cron job '${name}' not found`);
@@ -172,7 +178,7 @@ export class SyncService implements OnModuleInit {
       throw new NotFoundException(`No handler for cron job function: ${jobName}`);
     }
 
-    await this.executeCronJob(name, handler);
+    await this.executeCronJob(name, handler, year);
   }
 
   /**
@@ -274,7 +280,7 @@ export class SyncService implements OnModuleInit {
   /**
    * Enqueue calculation jobs for all non-VISUAL ranking systems that are due
    */
-  async queueRankingCalc(options?: { startDate?: Date; stopDate?: Date, type?: RankingSystems }): Promise<void> {
+  async queueRankingCalc(options?: { startDate?: Date; stopDate?: Date; type?: RankingSystems }): Promise<void> {
     // Use the canonical "currently active BVL system" lookup so this stays
     // in sync with how publications are bucketed elsewhere.
     const system = await RankingSystem.findActiveSystem(new Date(), options?.type ?? RankingSystems.BVL);

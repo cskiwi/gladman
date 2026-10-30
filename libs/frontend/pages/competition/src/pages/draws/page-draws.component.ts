@@ -16,6 +16,7 @@ import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-page-draws',
@@ -24,6 +25,7 @@ import { CardModule } from 'primeng/card';
     ButtonModule,
     TagModule,
     CardModule,
+    MessageModule,
     SlicePipe,
     ProgressBarModule,
     RouterModule,

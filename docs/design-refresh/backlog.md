@@ -5,6 +5,20 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-016e is Done with explicit user approval on 2026-10-30: the mounted competition draw loading, error,
+and overall-empty states use native PrimeNG.
+Guarded resource reads allow the existing load error to render; a browser-intercepted failure and recovery pass.
+All 95 competition tests, focused lint (41 existing warnings), and app build with 29 prerequisites pass.
+After approval, repository-wide lint passes across all 34 projects (34 cached results, existing warnings).
+Synthetic states fit at 390px/1280px in both themes; error and empty text contrast, accessible names,
+and populated SSR checks pass. At 320px the unchanged shared header overflows; follow-up DR-030 is in Backlog.
+Actual screen-reader output, operational empty records, exhaustive hydration, and role/sync workflows remain unchecked.
+The user selected "Approve completion and commit with the recorded verification limits"; unchecked criteria remain
+unverified. Only this slice and its handoff are authorized for commit; no push is authorized.
+Exact next action after this commit: scope a separate mounted DR-016 standings outer-section chrome child.
+Do not begin that slice in this invocation.
+See the [brief](work-items/DR-016e-draw-states.md) for precise evidence and remaining checks.
+
 DR-016d is Done with explicit user approval on 2026-10-28: the mounted competition draw's played/upcoming chrome
 uses native Cards
 and single localized semantic headings/counts. Authored shell/header utilities drop from 44 to 24.
@@ -21,8 +35,8 @@ Unchecked criteria remain unverified; approval is not evidence that they passed.
 Repository-required lint passes across all 34 projects (34 cached results, existing warnings, no errors).
 Only the scoped implementation/tests/handoff commit is authorized; no push is authorized.
 The stale port-3000 watcher may still need restarting under user control for local inspection.
-Exact next action after this commit: scope one bounded mounted DR-016 loading/error/overall-empty child
-and create its brief before editing. Do not restart DR-016d or begin another slice in this invocation.
+The historical next action to scope a mounted loading/error/overall-empty child is fulfilled by DR-016e above.
+Do not restart DR-016d.
 DR-016a/b/c remain Done; DR-016 remains open.
 See the [brief](work-items/DR-016d-encounter-section-chrome.md) for exact evidence and remaining checks.
 
@@ -462,6 +476,7 @@ and linked from their registry rows.
 | [DR-016b](work-items/DR-016b-draw-hero.md)                    | Competition draw hero identity and actions              | Done    |
 | [DR-016c](work-items/DR-016c-draw-statistics.md)              | Competition draw hero statistics                        | Done    |
 | [DR-016d](work-items/DR-016d-encounter-section-chrome.md)     | Competition draw encounter section chrome               | Done    |
+| [DR-016e](work-items/DR-016e-draw-states.md)                  | Competition draw loading, error, and overall-empty      | Done    |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
@@ -475,6 +490,7 @@ and linked from their registry rows.
 | DR-027                                                        | Global admin and search indexing                        | Backlog |
 | DR-028                                                        | Sync administration and team matching                   | Backlog |
 | DR-029                                                        | Legacy styling retirement and final regression          | Backlog |
+| DR-030                                                        | Shared header overflow at 320px                         | Backlog |
 
 ## App and shared surfaces
 
@@ -605,7 +621,7 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   and encounter cards.
   DR-016a covers standings; DR-016b covers only hero identity/actions; DR-016c covers hero statistics.
   DR-016d covers only played/upcoming panel surfaces and localized headings/counts.
-  Scope standings outer section chrome and loading/error/overall-empty states separately.
+  DR-016e covers loading, error, and overall-empty states. Scope standings outer section chrome separately.
   Qualification still requires a confirmed mounted consumer.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.
@@ -703,6 +719,9 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-030 (discovered during DR-016e): at a 320px viewport, the unchanged shared topbar tools and login Button
+  extend to x=338px while the document client width is 305px. At 390px they fit. Investigate the mounted shared
+  shell and all affected consumers in a separate slice; no header, theme, or global changes were made in DR-016e.
 - DR-015c (2026-10-23): native anchor Buttons are appropriate for draw navigation; retain anchor semantics,
   semantic label colors, wrapping text, and a shrinking Card/grid item. No shared abstraction is needed.
 - DR-003 follow-up observation during DR-015c keyboard navigation: immediate return navigation emitted

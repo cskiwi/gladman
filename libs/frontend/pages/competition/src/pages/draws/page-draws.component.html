@@ -141,50 +141,62 @@
             </p-card>
           </section>
         } @else {
-          <div class="text-center py-12 bg-emphasis border border-surface rounded-border">
-            <i class="pi pi-calendar text-3xl mb-3 block text-muted-color"></i>
-            <h3 class="text-lg font-semibold mb-1 text-color">{{ 'all.competition.no_encounters' | translate }}</h3>
-            <p class="text-muted-color text-sm">{{ 'all.competition.no_encounters_description' | translate }}</p>
-          </div>
+          <p-message severity="secondary">
+            <ng-template #icon>
+              <i class="p-message-icon pi pi-calendar" aria-hidden="true"></i>
+            </ng-template>
+            <div class="flex flex-col gap-1">
+              <h2 class="m-0 text-base font-semibold">{{ 'all.competition.no_encounters' | translate }}</h2>
+              <p class="m-0">{{ 'all.competition.no_encounters_description' | translate }}</p>
+            </div>
+          </p-message>
         }
       }
     }
   }
 } @else {
-  <!-- Loading skeleton -->
-  <div class="flex flex-col gap-5">
-    <p-skeleton width="22rem" height="1rem" />
-    <div class="bg-emphasis border border-surface rounded-border p-6 flex flex-col gap-4">
-      <p-skeleton width="18rem" height="2rem" />
-      <div class="flex gap-2">
-        <p-skeleton width="5rem" height="1.5rem" />
-        <p-skeleton width="5rem" height="1.5rem" />
-      </div>
-      <div class="grid grid-cols-4 gap-4 mt-3 pt-4 border-t border-surface">
-        @for (j of [1, 2, 3, 4]; track j) {
-          <div class="flex flex-col gap-2">
-            <p-skeleton width="4rem" height="0.75rem" />
-            <p-skeleton width="3rem" height="2rem" />
+  <div role="status">
+    <span class="sr-only">{{ 'all.competition.edit.messages.loading' | translate }}</span>
+    <div class="flex flex-col gap-5" aria-hidden="true">
+      <p-skeleton width="70%" height="1rem" />
+      <p-card>
+        <div class="flex flex-col gap-4">
+          <p-skeleton width="70%" height="2rem" />
+          <div class="flex gap-2">
+            <p-skeleton width="5rem" height="1.5rem" />
+            <p-skeleton width="5rem" height="1.5rem" />
           </div>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-3 pt-4 border-t border-surface">
+            @for (j of [1, 2, 3, 4]; track j) {
+              <div class="flex flex-col gap-2">
+                <p-skeleton width="4rem" height="0.75rem" />
+                <p-skeleton width="3rem" height="2rem" />
+              </div>
+            }
+          </div>
+        </div>
+      </p-card>
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,_1fr)_360px]">
+        @for (i of [1, 2]; track i) {
+          <p-card class="min-w-0">
+            <div class="flex flex-col gap-3">
+              <p-skeleton width="50%" height="1.25rem" />
+              @for (k of [1, 2, 3]; track k) {
+                <p-skeleton width="100%" height="3rem" />
+              }
+            </div>
+          </p-card>
         }
       </div>
-    </div>
-    <div class="grid gap-6 lg:grid-cols-[1fr_360px]">
-      @for (i of [1, 2]; track i) {
-        <div class="bg-emphasis border border-surface rounded-border p-5 space-y-3">
-          <p-skeleton width="10rem" height="1.25rem" />
-          @for (k of [1, 2, 3]; track k) {
-            <p-skeleton width="100%" height="3rem" />
-          }
-        </div>
-      }
     </div>
   </div>
 }
 
 @if (error()) {
-  <div class="flex items-center gap-2 p-4 rounded-lg mt-4" style="background: var(--g-loss-muted); color: var(--g-loss)">
-    <i class="pi pi-exclamation-triangle"></i>
-    {{ error() }}
-  </div>
+  <p-message severity="error" class="mt-4 w-full">
+    <ng-template #icon>
+      <i class="p-message-icon pi pi-exclamation-triangle" aria-hidden="true"></i>
+    </ng-template>
+    <span class="text-color">{{ error() }}</span>
+  </p-message>
 }

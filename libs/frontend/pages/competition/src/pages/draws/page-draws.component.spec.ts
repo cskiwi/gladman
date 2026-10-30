@@ -9,17 +9,18 @@ import { SeoService } from '@app/frontend-modules-seo/service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { ButtonDirective } from 'primeng/button';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PageDrawsComponent } from './page-draws.component';
 import { EncounterCardComponent } from '@app/frontend-components/games/encounter-card';
 import { Card } from 'primeng/card';
+import { Message } from 'primeng/message';
 
 const statisticLocales = [
-  { locale: 'en', labels: ['Encounters', 'Played', 'Upcoming', 'Teams'] },
-  { locale: 'nl_BE', labels: ['Ontmoetingen', 'Gespeeld', 'Komende wedstrijden', 'Teams'] },
-  { locale: 'fr_BE', labels: ['Réunions', 'Joue', 'Prochains matches', 'Les équipes'] },
+  { locale: 'en', labels: ['Encounters', 'Played', 'Upcoming', 'Teams'], loading: 'Loading competition data...' },
+  { locale: 'nl_BE', labels: ['Ontmoetingen', 'Gespeeld', 'Komende wedstrijden', 'Teams'], loading: 'Competitie gegevens laden...' },
+  { locale: 'fr_BE', labels: ['Réunions', 'Joue', 'Prochains matches', 'Les équipes'], loading: 'Chargement des données de la compétition...' },
 ].map((copy) => {
   const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', copy.locale, 'all.json');
   const asset: { competition: Record<string, unknown> } = JSON.parse(readFileSync(assetPath, 'utf8'));
@@ -276,5 +277,67 @@ describe('Competition draw hero', () => {
     setEncounterPartitions([], []);
     expect(element.querySelector('section.grid')).toBeNull();
     expect(element.textContent).toContain('all.competition.no_encounters');
+  });
+
+  it.each(statisticLocales)('announces loading and retains the native placeholders in $locale', ({ locale, loading, asset }) => {
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    component.loading = signal(true);
+    refresh();
+    const status = required(element.querySelector('[role="status"]'));
+    expect(status.querySelector('.sr-only')?.textContent).toBe(loading);
+    expect(status.querySelectorAll('[aria-hidden="true"] p-skeleton')).toHaveLength(20);
+    expect(status.querySelectorAll('p-card')).toHaveLength(3);
+    expect(status.querySelectorAll('a, button, input, [tabindex]')).toHaveLength(0);
+    expect(element.querySelector('app-hero')).toBeNull();
+  });
+
+  it.each(statisticLocales)('preserves both translated overall-empty messages in $locale', ({ locale, asset }) => {
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    setEncounterPartitions([], []);
+    const messages = harness.fixture.debugElement.queryAll(By.directive(Message));
+    const empty = required(messages.find((message) => message.nativeElement.textContent.includes(asset.competition['no_encounters'])));
+    expect(empty.injector.get(Message).severity()).toBe('secondary');
+    expect(empty.injector.get(Message).pt()).toBeUndefined();
+    expect(empty.injector.get(Message).dt()).toBeUndefined();
+    expect(empty.nativeElement.querySelector('.pi-calendar')?.getAttribute('aria-hidden')).toBe('true');
+    expect(empty.nativeElement.querySelector('h2')?.textContent).toBe(asset.competition['no_encounters']);
+    expect(empty.nativeElement.querySelector('p')?.textContent).toBe(asset.competition['no_encounters_description']);
+    expect(element.querySelector('section.grid')).toBeNull();
+  });
+
+  it('displays a failed request without throwing when resource selectors are read', async () => {
+    jest.spyOn(TestBed.inject(Apollo), 'query').mockReturnValue(throwError(() => ({ status: 503, statusText: 'Service Unavailable' })));
+    component = await harness.navigateByUrl('/competition/test-competition/sub-events/sub-event/draws/failed-draw', PageDrawsComponent);
+    await harness.fixture.whenStable();
+    refresh();
+    expect(component.error()).toBe('Service Unavailable');
+    expect(component.competition()).toBeUndefined();
+    expect(component.subEvent()).toBeUndefined();
+    expect(component.draw()).toBeUndefined();
+    expect(component.encounters()).toEqual([]);
+    expect(component.playedEncounters()).toEqual([]);
+    expect(component.upcomingEncounters()).toEqual([]);
+    expect(component.standings()).toEqual([]);
+    const message = harness.fixture.debugElement.query(By.directive(Message));
+    expect(message.injector.get(Message).severity()).toBe('error');
+    expect(message.injector.get(Message).pt()).toBeUndefined();
+    expect(message.injector.get(Message).dt()).toBeUndefined();
+    expect(message.nativeElement.textContent).toContain('Service Unavailable');
+    expect(message.nativeElement.getAttribute('style')).toBeNull();
+    expect(message.nativeElement.querySelector('.pi-exclamation-triangle')?.getAttribute('aria-hidden')).toBe('true');
+    expect(message.nativeElement.querySelector('span.text-color')?.textContent).toBe('Service Unavailable');
+    expect(element.querySelector('app-hero')).toBeNull();
+
+    jest.spyOn(TestBed.inject(Apollo), 'query').mockReturnValue(of({ data }));
+    component = await harness.navigateByUrl('/competition/test-competition/sub-events/sub-event/draws/draw-id-12345', PageDrawsComponent);
+    await harness.fixture.whenStable();
+    refresh();
+    expect(component.error()).toBeNull();
+    expect(component.draw()?.id).toBe('draw-id-12345');
+    expect(element.querySelector('app-hero-title')?.textContent).toBe('First division - A');
   });
 });

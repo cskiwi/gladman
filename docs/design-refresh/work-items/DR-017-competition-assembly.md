@@ -23,7 +23,9 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   the regular player pool and reused by backup, doubles, singles, and substitute lists.
 - [DR-017c: Desktop player pool](DR-017c-assembly-player-pool.md): only the pool surface, availability controls,
   and backup disclosure, reusing the completed row unchanged.
-- Scope later children only after confirming their mounted state: player pools/slots, generation controls,
+- [DR-017d: Desktop doubles slots](DR-017d-assembly-doubles-slots.md): only the four mounted doubles containers
+  and their statistics, preserving the completed rows and CDK behavior.
+- Scope later children only after confirming their mounted state: singles/substitute slots, generation controls,
   validation presentation, and partner combinations.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
@@ -41,6 +43,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017a with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017b with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017c with explicit user approval and recorded native contrast/verification limits.
+- [x] Complete and review DR-017d with explicit user approval and recorded verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -60,5 +63,11 @@ DR-017c implements the native desktop player-pool Card, named controls, and keyb
 Focused tests/lint/build and browser behavior pass; native unchecked-border and dark disclosure-focus contrast
 failures remain disclosed and unchecked. The user approved completion/commit with those native contrast and
 verification limits on 2026-10-30; approval does not establish that failed or unperformed checks passed.
-Exact next action: confirm and scope one mounted desktop game-slot container child in a fresh invocation.
+DR-017d implements native Cards and accessible success/danger statistic Tags for the desktop doubles loop only.
+User review requested restoring the existing win-rate color signal; the native-Tag correction is reverified.
+All 153 competition tests, focused lint/build and browser checks pass; exact evidence and unchecked verification
+limits are recorded in its brief. The user approved completion/commit with those limits on 2026-10-30;
+approval does not establish that unperformed checks passed.
+Exact next action in a fresh invocation: confirm/scope one mounted desktop singles-slot child, excluding the
+completed rows, pool and doubles. Singles/substitutes remain unscoped.
 Do not reopen DR-017b/DR-017c or start another child here. The parent remains open.

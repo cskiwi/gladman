@@ -5,6 +5,36 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017d is Done with explicit user approval on 2026-10-30, after the requested correction restoring native
+success/danger statistic Tags (success at >=50%, danger below).
+The four confirmed mounted desktop doubles-slot containers use native Cards,
+localized named headings/empty states, and semantic keyboard-accessible statistics.
+CDK contracts, completed player rows, pool copying/return, lineup rules, and local forms are preserved.
+Authored doubles-loop class tokens drop from 43 to 33; four dynamic palette bindings are removed.
+All 153 competition tests, focused lint (41 existing warnings, no errors), and library build with 10 prerequisites pass.
+Isolated Chrome verifies actual 820/1280/1440px in both themes, empty/one/full synthetic slots, long names,
+accessible regions, hover/focus Tooltips, Escape dismissal, Tab movement, real pointer drag/return and form sync.
+Final scoped plain-text contrast is 4.87:1 light / 6.65:1 dark.
+Native Tag text contrast is 4.57:1 success / 5.30:1 danger light, 10.57:1 success / 8.77:1 danger dark.
+Native focus contrast is 19.03:1 / 16.47:1 against the Card and at least 15.58:1 / 12.78:1 against Tag fills.
+The final Tag matrix reverifies widths, themes, keyboard Tooltips, wrapping and SSR; initial neutral captures
+are superseded. No styling overrides are introduced.
+The unchanged 390px branch retains 13 Selects and no player rows/Cards in both themes.
+Dutch SSR returns all four named Cards; browser checks have no page errors or GraphQL mutations.
+Actual screen-reader output, exhaustive hydration, mounted English/French, authenticated/save workflows and
+operational populated lineup records remain unchecked; approval is not evidence that they passed.
+The user selected "Approve completion and commit with the disclosed verification limits".
+Only DR-017d implementation, tests and repository handoff are approved for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings and no errors.
+Singles/substitutes, mobile selectors, generator, validation, shared/theme/backend/assets remain unchanged.
+No token/PassThrough overrides, new host classes, SCSS, styling substitutes, dependencies, or mutations are introduced.
+Exact next action in a fresh invocation: confirm and scope one mounted desktop singles-slot child,
+excluding completed rows, pool and doubles. DR-017 remains open.
+The [DR-017d brief](work-items/DR-017d-assembly-doubles-slots.md) preserves final Tag evidence and unchecked limits.
+Do not reopen DR-017a/b/c/d or begin another implementation child here.
+
+### Previous completed focus
+
 DR-017c is Done with explicit user approval on 2026-10-30: the mounted desktop assembly player pool uses a native Card,
 named availability Checkboxes, a keyboard-operable backup Button, and an explicit localized empty state.
 The eight live names/ranks match baseline; synthetic backups verify the conditional branch without mutations.
@@ -33,7 +63,7 @@ Native Checkbox/secondary Button contrast, including the disclosed remaining poo
 not a hidden shared/theme change. The no-override correction and subsequent explicit approval are recorded separately
 in the [brief](work-items/DR-017c-assembly-player-pool.md). Do not reopen DR-017c or start another child here.
 
-### Previous completed focus
+### Earlier completed focus
 
 DR-017b is Done with explicit user approval on 2026-10-30, after removing host styling and reverifying the correction.
 The existing input-only assembly player row is refreshed once for its five pool/slot call sites.
@@ -612,6 +642,7 @@ and linked from their registry rows.
 | [DR-017a](work-items/DR-017a-assembly-page-chrome.md)         | Assembly page heading and filter chrome                 | Done    |
 | [DR-017b](work-items/DR-017b-assembly-player-row.md)          | Reusable assembly player row                            | Done    |
 | [DR-017c](work-items/DR-017c-assembly-player-pool.md)         | Desktop assembly player-pool container                  | Done    |
+| [DR-017d](work-items/DR-017d-assembly-doubles-slots.md)       | Desktop assembly doubles-slot containers                | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -766,6 +797,8 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   DR-017a completes the mounted heading/filter chrome and the approved desktop time-range template correction.
   DR-017b covers only the existing player row reused in regular/backup pools and doubles/singles/substitutes.
   DR-017c covers only the desktop pool surface, availability controls, and disclosure, without token overrides.
+  DR-017d completes only the four desktop doubles containers and accessible native statistic Tags,
+  with explicit user approval and recorded verification limits.
   DR-032 tracks unchecked Checkbox/secondary Button focus contrast, including the pool's disclosed native failures.
   The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
   generation as functional follow-up, not completed visual scope.

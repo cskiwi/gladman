@@ -351,90 +351,104 @@
         <div class="flex-1 grid grid-cols-2 gap-2 content-start">
           <!-- Doubles -->
           @for (slotId of ['double1', 'double2', 'double3', 'double4']; track slotId) {
-            <div
-              class="flex flex-col gap-1 border border-dashed border-surface rounded-border p-2 min-h-[60px] transition-colors duration-200"
-              cdkDropList
-              [id]="slotId"
-              [cdkDropListData]="getSlotPlayers(slotId)"
-              [cdkDropListConnectedTo]="lists"
-              [cdkDropListEnterPredicate]="canDropPredicate"
-              [cdkDropListSortingDisabled]="true"
-              (cdkDropListDropped)="drop($event)"
-            >
-              <div class="flex justify-between items-center">
-                <label class="font-bold text-xs uppercase text-muted-color">
-                  {{ dataService.getSlotLabel(slotId).prefix | translate }}
-                  {{ dataService.getSlotLabel(slotId).label | translate }}
-                </label>
-                @if (getSlotWinPct(slotId); as stat) {
-                  <span
-                    class="text-xs font-mono"
-                    [class]="stat.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                    [pTooltip]="
-                      'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct }
-                    "
-                  >
-                    {{ stat.wins }}/{{ stat.total }}
-                  </span>
-                }
-              </div>
-              @for (item of getSlotPlayers(slotId); track item.id) {
-                <div class="flex justify-between items-center">
-                  <app-assembly-player
-                    class="cursor-grab active:cursor-grabbing flex-1"
-                    [player]="item"
-                    [levelException]="dataService.isException(item.id)"
-                    [eventType]="dataService.type()!"
-                    [showType]="slotId"
-                    [cdkDragData]="item"
-                    cdkDrag
-                  />
-                  @if (getPlayerStat(item.id); as stat) {
-                    <span
-                      class="text-xs font-mono ml-1"
-                      [class]="stat.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                      [pTooltip]="
-                        'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct }
-                      "
-                    >
-                      {{ stat.winPct }}%
-                    </span>
+            <p-card role="region" [attr.aria-labelledby]="'assembly-' + slotId + '-title'">
+              <ng-template #title>
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                  <h3 [id]="'assembly-' + slotId + '-title'" class="text-base font-semibold m-0">
+                    {{ dataService.getSlotLabel(slotId).prefix | translate }}
+                    {{ dataService.getSlotLabel(slotId).label | translate }}
+                  </h3>
+                  @if (getSlotWinPct(slotId); as stat) {
+                    @let description =
+                      'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct };
+                    <p-tag
+                      [severity]="stat.winPct >= 50 ? 'success' : 'danger'"
+                      [value]="stat.wins + '/' + stat.total"
+                      role="img"
+                      tabindex="0"
+                      [attr.aria-label]="description"
+                      [pTooltip]="description"
+                      tooltipEvent="both"
+                    />
                   }
                 </div>
-              }
-              @if (getSlotPlayers(slotId).length === 2) {
-                @if (getSlotPairStat(slotId, getSlotPlayers(slotId)[0].id, getSlotPlayers(slotId)[1].id); as slotPair) {
-                  <div class="flex justify-between items-center">
-                    <span class="text-xs text-muted-color">{{ 'all.competition.team-assembly.stats.pair-on-slot' | translate }}</span>
-                    <span
-                      class="text-xs font-mono"
-                      [class]="slotPair.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                      [pTooltip]="
-                        'all.competition.team-assembly.stats.tooltip-text'
-                          | translate: { wins: slotPair.wins, total: slotPair.total, pct: slotPair.winPct }
-                      "
-                    >
-                      {{ slotPair.wins }}/{{ slotPair.total }} ({{ slotPair.winPct }}%)
-                    </span>
+              </ng-template>
+              <div
+                class="flex flex-col gap-2 min-h-16"
+                cdkDropList
+                [id]="slotId"
+                [cdkDropListData]="getSlotPlayers(slotId)"
+                [cdkDropListConnectedTo]="lists"
+                [cdkDropListEnterPredicate]="canDropPredicate"
+                [cdkDropListSortingDisabled]="true"
+                (cdkDropListDropped)="drop($event)"
+              >
+                @for (item of getSlotPlayers(slotId); track item.id) {
+                  <div class="flex flex-wrap items-center gap-2">
+                    <app-assembly-player
+                      class="cursor-grab active:cursor-grabbing flex-1"
+                      [player]="item"
+                      [levelException]="dataService.isException(item.id)"
+                      [eventType]="dataService.type()!"
+                      [showType]="slotId"
+                      [cdkDragData]="item"
+                      cdkDrag
+                    />
+                    @if (getPlayerStat(item.id); as stat) {
+                      @let description =
+                        'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct };
+                      <p-tag
+                        [severity]="stat.winPct >= 50 ? 'success' : 'danger'"
+                        [value]="stat.winPct + '%'"
+                        role="img"
+                        tabindex="0"
+                        [attr.aria-label]="description"
+                        [pTooltip]="description"
+                        tooltipEvent="both"
+                      />
+                    }
                   </div>
+                } @empty {
+                  <span class="text-sm text-color">{{ 'all.team.no-players' | translate }}</span>
                 }
-                @if (getTotalPairStat(getSlotPlayers(slotId)[0].id, getSlotPlayers(slotId)[1].id); as totalPair) {
-                  <div class="flex justify-between items-center">
-                    <span class="text-xs text-muted-color">{{ 'all.competition.team-assembly.stats.pair-total' | translate }}</span>
-                    <span
-                      class="text-xs font-mono"
-                      [class]="totalPair.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                      [pTooltip]="
-                        'all.competition.team-assembly.stats.tooltip-text'
-                          | translate: { wins: totalPair.wins, total: totalPair.total, pct: totalPair.winPct }
-                      "
-                    >
-                      {{ totalPair.wins }}/{{ totalPair.total }} ({{ totalPair.winPct }}%)
-                    </span>
-                  </div>
+                @if (getSlotPlayers(slotId).length === 2) {
+                  @if (getSlotPairStat(slotId, getSlotPlayers(slotId)[0].id, getSlotPlayers(slotId)[1].id); as slotPair) {
+                    @let description =
+                      'all.competition.team-assembly.stats.tooltip-text'
+                        | translate: { wins: slotPair.wins, total: slotPair.total, pct: slotPair.winPct };
+                    <div class="flex flex-wrap justify-between gap-2">
+                      <span class="text-sm text-muted-color">{{ 'all.competition.team-assembly.stats.pair-on-slot' | translate }}</span>
+                      <p-tag
+                        [severity]="slotPair.winPct >= 50 ? 'success' : 'danger'"
+                        [value]="slotPair.wins + '/' + slotPair.total + ' (' + slotPair.winPct + '%)'"
+                        role="img"
+                        tabindex="0"
+                        [attr.aria-label]="description"
+                        [pTooltip]="description"
+                        tooltipEvent="both"
+                      />
+                    </div>
+                  }
+                  @if (getTotalPairStat(getSlotPlayers(slotId)[0].id, getSlotPlayers(slotId)[1].id); as totalPair) {
+                    @let description =
+                      'all.competition.team-assembly.stats.tooltip-text'
+                        | translate: { wins: totalPair.wins, total: totalPair.total, pct: totalPair.winPct };
+                    <div class="flex flex-wrap justify-between gap-2">
+                      <span class="text-sm text-muted-color">{{ 'all.competition.team-assembly.stats.pair-total' | translate }}</span>
+                      <p-tag
+                        [severity]="totalPair.winPct >= 50 ? 'success' : 'danger'"
+                        [value]="totalPair.wins + '/' + totalPair.total + ' (' + totalPair.winPct + '%)'"
+                        role="img"
+                        tabindex="0"
+                        [attr.aria-label]="description"
+                        [pTooltip]="description"
+                        tooltipEvent="both"
+                      />
+                    </div>
+                  }
                 }
-              }
-            </div>
+              </div>
+            </p-card>
           }
 
           <!-- Singles -->

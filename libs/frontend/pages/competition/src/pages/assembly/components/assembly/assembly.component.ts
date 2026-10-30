@@ -24,6 +24,7 @@ import { TeamMembershipType } from '@app/models-enum';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-assembly',
@@ -48,6 +49,7 @@ import { CardModule } from 'primeng/card';
     CheckboxModule,
     InputTextModule,
     CardModule,
+    TagModule,
     AssemblyPlayerComponent,
     AssemblyMessageComponent,
     PartnerCombinationsComponent,

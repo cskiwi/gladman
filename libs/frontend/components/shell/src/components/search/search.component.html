@@ -1,11 +1,12 @@
-<div class="w-full md:w-80 lg:w-[28rem] xl:w-[36rem] 2xl:w-[44rem] max-w-full mx-auto">
+<div class="w-full md:w-80 lg:w-96 max-w-full mx-auto">
   <p-autocomplete
     [(ngModel)]="searchValue"
     [suggestions]="results()"
     (completeMethod)="onSearch($event)"
     (onSelect)="onSelect($event)"
     [optionLabel]="'title'"
-    placeholder="Search players, clubs, competitions..."
+    [placeholder]="'all.search.placeholder' | translate"
+    [attr.aria-label]="'all.search.placeholder' | translate"
     [dropdown]="false"
     [multiple]="false"
     [minQueryLength]="2"
@@ -14,7 +15,7 @@
     <ng-template let-item #item>
       <div class="flex items-center gap-3">
         <!-- Icon based on linkType -->
-        <i [class]="getIconClass(item.linkType)" class="text-lg" [style.color]="getIconColor(item.linkType)"></i>
+        <i [class]="getIconClass(item.linkType)" class="text-lg text-primary" aria-hidden="true"></i>
 
         <!-- Content -->
         <div class="flex flex-col flex-1">
@@ -23,7 +24,7 @@
           </div>
           <div class="text-sm text-muted-color">
             <!-- Show subtitle (e.g., club name) if available, otherwise show type label -->
-            {{ item.subtitle || getTypeLabel(item.linkType) }}
+            {{ item.subtitle || (getTypeLabel(item.linkType) | translate) }}
           </div>
         </div>
       </div>
@@ -45,7 +46,7 @@
         @if (loading()) {
           <div class="flex items-center justify-center gap-2">
             <i class="pi pi-spin pi-spinner"></i>
-            <span>Searching...</span>
+            <span>{{ 'all.search.loading' | translate }}</span>
           </div>
         } @else {
           <span>{{ 'all.search.noResults' | translate }}</span>

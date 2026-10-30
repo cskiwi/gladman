@@ -14,13 +14,23 @@ import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import type { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { DrawerModule } from 'primeng/drawer';
 import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { filter, map } from 'rxjs/operators';
 import { SearchComponent } from './components';
 
 @Component({
-  imports: [RouterModule, RouterLinkActive, TranslateModule, ButtonModule, MenuModule, ToastModule, SearchComponent],
+  imports: [
+    RouterModule,
+    RouterLinkActive,
+    TranslateModule,
+    ButtonModule,
+    DrawerModule,
+    MenuModule,
+    ToastModule,
+    SearchComponent,
+  ],
   selector: 'app-shell',
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
@@ -45,7 +55,11 @@ export class ShellComponent {
   // Theme computed properties
   isDarkMode = computed(() => this.themeService.currentTheme() === 'dark');
   themeToggleIcon = computed(() => (this.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'));
-  themeToggleLabel = computed(() => `Toggle ${this.isDarkMode() ? 'light' : 'dark'} mode`);
+  themeToggleLabel = computed(() => {
+    const mode = this.isDarkMode() ? 'Light' : 'Dark';
+    this.currentLanguage();
+    return this.translate.instant(`all.navigation.toggle${mode}`);
+  });
 
   // Check if user has admin access
   hasAdminAccess = computed(() => {
@@ -54,7 +68,6 @@ export class ShellComponent {
 
   userMenuItems = computed<MenuItem[]>(() => {
     const currentLang = this.currentLanguage();
-    const isDark = this.isDarkMode();
 
     const baseItems: MenuItem[] = [
       {
@@ -70,9 +83,9 @@ export class ShellComponent {
     // Add admin menu item if user has access
     if (this.hasAdminAccess()) {
       baseItems.push({
-        label: 'Admin Panel',
+        label: this.translate.instant('all.navigation.admin'),
         icon: 'pi pi-shield',
-        command: (event) => {
+        command: () => {
           this.navigateToAdmin();
         },
       });
@@ -92,7 +105,7 @@ export class ShellComponent {
       baseItems.push({
         label: this.translate.instant('all.settings.languages.' + lang),
         icon: currentLang === lang ? 'pi pi-check' : 'pi pi-circle',
-        command: (event) => {
+        command: () => {
           this.setLanguage(lang);
         },
         styleClass: 'ml-4', // Indent language options
@@ -104,9 +117,9 @@ export class ShellComponent {
     });
 
     baseItems.push({
-      label: 'Logout',
+      label: this.translate.instant('all.navigation.logout'),
       icon: 'pi pi-sign-out',
-      command: (event) => {
+      command: () => {
         this.logout();
       },
     });
@@ -149,6 +162,10 @@ export class ShellComponent {
 
   toggleSidebar() {
     this.sidebarVisible = !this.sidebarVisible;
+  }
+
+  closeSidebar() {
+    this.sidebarVisible = false;
   }
 
   toggleTheme() {

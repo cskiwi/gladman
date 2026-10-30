@@ -47,8 +47,8 @@ const GET_CRON_JOBS = gql`
 `;
 
 const TRIGGER_CRON_JOB = gql`
-  mutation TriggerCronJob($id: ID!) {
-    triggerCronJob(id: $id) {
+  mutation TriggerCronJob($id: ID!, $year: Int) {
+    triggerCronJob(id: $id, year: $year) {
       id
       name
       lastRun
@@ -105,11 +105,11 @@ export class CronJobsTabService {
       });
   }
 
-  triggerCronJob(id: string): Observable<CronJobModel> {
+  triggerCronJob(id: string, year?: number): Observable<CronJobModel> {
     return this.apollo
       .mutate<{ triggerCronJob: CronJobModel }>({
         mutation: TRIGGER_CRON_JOB,
-        variables: { id },
+        variables: { id, year },
       })
       .pipe(map((result) => result.data!.triggerCronJob));
   }

@@ -39,6 +39,12 @@ When creating new files:
 - This repository uses `.gitattributes` to enforce LF line endings
 - Ensures consistency across all platforms and avoids Git warnings
 
+## Formatting and Design-Refresh Completion
+
+- Always format every changed file with the repository formatter before validation and before committing.
+- When the user explicitly says `commit` during a design-refresh task, treat it as approval to commit the active
+  slice and mark that slice `Done`. Preserve any unchecked verification limits in the work item and backlog.
+
 ## Angular
 
 When working with Angular files (`*.ts`, `*.component.ts`, `*.service.ts`, `*.html`, `*.scss`):

@@ -142,5 +142,26 @@
     </div>
   </p-dialog>
 
+  <p-dialog
+    [(visible)]="scrapeYearDialogOpen"
+    [modal]="true"
+    [closable]="!actionLoading()"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '28rem' }"
+    header="Scrape tournament calendar"
+  >
+    <div class="flex flex-col gap-4 pt-2">
+      <div class="flex flex-col gap-1">
+        <label for="scrape-year" class="text-sm font-medium text-muted-color">Year to scrape</label>
+        <p-inputnumber inputId="scrape-year" [(ngModel)]="scrapeYearValue" [min]="1" [max]="9999" [useGrouping]="false" [showButtons]="true" />
+      </div>
+      <div class="flex justify-end gap-2">
+        <p-button label="Cancel" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (onClick)="scrapeYearDialogOpen = false" />
+        <p-button icon="pi pi-play" label="Scrape year" [loading]="actionLoading()" (onClick)="triggerScrapeForYear()" />
+      </div>
+    </div>
+  </p-dialog>
+
   <p-toast />
 </div>

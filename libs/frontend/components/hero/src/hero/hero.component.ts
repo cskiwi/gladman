@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-hero',
+  imports: [CardModule],
   templateUrl: './hero.component.html',
-  styleUrl: './hero.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroComponent {}

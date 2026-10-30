@@ -1,23 +1,16 @@
-<section class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
- <div class="bg-highlight rounded-lg p-6 inline-block">
- <div class="header flex items-center gap-4">
- <div class="avatar w-16 h-16 bg-emphasis bg-opacity-20 rounded-full flex items-center justify-center text-2xl [&:empty]:hidden">
- <ng-content select="[avatar]" />
- </div>
- <!-- Name and info -->
- <div class="info flex flex-col justify-center">
- <h1 class="title text-2xl font-bold mb-1">
- <ng-content select="[title]" />
- </h1>
- <div class="sub-title flex items-center gap-2 text-muted-color">
- <ng-content select="[subTitle]" />
- </div>
- </div>
- </div>
- </div>
-
- <!-- Actions outside the background, right-aligned -->
- <div class="flex flex-row items-center gap-4 sm:pt-6 [&:empty]:hidden">
- <ng-content select="[actions]" />
- </div>
-</section>
+<header class="flex flex-wrap items-center gap-4 mb-6">
+  <div class="inline-flex shrink-0 text-primary [&:empty]:hidden">
+    <ng-content select="[avatar]" />
+  </div>
+  <div class="min-w-0 flex-1 basis-48">
+    <h1 class="m-0 text-3xl md:text-4xl font-semibold leading-tight tracking-tight text-color break-words">
+      <ng-content select="[title]" />
+    </h1>
+    <div class="flex flex-wrap items-center gap-2 mt-2 text-sm text-muted-color [&:empty]:hidden">
+      <ng-content select="[subTitle]" />
+    </div>
+  </div>
+  <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto lg:ml-auto [&:empty]:hidden">
+    <ng-content select="[actions]" />
+  </div>
+</header>

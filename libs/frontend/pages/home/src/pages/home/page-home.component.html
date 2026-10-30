@@ -1,89 +1,87 @@
 @if (rankingSystem(); as system) {
-<!-- Hero -->
 <app-hero>
-  <!-- Crest -->
-  <app-hero-avatar avatar variant="rank">{{ system.amountOfLevels ?? '?' }}</app-hero-avatar>
-
-  <!-- Identity -->
+  <app-hero-avatar avatar aria-hidden="true">
+    <i class="pi pi-chart-bar"></i>
+  </app-hero-avatar>
   <div identity>
-    <span class="t-eyebrow">Ranking system</span>
+    <p class="m-0 mb-2 text-sm text-muted-color">{{ 'all.points.table.ranking-system' | translate }}</p>
     <app-hero-title>{{ system.name }}</app-hero-title>
-    <div class="flex items-center gap-3 flex-wrap">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-sm text-muted-color">
       @if (system.calculationLastUpdate) {
-      <span class="t-mono text-xs text-muted-color bg-emphasis px-2 py-0.5 rounded-sm tracking-wider">
-        <i class="pi pi-refresh text-[10px] mr-1"></i>
-        {{ system.calculationLastUpdate | date: 'mediumDate' }}
-      </span>
+      <span>{{ system.calculationLastUpdate | date: 'mediumDate' }}</span>
       }
-      <span class="t-mono text-xs text-muted-color bg-emphasis px-2 py-0.5 rounded-sm tracking-wider">
-        {{ system.amountOfLevels }} levels
-      </span>
+      <span>{{ system.amountOfLevels }} {{ 'all.points.table.levels' | translate }}</span>
     </div>
   </div>
 
-  <!-- Player ranking strip — only when logged in and ranking is loaded -->
   @if (user()?.id; as playerId) {
-  <div stats class="mt-5 pt-5 border-t border-surface relative z-[1]">
+  <div stats class="mt-6 pt-6 border-t border-surface">
     <app-player-ranking-progress [playerId]="playerId" />
   </div>
   }
 </app-hero>
 
-<!-- Reference table -->
-<section>
-  <app-section-header title="Level reference" />
-
-  <div class="bg-emphasis border border-surface rounded-xl overflow-hidden">
-    <table class="w-full border-collapse tabular-nums">
-      <thead>
-        <tr>
-          @for (col of columns; track col.field) {
-          <th class="t-eyebrow text-left px-3 py-3.5 border-b border-surface bg-emphasis" [class.text-right]="col.field !== 'level'">
-            {{ col.header | async }}
-          </th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (row of dataSource(); track row.level) {
-        <tr class="transition-colors hover:bg-emphasis [&:last-child>td]:border-b-0">
-          <td class="px-3 py-3 border-b border-surface align-middle">
-            <span class="inline-flex items-center justify-center min-w-[36px] h-7 px-2.5 rounded-sm bg-emphasis text-color font-bold text-sm tabular-nums font-['Space_Grotesk',sans-serif]">
-              {{ row.level }}
-            </span>
-          </td>
-          <td class="t-mono text-right px-3 py-3 border-b border-surface align-middle">
-            @if (row.pointsToGoUp !== null) {
-            <span class="text-green-600 dark:text-green-400">{{ row.pointsToGoUp }}</span>
-            } @else {
-            <span class="text-muted-color">—</span>
-            }
-          </td>
-          <td class="t-mono text-right px-3 py-3 border-b border-surface align-middle">
-            @if (row.pointsToGoDown !== null) {
-            <span class="text-muted-color">{{ row.pointsToGoDown }}</span>
-            } @else {
-            <span class="text-muted-color">—</span>
-            }
-          </td>
-          <td class="t-mono text-right px-3 py-3 border-b border-surface align-middle text-color font-semibold">
-            {{ row.pointsWhenWinningAgainst }}
-          </td>
-        </tr>
+<section aria-labelledby="level-reference-title">
+  <p-card class="border border-surface">
+  <app-section-header id="level-reference-title" [title]="'all.points.table.reference' | translate" />
+  <p-table
+    [value]="dataSource()"
+    [scrollable]="true"
+    [dt]="{ row: { background: '{content.background}' } }"
+    [tableStyle]="{ 'min-width': '48rem' }"
+    class="tabular-nums"
+  >
+    <ng-template #header>
+      <tr>
+        @for (col of columns; track col.field) {
+        <th scope="col" [class.text-right]="col.field !== 'level'">
+          {{ col.header | async }}
+        </th>
         }
-      </tbody>
-    </table>
-  </div>
+      </tr>
+    </ng-template>
+    <ng-template #body let-row>
+      <tr>
+        <td>{{ row.level }}</td>
+        <td class="text-right">
+          @if (row.pointsToGoUp !== null) {
+          {{ row.pointsToGoUp }}
+          } @else {
+          <span class="text-muted-color">—</span>
+          }
+        </td>
+        <td class="text-right">
+          @if (row.pointsToGoDown !== null) {
+          {{ row.pointsToGoDown }}
+          } @else {
+          <span class="text-muted-color">—</span>
+          }
+        </td>
+        <td class="text-right">{{ row.pointsWhenWinningAgainst }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="4" class="text-muted-color">{{ 'all.points.table.no-level-data' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  </p-card>
 </section>
 } @else if (loading()) {
-<div class="bg-emphasis border border-surface rounded-xl p-8">
-  <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
+<div
+  role="status"
+  [attr.aria-label]="'all.points.table.loading-ranking-system' | translate"
+  class="space-y-4"
+>
+  <p-skeleton height="2.5rem" />
+  <p-skeleton height="1rem" width="12rem" />
+  <p-skeleton height="12rem" />
 </div>
+} @else if (!error()) {
+<p-message severity="info">{{ 'all.points.table.no-ranking-system' | translate }}</p-message>
 }
 
-@if (error()) {
-<div class="flex items-center gap-2 p-4 mt-4 rounded-md border border-surface bg-emphasis text-red-600 dark:text-red-400">
-  <i class="pi pi-exclamation-triangle"></i>
-  {{ error() }}
-</div>
+@if (error(); as errorMessage) {
+<p-message severity="error">{{ errorMessage }}</p-message>
 }

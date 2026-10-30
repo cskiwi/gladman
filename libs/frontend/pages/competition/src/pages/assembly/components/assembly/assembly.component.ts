@@ -1,24 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDropList,
-  copyArrayItem,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  output,
-  signal,
-  TemplateRef,
-  viewChild,
-} from '@angular/core';
+import { CdkDrag, CdkDragDrop, CdkDropList, copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, TemplateRef, viewChild } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -41,6 +23,8 @@ import { Player } from '@app/models';
 import { TeamMembershipType } from '@app/models-enum';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-assembly',
@@ -64,6 +48,8 @@ import { InputTextModule } from 'primeng/inputtext';
     MessageModule,
     CheckboxModule,
     InputTextModule,
+    CardModule,
+    TagModule,
     AssemblyPlayerComponent,
     AssemblyMessageComponent,
     PartnerCombinationsComponent,
@@ -103,18 +89,7 @@ export class AssemblyComponent {
     return all.every((p) => this.dataService.isPlayerAvailable(p.id));
   });
 
-  lists = [
-    'playerList',
-    'substituteList',
-    'single1',
-    'single2',
-    'single3',
-    'single4',
-    'double1',
-    'double2',
-    'double3',
-    'double4',
-  ];
+  lists = ['playerList', 'substituteList', 'single1', 'single2', 'single3', 'single4', 'double1', 'double2', 'double3', 'double4'];
 
   // Captain search
   captainSuggestions = signal<PlayerWithRanking[]>([]);
@@ -195,14 +170,9 @@ export class AssemblyComponent {
 
   searchCaptain(event: { query: string }) {
     const service = this.dataService;
-    const allPlayers = [
-      ...service.players()[TeamMembershipType.REGULAR],
-      ...service.players()[TeamMembershipType.BACKUP],
-    ];
+    const allPlayers = [...service.players()[TeamMembershipType.REGULAR], ...service.players()[TeamMembershipType.BACKUP]];
     const query = event.query.toLowerCase();
-    this.captainSuggestions.set(
-      allPlayers.filter((p) => `${p.firstName} ${p.lastName}`.toLowerCase().includes(query)),
-    );
+    this.captainSuggestions.set(allPlayers.filter((p) => `${p.firstName} ${p.lastName}`.toLowerCase().includes(query)));
   }
 
   selectCaptain(player: PlayerWithRanking) {
@@ -223,10 +193,7 @@ export class AssemblyComponent {
       return;
     }
 
-    if (
-      event.container.id === 'playerList' &&
-      event.container.data?.some((r) => r.id === event.item.data.id)
-    ) {
+    if (event.container.id === 'playerList' && event.container.data?.some((r) => r.id === event.item.data.id)) {
       // Dropping back to pool — remove from source
       event.previousContainer.data.splice(event.previousIndex, 1);
       this.onAssemblyChanged();
@@ -245,19 +212,9 @@ export class AssemblyComponent {
         return;
       }
 
-      copyArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
     }
 
     // Auto-remove from substitutes
@@ -292,13 +249,8 @@ export class AssemblyComponent {
     // For now, we filter from known players
     const query = event.query.toLowerCase();
     const service = this.dataService;
-    const allPlayers = [
-      ...service.players()[TeamMembershipType.REGULAR],
-      ...service.players()[TeamMembershipType.BACKUP],
-    ];
-    this.playerSuggestions.set(
-      allPlayers.filter((p) => `${p.firstName} ${p.lastName}`.toLowerCase().includes(query)),
-    );
+    const allPlayers = [...service.players()[TeamMembershipType.REGULAR], ...service.players()[TeamMembershipType.BACKUP]];
+    this.playerSuggestions.set(allPlayers.filter((p) => `${p.firstName} ${p.lastName}`.toLowerCase().includes(query)));
   }
 
   addPlayer(player: Player) {

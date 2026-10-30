@@ -68,6 +68,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withViewTransitions()),
     provideAnimationsAsync(),
     providePrimeNG({
+      license: 'eyJpZCI6ImE0YzRkYTVkLTZmNTctNDhjYi1iNzUwLWEwNDhmODQ5YWJmOCIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODQ4MTIxOTUsImV4cCI6MTgxNjM0ODE5NX0.kNI9JX7AY2aEOayUcRrbohSLebTg_g5F7JeDoQbIHxPwMMgwR0o_f87NQbA1plyUbvig7j7g5UawPPRKTSfuBQ',
       overlayAppendTo: 'body',
       theme: {
         preset: BadmanPreset,

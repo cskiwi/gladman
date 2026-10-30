@@ -21,18 +21,18 @@ export class SearchComponent {
 
   searchValue = '';
 
-  onSearch(event: { query: string }) {
+  onSearch(event: { query: string }): void {
     const query = event.query || '';
     this.searchValue = query;
     this.searchService.updateQuery(query);
   }
 
-  onSelect(event: AutoCompleteSelectEvent) {
+  onSelect(event: AutoCompleteSelectEvent): void {
     const model = event.value as SearchHit;
     this.select(model);
   }
 
-  select(model: SearchHit) {
+  select(model: SearchHit): void {
     switch (model?.linkType) {
       case 'player':
         this.router.navigate(['/players', model.slug]);
@@ -71,39 +71,22 @@ export class SearchComponent {
     }
   }
 
-  getIconColor(linkType: string): string {
-    switch (linkType) {
-      case 'player':
-        return '#3b82f6'; // blue
-      case 'team':
-        return '#10b981'; // green
-      case 'club':
-        return '#8b5cf6'; // purple
-      case 'competition':
-      case 'tournament':
-      case 'event':
-        return '#f59e0b'; // yellow/gold
-      default:
-        return '#6b7280'; // gray
-    }
-  }
-
   getTypeLabel(linkType: string): string {
     switch (linkType) {
       case 'player':
-        return 'Player';
+        return 'all.search.types.player';
       case 'team':
-        return 'Team';
+        return 'all.search.types.team';
       case 'club':
-        return 'Club';
+        return 'all.search.types.club';
       case 'competition':
-        return 'Competition';
+        return 'all.search.types.competition';
       case 'tournament':
-        return 'Tournament';
+        return 'all.search.types.tournament';
       case 'event':
-        return 'Event';
+        return 'all.search.types.event';
       default:
-        return 'Result';
+        return 'all.search.types.result';
     }
   }
 }

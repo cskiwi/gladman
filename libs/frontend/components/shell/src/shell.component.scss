@@ -2,23 +2,19 @@
   display: block;
 }
 
-/* Backdrop blur with color-mix — no Tailwind equivalent */
 .g-topbar {
-  background: color-mix(in oklch, var(--p-content-background) 85%, transparent);
-  backdrop-filter: blur(16px) saturate(140%);
+  background: var(--p-content-background);
 }
 
-/* Logo font-family — not a Tailwind utility */
 .g-logo {
   font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Logo mark — clip-path + pseudo-elements */
 .g-logo__mark {
   width: 28px;
   height: 28px;
   position: relative;
-  background: var(--g-gradient-primary);
+  background: var(--p-primary-color);
   clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
 
   &::after {
@@ -33,30 +29,60 @@
     content: '';
     position: absolute;
     inset: 7px;
-    background: var(--g-gradient-primary);
+    background: var(--p-primary-color);
     clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
     z-index: 1;
   }
 }
 
-/* Nav active underline — pseudo-element */
 .g-nav a.is-active {
   color: var(--p-text-color);
+  border-bottom: 2px solid var(--p-primary-color);
+}
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: 0;
-    height: 2px;
-    background: var(--p-primary-color);
+.g-icon-button {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--p-border-radius);
+  color: var(--p-text-muted-color);
+  background: transparent;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--p-text-color);
+    background: var(--p-content-hover-background);
+    border-color: var(--p-content-border-color);
   }
 }
 
-/* Avatar — gradient background + font-family */
+.g-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--p-border-radius);
+  color: var(--p-text-muted-color);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible,
+  &.is-active {
+    color: var(--p-text-color);
+    background: var(--p-content-hover-background);
+  }
+
+  &.is-active {
+    color: var(--p-primary-color);
+  }
+}
+
 .g-avatar {
-  background: var(--g-gradient-primary);
+  background: var(--p-primary-color);
   color: var(--p-primary-contrast-color, var(--p-content-background));
   font-family: 'Space Grotesk', sans-serif;
 }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 /**
  * Display-style heading used inside the `[identity]` slot of `<app-hero>`.
- * Renders an `<h1>` with the project's Space Grotesk display typography.
+ * Renders a responsive, wrapping `<h1>` using the shared page typography.
  */
 @Component({
   selector: 'app-hero-title',

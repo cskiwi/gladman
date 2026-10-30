@@ -1,9 +1,9 @@
 ---
+name: continue-design-refresh
 description: 'Resume one design refresh task, verify the outcome, and persist progress for the next fresh chat.'
+disable-model-invocation: true
 argument-hint: 'Optional work-item ID, for example DR-002'
-agent: 'agent'
 ---
-
 Continue Gladman's incremental design refresh. Complete one small, reviewable slice and leave an accurate,
 repository-backed handoff so the same prompt works again in a fresh chat.
 
@@ -34,6 +34,10 @@ make.
 5. State the selected ID, intended outcome, exclusions, and acceptance checks briefly. Mark it `In progress` and update
    the backlog's current focus before implementation.
 
+Only refresh components with confirmed current application consumers. Record the mounted route or real consumer
+before selection; an export, test, preview, or unused call chain is not sufficient. Skip unused components without
+adding a consumer solely for redesign verification, and record the reason in the backlog.
+
 Do not restart completed work, migrate the whole application, or begin another implementation slice in this invocation.
 If everything is complete, report that accurately instead of inventing more work. If a dependency, conflicting change,
 or required decision prevents safe progress, record the blocker and request input.
@@ -56,7 +60,11 @@ Apply the full design rules, especially:
 
 Capture relevant before/after evidence using safe test data. Keep changes scoped and record unrelated discoveries as
 backlog items rather than expanding the task. Do not add dependencies, run operational/admin mutations for visual
-testing, or create commits unless requested.
+testing, or create commits before user approval. The user's approval of a DR item authorizes committing that item's
+implementation, tests, and repository handoff without a separate commit request. An explicit user request to `commit`
+is also approval: mark the active slice `Done`, preserve any unchecked verification limits, and commit its
+implementation, tests, and handoff. Include workflow changes only when requested; preserve unrelated changes and
+never stage them in the DR commit. Do not push unless requested.
 
 ## Verify before checking off work
 
@@ -69,7 +77,9 @@ testing, or create commits unless requested.
 
 If required visual/user review remains outstanding, use `Review`, not `Done`. If a blocker prevents completion, use
 `Blocked` and describe the precise remaining action. Use `Done` only when all applicable acceptance checks and required
-review have passed.
+review have passed, or the user explicitly approves completion with disclosed verification limits. In the latter
+case, preserve unchecked criteria and record exactly which limits were accepted; never turn acceptance into a
+claim that an unperformed check passed.
 
 ## Persist progress before handing back control
 
@@ -85,6 +95,9 @@ Update the repository documents in the same change as the work:
 
 Do not leave the only useful handoff in chat or session storage. When pausing incomplete work, save enough detail that a
 fresh chat can resume without repeating the investigation.
+
+After user approval, record it in the brief, reconcile the backlog, run the focused checks needed for any subsequent
+changes, and create a Conventional Commit containing only the approved slice and its handoff. Report the commit ID.
 
 Finish with a concise summary of:
 

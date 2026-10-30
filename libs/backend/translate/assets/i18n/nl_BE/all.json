@@ -193,6 +193,7 @@
     "unknown": "Onbekend",
     "viewAll": "Bekijk Alle",
     "viewDetails": "Details bekijken",
+    "viewLess": "Minder weergeven",
     "yes": "Ja"
   },
   "competition": {
@@ -204,9 +205,10 @@
     "closeDate": "Inschrijvingen Sluiten",
     "dates": "Belangrijke Data",
     "details": "Competitie Details",
-    "draw": "Schema",
-    "draws": "Reeks",
-    "maxLevel": "Max niveau",
+    "draw": "Poule",
+    "drawFallbackName": "Poule {{number}}",
+    "noDrawsYet": "Nog geen poules ingesteld",
+    "draws": "Poules",
     "edit": {
       "actions": {
         "cancel": "Annuleren",
@@ -323,6 +325,7 @@
     "level": "Niveau",
     "location": "Locatie",
     "lost": "Verloren",
+    "maxLevel": "Max niveau",
     "no_bracket": "Geen Schema Beschikbaar",
     "no_bracket_description": "Dit eliminatie schema heeft nog geen schema gegevens.",
     "no_encounters": "Geen Wedstrijden",
@@ -331,8 +334,8 @@
     "no_played_encounters": "Nog geen gespeelde wedstrijden.",
     "no_qualification": "Geen Kwalificatie Gegevens",
     "no_qualification_description": "Dit kwalificatie schema heeft nog geen kwalificatie gegevens.",
-    "no_standings": "Geen Klassement Beschikbaar",
-    "no_standings_description": "Dit schema heeft nog geen klassement gegevens.",
+    "no_standings": "Nog geen stand beschikbaar",
+    "no_standings_description": "De stand van de teams in deze reeks is nog niet beschikbaar.",
     "no_upcoming_encounters": "Geen komende wedstrijden.",
     "official": "Officiële Competitie",
     "openDate": "Inschrijvingen Open",
@@ -343,7 +346,7 @@
     "player": "Speler",
     "player_team": "Team",
     "points": "Punten",
-    "position": "Positie",
+    "position": "Plaats",
     "qualification_matches": "Kwalificatie Wedstrijden",
     "qualification_results": "Kwalificatie Resultaten",
     "qualification_rounds": "Kwalificatie Ronden",
@@ -354,11 +357,21 @@
     "season": "Seizoen",
     "sets": "Sets",
     "size": "Grootte",
-    "standings": "Klassement",
+    "standings": "Stand",
     "statistics": "Statistieken",
     "status": "Status",
-    "subEvent": "Onderdeel",
+    "subEvent": "Reeks",
     "subEvents": "Reeksen",
+    "summary": {
+      "closes": "Sluit {{date}}",
+      "from": "Vanaf {{date}}",
+      "opens": "Opent {{date}}",
+      "periodOneEnds": "P1 eindigt {{date}}",
+      "registration": "Inschrijving",
+      "teamChanges": "Ploegwijzigingen",
+      "typeCountOne": "over {{count}} type",
+      "typeCountOther": "over {{count}} types"
+    },
     "team": "Team",
     "team-assembly": {
       "auto-generate": {
@@ -661,15 +674,24 @@
     "players": "Spelers laden..."
   },
   "navigation": {
+    "account": "Account",
+    "admin": "Beheerpaneel",
     "clubs": "Clubs",
     "competitions": "Competities",
     "home": "Home",
     "login": "Inloggen",
+    "logout": "Uitloggen",
+    "menu": "Menu",
+    "notifications": "Meldingen",
+    "openMenu": "Navigatiemenu openen",
     "players": "Spelers",
+    "primary": "Hoofdnavigatie",
     "searchClubs": "Zoek Clubs",
     "searchClubsDescription": "Vind en ontdek badmintonclubs in je buurt",
     "searchPlayers": "Zoek Spelers",
-    "searchPlayersDescription": "Ontdek spelers, rankings en statistieken"
+    "searchPlayersDescription": "Ontdek spelers, rankings en statistieken",
+    "toggleDark": "Donkere modus inschakelen",
+    "toggleLight": "Lichte modus inschakelen"
   },
   "player": {
     "allGames": "Alle Wedstrijden",
@@ -770,9 +792,15 @@
     "needed-for-upgrade": "Degradatie",
     "table": {
       "level": "Level",
+      "levels": "niveaus",
+      "loading-ranking-system": "Rankingsysteem wordt geladen",
+      "no-level-data": "Geen niveaugegevens beschikbaar.",
+      "no-ranking-system": "Geen rankingsysteem beschikbaar.",
       "points-needed-down": "Grenswaarde voor dalen",
       "points-needed-up": "Grenswaarde voor stijgen",
-      "points-won": "Punten gewonnen tegen dit niveau"
+      "points-won": "Punten gewonnen tegen dit niveau",
+      "ranking-system": "Rankingsysteem",
+      "reference": "Niveaureferentie"
     }
   },
   "ranking": {
@@ -903,18 +931,29 @@
       "updates": "updates"
     },
     "progress": {
-      "title": "Mijn klassement",
-      "to-upgrade": "{{points}} pt tot promotie",
-      "to-downgrade": "{{points}} pt tot degradatie",
-      "upgrade-reached": "Promotiedrempel bereikt",
-      "downgrade-reached": "Degradatiedrempel bereikt",
+      "at-floor": "BODEM",
       "at-top": "TOP",
-      "at-floor": "BODEM"
+      "downgrade-reached": "Degradatiedrempel bereikt",
+      "title": "Mijn klassement",
+      "to-downgrade": "{{points}} pt tot degradatie",
+      "to-upgrade": "{{points}} pt tot promotie",
+      "upgrade-reached": "Promotiedrempel bereikt"
     }
   },
   "search": {
+    "loading": "Zoeken...",
     "noResults": "Geen resultaten gevonden",
-    "results": "Zoekresultaten"
+    "placeholder": "Zoek spelers, clubs, competities...",
+    "results": "Zoekresultaten",
+    "types": {
+      "club": "Club",
+      "competition": "Competitie",
+      "event": "Evenement",
+      "player": "Speler",
+      "result": "Resultaat",
+      "team": "Team",
+      "tournament": "Toernooi"
+    }
   },
   "settings": {
     "general": {

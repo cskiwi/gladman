@@ -200,6 +200,7 @@ export type I18nTranslations = {
             "unknown": string;
             "viewAll": string;
             "viewDetails": string;
+            "viewLess": string;
             "yes": string;
         };
         "competition": {
@@ -212,8 +213,9 @@ export type I18nTranslations = {
             "dates": string;
             "details": string;
             "draw": string;
+            "drawFallbackName": string;
+            "noDrawsYet": string;
             "draws": string;
-            "maxLevel": string;
             "edit": {
                 "actions": {
                     "cancel": string;
@@ -330,6 +332,7 @@ export type I18nTranslations = {
             "level": string;
             "location": string;
             "lost": string;
+            "maxLevel": string;
             "no_bracket": string;
             "no_bracket_description": string;
             "no_encounters": string;
@@ -366,6 +369,16 @@ export type I18nTranslations = {
             "status": string;
             "subEvent": string;
             "subEvents": string;
+            "summary": {
+                "closes": string;
+                "from": string;
+                "opens": string;
+                "periodOneEnds": string;
+                "registration": string;
+                "teamChanges": string;
+                "typeCountOne": string;
+                "typeCountOther": string;
+            };
             "team": string;
             "team-assembly": {
                 "auto-generate": {
@@ -668,15 +681,24 @@ export type I18nTranslations = {
             "players": string;
         };
         "navigation": {
+            "account": string;
+            "admin": string;
             "clubs": string;
             "competitions": string;
             "home": string;
             "login": string;
+            "logout": string;
+            "menu": string;
+            "notifications": string;
+            "openMenu": string;
             "players": string;
+            "primary": string;
             "searchClubs": string;
             "searchClubsDescription": string;
             "searchPlayers": string;
             "searchPlayersDescription": string;
+            "toggleDark": string;
+            "toggleLight": string;
         };
         "player": {
             "allGames": string;
@@ -777,9 +799,15 @@ export type I18nTranslations = {
             "needed-for-upgrade": string;
             "table": {
                 "level": string;
+                "levels": string;
+                "loading-ranking-system": string;
+                "no-level-data": string;
+                "no-ranking-system": string;
                 "points-needed-down": string;
                 "points-needed-up": string;
                 "points-won": string;
+                "ranking-system": string;
+                "reference": string;
             };
         };
         "ranking": {
@@ -910,18 +938,29 @@ export type I18nTranslations = {
                 "updates": string;
             };
             "progress": {
-                "title": string;
-                "to-upgrade": string;
-                "to-downgrade": string;
-                "upgrade-reached": string;
-                "downgrade-reached": string;
-                "at-top": string;
                 "at-floor": string;
+                "at-top": string;
+                "downgrade-reached": string;
+                "title": string;
+                "to-downgrade": string;
+                "to-upgrade": string;
+                "upgrade-reached": string;
             };
         };
         "search": {
+            "loading": string;
             "noResults": string;
+            "placeholder": string;
             "results": string;
+            "types": {
+                "club": string;
+                "competition": string;
+                "event": string;
+                "player": string;
+                "result": string;
+                "team": string;
+                "tournament": string;
+            };
         };
         "settings": {
             "general": {

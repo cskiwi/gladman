@@ -8,15 +8,17 @@ description: 'PrimeNG-first design principles and an incremental frontend redesi
 Modernize Gladman without a big-bang rewrite. The result should feel like a considered badminton application, not a
 generic dashboard: clear information hierarchy, useful data density, predictable actions, and restrained decoration.
 
-This folder is the persistent source of truth for the redesign. It contains a plan, not an implemented redesign. The
-initial inventory is based on source inspection on 2026-10-16; browser baselines are still to be captured. No
-application code, behavior, theme, or dependencies are changed by this planning work.
+This folder is the persistent source of truth for the redesign. It contains the rollout plan and the evidence for each
+implemented slice. The initial inventory and browser baseline are based on source inspection on 2026-10-16. DR-001
+established the baseline without changing application behavior; DR-002 is the first implementation slice.
 
 ## Start here
 
 - [Backlog](backlog.md): authoritative statuses, current focus, frontend project coverage, and deferred work.
 - [DR-001: Design baseline](work-items/DR-001-design-baseline.md): the first small, ready-to-start task.
 - [DR-002: Home page pilot](work-items/DR-002-home-pilot.md): the proposed first implementation slice.
+- [DR-003: App shell and layouts](work-items/DR-003-app-shell.md): the companion chrome slice for reviewing the pilot
+  in context.
 - [Work-item template](work-item-template.md): copy when an area is ready to be broken into an executable task.
 
 ## Continue in a fresh chat
@@ -49,6 +51,23 @@ and the exact next action in the repository documents before stopping.
 ```
 
 ## Design rules
+
+### Agreed layout direction
+
+On 2026-10-16 the user approved the combined shared hero, headings, and shell as the new layout direction. Use this
+composition for subsequent slices rather than reopening the decorative dashboard design:
+
+- Native styled PrimeNG cards for meaningful grouped content, with rounded corners and a semantic surface border.
+- Responsive identity rows, compact circular avatars, readable headings, and actions that wrap below on narrow screens.
+- Native PrimeNG tables inside the same content surface when a heading and dataset form one group; keep native table
+  spacing, row separators, and horizontal scrolling rather than building a custom table.
+- A flat, cool neutral canvas behind the content: pale in light mode and deeper than cards in dark mode. Keep the
+  canvas separate from content surfaces so boundaries remain visible; no ambient page gradients.
+- Define canvas colors in the PrimeNG preset, using existing surface tokens. Reserve primary color for meaningful
+  emphasis and interactive states, not page backgrounds.
+
+The layout direction and final corrected canvas/table presentation were approved on 2026-10-16. Functional
+verification and the remaining feature migrations are tracked separately and must not be checked off as styling work.
 
 ### PrimeNG first
 
@@ -108,6 +127,10 @@ utilities resolve to PrimeNG theme tokens; verify their actual light and dark re
 
 ### Reuse where it earns its place
 
+- Refresh only components with confirmed current application consumers. Record a mounted route or real consumer
+  before selecting work; exports, tests, previews, and unused call chains do not establish application use.
+- Leave unused components unchanged. Record them as deferred in the backlog; do not add consumers just to justify
+  redesign work or visual verification.
 - Search the [existing shared components][components] before introducing a new abstraction.
 - Prefer direct PrimeNG usage for UI primitives; avoid one-to-one wrappers around every PrimeNG component.
 - Extract a reusable component when multiple real consumers share meaningful structure, behavior, or domain semantics.
@@ -161,6 +184,13 @@ rather than maintaining conflicting copies in individual briefs.
 - `Review`: implementation and checks are complete, but visual or functional review is pending.
 - `Done`: acceptance checks and review have passed, with evidence linked.
 
+The user may explicitly approve completion with disclosed verification limits. Record that approval and the accepted
+limits, retaining unchecked criteria; acceptance is not evidence that an unperformed check passed.
+
+User approval of a DR item also authorizes committing its scoped implementation, tests, and repository handoff without
+a separate commit request. Use a Conventional Commit, preserve unrelated work, and include workflow changes only when
+requested. Do not commit an unapproved item or push without a separate request.
+
 When an area is too large, retain its original ID as a parent and add child IDs such as `DR-021a`. Track children
 independently and finish the parent only when all required children are done. Keep completed rows and briefs as history.
 Do not delete them or renumber existing items. Record unrelated discoveries in the backlog, not speculative comments in
@@ -202,8 +232,8 @@ No styling exceptions have been approved by this plan.
   compensate for that inversion; do not reset it during a page task.
 - [PrimeNG configuration][app-config] uses `.dark-theme`. [ThemeService][theme-service] manages the document class and a
   persisted preference.
-- [Global styles][global-styles] load the PrimeUI plugin and apply gradients and broad component overrides. [Additional
-  theme styles][theme-styles] define custom visual tokens and typography. Their eventual retirement needs consumer
+- [Global styles][global-styles] load the PrimeUI plugin, apply the semantic app canvas, and retain component overrides.
+  [Additional theme styles][theme-styles] define custom visual tokens and typography. Their retirement needs consumer
   checks, not a wholesale deletion at the start.
 - Root routes and feature routes are inventoried in the backlog. Existing unmounted/disabled screens are recorded, but
   redesign work must not enable or remove them implicitly.

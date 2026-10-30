@@ -33,7 +33,14 @@
     <p-button icon="pi pi-user-plus" [outlined]="true" label="Follow" size="small" (onClick)="toggleFollow()" />
     <p-button icon="pi pi-users" [routerLink]="['head-to-head']" [label]="'all.head-to-head.title' | translate" size="small" />
     <p-menu #menu [model]="editMenuItems" [popup]="true" />
-    <p-button icon="pi pi-ellipsis-v" [outlined]="true" (click)="menu.toggle($event)" size="small" />
+    <p-button
+      icon="pi pi-ellipsis-v"
+      [outlined]="true"
+      [ariaLabel]="'all.common.actions' | translate"
+      [title]="'all.common.actions' | translate"
+      (click)="menu.toggle($event)"
+      size="small"
+    />
   </div>
 
   <!-- Rank panel -->

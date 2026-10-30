@@ -1,56 +1,45 @@
 <div>
-  <!-- Section header -->
-  <div class="flex items-center justify-between mb-4">
-    <div class="flex items-center gap-3">
-      <span class="t-eyebrow">{{ 'all.game.recent.title' | translate }}</span>
-    </div>
-  </div>
+  <h2 #recentGamesTitle [id]="'recent-games-title-' + for()" class="text-base font-semibold text-color mb-3">
+    {{ 'all.game.recent.title' | translate }}
+  </h2>
 
   <!-- Filter: All / Singles / Doubles / Mixed -->
   @if (!loading() && games().length > 0) {
-    <div class="flex items-center flex-wrap gap-2 mb-4">
       <p-selectbutton
+        class="mb-4 flex-wrap"
+        size="small"
+        [ariaLabelledBy]="recentGamesTitle.id"
         [options]="filterOptions()"
         [ngModel]="selectedGameType()"
         (ngModelChange)="selectGameType($event)"
         optionLabel="label"
         optionValue="value"
         [allowEmpty]="false"
-      />
-    </div>
+      >
+        <ng-template #item let-option>
+          <span class="text-color">{{ option.label }}</span>
+        </ng-template>
+      </p-selectbutton>
   }
 
   @if (!loading()) {
     @for (game of filteredGames(); track game.id) {
-      @let won = didCurrentPlayerWin(game);
       @let ownTeam = getCurrentPlayerTeam(game);
       @let ownPoints = getCurrentPlayerPoints(game);
       @let isComp = isCompetitionGame(game);
       @let myCol = ownTeam === 2 ? 2 : 1;
       @let oppCol = ownTeam === 2 ? 1 : 2;
 
-      <article
-        class="grid grid-cols-[4px_1fr_auto] lg:grid-cols-[4px_auto_1fr_auto] grid-rows-[auto_1fr] bg-emphasis border border-surface rounded-border overflow-hidden mt-3 first:mt-0"
-      >
-        <!-- Color band -->
-        <div
-          class="row-span-2"
-          [ngClass]="{
-            'bg-[var(--g-win)]': won === true,
-            'bg-[var(--g-loss)]': won === false,
-            'bg-primary': won === null,
-          }"
-        ></div>
-
-        <!-- Date column (hidden on mobile) -->
-        <div class="row-span-2 hidden lg:flex flex-col items-center justify-center gap-1 px-4 py-4 pl-5 border-r border-surface min-w-[72px]">
-          <span class="t-eyebrow">{{ game?.playedAt | dayjsFormat: 'ddd' }}</span>
-          <span class="font-['Space_Grotesk',sans-serif] font-bold text-2xl leading-none text-color">{{ game?.playedAt | dayjsFormat: 'DD' }}</span>
-          <span class="t-mono text-[0.8125rem] text-muted-color">{{ game?.playedAt | dayjsFormat: 'MMM' }}</span>
-        </div>
+      <p-card class="block mt-3 border border-surface overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+      <article class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
+        <time class="col-start-1 row-start-1 flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:row-span-2 sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r" [attr.datetime]="game?.playedAt | dayjsFormat: 'YYYY-MM-DD'">
+          <span class="text-[0.6875rem] font-bold uppercase tracking-widest text-muted-color">{{ game?.playedAt | dayjsFormat: 'ddd' }}</span>
+          <span class="font-bold text-2xl leading-none text-color">{{ game?.playedAt | dayjsFormat: 'DD' }}</span>
+          <span class="font-mono text-[0.8125rem] text-muted-color">{{ game?.playedAt | dayjsFormat: 'MMM' }}</span>
+        </time>
 
         <!-- Top row: meta + teams (right-aligned) -->
-        <div class="col-start-2 lg:col-start-3 row-start-1 flex items-center justify-between gap-3 min-w-0 px-5 pt-3">
+        <div class="col-span-2 col-start-1 row-start-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-2 min-w-0 px-4 sm:px-5 py-3 sm:pb-0 border-b sm:border-b-0 border-surface">
           <!-- Meta: tag + competition/tournament name -->
           <div class="flex items-center gap-2 text-xs text-muted-color min-w-0">
             @if (game?.tournamentDraw?.name) {
@@ -68,7 +57,7 @@
                 <p-tag [value]="game?.tournamentDraw.name" severity="info" />
               </a>
               @if (game?.tournamentDraw.tournamentSubEvent?.tournamentEvent?.name) {
-                <span class="truncate">{{ game?.tournamentDraw.tournamentSubEvent.tournamentEvent.name }}</span>
+                <span class="min-w-0 flex-1 sm:flex-initial break-words sm:truncate">{{ game?.tournamentDraw.tournamentSubEvent.tournamentEvent.name }}</span>
               }
             } @else if (isComp) {
               <a
@@ -85,7 +74,7 @@
                 <p-tag [value]="game?.competitionEncounter?.drawCompetition?.name ?? ''" severity="info" />
               </a>
               @if (game?.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.name) {
-                <span class="truncate">{{ game?.competitionEncounter.drawCompetition.competitionSubEvent.competitionEvent.name }}</span>
+                <span class="min-w-0 flex-1 sm:flex-initial break-words sm:truncate">{{ game?.competitionEncounter.drawCompetition.competitionSubEvent.competitionEvent.name }}</span>
               }
             } @else {
               <p-tag [value]="game?.gameType ?? ''" severity="secondary" />
@@ -94,7 +83,7 @@
 
           <!-- Teams (competitions only) -->
           @if (isComp) {
-            <div class="font-['Space_Grotesk',sans-serif] font-semibold text-[0.8125rem] text-color text-right leading-tight shrink-0 max-w-[220px]">
+            <div class="font-semibold text-[0.8125rem] text-color sm:text-right leading-relaxed sm:leading-tight sm:max-w-[220px]">
               @if (game?.competitionEncounter?.homeTeam?.club?.slug) {
                 <a
                   class="text-color no-underline hover:text-primary"
@@ -119,8 +108,8 @@
         </div>
 
         <!-- Pairs row -->
-        <div class="col-start-2 lg:col-start-3 row-start-2 grid grid-cols-[1fr_auto_1fr] gap-2.5 items-center px-5 pb-4 pt-2">
-          <div class="flex flex-col gap-0.5 min-w-0">
+        <div class="contents sm:col-start-2 sm:row-start-2 sm:min-w-0 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2.5 sm:items-center sm:px-5 sm:pb-4 sm:pt-2">
+          <div [attr.data-game-side]="myCol" class="col-start-1 row-start-3 sm:col-auto sm:row-auto flex flex-col justify-center gap-1.5 sm:gap-0.5 min-w-0 pl-4 pr-2 py-3 sm:p-0">
             @for (m of getTeamMembers(game, myCol); track m?.id) {
               <span
                 class="inline-flex items-center gap-1.5 text-sm max-w-full"
@@ -129,9 +118,9 @@
                 [class.text-muted-color]="!isCurrentPlayer(m?.gamePlayer.id || '')"
               >
                 @if (isCurrentPlayer(m?.gamePlayer.id || '')) {
-                  <span class="truncate">{{ m?.gamePlayer.fullName }}</span>
+                  <span class="min-w-0 break-words sm:truncate">{{ m?.gamePlayer.fullName }}</span>
                 } @else {
-                  <a class="text-inherit no-underline hover:text-primary truncate" [routerLink]="['/players', m?.gamePlayer.id]">
+                  <a class="min-w-0 text-inherit no-underline hover:text-primary break-words sm:truncate" [routerLink]="['/players', m?.gamePlayer.id]">
                     {{ m?.gamePlayer.fullName }}
                   </a>
                 }
@@ -141,11 +130,11 @@
               </span>
             }
           </div>
-          <span class="t-mono text-[0.6875rem] text-muted-color uppercase tracking-[0.14em]">vs</span>
-          <div class="flex flex-col gap-0.5 min-w-0 items-end text-right">
+          <span class="hidden sm:block font-mono text-[0.6875rem] text-muted-color uppercase tracking-[0.14em]">vs</span>
+          <div [attr.data-game-side]="oppCol" class="col-start-1 row-start-5 sm:col-auto sm:row-auto flex flex-col justify-center gap-1.5 sm:gap-0.5 min-w-0 pl-4 pr-2 py-3 sm:p-0 sm:items-end sm:text-right">
             @for (m of getTeamMembers(game, oppCol); track m?.id) {
               <span class="inline-flex items-center gap-1.5 text-sm text-muted-color max-w-full">
-                <a class="text-inherit no-underline hover:text-primary truncate" [routerLink]="['/players', m?.gamePlayer.id]">
+                <a class="min-w-0 text-inherit no-underline hover:text-primary break-words sm:truncate" [routerLink]="['/players', m?.gamePlayer.id]">
                   {{ m?.gamePlayer.fullName }}
                 </a>
                 @if (getPlayerLevel(game, m?.gamePlayer.id || ''); as lvl) {
@@ -156,80 +145,47 @@
           </div>
         </div>
 
-        <!-- Right top: points chip + extends border next to teams -->
-        <div class="col-start-3 lg:col-start-4 row-start-1 flex items-center justify-center px-5 pt-3 border-l border-surface">
+        <!-- Right top: points -->
+        <div class="col-start-2 row-start-1 sm:col-start-3 flex items-center justify-end sm:justify-center px-4 sm:px-5 py-3 sm:pb-0 border-b sm:border-b-0 sm:border-l border-surface">
           @if (ownPoints !== 0) {
-            <span
-              class="t-mono text-[0.8125rem] font-bold tabular-nums px-2 py-0.5 rounded-sm"
-              [ngClass]="{
-                'text-[var(--g-win)] bg-[var(--g-win-muted)]': ownPoints > 0,
-                'text-[var(--g-loss)] bg-[var(--g-loss-muted)]': ownPoints < 0,
-              }"
-              >{{ formatPoints(ownPoints) }}</span
-            >
+            <p-tag
+              [value]="formatPoints(ownPoints)"
+              [severity]="ownPoints > 0 ? 'success' : 'danger'"
+            />
           }
         </div>
 
         <!-- Right row: scores -->
-        <div class="col-start-3 lg:col-start-4 row-start-2 flex items-center justify-end gap-3 px-5 pb-4 pt-2 border-l border-surface">
-          <div class="flex gap-2.5 t-mono tabular-nums font-semibold leading-tight">
-            <!-- Own sets -->
-            <div class="flex flex-col items-end gap-0.5 min-w-[1.25rem]">
-              @if (isSetPlayed(game?.set1Team1, game?.set1Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set1Team1, game?.set1Team2) === myCol"
-                  [class.text-muted-color]="getSetWinner(game?.set1Team1, game?.set1Team2) !== myCol"
-                  >{{ myCol === 2 ? game?.set1Team2 : game?.set1Team1 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set2Team1, game?.set2Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set2Team1, game?.set2Team2) === myCol"
-                  [class.text-muted-color]="getSetWinner(game?.set2Team1, game?.set2Team2) !== myCol"
-                  >{{ myCol === 2 ? game?.set2Team2 : game?.set2Team1 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set3Team1, game?.set3Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set3Team1, game?.set3Team2) === myCol"
-                  [class.text-muted-color]="getSetWinner(game?.set3Team1, game?.set3Team2) !== myCol"
-                  >{{ myCol === 2 ? game?.set3Team2 : game?.set3Team1 }}</span
-                >
-              }
-            </div>
-            <!-- Opponent sets -->
-            <div class="flex flex-col items-end gap-0.5 min-w-[1.25rem]">
-              @if (isSetPlayed(game?.set1Team1, game?.set1Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set1Team1, game?.set1Team2) === oppCol"
-                  [class.text-muted-color]="getSetWinner(game?.set1Team1, game?.set1Team2) !== oppCol"
-                  >{{ myCol === 2 ? game?.set1Team1 : game?.set1Team2 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set2Team1, game?.set2Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set2Team1, game?.set2Team2) === oppCol"
-                  [class.text-muted-color]="getSetWinner(game?.set2Team1, game?.set2Team2) !== oppCol"
-                  >{{ myCol === 2 ? game?.set2Team1 : game?.set2Team2 }}</span
-                >
-              }
-              @if (isSetPlayed(game?.set3Team1, game?.set3Team2)) {
-                <span
-                  class="text-base"
-                  [class.text-[var(--g-win)]]="getSetWinner(game?.set3Team1, game?.set3Team2) === oppCol"
-                  [class.text-muted-color]="getSetWinner(game?.set3Team1, game?.set3Team2) !== oppCol"
-                  >{{ myCol === 2 ? game?.set3Team1 : game?.set3Team2 }}</span
-                >
-              }
-            </div>
+        <div class="contents sm:col-start-3 sm:row-start-2 sm:flex sm:items-center sm:justify-center sm:px-5 sm:pb-4 sm:pt-2 sm:border-l border-surface">
+          <div class="contents sm:flex sm:gap-2 tabular-nums">
+            @for (side of [myCol, oppCol]; track side) {
+              <div
+                [attr.data-score-side]="side"
+                [class.row-start-3]="side === myCol"
+                [class.row-start-5]="side === oppCol"
+                class="col-start-2 sm:col-auto sm:row-auto flex items-center justify-end gap-1 px-4 py-3 sm:flex-col sm:items-end sm:justify-start sm:p-0"
+              >
+                @for (set of [[game?.set1Team1, game?.set1Team2], [game?.set2Team1, game?.set2Team2], [game?.set3Team1, game?.set3Team2]]; track $index) {
+                  @if (isSetPlayed(set[0], set[1])) {
+                    @let setWon = getSetWinner(set[0], set[1]) === side;
+                    <span data-set-score class="inline-flex min-h-6 items-center justify-end">
+                      @if (setWon) {
+                        <p-tag
+                          [value]="(side === 2 ? set[1] : set[0])?.toString()"
+                          severity="success"
+                        />
+                      } @else {
+                        <span class="px-2 text-sm text-muted-color">{{ side === 2 ? set[1] : set[0] }}</span>
+                      }
+                    </span>
+                  }
+                }
+              </div>
+            }
           </div>
         </div>
       </article>
+      </p-card>
     } @empty {
       <div class="p-8 text-center">
         <i class="pi pi-search text-4xl text-muted-color mb-4"></i>
@@ -265,36 +221,34 @@
 
     <!-- Loading more skeletons -->
     @if (loadingMore()) {
-      @for (i of [1, 2, 3]; track i) {
-        <div class="g-card">
-          <div class="g-card__band"></div>
-          <div class="p-4 space-y-2">
-            <p-skeleton width="12rem" height="0.875rem" />
-            <p-skeleton width="16rem" height="1rem" />
-            <p-skeleton width="8rem" height="0.75rem" />
-          </div>
-          <div class="g-card__right">
-            <p-skeleton width="1.5rem" height="2rem" />
-            <p-skeleton width="1.5rem" height="2rem" />
-          </div>
-        </div>
-      }
+      <ng-container [ngTemplateOutlet]="loadingGames" [ngTemplateOutletContext]="{ $implicit: [1, 2, 3] }" />
     }
   } @else {
     <!-- Initial loading skeletons -->
-    @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-      <div class="g-card">
-        <div class="g-card__band"></div>
-        <div class="p-4 space-y-2">
-          <p-skeleton width="12rem" height="0.875rem" />
-          <p-skeleton width="16rem" height="1rem" />
-          <p-skeleton width="8rem" height="0.75rem" />
-        </div>
-        <div class="g-card__right">
-          <p-skeleton width="1.5rem" height="2rem" />
-          <p-skeleton width="1.5rem" height="2rem" />
-        </div>
-      </div>
-    }
+    <ng-container [ngTemplateOutlet]="loadingGames" [ngTemplateOutletContext]="{ $implicit: [1, 2, 3, 4, 5, 6] }" />
   }
+
+  <ng-template #loadingGames let-placeholders>
+    <section aria-busy="true" [attr.aria-labelledby]="recentGamesTitle.id" class="flex flex-col gap-3 mt-3">
+      @for (placeholder of placeholders; track placeholder) {
+        <p-card class="block border border-surface overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
+            <div class="col-span-2 flex items-center px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:justify-center sm:border-b-0 sm:border-r">
+              <p-skeleton aria-hidden="true" width="2rem" height="3rem" />
+            </div>
+            <div class="col-start-1 row-start-2 sm:col-start-2 sm:row-start-1 min-w-0 px-4 sm:px-5 pt-3">
+              <p-skeleton aria-hidden="true" width="60%" height="0.875rem" />
+            </div>
+            <div class="col-start-1 row-start-3 sm:col-start-2 sm:row-start-2 min-w-0 px-4 sm:px-5 pt-2 pb-4">
+              <p-skeleton aria-hidden="true" width="100%" height="1rem" />
+            </div>
+            <div class="col-start-2 row-start-2 row-span-2 sm:col-start-3 sm:row-start-1 flex items-center gap-2 px-3 sm:px-5 py-4 border-l border-surface">
+              <p-skeleton aria-hidden="true" width="1.5rem" height="2rem" />
+              <p-skeleton aria-hidden="true" width="1.5rem" height="2rem" />
+            </div>
+          </div>
+        </p-card>
+      }
+    </section>
+  </ng-template>
 </div>

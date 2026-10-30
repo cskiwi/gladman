@@ -2,6 +2,20 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
 export const BadmanPreset = definePreset(Aura, {
+  extend: {
+    colorScheme: {
+      light: {
+        app: {
+          canvas: '{surface.100}',
+        },
+      },
+      dark: {
+        app: {
+          canvas: '{surface.0}',
+        },
+      },
+    },
+  },
   semantic: {
     primary: {
       50: 'oklch(0.95 0.05 210)',

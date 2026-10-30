@@ -193,6 +193,7 @@
     "unknown": "Inconnu",
     "viewAll": "Voir Tout",
     "viewDetails": "Voir Détails",
+    "viewLess": "Voir moins",
     "yes": "Oui"
   },
   "competition": {
@@ -205,8 +206,9 @@
     "dates": "Dates importantes",
     "details": "Détails du concours",
     "draw": "Calendrier",
+    "drawFallbackName": "Calendrier {{number}}",
+    "noDrawsYet": "Aucun calendrier configuré pour le moment",
     "draws": "Série",
-    "maxLevel": "Niveau max",
     "edit": {
       "actions": {
         "cancel": "Annuler",
@@ -323,6 +325,7 @@
     "level": "Niveau",
     "location": "Localisation",
     "lost": "Perdu",
+    "maxLevel": "Niveau max",
     "no_bracket": "Pas d'horaire disponible",
     "no_bracket_description": "Ce régime d'élimination n'a pas encore de données.",
     "no_encounters": "Aucune correspondance",
@@ -331,8 +334,8 @@
     "no_played_encounters": "Aucun jeu n'a encore été joué.",
     "no_qualification": "Pas de données qualifiantes",
     "no_qualification_description": "Ce programme de qualification n'a pas encore de données de qualification.",
-    "no_standings": "Pas de classification disponible",
-    "no_standings_description": "Ce programme n'a pas encore de données de classement.",
+    "no_standings": "Aucun classement disponible",
+    "no_standings_description": "Le classement des équipes de cette série n'est pas encore disponible.",
     "no_upcoming_encounters": "Aucun match à venir.",
     "official": "Concours Officiel",
     "openDate": "Abonnements ouverts",
@@ -343,7 +346,7 @@
     "player": "Joueur",
     "player_team": "L'équipe",
     "points": "Points",
-    "position": "Position",
+    "position": "Rang",
     "qualification_matches": "Matches de qualification",
     "qualification_results": "Résultats des qualifications",
     "qualification_rounds": "Tours de qualification",
@@ -354,11 +357,21 @@
     "season": "Saison",
     "sets": "Jeux",
     "size": "Taille",
-    "standings": "Classification",
+    "standings": "Classement",
     "statistics": "Statistiques",
     "status": "Statut",
     "subEvent": "Section",
     "subEvents": "Série",
+    "summary": {
+      "closes": "Clôture le {{date}}",
+      "from": "À partir du {{date}}",
+      "opens": "Ouverture le {{date}}",
+      "periodOneEnds": "Fin de P1 le {{date}}",
+      "registration": "Inscription",
+      "teamChanges": "Changements d'équipe",
+      "typeCountOne": "sur {{count}} type",
+      "typeCountOther": "sur {{count}} types"
+    },
     "team": "L'équipe",
     "team-assembly": {
       "auto-generate": {
@@ -661,15 +674,24 @@
     "players": "Le chargement des joueurs..."
   },
   "navigation": {
+    "account": "Compte",
+    "admin": "Panneau d'administration",
     "clubs": "Clubs",
     "competitions": "Concours",
     "home": "ACCUEIL",
     "login": "Connexion",
+    "logout": "Déconnexion",
+    "menu": "Menu",
+    "notifications": "Notifications",
+    "openMenu": "Ouvrir le menu de navigation",
     "players": "Joueurs",
+    "primary": "Navigation principale",
     "searchClubs": "Recherche de clubs",
     "searchClubsDescription": "Trouvez et découvrez les clubs de badminton près de chez vous",
     "searchPlayers": "Recherche de joueurs",
-    "searchPlayersDescription": "Découvrez les joueurs, les classements et les statistiques"
+    "searchPlayersDescription": "Découvrez les joueurs, les classements et les statistiques",
+    "toggleDark": "Passer au mode sombre",
+    "toggleLight": "Passer au mode clair"
   },
   "player": {
     "allGames": "Tous les matchs",
@@ -770,9 +792,15 @@
     "needed-for-upgrade": "Dégradation",
     "table": {
       "level": "Niveau",
+      "levels": "niveaux",
+      "loading-ranking-system": "Chargement du système de classement",
+      "no-level-data": "Aucune donnée de niveau disponible.",
+      "no-ranking-system": "Aucun système de classement disponible.",
       "points-needed-down": "Limite inférieure",
       "points-needed-up": "Limite pour l'augmentation",
-      "points-won": "Points gagnés contre ce niveau"
+      "points-won": "Points gagnés contre ce niveau",
+      "ranking-system": "Système de classement",
+      "reference": "Référence des niveaux"
     }
   },
   "ranking": {
@@ -903,18 +931,29 @@
       "updates": "Mises à jour"
     },
     "progress": {
-      "title": "Mon classement",
-      "to-upgrade": "{{points}} pts pour monter",
-      "to-downgrade": "{{points}} pts pour descendre",
-      "upgrade-reached": "Seuil de montée atteint",
-      "downgrade-reached": "Seuil de descente atteint",
+      "at-floor": "FOND",
       "at-top": "TOP",
-      "at-floor": "FOND"
+      "downgrade-reached": "Seuil de descente atteint",
+      "title": "Mon classement",
+      "to-downgrade": "{{points}} pts pour descendre",
+      "to-upgrade": "{{points}} pts pour monter",
+      "upgrade-reached": "Seuil de montée atteint"
     }
   },
   "search": {
+    "loading": "Recherche en cours...",
     "noResults": "Aucun résultat trouvé",
-    "results": "Résultats de la recherche"
+    "placeholder": "Rechercher des joueurs, clubs, compétitions...",
+    "results": "Résultats de la recherche",
+    "types": {
+      "club": "Club",
+      "competition": "Compétition",
+      "event": "Événement",
+      "player": "Joueur",
+      "result": "Résultat",
+      "team": "Équipe",
+      "tournament": "Tournoi"
+    }
   },
   "settings": {
     "general": {

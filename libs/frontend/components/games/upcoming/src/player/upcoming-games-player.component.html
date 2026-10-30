@@ -1,92 +1,151 @@
-<div>
-  <!-- Section header -->
-  <div class="flex items-center justify-between mb-4">
-    <div class="flex items-center gap-3">
-      <span class="t-eyebrow">{{ 'all.game.upcoming.title' | translate }}</span>
-      @if (!loading() && games().length > 0) {
-      <p-tag severity="warn" styleClass="g-tag--live">
-        <span class="g-tag__dot"></span>{{ 'all.game.upcoming.nextUp' | translate }}
-      </p-tag>
-      }
-    </div>
-  </div>
+<section
+  [attr.aria-labelledby]="'upcoming-games-title-' + for()"
+  [attr.aria-busy]="loading() ? 'true' : null"
+>
+  <h2
+    #upcomingGamesTitle
+    [id]="'upcoming-games-title-' + for()"
+    class="text-base font-semibold text-color mb-3"
+  >
+    {{ 'all.game.upcoming.title' | translate }}
+  </h2>
 
   @if (!loading()) {
-  @for (game of games(); track game.id) {
-  <div class="upcoming">
-    <!-- Date column -->
-    <div class="upcoming__when">
-      <span class="upcoming__day">{{ game?.date | dayjsFormat: 'ddd' }}</span>
-      <span>{{ game?.date | dayjsFormat: 'DD' }}</span>
-      <span class="t-mono text-[0.8125rem] text-muted-color">{{ game?.date | dayjsFormat: 'HH:mm' }}</span>
-    </div>
+    @for (game of visibleGames(); track game.id) {
+      <p-card class="block mt-3 border border-surface overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+        <article class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
+          <div class="col-span-2 row-start-1 flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r">
+            <time
+              [attr.datetime]="game?.date | dayjsFormat: 'YYYY-MM-DD'"
+              class="flex items-baseline gap-2 sm:flex-col sm:items-center sm:gap-1"
+            >
+              <span class="text-[0.6875rem] font-bold uppercase tracking-widest text-muted-color">{{ game?.date | dayjsFormat: 'ddd' }}</span>
+              <span class="font-bold text-2xl leading-none text-color">{{ game?.date | dayjsFormat: 'DD' }}</span>
+              <span class="font-mono text-[0.8125rem] text-muted-color">{{ game?.date | dayjsFormat: 'MMM' }}</span>
+            </time>
+            <time
+              [attr.datetime]="game?.date | dayjsFormat: 'HH:mm'"
+              class="font-mono text-xs text-muted-color"
+            >
+              {{ game?.date | dayjsFormat: 'HH:mm' }}
+            </time>
+          </div>
 
-    <!-- Info column -->
-    <div class="flex flex-col gap-1">
-      <div class="flex items-center gap-2">
-        @if (game?.drawCompetition?.name) {
-        @let draw = game.drawCompetition;
-        @let subEvent = draw?.competitionSubEvent;
-        @let competitionEvent = subEvent?.competitionEvent;
-        @if (draw && subEvent && competitionEvent) {
-        <a [routerLink]="['/competition', competitionEvent.id, 'sub-events', subEvent.id, 'draws', draw.id]" class="no-underline hover:opacity-80">
-          <p-tag [value]="draw.name ?? ''" severity="info" />
-        </a>
-        } @else {
-        <p-tag [value]="draw?.name ?? ''" severity="info" />
-        }
-        }
-      </div>
-      <div class="font-semibold text-lg text-color" style="font-family: 'Space Grotesk', sans-serif">
-        @if (game?.homeTeam?.club?.slug) {
-        <a [routerLink]="['/clubs', game!.homeTeam!.club!.slug!, 'teams', game!.homeTeam!.id!]" class="text-color no-underline hover:text-primary">{{ game?.homeTeam.name || game?.homeTeam.abbreviation }}</a>
-        } @else {
-        {{ game?.homeTeam?.name || game?.homeTeam?.abbreviation }}
-        }
-        <span class="text-muted-color font-medium mx-1.5">vs</span>
-        @if (game?.awayTeam?.club?.slug) {
-        <a [routerLink]="['/clubs', game!.awayTeam!.club!.slug!, 'teams', game!.awayTeam!.id!]" class="text-color no-underline hover:text-primary">{{ game?.awayTeam.name || game?.awayTeam.abbreviation }}</a>
-        } @else {
-        {{ game?.awayTeam?.name || game?.awayTeam?.abbreviation }}
-        }
-      </div>
-      <span class="t-mono text-xs text-muted-color">
-        @let home = isHomeGame(game);
-        @if (home === true) {
-        {{ 'all.game.location.home' | translate }}
-        } @else if (home === false) {
-        {{ 'all.game.location.away' | translate }}
-        }
-      </span>
-    </div>
+            <div class="col-start-1 row-start-2 sm:col-start-2 sm:row-start-1 min-w-0 px-4 sm:px-5 pt-3 flex flex-wrap items-center gap-2 text-xs text-muted-color">
+              @if (game?.drawCompetition?.name) {
+                @let draw = game.drawCompetition;
+                @let subEvent = draw?.competitionSubEvent;
+                @let competitionEvent = subEvent?.competitionEvent;
+                @if (draw && subEvent && competitionEvent) {
+                  <a
+                    [routerLink]="['/competition', competitionEvent.id, 'sub-events', subEvent.id, 'draws', draw.id]"
+                    class="no-underline hover:opacity-80"
+                  >
+                    <p-tag [value]="draw.name ?? ''" severity="info" />
+                  </a>
+                } @else {
+                  <p-tag [value]="draw?.name ?? ''" severity="info" />
+                }
+              }
+              @if (game?.drawCompetition?.competitionSubEvent?.competitionEvent?.name) {
+                <span class="truncate">{{ game.drawCompetition.competitionSubEvent.competitionEvent.name }}</span>
+              }
+            </div>
+          <div class="col-start-1 row-start-3 sm:col-start-2 sm:row-start-2 min-w-0 px-4 sm:px-5 pb-4 pt-2 flex flex-col gap-2">
+            <div class="flex flex-wrap items-baseline gap-2 font-semibold text-[0.8125rem] text-color">
+              @if (game?.homeTeam?.club?.slug) {
+                <a
+                  [routerLink]="['/clubs', game!.homeTeam!.club!.slug!, 'teams', game!.homeTeam!.id!]"
+                  class="text-color no-underline hover:text-primary"
+                  >{{ game?.homeTeam.name || game?.homeTeam.abbreviation }}</a
+                >
+              } @else {
+                {{ game?.homeTeam?.name || game?.homeTeam?.abbreviation }}
+              }
+              <span class="text-muted-color font-medium">vs</span>
+              @if (game?.awayTeam?.club?.slug) {
+                <a
+                  [routerLink]="['/clubs', game!.awayTeam!.club!.slug!, 'teams', game!.awayTeam!.id!]"
+                  class="text-color no-underline hover:text-primary"
+                  >{{ game?.awayTeam.name || game?.awayTeam.abbreviation }}</a
+                >
+              } @else {
+                {{ game?.awayTeam?.name || game?.awayTeam?.abbreviation }}
+              }
+            </div>
+              @let home = isHomeGame(game);
+              @if (home !== null) {
+                <span class="font-mono text-xs text-muted-color">
+                  {{ (home ? 'all.game.location.home' : 'all.game.location.away') | translate }}
+                </span>
+              }
+          </div>
 
-    <!-- Action -->
-    <p-button [routerLink]="['/competition/assembly']" [queryParams]="getAssemblyParams(game)" class="flex items-center" variant="outlined" severity="secondary">
-      <i class="pi pi-list text-muted-color hover:text-primary cursor-pointer"></i> {{ 'all.competition.team-assembly.title' | translate }}
-    </p-button>
-  </div>
-  } @empty {
-  <div class="p-8 text-center">
-    <i class="pi pi-calendar text-4xl text-muted-color mb-4"></i>
-    <h3 class="text-lg font-semibold text-color mb-2">{{ 'all.game.upcoming.noGamesFound' | translate }}</h3>
-    <p class="text-muted-color text-sm">{{ 'all.game.upcoming.noGamesDescription' | translate }}</p>
-  </div>
-  }
+          <div class="col-span-2 row-start-4 flex items-center justify-end px-4 py-3 border-t border-surface sm:col-span-1 sm:col-start-3 sm:row-start-1 sm:row-span-2 sm:justify-center sm:px-5 sm:border-t-0 sm:border-l">
+          <button
+            pButton
+            type="button"
+            [routerLink]="['/competition/assembly']"
+            [queryParams]="getAssemblyParams(game)"
+            variant="outlined"
+            severity="secondary"
+          >
+            <i class="pi pi-list" aria-hidden="true"></i>
+            {{ 'all.competition.team-assembly.title' | translate }}
+          </button>
+          </div>
+        </article>
+      </p-card>
+    } @empty {
+      <p-card [pt]="{ root: { class: 'border border-surface' } }">
+        <div class="flex flex-col items-center gap-3 text-center">
+          <i class="pi pi-calendar text-3xl text-muted-color" aria-hidden="true"></i>
+          <div class="flex flex-col gap-2">
+            <h3 class="text-lg font-semibold text-color">
+              {{ 'all.game.upcoming.noGamesFound' | translate }}
+            </h3>
+            <p class="text-muted-color text-sm">
+              {{ 'all.game.upcoming.noGamesDescription' | translate }}
+            </p>
+          </div>
+        </div>
+      </p-card>
+    }
+
+    @if (hasMoreGames()) {
+      <div class="upcoming-games__expand flex justify-center mt-4">
+        <p-button
+          [label]="(expanded() ? 'all.common.viewLess' : 'all.common.viewAll') | translate"
+          [icon]="expanded() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+          variant="outlined"
+          severity="secondary"
+          (onClick)="toggleGames()"
+        />
+      </div>
+    }
   } @else {
-  <!-- Loading skeletons -->
-  @for (i of [1, 2, 3]; track i) {
-  <div class="upcoming">
-    <div class="upcoming__when">
-      <p-skeleton width="2rem" height="0.6rem" />
-      <p-skeleton width="1.5rem" height="1.5rem" />
-      <p-skeleton width="2.5rem" height="0.7rem" />
+    <div class="flex flex-col gap-3 mt-3">
+      @for (i of [1, 2, 3]; track i) {
+        <p-card class="block border border-surface overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
+            <div class="col-span-2 flex items-center gap-2 px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:flex-col sm:justify-center sm:gap-1 sm:border-b-0 sm:border-r">
+              <p-skeleton aria-hidden="true" width="2rem" height="0.6rem" />
+              <p-skeleton aria-hidden="true" width="1.5rem" height="1.5rem" />
+              <p-skeleton aria-hidden="true" width="2.5rem" height="0.7rem" />
+            </div>
+            <div class="col-start-1 row-start-2 sm:col-start-2 sm:row-start-1 min-w-0 px-4 sm:px-5 pt-3">
+              <p-skeleton aria-hidden="true" width="60%" height="0.875rem" />
+            </div>
+            <div class="col-start-1 row-start-3 sm:col-start-2 sm:row-start-2 flex flex-col gap-2 min-w-0 px-4 sm:px-5 pt-2 pb-4">
+              <p-skeleton aria-hidden="true" width="100%" height="1.125rem" />
+              <p-skeleton aria-hidden="true" width="40%" height="0.75rem" />
+            </div>
+            <div class="col-span-2 row-start-4 flex items-center justify-end px-4 py-3 border-t border-surface sm:col-span-1 sm:col-start-3 sm:row-start-1 sm:row-span-2 sm:justify-center sm:px-5 sm:border-t-0 sm:border-l">
+              <p-skeleton aria-hidden="true" width="9rem" height="2.5rem" />
+            </div>
+          </div>
+        </p-card>
+      }
     </div>
-    <div class="flex flex-col gap-1.5">
-      <p-skeleton width="8rem" height="0.875rem" />
-      <p-skeleton width="14rem" height="1.125rem" />
-      <p-skeleton width="6rem" height="0.75rem" />
-    </div>
-  </div>
   }
-  }
-</div>
+</section>

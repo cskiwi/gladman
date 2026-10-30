@@ -193,6 +193,7 @@
     "unknown": "Unknown",
     "viewAll": "View All",
     "viewDetails": "View Details",
+    "viewLess": "View Less",
     "yes": "Yes"
   },
   "competition": {
@@ -205,8 +206,9 @@
     "dates": "Important Dates",
     "details": "Competition Details",
     "draw": "Draw",
+    "drawFallbackName": "Draw {{number}}",
+    "noDrawsYet": "No draws configured yet",
     "draws": "Draws",
-    "maxLevel": "Max level",
     "edit": {
       "actions": {
         "cancel": "Cancel",
@@ -323,6 +325,7 @@
     "level": "Level",
     "location": "Location",
     "lost": "Lost",
+    "maxLevel": "Max level",
     "no_bracket": "No Bracket Available",
     "no_bracket_description": "This knockout draw doesn't have bracket data yet.",
     "no_encounters": "No Encounters",
@@ -357,8 +360,18 @@
     "standings": "Standings",
     "statistics": "Statistics",
     "status": "Status",
-    "subEvent": "Section",
+    "subEvent": "Series",
     "subEvents": "Series",
+    "summary": {
+      "closes": "Closes {{date}}",
+      "from": "From {{date}}",
+      "opens": "Opens {{date}}",
+      "periodOneEnds": "P1 ends {{date}}",
+      "registration": "Registration",
+      "teamChanges": "Team changes",
+      "typeCountOne": "across {{count}} type",
+      "typeCountOther": "across {{count}} types"
+    },
     "team": "Team",
     "team-assembly": {
       "auto-generate": {
@@ -661,15 +674,24 @@
     "players": "Loading players..."
   },
   "navigation": {
+    "account": "Account",
+    "admin": "Admin Panel",
     "clubs": "Clubs",
     "competitions": "Competitions",
     "home": "Home",
     "login": "Log in",
+    "logout": "Log out",
+    "menu": "Menu",
+    "notifications": "Notifications",
+    "openMenu": "Open navigation menu",
     "players": "Players",
+    "primary": "Primary navigation",
     "searchClubs": "Search Clubs",
     "searchClubsDescription": "Find and explore badminton clubs in your area",
     "searchPlayers": "Search Players",
-    "searchPlayersDescription": "Discover players, rankings and statistics"
+    "searchPlayersDescription": "Discover players, rankings and statistics",
+    "toggleDark": "Switch to dark mode",
+    "toggleLight": "Switch to light mode"
   },
   "player": {
     "allGames": "All Games",
@@ -770,9 +792,15 @@
     "needed-for-upgrade": "Degradation",
     "table": {
       "level": "Level",
+      "levels": "levels",
+      "loading-ranking-system": "Loading ranking system",
+      "no-level-data": "No level data is available.",
+      "no-ranking-system": "No ranking system is available.",
       "points-needed-down": "Points needed to go down",
       "points-needed-up": "Points needed to go up",
-      "points-won": "Points won against this level"
+      "points-won": "Points won against this level",
+      "ranking-system": "Ranking system",
+      "reference": "Level reference"
     }
   },
   "ranking": {
@@ -903,18 +931,29 @@
       "updates": "updates"
     },
     "progress": {
-      "title": "Your ranking",
-      "to-upgrade": "{{points}} pts to upgrade",
-      "to-downgrade": "{{points}} pts to downgrade",
-      "upgrade-reached": "Upgrade threshold reached",
-      "downgrade-reached": "Downgrade threshold reached",
+      "at-floor": "FLOOR",
       "at-top": "TOP",
-      "at-floor": "FLOOR"
+      "downgrade-reached": "Downgrade threshold reached",
+      "title": "Your ranking",
+      "to-downgrade": "{{points}} pts to downgrade",
+      "to-upgrade": "{{points}} pts to upgrade",
+      "upgrade-reached": "Upgrade threshold reached"
     }
   },
   "search": {
+    "loading": "Searching...",
     "noResults": "No results found",
-    "results": "Search Results"
+    "placeholder": "Search players, clubs, competitions...",
+    "results": "Search Results",
+    "types": {
+      "club": "Club",
+      "competition": "Competition",
+      "event": "Event",
+      "player": "Player",
+      "result": "Result",
+      "team": "Team",
+      "tournament": "Tournament"
+    }
   },
   "settings": {
     "general": {

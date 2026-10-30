@@ -1,12 +1,19 @@
 import { AsyncPipe, DatePipe, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, PLATFORM_ID } from '@angular/core';
-import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
 import { PlayerRankingProgressComponent } from '@app/frontend-components/player-ranking-progress';
+import {
+  HeroAvatarComponent,
+  HeroComponent,
+  HeroTitleComponent,
+} from '@app/frontend-components/hero';
 import { SectionHeaderComponent } from '@app/frontend-components/section-header';
 import { AuthService } from '@app/frontend-modules-auth/service';
 import { RankingSystemService } from '@app/frontend-modules-graphql/ranking';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ProgressBarModule } from 'primeng/progressbar';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
 import { HomeService } from './page-home.service';
 
 @Component({
@@ -15,11 +22,14 @@ import { HomeService } from './page-home.service';
     AsyncPipe,
     DatePipe,
     TranslateModule,
-    ProgressBarModule,
+    CardModule,
+    MessageModule,
+    SkeletonModule,
+    TableModule,
+    PlayerRankingProgressComponent,
     HeroComponent,
     HeroAvatarComponent,
     HeroTitleComponent,
-    PlayerRankingProgressComponent,
     SectionHeaderComponent,
   ],
   templateUrl: './page-home.component.html',

@@ -153,12 +153,14 @@ export class DrawsService {
     },
   });
 
+  private readonly data = computed(() => (this.dataResource.hasValue() ? this.dataResource.value() : undefined));
+
   // Public selectors
-  competition = computed(() => this.dataResource.value()?.competition);
-  subEvent = computed(() => this.dataResource.value()?.subEvent);
-  draw = computed(() => this.dataResource.value()?.draw);
+  competition = computed(() => this.data()?.competition);
+  subEvent = computed(() => this.data()?.subEvent);
+  draw = computed(() => this.data()?.draw);
   encounters = computed(() => {
-    const baseEncounters = this.dataResource.value()?.draw?.competitionEncounters ?? [];
+    const baseEncounters = this.data()?.draw?.competitionEncounters ?? [];
     const gamesData = this.encounterGames();
 
     // Merge encounters with their loaded games
@@ -201,7 +203,7 @@ export class DrawsService {
       });
   });
   standings = computed(() => {
-    const entries = this.dataResource.value()?.entries || [];
+    const entries = this.data()?.entries || [];
     return entries
       .filter((entry) => entry.standing) // Only entries with standings
       .sort((a, b) => (a.standing?.position ?? 0) - (b.standing?.position ?? 0));

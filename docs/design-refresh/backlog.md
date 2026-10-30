@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017f is Done with explicit user approval on 2026-10-30: the mounted desktop substitutes container uses a native Card,
+localized named heading and explicit empty state. Completed chrome/rows/pool/doubles/singles, CDK sorting/drop
+contracts, lineup restrictions and local forms are preserved. Scoped authored class tokens drop from 18 to 12.
+All 175 competition tests in 10 suites, focused lint (41 existing warnings, no errors), library build and its
+10 prerequisites pass. Isolated Chrome verifies empty/multiple synthetic substitutes and long names at
+820/1280/1440px in both themes, warning hover/focus Tooltips, Escape, Tab, visible native focus, real pointer
+pool copy/return and local form synchronization. Unchanged 390px retains 13 Selects and no desktop rows in both themes.
+Minimum scoped text contrast is 19.87:1 light / 16.00:1 dark; warning icon contrast against its composited Tag
+fill is 4.52:1 / 9.36:1. Dutch SSR returns the named Card; no browser page errors or GraphQL mutations.
+Screen-reader output, exhaustive hydration, mounted English/French, authenticated/save workflows and quantitative
+native focus-ring painted-area/contrast remain unchecked. No styling exceptions, overrides or dependencies.
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval is not evidence that unchecked checks passed. Only this slice, its tests and handoff are approved
+for commit; no push. Post-approval repository-wide lint passes across all 34 projects with existing warnings,
+no errors. See the [DR-017f brief](work-items/DR-017f-assembly-substitutes.md).
+Exact next action in a fresh invocation: confirm/scope one mounted generation-controls child, excluding completed
+chrome/rows/pool/doubles/singles/substitutes. Do not start it here. DR-017 remains open.
+
+### Previous completed focus: singles
+
 DR-017e is Done with explicit user approval on 2026-10-30: the four mounted desktop singles-slot containers now use
 native Cards, localized named headings/empty states, and accessible success/danger statistic Tags.
 Completed player rows, CDK contracts, singles rules, pool copy/return, scalar local forms and mobile selectors
@@ -666,6 +686,7 @@ and linked from their registry rows.
 | [DR-017c](work-items/DR-017c-assembly-player-pool.md)         | Desktop assembly player-pool container                  | Done    |
 | [DR-017d](work-items/DR-017d-assembly-doubles-slots.md)       | Desktop assembly doubles-slot containers                | Done    |
 | [DR-017e](work-items/DR-017e-assembly-singles-slots.md)       | Desktop assembly singles-slot containers                | Done    |
+| [DR-017f](work-items/DR-017f-assembly-substitutes.md)         | Desktop assembly substitutes container                  | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -823,6 +844,7 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   DR-017d completes only the four desktop doubles containers and accessible native statistic Tags,
   with explicit user approval and recorded verification limits.
   DR-017e covers only the four desktop singles containers, reusing the completed rows and native statistic pattern.
+  DR-017f covers only the desktop substitutes container, reusing completed rows and preserving CDK sorting.
   DR-032 tracks unchecked Checkbox/secondary Button focus contrast, including the pool's disclosed native failures.
   The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
   generation as functional follow-up, not completed visual scope.

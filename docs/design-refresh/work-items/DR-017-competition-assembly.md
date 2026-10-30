@@ -27,7 +27,9 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   and their statistics, preserving the completed rows and CDK behavior.
 - [DR-017e: Desktop singles slots](DR-017e-assembly-singles-slots.md): only the four mounted singles containers
   and their statistics, preserving completed rows/pool/doubles and CDK behavior.
-- Scope later children only after confirming their mounted state: substitute slots, generation controls,
+- [DR-017f: Desktop substitutes](DR-017f-assembly-substitutes.md): only the mounted substitutes container,
+  preserving completed rows, CDK sorting and local forms.
+- Scope later children only after confirming their mounted state: generation controls,
   validation presentation, and partner combinations.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
@@ -47,6 +49,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017c with explicit user approval and recorded native contrast/verification limits.
 - [x] Complete and review DR-017d with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017e with explicit user approval and recorded verification limits.
+- [x] Complete and review DR-017f with explicit user approval and recorded verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -77,5 +80,12 @@ focused lint/build and the recorded responsive/theme/browser checks pass. Its br
 and unchecked screen-reader, hydration, mounted-locale, authenticated/save and quantitative focus-ring limits.
 The user approved completion/commit with those disclosed limits on 2026-10-30. Approval is not evidence that
 unperformed checks passed. DR-017e is Done; no further production changes follow approval.
-Exact next action: confirm/scope one mounted desktop substitute-container child in a fresh invocation.
-Substitutes remain unscoped. Do not reopen completed children or start another child here. The parent remains open.
+The historical next action to scope substitutes is fulfilled by DR-017f, confirmed mounted on 2026-10-30.
+DR-017f implements the native substitutes Card, localized heading and explicit empty state, preserving
+CDK sorting/drop contracts and completed rows. All 175 competition tests, focused lint/build and the recorded
+browser checks pass. Its brief preserves exact evidence and unchecked verification limits.
+The user approved completion/commit with its disclosed verification limits on 2026-10-30.
+Approval is not evidence that unperformed checks passed. DR-017f is Done; no further production changes follow approval.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings, no errors.
+Exact next action: confirm/scope one mounted generation-controls child in a fresh invocation, not here.
+Do not reopen completed children. The parent remains open.

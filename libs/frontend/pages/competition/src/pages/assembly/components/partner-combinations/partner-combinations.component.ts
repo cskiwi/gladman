@@ -4,24 +4,16 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
-import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 import { AssemblyGeneratorService, TimeRange } from '../../assembly-generator.service';
 
 @Component({
   selector: 'app-partner-combinations',
   standalone: true,
-  imports: [
-    FormsModule,
-    TranslateModule,
-    FieldsetModule,
-    SelectModule,
-    ButtonModule,
-    TooltipModule,
-    InputTextModule,
-    TableModule,
-  ],
+  imports: [FormsModule, TranslateModule, FieldsetModule, SelectModule, ButtonModule, InputTextModule, TableModule, TagModule, TooltipModule],
   templateUrl: './partner-combinations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

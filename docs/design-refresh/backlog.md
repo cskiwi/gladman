@@ -5,6 +5,34 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017i is Done with explicit user approval on 2026-10-30: the mounted desktop partner-combinations disclosure
+now has responsive named controls,
+native icon-only `button[pButton]` refresh with busy/disabled feedback, native Table size/striping and statistic Tags.
+The existing Fieldset, data visibility, range/weeks, forced refresh, filtering, sorting and pagination remain.
+All 215 competition tests in 13 suites, focused lint (41 existing warnings, no errors), library build and
+10 prerequisites pass. Isolated Chrome verifies six desktop theme/width cases and two unchanged mobile cases,
+synthetic long names, filtering/empty/clear, paging, initial keyboard sorting/Select, refresh/busy and zero stats.
+Tag contrast passes; Dutch SSR and mounted hydration have no page errors or GraphQL mutations.
+Native Fieldset expansion removes Select/header tab stops: new DR-035 records this dependency-level issue.
+Actual screen-reader output, exhaustive focus/contrast/hydration, mounted English/French and authenticated/save
+workflows remain unchecked. Static utility tokens increase 10 to 12 for flexible control widths/wrapping;
+two palette bindings and legacy Table classes are removed. No styling exceptions or dependencies.
+Completed DR-017a-h, mobile selectors, services, translations, shared components and theme remain unchanged.
+User review requested restoring the baseline toolbar: icon-only refresh, one search placeholder and full-width
+controls rather than visible labels and a four-column grid. That correction is implemented and reverified:
+12 desktop theme/width/range cases, two unchanged mobile cases, focus Tooltip/Escape, refresh/filter/busy,
+accessible names and all 215 tests/lint/build pass again.
+See the [DR-017i brief](work-items/DR-017i-assembly-partner-combinations.md).
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts those limits; it is not evidence that failed or unperformed checks passed.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings, no errors.
+Exact next action in a fresh invocation: confirm/scope a remaining mounted DR-017 assembly surface, with
+captain/add-player controls as the next candidate, excluding completed DR-017a-i. Do not start it here.
+DR-017 remains open.
+
+### Previous completed focus: validation overview
+
 DR-017h is Done with explicit user approval on 2026-10-30: the mounted validation overview uses a named native Card
 and error/warn/success Messages.
 The existing template is reused in the confirmation dialog, without a new wrapper or duplicate heading IDs.
@@ -740,6 +768,7 @@ and linked from their registry rows.
 | [DR-017f](work-items/DR-017f-assembly-substitutes.md)         | Desktop assembly substitutes container                  | Done    |
 | [DR-017g](work-items/DR-017g-assembly-generation-controls.md) | Desktop assembly generation controls                    | Done    |
 | [DR-017h](work-items/DR-017h-assembly-validation-overview.md) | Assembly validation overview and reused message content | Done    |
+| [DR-017i][dr-017i]                                            | Desktop assembly partner combinations                   | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -757,6 +786,9 @@ and linked from their registry rows.
 | DR-032                                                        | Native Checkbox and secondary Button contrast audit     | Backlog |
 | DR-033                                                        | Native Button contrast and Tooltip association audit    | Backlog |
 | DR-034                                                        | Native Message severity text contrast audit             | Backlog |
+| DR-035                                                        | Native Fieldset descendant tab-stop restoration audit   | Backlog |
+
+[dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 
 ## App and shared surfaces
 
@@ -902,6 +934,8 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   DR-017f covers only the desktop substitutes container, reusing completed rows and preserving CDK sorting.
   DR-017g covers only the desktop generation-controls Card, fluid controls and hover/focus Tooltips.
   DR-017h covers only the validation overview Card and existing template reused in the confirmation dialog.
+  DR-017i covers only the desktop partner-combinations disclosure, responsive named controls and native
+  table/statistic presentation; completion is explicitly approved with native Fieldset restoration tracked in DR-035.
   DR-031 retains focused FloatLabel contrast; DR-033 records native outlined Button accessibility:
   generation-control light text 2.28-3.76:1, strategy focus below 3:1 and missing native Button
   `aria-describedby` while Tooltips display. Audit affected consumers separately; no page-level token workaround.
@@ -1003,6 +1037,12 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-035 (discovered during DR-017i): native Fieldset collapse/re-expansion removes the existing Select span
+  and sortable-header `tabindex="0"`, preventing their subsequent keyboard access. Reproduced in isolated Chrome;
+  installed PrimeNG `Fieldset.updateTabIndex()` removes rather than restores descendant tabindex on expansion.
+  Audit confirmed Fieldset consumers and a native/upstream fix separately; do not add page-local focus hacks,
+  silently remove disclosure behavior or broaden a page slice into a dependency upgrade.
+  DR-017i preserves the existing native Fieldset and leaves full keyboard/focus acceptance unchecked.
 - DR-034 (discovered during DR-017h): native styled Messages on the mounted assembly Card fail 4.5:1 text
   contrast in light success (3.16:1), error (4.44:1), warn (2.85:1), and dark error (4.40:1).
   Dark success/warn pass (6.48:1/7.49:1). Measurements composite native translucent fills over the actual Card.

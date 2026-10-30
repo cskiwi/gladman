@@ -38,6 +38,8 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - Scope later children only after confirming their mounted state: remaining assembly controls.
 - [DR-017j: Captain/add-player searches](DR-017j-assembly-player-searches.md): the two mounted responsive
   searches, reusing presentation across desktop/mobile without changing search services or lineup selectors.
+- [DR-017k: Base/titular summaries](DR-017k-assembly-player-summaries.md): the two mounted information
+  summaries, sharing one native presentation while preserving validation-derived rankings and exemptions.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -62,6 +64,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017h with explicit user approval and recorded native Message contrast/verification limits.
 - [x] Complete and review DR-017i with explicit user approval and recorded native Fieldset/verification limits.
 - [x] Complete and review DR-017j with explicit user approval and recorded native label/SSR/verification limits.
+- [x] Complete and review DR-017k with explicit user approval and recorded native Tooltip/verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -75,8 +78,13 @@ exhaustive focus/hydration, mounted English/French and authenticated/save checks
 The final SSR recheck could not connect after port 3000 stopped responding; earlier pre-grouping SSR passed.
 The user approved completion/commit with these disclosed limits on 2026-10-30, including the unperformed final
 SSR recheck. Approval is not evidence that failed or unperformed checks passed. DR-017j is Done.
-The next candidate is one mounted information-panel surface, starting with the base-player summary;
-confirm/scope it in a fresh invocation, not here. Keep DR-017 open until all required children are complete.
+DR-017k now refreshes both mounted base/titular summaries through one native Card/list template.
+All 247 competition tests, focused lint/build and eight mounted theme/width cases pass.
+The user approved completion/commit with disclosed verification limits on 2026-10-30; DR-017k is Done.
+Final Dutch SSR and fresh hydration now pass, resolving DR-017j's specific unavailable final grouping recheck.
+Other disclosed verification limits remain unchanged; approval does not mean unperformed checks passed.
+In a fresh invocation, confirm/scope one remaining mounted mobile selector group, excluding completed DR-017a-k.
+Keep DR-017 open until all required children are complete.
 
 DR-017a is complete with explicit user approval on 2026-10-30 after a requested desktop time-range translation fix.
 All 112 competition tests, repository-wide lint, app build, and the scoped browser checks pass.

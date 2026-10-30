@@ -4,47 +4,18 @@
   <section class="flex flex-col gap-4">
     <!-- Information Panels -->
     <div class="flex flex-wrap gap-4 max-md:flex-col">
-      <p-fieldset [legend]="'all.competition.team-assembly.players.base' | translate" class="flex-1 min-w-[250px]">
-        <div class="font-bold mb-2">Index: {{ dataService.base().index }}</div>
-        @for (player of dataService.base().players; track player.id) {
-          <div class="flex justify-between items-center py-1">
-            <span>{{ player.firstName }} {{ player.lastName }}</span>
-            @if (dataService.isException(player.id)) {
-              <span class="text-orange-500 mx-2" [pTooltip]="'all.competition.team-assembly.level-exemption' | translate">
-                <i class="pi pi-lock"></i>
-              </span>
-            }
-            <span class="font-mono text-sm text-muted-color">
-              {{ player.single }} - {{ player.double }}
-              @if (dataService.type() === 'MX') {
-                - {{ player.mix }}
-              }
-              ({{ player.sum }})
-            </span>
-          </div>
-        }
-      </p-fieldset>
-
-      <p-fieldset [legend]="'all.competition.team-assembly.players.team' | translate" class="flex-1 min-w-[250px]">
-        <div class="font-bold mb-2">Index: {{ dataService.titulars().index }}</div>
-        @for (player of dataService.titulars().players; track player.id) {
-          <div class="flex justify-between items-center py-1">
-            <span>{{ player.firstName }} {{ player.lastName }}</span>
-            @if (dataService.isException(player.id)) {
-              <span class="text-orange-500 mx-2" [pTooltip]="'all.competition.team-assembly.level-exemption' | translate">
-                <i class="pi pi-lock"></i>
-              </span>
-            }
-            <span class="font-mono text-sm text-muted-color">
-              {{ player.single }} - {{ player.double }}
-              @if (dataService.type() === 'MX') {
-                - {{ player.mix }}
-              }
-              ({{ player.sum }})
-            </span>
-          </div>
-        }
-      </p-fieldset>
+      <ng-container
+        *ngTemplateOutlet="
+          playerSummaryTemplate;
+          context: { $implicit: dataService.base(), title: 'all.competition.team-assembly.players.base', headingId: 'assembly-base-title' }
+        "
+      />
+      <ng-container
+        *ngTemplateOutlet="
+          playerSummaryTemplate;
+          context: { $implicit: dataService.titulars(), title: 'all.competition.team-assembly.players.team', headingId: 'assembly-titulars-title' }
+        "
+      />
 
       <p-card class="flex-1 min-w-64" role="region" aria-labelledby="assembly-validation-title">
         <ng-template #title>
@@ -55,6 +26,41 @@
         <ng-container *ngTemplateOutlet="validationOverviewTemplate" />
       </p-card>
     </div>
+
+    <ng-template #playerSummaryTemplate let-summary let-summaryTitle="title" let-headingId="headingId">
+      <p-card class="flex-1 min-w-0 md:basis-64" role="region" [attr.aria-labelledby]="headingId">
+        <ng-template #title>
+          <h2 [id]="headingId" class="text-base font-semibold m-0">{{ summaryTitle | translate }}</h2>
+        </ng-template>
+        <p class="mt-0 mb-2 font-semibold">Index: {{ summary.index }}</p>
+        <ul class="list-none m-0 p-0 flex flex-col gap-2" role="list">
+          @for (player of summary.players; track player.id) {
+            <li class="flex flex-wrap items-center gap-2">
+              <span class="flex-1 min-w-0 wrap-anywhere">{{ player.firstName }} {{ player.lastName }}</span>
+              @if (dataService.isException(player.id)) {
+                @let exemption = 'all.competition.team-assembly.level-exemption' | translate;
+                <p-tag
+                  severity="warn"
+                  icon="pi pi-lock"
+                  role="img"
+                  tabindex="0"
+                  [attr.aria-label]="exemption"
+                  [pTooltip]="exemption"
+                  tooltipEvent="both"
+                />
+              }
+              <span class="text-sm whitespace-nowrap text-color">
+                {{ player.single }} - {{ player.double }}
+                @if (dataService.type() === 'MX') {
+                  - {{ player.mix }}
+                }
+                ({{ player.sum }})
+              </span>
+            </li>
+          }
+        </ul>
+      </p-card>
+    </ng-template>
 
     <!-- Assembly Area -->
     @if (isMobile()) {

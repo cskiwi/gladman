@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017k is Done with explicit user approval on 2026-10-30: the mounted base/titular summaries now share one native
+Card/list template. Validation-derived order, indices, rankings/sums and exemptions remain intact.
+Named regions, wrapping names and localized native exemption Tags replace duplicated Fieldsets/palette icons.
+Static layout/color class tokens drop from 26 to 25; mobile Cards size to content after a verified flex-basis fix.
+All 247 competition tests in 15 suites (10 new), focused lint (41 existing warnings, no errors),
+library build and 10 prerequisites pass. Mounted browser checks cover eight theme/width cases,
+keyboard/focus/hover/Escape, long names, M/F/MX/zeroes and empty/loading/unloaded states.
+Text contrast passes at 19.87:1 light / 16.00:1 dark; exemption icons pass at 4.52:1 / 9.31:1.
+Final Dutch SSR and fresh mounted hydration pass with no page errors or GraphQL mutations.
+This also resolves DR-017j's previously unavailable final grouping SSR recheck.
+Native Tooltip association remains absent; the complete exemption is the Tag's accessible name.
+DR-033 retains the shared native Tooltip audit, now including this Tag consumer.
+Actual screen-reader output, exhaustive focus/hover/hydration, mounted English/French and authenticated/save
+workflows remain unverified. Completed children, controls, services, shared components, theme and assets are unchanged.
+No styling exceptions or dependencies. The user approved completion/commit with the disclosed verification limits.
+Approval accepts those limits; it does not mean unperformed checks passed. Only this slice and its handoff
+are approved for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings and no errors.
+See the [DR-017k brief](work-items/DR-017k-assembly-player-summaries.md).
+Exact next action in a fresh invocation: confirm/scope one remaining mounted mobile lineup selector group (for example singles),
+excluding completed DR-017a-k. Keep DR-017 open; do not start that child here.
+
+### Previous completed focus: captain/add-player searches
+
 DR-017j is Done with explicit user approval on 2026-10-30 after clarified visual feedback:
 desktop captain has a separate native Card above
 the player-pool Card, while add-player is inside the player-pool Card below its list.
@@ -804,6 +828,7 @@ and linked from their registry rows.
 | [DR-017h](work-items/DR-017h-assembly-validation-overview.md) | Assembly validation overview and reused message content | Done    |
 | [DR-017i][dr-017i]                                            | Desktop assembly partner combinations                   | Done    |
 | [DR-017j][dr-017j]                                            | Responsive assembly captain/add-player searches         | Done    |
+| [DR-017k][dr-017k]                                            | Reused assembly base/titular information summaries      | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -825,6 +850,7 @@ and linked from their registry rows.
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
+[dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
 
@@ -977,7 +1003,9 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   native focused light-label contrast remains DR-031.
   DR-031 retains focused FloatLabel contrast; DR-033 records native outlined Button accessibility:
   generation-control light text 2.28-3.76:1, strategy focus below 3:1 and missing native Button
-  `aria-describedby` while Tooltips display. Audit affected consumers separately; no page-level token workaround.
+  `aria-describedby` while Tooltips display. DR-017k also confirms no native Tooltip ID/association on its
+  exemption Tags; their complete translated `aria-label` still names the exemption independently.
+  Audit affected consumers separately; no page-level token workaround.
   DR-032 tracks unchecked Checkbox/secondary Button focus contrast, including the pool's disclosed native failures.
   The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
   generation as functional follow-up, not completed visual scope.

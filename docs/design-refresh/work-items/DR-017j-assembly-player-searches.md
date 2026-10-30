@@ -169,3 +169,10 @@ description: 'Accessible native player searches with one presentation per contro
   No shared styling overrides, dependency changes or workflow files are included. No push is authorized.
 - Post-approval `npx nx run-many --target=lint --output-style=static` passes across all 34 projects,
   with existing warnings and no errors. All approved files are formatted; approval/handoff additions are formatted too.
+
+### Later verification during DR-017k
+
+- On 2026-10-30, after the user restarted the local servers, the final grouped assembly route returns HTTP 200
+  with Dutch page text and captain input in server HTML. Fresh mounted hydration has no page errors or
+  GraphQL mutations. The specific unavailable final grouping SSR recheck is now resolved.
+- Other unchecked verification limits and the original completion approval remain unchanged.

@@ -94,13 +94,15 @@ import { AssemblyValidationService } from './services/assembly/assembly-validati
               footer: true,
             }),
           );
-          plugins.push(ApolloServerPluginSchemaReporting());
 
-          plugins.push(
-            ApolloServerPluginUsageReporting({
-              sendVariableValues: { all: true },
-            }),
-          );
+          if (config.get<string>('APOLLO_KEY')) {
+            plugins.push(
+              ApolloServerPluginSchemaReporting(),
+              ApolloServerPluginUsageReporting({
+                sendVariableValues: { all: true },
+              }),
+            );
+          }
         }
 
         if (process.env['NODE_ENV'] !== 'production') {

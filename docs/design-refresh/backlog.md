@@ -5,6 +5,19 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-016 is Done with explicit user approval on 2026-10-30 after a documentation-only consumer audit.
+DR-016a through DR-016g remain Done and are not reopened.
+The supplied competition mounts 12 sub-events and 26 draw links, all POULE; qualification has conditional route wiring
+but no confirmed live instance in that competition. Defer qualification styling without adding a consumer or fixture.
+This does not establish that qualification is globally unused.
+Parent reconciliation, formatting, whitespace, and 76 inline local-link checks pass.
+The user selected "Approve parent completion and commit with the recorded verification limits".
+Qualification deferral and all unchecked parent criteria remain unverified; approval is not evidence that they passed.
+Only the parent brief and backlog are authorized for this commit; no push is authorized.
+Exact next action: confirm and scope one mounted DR-017 assembly child in a fresh invocation, not here.
+If a real qualification URL is later supplied, inspect it before scoping a separate child; do not restart completed work.
+See the [parent brief](work-items/DR-016-competition-draws.md).
+
 DR-016g is Done with explicit user approval on 2026-10-30: the table uses league standings terminology,
 not a generic classification.
 Dutch uses Stand/Plaats; French uses Classement/Rang; aligned empty copy names the teams and series.
@@ -506,7 +519,7 @@ and linked from their registry rows.
 | [DR-015e](work-items/DR-015e-competition-hero-link.md)        | Competition hero external link                          | Done    |
 | [DR-015f](work-items/DR-015f-competition-statistics.md)       | Competition hero statistics and localization            | Done    |
 | [DR-015g](work-items/DR-015g-competition-draw-copy.md)        | Competition draw fallback and empty copy                | Done    |
-| DR-016                                                        | Competition draws                                       | Backlog |
+| [DR-016](work-items/DR-016-competition-draws.md)              | Competition draws                                       | Done    |
 | [DR-016a](work-items/DR-016a-poule-standings.md)              | Competition poule standings                             | Done    |
 | [DR-016b](work-items/DR-016b-draw-hero.md)                    | Competition draw hero identity and actions              | Done    |
 | [DR-016c](work-items/DR-016c-draw-statistics.md)              | Competition draw hero statistics                        | Done    |
@@ -659,7 +672,10 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   DR-016a covers standings; DR-016b covers only hero identity/actions; DR-016c covers hero statistics.
   DR-016d covers only played/upcoming panel surfaces and localized headings/counts.
   DR-016e covers loading, error, and overall-empty states. DR-016f covers poule standings outer section chrome.
-  Qualification still requires a confirmed mounted consumer.
+  DR-016g covers league standings terminology. The 2026-10-30 parent audit found 26 POULE links and no qualification
+  instance in the supplied competition; qualification is deferred, not declared globally unused.
+  Its routed conditional consumer remains unchanged. See the [parent reconciliation](work-items/DR-016-competition-draws.md)
+  for remaining acceptance and review; no new consumer may be added solely for redesign verification.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.
 - Preserve calculations, draw/encounter navigation, synchronization controls, and permission-dependent actions.

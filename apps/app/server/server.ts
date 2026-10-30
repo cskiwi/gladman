@@ -1,6 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr/node';
 import { getServer } from '@apps/shared';
+import { Logger } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 import { dirname, join, resolve } from 'path';
@@ -88,6 +89,7 @@ export async function app() {
 
   await app.init();
   await app.listen(port);
+  Logger.log(`🚀 API server is running on: ${await app.getUrl()}`);
 }
 
 async function run(): Promise<void> {

@@ -25,7 +25,9 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   and backup disclosure, reusing the completed row unchanged.
 - [DR-017d: Desktop doubles slots](DR-017d-assembly-doubles-slots.md): only the four mounted doubles containers
   and their statistics, preserving the completed rows and CDK behavior.
-- Scope later children only after confirming their mounted state: singles/substitute slots, generation controls,
+- [DR-017e: Desktop singles slots](DR-017e-assembly-singles-slots.md): only the four mounted singles containers
+  and their statistics, preserving completed rows/pool/doubles and CDK behavior.
+- Scope later children only after confirming their mounted state: substitute slots, generation controls,
   validation presentation, and partner combinations.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
@@ -44,6 +46,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017b with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017c with explicit user approval and recorded native contrast/verification limits.
 - [x] Complete and review DR-017d with explicit user approval and recorded verification limits.
+- [x] Complete and review DR-017e with explicit user approval and recorded verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -68,6 +71,11 @@ User review requested restoring the existing win-rate color signal; the native-T
 All 153 competition tests, focused lint/build and browser checks pass; exact evidence and unchecked verification
 limits are recorded in its brief. The user approved completion/commit with those limits on 2026-10-30;
 approval does not establish that unperformed checks passed.
-Exact next action in a fresh invocation: confirm/scope one mounted desktop singles-slot child, excluding the
-completed rows, pool and doubles. Singles/substitutes remain unscoped.
-Do not reopen DR-017b/DR-017c or start another child here. The parent remains open.
+DR-017e is now scoped after confirming all four mounted singles slots in isolated Chrome on 2026-10-30.
+It refreshes only the singles loop with native Cards and accessible native Tags. All 165 competition tests,
+focused lint/build and the recorded responsive/theme/browser checks pass. Its brief preserves exact evidence
+and unchecked screen-reader, hydration, mounted-locale, authenticated/save and quantitative focus-ring limits.
+The user approved completion/commit with those disclosed limits on 2026-10-30. Approval is not evidence that
+unperformed checks passed. DR-017e is Done; no further production changes follow approval.
+Exact next action: confirm/scope one mounted desktop substitute-container child in a fresh invocation.
+Substitutes remain unscoped. Do not reopen completed children or start another child here. The parent remains open.

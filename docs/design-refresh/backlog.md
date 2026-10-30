@@ -5,6 +5,28 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017e is Done with explicit user approval on 2026-10-30: the four mounted desktop singles-slot containers now use
+native Cards, localized named headings/empty states, and accessible success/danger statistic Tags.
+Completed player rows, CDK contracts, singles rules, pool copy/return, scalar local forms and mobile selectors
+are preserved. Only the singles loop changes; authored class tokens drop from 29 to 21 and two palette bindings
+are removed. No token/PassThrough overrides, host classes, styles, dependencies or operational mutations.
+All 165 competition tests in nine suites, focused lint (41 existing warnings, no errors), and library build
+with 10 prerequisites pass. Isolated Chrome verifies 820/1280/1440px in both themes, synthetic empty/occupied
+slots, long names, missing/present statistics, native focus, hover/focus Tooltips, Escape, Tab, real pointer
+copy/return and scalar form synchronization. Unchanged 390px retains 13 Selects and no desktop rows/Cards.
+Minimum scoped text contrast is 19.87:1 light / 16.00:1 dark; Tag text 4.57:1 / 10.07:1 and Tooltip text
+13.61:1 / 9.95:1. Dutch SSR returns all four named Cards; browser reports no page errors or GraphQL mutations.
+Screen-reader output, exhaustive hydration, mounted English/French, authenticated/save workflows and quantitative
+native focus-ring painted-area/contrast verification remain unchecked. Approval is not evidence that they passed.
+The user selected "Approve completion and commit with the disclosed verification limits".
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings and no errors.
+Exact next action in a fresh invocation: confirm/scope one mounted desktop substitute-container child,
+without reopening completed rows/pool/doubles/singles. DR-017 remains open; no second slice is started here.
+See the [DR-017e brief](work-items/DR-017e-assembly-singles-slots.md).
+
+### Previous completed singles prerequisite
+
 DR-017d is Done with explicit user approval on 2026-10-30, after the requested correction restoring native
 success/danger statistic Tags (success at >=50%, danger below).
 The four confirmed mounted desktop doubles-slot containers use native Cards,
@@ -643,6 +665,7 @@ and linked from their registry rows.
 | [DR-017b](work-items/DR-017b-assembly-player-row.md)          | Reusable assembly player row                            | Done    |
 | [DR-017c](work-items/DR-017c-assembly-player-pool.md)         | Desktop assembly player-pool container                  | Done    |
 | [DR-017d](work-items/DR-017d-assembly-doubles-slots.md)       | Desktop assembly doubles-slot containers                | Done    |
+| [DR-017e](work-items/DR-017e-assembly-singles-slots.md)       | Desktop assembly singles-slot containers                | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -799,6 +822,7 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   DR-017c covers only the desktop pool surface, availability controls, and disclosure, without token overrides.
   DR-017d completes only the four desktop doubles containers and accessible native statistic Tags,
   with explicit user approval and recorded verification limits.
+  DR-017e covers only the four desktop singles containers, reusing the completed rows and native statistic pattern.
   DR-032 tracks unchecked Checkbox/secondary Button focus contrast, including the pool's disclosed native failures.
   The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
   generation as functional follow-up, not completed visual scope.

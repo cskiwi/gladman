@@ -180,21 +180,30 @@ describe('Competition poule standings presentation', () => {
     expect(message?.classList.contains('p-message-secondary')).toBe(true);
   });
 
-  it.each(['en', 'nl_BE', 'fr_BE'])('uses actual %s labels for table, status, and empty copy', (locale) => {
+  it.each([
+    { locale: 'en', standings: 'Standings', position: 'Position', empty: 'No Standings Available' },
+    { locale: 'nl_BE', standings: 'Stand', position: 'Plaats', empty: 'Nog geen stand beschikbaar' },
+    { locale: 'fr_BE', standings: 'Classement', position: 'Rang', empty: 'Aucun classement disponible' },
+  ])('uses actual $locale league standings terminology for table, status, and empty copy', ({ locale, standings, position, empty }) => {
     const path = join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
     const asset: {
       competition: {
         standings: string;
+        position: string;
         no_standings: string;
         no_standings_description: string;
         tooltip: { riser: string; faller: string };
       };
     } = JSON.parse(readFileSync(path, 'utf8'));
+    expect(asset.competition.standings).toBe(standings);
+    expect(asset.competition.position).toBe(position);
+    expect(asset.competition.no_standings).toBe(empty);
     translations.setTranslation(locale, { all: asset });
     translations.use(locale);
     const entry = createEntry();
     render([{ ...entry, standing: { ...entry.standing, riser: true } }]);
     expect(element.querySelector('p-card h2')?.textContent).toBe(asset.competition.standings);
+    expect(element.querySelector('thead th')?.textContent).toBe(position);
     expect(element.querySelector('[role="region"]')?.getAttribute('aria-label')).toBe(asset.competition.standings);
     expect(element.querySelector('p-tag')?.getAttribute('aria-label')).toBe(asset.competition.tooltip.riser);
     render([{ ...entry, standing: { ...entry.standing, faller: true } }]);

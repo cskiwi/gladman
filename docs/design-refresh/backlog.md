@@ -5,6 +5,23 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-016g is Done with explicit user approval on 2026-10-30: the table uses league standings terminology,
+not a generic classification.
+Dutch uses Stand/Plaats; French uses Classement/Rang; aligned empty copy names the teams and series.
+English Standings/Position and numeric ordering remain unchanged.
+All 101 competition tests and focused lint pass (41 existing warnings).
+The correct API endpoint `/api/v1/translate/i18n/:locale` returns updated Dutch/French copy and unchanged English.
+The mounted Dutch page exposes Stand as heading/region, Plaats as first column, and positions 1 through 9.
+Mounted French/English switching via browser cookie assignment did not change the Dutch page; do not claim it passed.
+The user selected "Approve and commit with the recorded verification limits".
+Unchecked criteria remain unverified; approval is not evidence that they passed.
+Only DR-016g and its handoff are authorized for commit; no push is authorized.
+Post-approval repository-wide lint passes across all 34 projects (29 cached results, existing warnings).
+DR-016f remains Done at its approved commit.
+Exact next action for a fresh invocation: confirm a mounted qualification consumer before scoping another DR-016
+child; otherwise record its deferral and reconcile remaining parent acceptance.
+See the [brief](work-items/DR-016g-standings-terminology.md).
+
 DR-016f is Done with explicit user approval on 2026-10-30: the mounted poule standings section has one localized h2,
 without the duplicate English eyebrow or decorative rule. Outer utility tokens drop from nine to one.
 All 101 competition tests, focused lint (41 existing warnings), and app build with 29 prerequisites pass.
@@ -496,6 +513,7 @@ and linked from their registry rows.
 | [DR-016d](work-items/DR-016d-encounter-section-chrome.md)     | Competition draw encounter section chrome               | Done    |
 | [DR-016e](work-items/DR-016e-draw-states.md)                  | Competition draw loading, error, and overall-empty      | Done    |
 | [DR-016f](work-items/DR-016f-standings-section-chrome.md)     | Competition poule standings section chrome              | Done    |
+| [DR-016g](work-items/DR-016g-standings-terminology.md)        | Competition league standings terminology                | Done    |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |

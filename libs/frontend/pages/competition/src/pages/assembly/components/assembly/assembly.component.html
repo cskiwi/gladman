@@ -46,9 +46,14 @@
         }
       </p-fieldset>
 
-      <p-fieldset [legend]="'all.v1.teamFormation.errors.title' | translate" class="flex-1 min-w-[250px]">
+      <p-card class="flex-1 min-w-64" role="region" aria-labelledby="assembly-validation-title">
+        <ng-template #title>
+          <h2 id="assembly-validation-title" class="text-base font-semibold m-0">
+            {{ 'all.v1.teamFormation.errors.title' | translate }}
+          </h2>
+        </ng-template>
         <ng-container *ngTemplateOutlet="validationOverviewTemplate" />
-      </p-fieldset>
+      </p-card>
     </div>
 
     <!-- Assembly Area -->
@@ -568,29 +573,26 @@
 
 <!-- Validation Overview Template -->
 <ng-template #validationOverviewTemplate>
-  <div>
-    @if (dataService.errors().length > 0) {
-      <ul class="list-none p-0 m-0">
-        @for (error of dataService.errors(); track error.message) {
-          <li class="py-1 text-red-500">
+  @if (dataService.errors().length > 0 || dataService.warnings().length > 0) {
+    <ul class="list-none p-0 m-0 space-y-2" role="list">
+      @for (error of dataService.errors(); track error) {
+        <li>
+          <p-message severity="error" icon="pi pi-times-circle">
             <app-assembly-message [validation]="error" />
-          </li>
-        }
-      </ul>
-    }
-    @if (dataService.warnings().length > 0) {
-      <ul class="list-none p-0 m-0">
-        @for (warning of dataService.warnings(); track warning.message) {
-          <li class="py-1 text-orange-500">
+          </p-message>
+        </li>
+      }
+      @for (warning of dataService.warnings(); track warning) {
+        <li>
+          <p-message severity="warn" icon="pi pi-exclamation-triangle">
             <app-assembly-message [validation]="warning" />
-          </li>
-        }
-      </ul>
-    }
-    @if (dataService.errors().length === 0 && dataService.warnings().length === 0) {
-      <div class="text-green-500 italic">
-        {{ 'all.v1.teamFormation.errors.none' | translate }}
-      </div>
-    }
-  </div>
+          </p-message>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p-message severity="success" icon="pi pi-check-circle">
+      {{ 'all.v1.teamFormation.errors.none' | translate }}
+    </p-message>
+  }
 </ng-template>

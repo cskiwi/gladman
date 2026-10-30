@@ -31,7 +31,9 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   preserving completed rows, CDK sorting and local forms.
 - [DR-017g: Desktop generation controls](DR-017g-assembly-generation-controls.md): only the mounted generator
   surface, time-range/weeks controls and action presentation, preserving generation/service behavior.
-- Scope later children only after confirming their mounted state: validation presentation and partner combinations.
+- [DR-017h: Validation overview](DR-017h-assembly-validation-overview.md): the confirmed mounted validation
+  summary and existing template reused in the confirmation dialog; exclude dialog chrome/actions and rules.
+- Scope later children only after confirming their mounted state: partner combinations and remaining assembly controls.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -39,6 +41,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - FloatLabel focused-label contrast outside this page is deferred to DR-031, not a hidden parent/theme change.
 - Native unchecked Checkbox and secondary Button focus contrast is tracked as DR-032, including the desktop
   pool's remaining failures after removing scoped tokens at the user's request.
+- Native Message text contrast is tracked as DR-034 after DR-017h's light severity/dark error measurements.
 - Shared components, global theme, backend, and translations are not implicitly part of this parent.
 
 ## Acceptance and handoff
@@ -52,6 +55,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017e with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017f with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017g with explicit user approval and recorded native accessibility/verification limits.
+- [x] Complete and review DR-017h with explicit user approval and recorded native Message contrast/verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -60,6 +64,13 @@ All 112 competition tests, repository-wide lint, app build, and the scoped brows
 Its unchecked verification limits remain recorded; approval does not establish that they passed.
 The parent remains open until its required children are complete. No shared smart/presentational split is introduced
 without evidence of meaningful repeated structure or behavior across real consumers.
+
+DR-017h refreshes the mounted validation summary and existing template reused in the confirmation dialog.
+Native error/warn/success Messages replace palette-colored text, while object tracking preserves repeated-code
+diagnostics and refreshed interpolation. All 197 competition tests, focused lint/build and recorded browser
+behavior checks pass. Native Message text fails AA in several severity/theme combinations; DR-034 records the audit.
+The user approved completion/commit with those disclosed limits on 2026-10-30.
+Approval is not evidence that failed or unperformed checks passed. DR-017h is Done; the parent remains open.
 
 DR-017b refreshes the existing input-only player row for its five pool/slot call sites, without a new abstraction.
 It is complete with explicit user approval on 2026-10-30 after removing host styling; see its brief for exact
@@ -98,6 +109,7 @@ Preserved native light-mode Button text/focus and focused-label contrast failure
 DR-031 and DR-033 track the separate audits. Screen-reader/Tooltip association and other unchecked limits
 remain in its brief. The user approved completion/commit with those disclosed limits on 2026-10-30.
 Approval is not evidence that failed or unperformed checks passed. DR-017g is Done; no production changes follow.
-Exact next action in a fresh invocation: confirm/scope one mounted validation-presentation child, excluding
-completed DR-017a-g surfaces. Do not start it here.
+The historical next action to scope validation presentation is fulfilled by DR-017h.
+Exact next action in a fresh invocation: confirm/scope one remaining mounted assembly surface (for example partner
+combinations), excluding completed DR-017a-h. Do not start another child or reopen completed surfaces here.
 Do not reopen completed children. The parent remains open.

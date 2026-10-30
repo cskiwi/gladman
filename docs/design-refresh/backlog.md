@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017h is Done with explicit user approval on 2026-10-30: the mounted validation overview uses a named native Card
+and error/warn/success Messages.
+The existing template is reused in the confirmation dialog, without a new wrapper or duplicate heading IDs.
+Repeated validation codes and refreshed parameters render correctly; rules and error-before-warning order remain.
+Scoped authored class tokens drop from 14 to 9, removing three palette colors and an unnecessary wrapper.
+All 197 competition tests in 12 suites, focused lint (41 existing warnings, no errors), library build and its
+10 prerequisites pass. Isolated Chrome verifies 24 cases at 390/820/1280/1440px in both themes, success/mixed/warning
+states, long content wrapping, diagnostic updates, dialog reuse/focus/Escape cancellation, unchanged mobile
+selectors and Dutch SSR. No browser page errors or GraphQL mutations.
+Native Message text fails AA: light success 3.16:1, error 4.44:1, warn 2.85:1; dark error 4.40:1.
+Dark success/warn pass at 6.48:1/7.49:1. DR-034 records the separate native Message contrast audit.
+Actual screen-reader output, exhaustive hydration, mounted English/French and authenticated/save workflows remain
+unchecked. No styling exceptions, overrides, dependencies, backend or translation asset changes.
+Completed DR-017a-g and other assembly surfaces remain unchanged.
+See the [DR-017h brief](work-items/DR-017h-assembly-validation-overview.md).
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts those limits; it is not evidence that failed or unperformed checks passed.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings, no errors.
+Exact next action in a fresh invocation: confirm/scope one remaining mounted assembly surface (for example
+partner combinations), excluding completed DR-017a-h. DR-017 remains open; do not start another child here.
+The unrelated generated translation change is preserved.
+
+### Previous completed focus: generation controls
+
 DR-017g is Done with explicit user approval on 2026-10-30 after the requested native `button[pButton]` correction.
 The mounted desktop assembly generation controls use a native named Card, fluid controls
 and hover/focus strategy Tooltips. Strategies, time-range values, conditional weeks, loading/disabled and local
@@ -714,6 +739,7 @@ and linked from their registry rows.
 | [DR-017e](work-items/DR-017e-assembly-singles-slots.md)       | Desktop assembly singles-slot containers                | Done    |
 | [DR-017f](work-items/DR-017f-assembly-substitutes.md)         | Desktop assembly substitutes container                  | Done    |
 | [DR-017g](work-items/DR-017g-assembly-generation-controls.md) | Desktop assembly generation controls                    | Done    |
+| [DR-017h](work-items/DR-017h-assembly-validation-overview.md) | Assembly validation overview and reused message content | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -730,6 +756,7 @@ and linked from their registry rows.
 | DR-031                                                        | Native FloatLabel focused-label contrast audit          | Backlog |
 | DR-032                                                        | Native Checkbox and secondary Button contrast audit     | Backlog |
 | DR-033                                                        | Native Button contrast and Tooltip association audit    | Backlog |
+| DR-034                                                        | Native Message severity text contrast audit             | Backlog |
 
 ## App and shared surfaces
 
@@ -874,6 +901,7 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   DR-017e covers only the four desktop singles containers, reusing the completed rows and native statistic pattern.
   DR-017f covers only the desktop substitutes container, reusing completed rows and preserving CDK sorting.
   DR-017g covers only the desktop generation-controls Card, fluid controls and hover/focus Tooltips.
+  DR-017h covers only the validation overview Card and existing template reused in the confirmation dialog.
   DR-031 retains focused FloatLabel contrast; DR-033 records native outlined Button accessibility:
   generation-control light text 2.28-3.76:1, strategy focus below 3:1 and missing native Button
   `aria-describedby` while Tooltips display. Audit affected consumers separately; no page-level token workaround.
@@ -975,6 +1003,11 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-034 (discovered during DR-017h): native styled Messages on the mounted assembly Card fail 4.5:1 text
+  contrast in light success (3.16:1), error (4.44:1), warn (2.85:1), and dark error (4.40:1).
+  Dark success/warn pass (6.48:1/7.49:1). Measurements composite native translucent fills over the actual Card.
+  Audit the shared preset and confirmed Message consumers separately; do not add page-local styling overrides.
+  DR-017h preserves the native presentation and leaves contrast checks unchecked with explicit completion approval.
 - DR-030 (discovered during DR-016e): at a 320px viewport, the unchanged shared topbar tools and login Button
   extend to x=338px while the document client width is 305px. At 390px they fit. Investigate the mounted shared
   shell and all affected consumers in a separate slice; no header, theme, or global changes were made in DR-016e.

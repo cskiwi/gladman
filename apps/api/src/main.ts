@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 
-import { createWinstonLogger, getServer } from '@app/backend-shared';
+import { createWinstonLogger, getServer } from '@apps/shared';
 
 async function bootstrap() {
   const app = await getServer();

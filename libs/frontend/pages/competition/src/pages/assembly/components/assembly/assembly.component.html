@@ -61,18 +61,7 @@
       <!-- MOBILE LAYOUT -->
       <div class="flex flex-col gap-4">
         <!-- Captain -->
-        <div class="mb-2">
-          <p-floatlabel variant="on">
-            <p-autocomplete
-              [suggestions]="captainSuggestions()"
-              (completeMethod)="searchCaptain($event)"
-              (onSelect)="selectCaptain($event.value)"
-              field="firstName"
-              [forceSelection]="true"
-            />
-            <label>{{ 'all.competition.team-assembly.captain' | translate }}</label>
-          </p-floatlabel>
-        </div>
+        <ng-container *ngTemplateOutlet="captainSearchTemplate" />
 
         <!-- Game Slots with p-select -->
         @for (slotId of ['double1', 'double2', 'double3', 'double4']; track slotId) {
@@ -125,36 +114,15 @@
         </p-fieldset>
 
         <!-- Add player -->
-        <div class="mt-2">
-          <p-floatlabel variant="on">
-            <p-autocomplete
-              [suggestions]="playerSuggestions()"
-              (completeMethod)="searchPlayer($event)"
-              (onSelect)="addPlayer($event.value)"
-              field="firstName"
-              [forceSelection]="true"
-            />
-            <label>Voeg speler toe</label>
-          </p-floatlabel>
-        </div>
+        <ng-container *ngTemplateOutlet="addPlayerSearchTemplate" />
       </div>
     } @else {
       <!-- DESKTOP LAYOUT -->
       <div class="flex gap-4">
         <div class="basis-1/3 shrink-0 flex flex-col gap-4">
-          <!-- Captain -->
-          <div class="mb-2">
-            <p-floatlabel variant="on">
-              <p-autocomplete
-                [suggestions]="captainSuggestions()"
-                (completeMethod)="searchCaptain($event)"
-                (onSelect)="selectCaptain($event.value)"
-                field="firstName"
-                [forceSelection]="true"
-              />
-              <label>{{ 'all.competition.team-assembly.captain' | translate }}</label>
-            </p-floatlabel>
-          </div>
+          <p-card role="region" [attr.aria-label]="'all.competition.team-assembly.captain' | translate">
+            <ng-container *ngTemplateOutlet="captainSearchTemplate" />
+          </p-card>
 
           <!-- Player Pool -->
           <p-card role="region" aria-labelledby="assembly-pool-title">
@@ -172,95 +140,84 @@
                 />
               </div>
             </ng-template>
-            <div
-              class="flex flex-col gap-2"
-              cdkDropList
-              id="playerList"
-              [cdkDropListData]="dataService.players()['REGULAR'].concat(dataService.players()['BACKUP'])"
-              [cdkDropListConnectedTo]="lists"
-              (cdkDropListDropped)="drop($event)"
-              [cdkDropListSortingDisabled]="true"
-            >
-              @for (item of dataService.players()['REGULAR']; track item.id) {
-                <div class="flex items-center gap-2">
-                  <p-checkbox
-                    [binary]="true"
-                    [ngModel]="dataService.isPlayerAvailable(item.id)"
-                    (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
-                    [ariaLabel]="
-                      ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
-                    "
-                    [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
-                  />
-                  <app-assembly-player
-                    class="cursor-grab active:cursor-grabbing flex-1"
-                    [player]="item"
-                    [levelException]="dataService.isException(item.id)"
-                    [eventType]="dataService.type()!"
-                    [cdkDragData]="item"
-                    cdkDrag
-                  />
-                </div>
-              }
-              @if (dataService.players()['BACKUP'].length > 0) {
-                <p-divider />
-                <button
-                  pButton
-                  type="button"
-                  severity="secondary"
-                  variant="text"
-                  [attr.aria-expanded]="dataService.showBackup()"
-                  aria-controls="assembly-backup-players"
-                  (click)="dataService.showBackup.set(!dataService.showBackup())"
-                >
-                  <i [class]="dataService.showBackup() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" aria-hidden="true"></i>
-                  {{ 'all.competition.team-assembly.players.backup' | translate }}
-                </button>
-                <div id="assembly-backup-players" [hidden]="!dataService.showBackup()">
-                  @if (dataService.showBackup()) {
-                    @for (item of dataService.players()['BACKUP']; track item.id) {
-                      <div class="flex items-center gap-2 py-1">
-                        <p-checkbox
-                          [binary]="true"
-                          [ngModel]="dataService.isPlayerAvailable(item.id)"
-                          (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
-                          [ariaLabel]="
-                            ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
-                          "
-                          [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
-                        />
-                        <app-assembly-player
-                          class="cursor-grab active:cursor-grabbing flex-1"
-                          [player]="item"
-                          [levelException]="dataService.isException(item.id)"
-                          [eventType]="dataService.type()!"
-                          [cdkDragData]="item"
-                          cdkDrag
-                        />
-                      </div>
+            <div class="flex flex-col gap-4">
+              <div
+                class="flex flex-col gap-2"
+                cdkDropList
+                id="playerList"
+                [cdkDropListData]="dataService.players()['REGULAR'].concat(dataService.players()['BACKUP'])"
+                [cdkDropListConnectedTo]="lists"
+                (cdkDropListDropped)="drop($event)"
+                [cdkDropListSortingDisabled]="true"
+              >
+                @for (item of dataService.players()['REGULAR']; track item.id) {
+                  <div class="flex items-center gap-2">
+                    <p-checkbox
+                      [binary]="true"
+                      [ngModel]="dataService.isPlayerAvailable(item.id)"
+                      (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
+                      [ariaLabel]="
+                        ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
+                      "
+                      [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
+                    />
+                    <app-assembly-player
+                      class="cursor-grab active:cursor-grabbing flex-1"
+                      [player]="item"
+                      [levelException]="dataService.isException(item.id)"
+                      [eventType]="dataService.type()!"
+                      [cdkDragData]="item"
+                      cdkDrag
+                    />
+                  </div>
+                }
+                @if (dataService.players()['BACKUP'].length > 0) {
+                  <p-divider />
+                  <button
+                    pButton
+                    type="button"
+                    severity="secondary"
+                    variant="text"
+                    [attr.aria-expanded]="dataService.showBackup()"
+                    aria-controls="assembly-backup-players"
+                    (click)="dataService.showBackup.set(!dataService.showBackup())"
+                  >
+                    <i [class]="dataService.showBackup() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" aria-hidden="true"></i>
+                    {{ 'all.competition.team-assembly.players.backup' | translate }}
+                  </button>
+                  <div id="assembly-backup-players" [hidden]="!dataService.showBackup()">
+                    @if (dataService.showBackup()) {
+                      @for (item of dataService.players()['BACKUP']; track item.id) {
+                        <div class="flex items-center gap-2 py-1">
+                          <p-checkbox
+                            [binary]="true"
+                            [ngModel]="dataService.isPlayerAvailable(item.id)"
+                            (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
+                            [ariaLabel]="
+                              ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
+                            "
+                            [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
+                          />
+                          <app-assembly-player
+                            class="cursor-grab active:cursor-grabbing flex-1"
+                            [player]="item"
+                            [levelException]="dataService.isException(item.id)"
+                            [eventType]="dataService.type()!"
+                            [cdkDragData]="item"
+                            cdkDrag
+                          />
+                        </div>
+                      }
                     }
-                  }
-                </div>
-              }
-              @if (dataService.players()['REGULAR'].length === 0 && dataService.players()['BACKUP'].length === 0) {
-                <p-message severity="secondary">{{ 'all.team.no-players' | translate }}</p-message>
-              }
+                  </div>
+                }
+                @if (dataService.players()['REGULAR'].length === 0 && dataService.players()['BACKUP'].length === 0) {
+                  <p-message severity="secondary">{{ 'all.team.no-players' | translate }}</p-message>
+                }
+              </div>
+              <ng-container *ngTemplateOutlet="addPlayerSearchTemplate" />
             </div>
           </p-card>
-
-          <!-- Add player -->
-          <div class="mt-2">
-            <p-floatlabel variant="on">
-              <p-autocomplete
-                [suggestions]="playerSuggestions()"
-                (completeMethod)="searchPlayer($event)"
-                (onSelect)="addPlayer($event.value)"
-                field="firstName"
-                [forceSelection]="true"
-              />
-              <label>Voeg speler toe</label>
-            </p-floatlabel>
-          </div>
 
           <!-- Change team -->
           @if (hasEditPermission()) {
@@ -570,6 +527,44 @@
     }
   </section>
 }
+
+<ng-template #captainSearchTemplate>
+  <p-floatlabel variant="on">
+    <p-autocomplete
+      inputId="assembly-captain"
+      [suggestions]="captainSuggestions()"
+      (completeMethod)="searchCaptain($event)"
+      (onSelect)="selectCaptain($event.value)"
+      [optionLabel]="playerOptionLabel"
+      [forceSelection]="true"
+      fluid
+    >
+      <ng-template #item let-player>
+        <span class="whitespace-normal wrap-anywhere">{{ playerOptionLabel(player) }}</span>
+      </ng-template>
+    </p-autocomplete>
+    <label for="assembly-captain">{{ 'all.competition.team-assembly.captain' | translate }}</label>
+  </p-floatlabel>
+</ng-template>
+
+<ng-template #addPlayerSearchTemplate>
+  <p-floatlabel variant="on">
+    <p-autocomplete
+      inputId="assembly-add-player"
+      [suggestions]="playerSuggestions()"
+      (completeMethod)="searchPlayer($event)"
+      (onSelect)="addPlayer($event.value)"
+      [optionLabel]="playerOptionLabel"
+      [forceSelection]="true"
+      fluid
+    >
+      <ng-template #item let-player>
+        <span class="whitespace-normal wrap-anywhere">{{ playerOptionLabel(player) }}</span>
+      </ng-template>
+    </p-autocomplete>
+    <label for="assembly-add-player">{{ 'all.club.teamBuilder.addPlayer' | translate }}</label>
+  </p-floatlabel>
+</ng-template>
 
 <!-- Validation Overview Template -->
 <ng-template #validationOverviewTemplate>

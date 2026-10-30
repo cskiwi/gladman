@@ -5,6 +5,40 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017j is Done with explicit user approval on 2026-10-30 after clarified visual feedback:
+desktop captain has a separate native Card above
+the player-pool Card, while add-player is inside the player-pool Card below its list.
+This explicitly extends the slice to desktop Card content grouping;
+the completed pool's heading, availability, rows, disclosure and CDK contracts remain unchanged.
+The mounted captain/add-player searches reuse two native templates across mobile/desktop.
+Each control is styled once without a new component wrapper; stable input IDs associate translated labels.
+One full-name callback names options and selected values consistently, distinguishing identical first names.
+Existing local regular/backup searching, captain ID assignment, add-player dispatch and force selection remain.
+Two wrapping utilities per suggestion prevent long full names from overflowing the narrow viewport.
+Scoped static class tokens increase from four to seven: four suggestion-wrapping tokens and three layout tokens
+for spacing inside the player Card. Four old spacing wrappers are removed; existing outer gaps remain.
+All 237 competition tests in 14 suites (22 new search tests), focused lint (41 existing warnings, no errors),
+library build and 10 prerequisites pass. Isolated Chrome verifies both searches in eight 390/820/1280/1440px
+light/dark cases: labels, long names, overlay fit, keyboard selection, Escape, empty results and Tab clearing.
+Mounted hydration has no page errors or GraphQL mutations; pool availability and backup disclosure also pass.
+Dutch SSR passed before the grouping correction. The final SSR recheck could not connect because port 3000
+stopped responding after all eight browser cases; recheck it when the user-managed server is available.
+Native suggestion text contrast passes at 19.87:1 light / 16.00:1 dark; focused label contrast fails in light
+at 2.66:1 and passes in dark at 10.22:1. Existing DR-031 retains the shared native label audit; no overrides added.
+Screen-reader output, exhaustive focus/hover/hydration, mounted English/French and authenticated/save workflows
+remain unverified. Completed DR-017a-i, lineup selectors, services, shared components, theme and translation assets
+remain unchanged. No dependencies or styling exceptions.
+See the [DR-017j brief](work-items/DR-017j-assembly-player-searches.md).
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts these limits, including the unperformed final SSR recheck; it does not mean they passed.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings, no errors.
+Exact next action in a fresh invocation: confirm/scope one remaining mounted DR-017 information-panel surface,
+with the base-player summary as the next candidate, excluding completed DR-017a-j. Do not start it here.
+DR-017 remains open. Recheck final Dutch SSR when the user-managed port 3000 is available.
+
+### Previous completed focus: partner combinations
+
 DR-017i is Done with explicit user approval on 2026-10-30: the mounted desktop partner-combinations disclosure
 now has responsive named controls,
 native icon-only `button[pButton]` refresh with busy/disabled feedback, native Table size/striping and statistic Tags.
@@ -769,6 +803,7 @@ and linked from their registry rows.
 | [DR-017g](work-items/DR-017g-assembly-generation-controls.md) | Desktop assembly generation controls                    | Done    |
 | [DR-017h](work-items/DR-017h-assembly-validation-overview.md) | Assembly validation overview and reused message content | Done    |
 | [DR-017i][dr-017i]                                            | Desktop assembly partner combinations                   | Done    |
+| [DR-017j][dr-017j]                                            | Responsive assembly captain/add-player searches         | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -789,6 +824,7 @@ and linked from their registry rows.
 | DR-035                                                        | Native Fieldset descendant tab-stop restoration audit   | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
+[dr-017j]: work-items/DR-017j-assembly-player-searches.md
 
 ## App and shared surfaces
 
@@ -936,6 +972,9 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   DR-017h covers only the validation overview Card and existing template reused in the confirmation dialog.
   DR-017i covers only the desktop partner-combinations disclosure, responsive named controls and native
   table/statistic presentation; completion is explicitly approved with native Fieldset restoration tracked in DR-035.
+  DR-017j covers only responsive captain/add-player searches with reused templates, native associated labels
+  and full-name options/values. Completion is explicitly approved with disclosed verification limits;
+  native focused light-label contrast remains DR-031.
   DR-031 retains focused FloatLabel contrast; DR-033 records native outlined Button accessibility:
   generation-control light text 2.28-3.76:1, strategy focus below 3:1 and missing native Button
   `aria-describedby` while Tooltips display. Audit affected consumers separately; no page-level token workaround.

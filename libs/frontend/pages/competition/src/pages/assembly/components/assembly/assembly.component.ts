@@ -94,6 +94,9 @@ export class AssemblyComponent {
   // Captain search
   captainSuggestions = signal<PlayerWithRanking[]>([]);
 
+  /** Names query results consistently in suggestions, accessible options and selected values. */
+  readonly playerOptionLabel = (player: PlayerWithRanking): string => [player.firstName, player.lastName].filter(Boolean).join(' ');
+
   constructor() {
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', () => {

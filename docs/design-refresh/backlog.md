@@ -5,6 +5,32 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017g is Done with explicit user approval on 2026-10-30 after the requested native `button[pButton]` correction.
+The mounted desktop assembly generation controls use a native named Card, fluid controls
+and hover/focus strategy Tooltips. Strategies, time-range values, conditional weeks, loading/disabled and local
+clear/form contracts are preserved; scoped static authored class tokens drop from 26 to 12.
+Ten remaining tokens cover layout/typography; native icon/spinner classes replace deprecated inputs.
+All 186 competition tests in 11 suites, focused lint (41 existing warnings, no errors), library build and its
+10 prerequisites pass again after correction. Isolated Chrome reverifies all six 820/1280/1440px theme cases,
+native Button names, busy/spinner/disabled states, keyboard Select opening,
+Tooltips/Escape/Tab, local random generation/clearing, no-player disabling and Dutch SSR without mutations/errors.
+Unchanged 390px mobile retains 13 Selects and no generation controls in both themes.
+Preserved native light-mode Button text fails 4.5:1 at 2.28-3.76:1; focused FloatLabel fails at 2.66:1.
+DR-031 retains the label audit; new DR-033 records native Button text/focus contrast and Tooltip association.
+Actual screen-reader output, exhaustive hydration, mounted English/French, authenticated/save and quantitative
+focus-ring painted-area checks remain unchecked. No styling exceptions, overrides or dependencies.
+Completed children, mobile selectors, validation, partner combinations, services and theme remain unchanged.
+The unrelated generated translation change is preserved.
+See the [DR-017g brief](work-items/DR-017g-assembly-generation-controls.md).
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts those limits; it is not evidence that failed or unperformed checks passed.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings, no errors.
+Exact next action in a fresh invocation: confirm/scope one mounted validation-presentation child, excluding all
+completed DR-017a-g surfaces. Do not start it here. DR-017 remains open.
+
+### Previous completed focus: substitutes
+
 DR-017f is Done with explicit user approval on 2026-10-30: the mounted desktop substitutes container uses a native Card,
 localized named heading and explicit empty state. Completed chrome/rows/pool/doubles/singles, CDK sorting/drop
 contracts, lineup restrictions and local forms are preserved. Scoped authored class tokens drop from 18 to 12.
@@ -687,6 +713,7 @@ and linked from their registry rows.
 | [DR-017d](work-items/DR-017d-assembly-doubles-slots.md)       | Desktop assembly doubles-slot containers                | Done    |
 | [DR-017e](work-items/DR-017e-assembly-singles-slots.md)       | Desktop assembly singles-slot containers                | Done    |
 | [DR-017f](work-items/DR-017f-assembly-substitutes.md)         | Desktop assembly substitutes container                  | Done    |
+| [DR-017g](work-items/DR-017g-assembly-generation-controls.md) | Desktop assembly generation controls                    | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -702,6 +729,7 @@ and linked from their registry rows.
 | DR-030                                                        | Shared header overflow at 320px                         | Backlog |
 | DR-031                                                        | Native FloatLabel focused-label contrast audit          | Backlog |
 | DR-032                                                        | Native Checkbox and secondary Button contrast audit     | Backlog |
+| DR-033                                                        | Native Button contrast and Tooltip association audit    | Backlog |
 
 ## App and shared surfaces
 
@@ -845,6 +873,10 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   with explicit user approval and recorded verification limits.
   DR-017e covers only the four desktop singles containers, reusing the completed rows and native statistic pattern.
   DR-017f covers only the desktop substitutes container, reusing completed rows and preserving CDK sorting.
+  DR-017g covers only the desktop generation-controls Card, fluid controls and hover/focus Tooltips.
+  DR-031 retains focused FloatLabel contrast; DR-033 records native outlined Button accessibility:
+  generation-control light text 2.28-3.76:1, strategy focus below 3:1 and missing native Button
+  `aria-describedby` while Tooltips display. Audit affected consumers separately; no page-level token workaround.
   DR-032 tracks unchecked Checkbox/secondary Button focus contrast, including the pool's disclosed native failures.
   The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
   generation as functional follow-up, not completed visual scope.

@@ -29,8 +29,9 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   and their statistics, preserving completed rows/pool/doubles and CDK behavior.
 - [DR-017f: Desktop substitutes](DR-017f-assembly-substitutes.md): only the mounted substitutes container,
   preserving completed rows, CDK sorting and local forms.
-- Scope later children only after confirming their mounted state: generation controls,
-  validation presentation, and partner combinations.
+- [DR-017g: Desktop generation controls](DR-017g-assembly-generation-controls.md): only the mounted generator
+  surface, time-range/weeks controls and action presentation, preserving generation/service behavior.
+- Scope later children only after confirming their mounted state: validation presentation and partner combinations.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -50,6 +51,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017d with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017e with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017f with explicit user approval and recorded verification limits.
+- [x] Complete and review DR-017g with explicit user approval and recorded native accessibility/verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -87,5 +89,15 @@ browser checks pass. Its brief preserves exact evidence and unchecked verificati
 The user approved completion/commit with its disclosed verification limits on 2026-10-30.
 Approval is not evidence that unperformed checks passed. DR-017f is Done; no further production changes follow approval.
 Post-approval repository-wide lint passes across all 34 projects with existing warnings, no errors.
-Exact next action: confirm/scope one mounted generation-controls child in a fresh invocation, not here.
+The historical next action to scope generation controls is fulfilled by DR-017g, confirmed mounted on 2026-10-30.
+DR-017g implements only the native generation-controls Card, fluid controls and hover/focus Tooltips.
+The user's review correction replaces the four deprecated component Buttons with native `button[pButton]`,
+direct translated text, hidden icons and child-spinner/native-disabled loading, without changing adjacent controls.
+All 186 competition tests, focused lint/build and recorded browser behavior checks pass.
+Preserved native light-mode Button text/focus and focused-label contrast failures remain disclosed;
+DR-031 and DR-033 track the separate audits. Screen-reader/Tooltip association and other unchecked limits
+remain in its brief. The user approved completion/commit with those disclosed limits on 2026-10-30.
+Approval is not evidence that failed or unperformed checks passed. DR-017g is Done; no production changes follow.
+Exact next action in a fresh invocation: confirm/scope one mounted validation-presentation child, excluding
+completed DR-017a-g surfaces. Do not start it here.
 Do not reopen completed children. The parent remains open.

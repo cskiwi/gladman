@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { TooltipModule } from 'primeng/tooltip';
+import { TagModule } from 'primeng/tag';
 import { PlayerWithRanking } from '../../page-assembly.service';
 
 @Component({
   selector: 'app-assembly-player',
   standalone: true,
-  imports: [TranslateModule, TooltipModule],
+  imports: [TranslateModule, TooltipModule, TagModule],
   templateUrl: './assembly-player.component.html',
-  styleUrl: './assembly-player.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssemblyPlayerComponent {

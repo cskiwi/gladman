@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017b is Done with explicit user approval on 2026-10-30, after removing host styling and reverifying the correction.
+The existing input-only assembly player row is refreshed once for its five pool/slot call sites.
+Native warning Tags replace palette-colored icons, with localized names and hover/focus Tooltips.
+Names wrap without truncation; ranking rules and parent CDK bindings are preserved.
+Template class tokens drop from 22 to 11; the row-only SCSS rule/file is removed without host styling.
+All 130 competition tests, focused lint (41 existing warnings), and library build with 10 prerequisites pass.
+Headless Chrome verifies actual 820/1280/1440px in both themes, all five synthetic row consumers,
+accessible names, native focus, hover/focus Tooltips, Escape dismissal, and a real CDK pool-to-double drag/form sync.
+The eight live pool names/rankings match baseline; 390px retains the unchanged mobile branch with no player rows.
+Final minimum ranking/name contrast exceeds 18:1 light and 15:1 dark; warning icon contrast exceeds 4.5:1/8.6:1.
+Initial muted ranking contrast was 4.46:1 on the pool, fixed locally with semantic normal text color.
+Populated Dutch SSR returns eight rows; the browser matrix has no page errors.
+The user selected "Approve completion and commit with the recorded verification limits".
+Actual screen-reader output, mounted English/French switching, exhaustive hydration, and full lineup/save workflows
+remain unchecked; approval is not evidence that they passed.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings, no errors.
+Pool/slot containers, mobile selectors, generator, validation, partner statistics, theme, backend, and translation
+assets are unchanged. DR-017a remains Done.
+Only [DR-017b](work-items/DR-017b-assembly-player-row.md) and its handoff are approved for commit; no push is authorized.
+Exact next action in a fresh invocation: confirm and scope one mounted DR-017 player-pool/slot container child,
+excluding the completed row component. Do not reopen DR-017b or begin another implementation slice here.
+DR-017 remains open.
+
+### Previous completed focus
+
 DR-017a is Done with explicit user approval on 2026-10-30: the mounted `/competition/assembly` heading/filter chrome
 and the user's requested desktop time-range translation correction.
 The decorative English eyebrow and hand-built filter surface are replaced by a localized heading, native Card,
@@ -28,12 +53,10 @@ shared consumer auditing is deferred as DR-031.
 Except for that named-template correction, player pools/slots, generator and partner statistics, service logic,
 validation dialog, shared components,
 theme, backend, and translations are excluded.
-Exact next action in a fresh invocation: confirm and scope one mounted DR-017 player-pool/slot child.
-Do not reopen DR-017a or begin another implementation slice here.
+The historical next action to scope one mounted player-pool/slot child is fulfilled by DR-017b above.
+Do not reopen DR-017a.
 DR-017 remains open until its required children are scoped and complete.
 See the [parent](work-items/DR-017-competition-assembly.md) and [child brief](work-items/DR-017a-assembly-page-chrome.md).
-
-### Previous completed focus
 
 DR-016 is Done with explicit user approval on 2026-10-30 after a documentation-only consumer audit.
 DR-016a through DR-016g remain Done and are not reopened.
@@ -559,6 +582,7 @@ and linked from their registry rows.
 | [DR-016g](work-items/DR-016g-standings-terminology.md)        | Competition league standings terminology                | Done    |
 | [DR-017](work-items/DR-017-competition-assembly.md)           | Competition assembly                                    | Backlog |
 | [DR-017a](work-items/DR-017a-assembly-page-chrome.md)         | Assembly page heading and filter chrome                 | Done    |
+| [DR-017b](work-items/DR-017b-assembly-player-row.md)          | Reusable assembly player row                            | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -710,6 +734,7 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   for remaining acceptance and review; no new consumer may be added solely for redesign verification.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
   DR-017a completes the mounted heading/filter chrome and the approved desktop time-range template correction.
+  DR-017b covers only the existing player row reused in regular/backup pools and doubles/singles/substitutes.
   The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
   generation as functional follow-up, not completed visual scope.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.

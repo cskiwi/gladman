@@ -226,6 +226,45 @@ describe('Competition draw hero', () => {
     refresh();
   }
 
+  it.each(statisticLocales)('uses one localized standings h2 without duplicate outer chrome in $locale', ({ locale, asset }) => {
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    component.standings = signal([{ id: 'entry', team: { name: 'Test team', club: { slug: 'test-club' } } }]);
+    refresh();
+    const poule = required(element.querySelector('app-poule-draw'));
+    const section = required(poule.parentElement);
+    expect(section.tagName).toBe('SECTION');
+    expect(section.className).toBe('mb-6');
+    expect([...section.children]).toEqual([poule]);
+    expect(section.querySelectorAll('h2')).toHaveLength(1);
+    expect(section.querySelector('h2')?.textContent).toBe(asset.competition['standings']);
+    expect(section.querySelectorAll('h3, .t-eyebrow, .h-px')).toHaveLength(0);
+    expect(section.querySelectorAll('p-card')).toHaveLength(1);
+    expect(section.querySelectorAll('tbody tr')).toHaveLength(1);
+    expect(section.querySelector('a')?.getAttribute('href')).toBe('/clubs/test-club');
+  });
+
+  it('keeps the single standings heading for an empty poule', () => {
+    TestBed.inject(TranslateService).setTranslation('en', { all: statisticLocales[0].asset });
+    refresh();
+    const poule = required(element.querySelector('app-poule-draw'));
+    expect(poule.querySelectorAll('h2')).toHaveLength(1);
+    expect(poule.querySelector('h2')?.textContent).toBe('Standings');
+    expect(poule.querySelector('p-table')).toBeNull();
+    expect(poule.querySelector('p-message')?.textContent).toContain(statisticLocales[0].asset.competition['no_standings']);
+  });
+
+  it.each(['QUALIFICATION', 'OTHER'])('does not render poule chrome for draw type %s', (type) => {
+    component.draw = signal({ ...required(component.draw()), type });
+    refresh();
+    expect(element.querySelector('app-poule-draw')).toBeNull();
+    expect(element.querySelector('app-qualification-draw') !== null).toBe(type === 'QUALIFICATION');
+    if (type === 'QUALIFICATION') {
+      expect(element.querySelector('section .t-eyebrow')?.textContent).toBe('Qualification');
+    }
+  });
+
   it('uses native Cards with one localized heading and count for each encounter partition', () => {
     TestBed.inject(TranslateService).setTranslation('en', { all: statisticLocales[0].asset });
     setEncounterPartitions();

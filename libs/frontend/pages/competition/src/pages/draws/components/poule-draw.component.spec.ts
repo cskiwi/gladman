@@ -67,7 +67,7 @@ describe('Competition poule standings presentation', () => {
   });
 
   it('groups a native table and heading in one Card with a named region', () => {
-    expect(element.querySelector('p-card h3')?.textContent).toBe('Standings');
+    expect(element.querySelector('p-card h2')?.textContent).toBe('Standings');
     expect(element.querySelector('[role="region"]')?.getAttribute('aria-label')).toBe('Standings');
     expect(fixture.debugElement.query(By.directive(Table)).injector.get(Table).pt()).toBeUndefined();
     expect([...element.querySelectorAll('thead th')].map((th) => th.textContent?.trim())).toEqual([
@@ -171,6 +171,7 @@ describe('Competition poule standings presentation', () => {
 
   it('renders the existing empty copy in a native secondary Message', () => {
     render([]);
+    expect(element.querySelector('p-card h2')?.textContent).toBe('Standings');
     expect(element.querySelector('p-table')).toBeNull();
     const message = element.querySelector('p-message');
     expect(message?.textContent).toContain('No standings');
@@ -193,11 +194,13 @@ describe('Competition poule standings presentation', () => {
     translations.use(locale);
     const entry = createEntry();
     render([{ ...entry, standing: { ...entry.standing, riser: true } }]);
+    expect(element.querySelector('p-card h2')?.textContent).toBe(asset.competition.standings);
     expect(element.querySelector('[role="region"]')?.getAttribute('aria-label')).toBe(asset.competition.standings);
     expect(element.querySelector('p-tag')?.getAttribute('aria-label')).toBe(asset.competition.tooltip.riser);
     render([{ ...entry, standing: { ...entry.standing, faller: true } }]);
     expect(element.querySelector('p-tag')?.getAttribute('aria-label')).toBe(asset.competition.tooltip.faller);
     render([]);
+    expect(element.querySelector('p-card h2')?.textContent).toBe(asset.competition.standings);
     expect(element.querySelector('p-message')?.textContent).toContain(asset.competition.no_standings);
     expect(element.querySelector('p-message')?.textContent).toContain(asset.competition.no_standings_description);
   });

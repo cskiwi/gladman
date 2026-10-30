@@ -81,10 +81,6 @@
         @switch (draw.type) {
           @case ('POULE') {
             <section class="mb-6">
-              <div class="flex items-center gap-3 mb-4">
-                <span class="t-eyebrow">Standings</span>
-                <div class="flex-1 h-px bg-emphasis"></div>
-              </div>
               <app-poule-draw [entries]="standings()" />
             </section>
           }

@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-016f is Done with explicit user approval on 2026-10-30: the mounted poule standings section has one localized h2,
+without the duplicate English eyebrow or decorative rule. Outer utility tokens drop from nine to one.
+All 101 competition tests, focused lint (41 existing warnings), and app build with 29 prerequisites pass.
+All nine ordered rows, 158 ordered links, 72 encounter cards, and 72/20/52/9 totals match baseline.
+Populated and synthetic-empty light/dark checks fit at narrow/wide widths; heading contrast, accessible names,
+keyboard scrolling, three component-tested locales, and populated Dutch SSR pass.
+The integrated browser's requested 1280px width sometimes resets to 1180px; actual widths are disclosed in the brief.
+Actual screen-reader output, operational empty records, exhaustive hydration, and role/sync workflows remain unchecked.
+The existing input-only PouleDrawComponent has one application consumer; no abstraction was added.
+Qualification, shared components, theme, translations, and backend are unchanged.
+The user selected "Approve completion and commit with the recorded verification limits".
+Unchecked criteria remain unverified; approval is not evidence that they passed.
+Post-approval repository-wide lint passes across all 34 projects (34 cached results, existing warnings).
+Only DR-016f and its handoff are authorized for commit; no push is authorized.
+The next invocation should confirm a mounted qualification consumer before scoping another DR-016
+child; if none exists, record its deferral and reconcile remaining parent acceptance rather than adding a consumer.
+See the [brief](work-items/DR-016f-standings-section-chrome.md).
+
 DR-016e is Done with explicit user approval on 2026-10-30: the mounted competition draw loading, error,
 and overall-empty states use native PrimeNG.
 Guarded resource reads allow the existing load error to render; a browser-intercepted failure and recovery pass.
@@ -15,8 +33,8 @@ and populated SSR checks pass. At 320px the unchanged shared header overflows; f
 Actual screen-reader output, operational empty records, exhaustive hydration, and role/sync workflows remain unchecked.
 The user selected "Approve completion and commit with the recorded verification limits"; unchecked criteria remain
 unverified. Only this slice and its handoff are authorized for commit; no push is authorized.
-Exact next action after this commit: scope a separate mounted DR-016 standings outer-section chrome child.
-Do not begin that slice in this invocation.
+The historical next action to scope standings outer-section chrome is fulfilled by DR-016f above.
+Do not restart DR-016e.
 See the [brief](work-items/DR-016e-draw-states.md) for precise evidence and remaining checks.
 
 DR-016d is Done with explicit user approval on 2026-10-28: the mounted competition draw's played/upcoming chrome
@@ -477,6 +495,7 @@ and linked from their registry rows.
 | [DR-016c](work-items/DR-016c-draw-statistics.md)              | Competition draw hero statistics                        | Done    |
 | [DR-016d](work-items/DR-016d-encounter-section-chrome.md)     | Competition draw encounter section chrome               | Done    |
 | [DR-016e](work-items/DR-016e-draw-states.md)                  | Competition draw loading, error, and overall-empty      | Done    |
+| [DR-016f](work-items/DR-016f-standings-section-chrome.md)     | Competition poule standings section chrome              | Done    |
 | DR-017                                                        | Competition assembly                                    | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
@@ -621,7 +640,7 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   and encounter cards.
   DR-016a covers standings; DR-016b covers only hero identity/actions; DR-016c covers hero statistics.
   DR-016d covers only played/upcoming panel surfaces and localized headings/counts.
-  DR-016e covers loading, error, and overall-empty states. Scope standings outer section chrome separately.
+  DR-016e covers loading, error, and overall-empty states. DR-016f covers poule standings outer section chrome.
   Qualification still requires a confirmed mounted consumer.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.

@@ -1,17 +1,14 @@
-import { createWinstonLogger, getServer } from '@apps/shared';
-import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
+
+import { createWinstonLogger, getServer } from '@app/backend-shared';
 
 async function bootstrap() {
   const app = await getServer();
-
-  // Configure Winston logger
+  const port = process.env.PORT || 5000;
   const logger = createWinstonLogger({ name: 'api', logDir: 'logs' });
   app.useLogger(logger);
 
-  const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT', 5000);
-
-  await app.listen(port);
-  logger.log(`🚀 API server is running on: ${await app.getUrl()}`);
+  await app.listen(port, '0.0.0.0');
+  Logger.log(`🚀 Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

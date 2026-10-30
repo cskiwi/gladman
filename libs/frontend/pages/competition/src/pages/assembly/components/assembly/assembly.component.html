@@ -152,79 +152,96 @@
           </div>
 
           <!-- Player Pool -->
-          <div
-            class="flex flex-col gap-1 bg-emphasis border border-dashed border-surface rounded-border p-5 min-h-[100px]"
-            cdkDropList
-            id="playerList"
-            [cdkDropListData]="dataService.players()['REGULAR'].concat(dataService.players()['BACKUP'])"
-            [cdkDropListConnectedTo]="lists"
-            (cdkDropListDropped)="drop($event)"
-            [cdkDropListSortingDisabled]="true"
-          >
-            <div class="flex justify-between items-center mb-2">
-              <label class="font-bold">{{ 'all.competition.team-assembly.players.title' | translate }}</label>
-              <p-checkbox
-                [binary]="true"
-                [ngModel]="allPlayersSelected()"
-                (ngModelChange)="toggleAllPlayers($event)"
-                [pTooltip]="'all.competition.team-assembly.select-all' | translate"
-              />
-            </div>
-            @for (item of dataService.players()['REGULAR']; track item.id) {
-              <div class="flex items-center gap-1">
+          <p-card role="region" aria-labelledby="assembly-pool-title">
+            <ng-template #title>
+              <div class="flex justify-between items-center gap-2">
+                <h2 id="assembly-pool-title" class="text-base font-semibold m-0">
+                  {{ 'all.competition.team-assembly.players.title' | translate }}
+                </h2>
                 <p-checkbox
                   [binary]="true"
-                  [ngModel]="dataService.isPlayerAvailable(item.id)"
-                  (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
-                  [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
-                />
-                <app-assembly-player
-                  class="cursor-grab active:cursor-grabbing flex-1"
-                  [player]="item"
-                  [levelException]="dataService.isException(item.id)"
-                  [eventType]="dataService.type()!"
-                  [cdkDragData]="item"
-                  cdkDrag
+                  [ngModel]="allPlayersSelected()"
+                  (ngModelChange)="toggleAllPlayers($event)"
+                  [ariaLabel]="'all.competition.team-assembly.select-all' | translate"
+                  [pTooltip]="'all.competition.team-assembly.select-all' | translate"
                 />
               </div>
-            }
-            @if (dataService.players()['BACKUP'].length > 0) {
-              <p-divider />
-              <div
-                class="flex justify-between items-center p-2 cursor-pointer hover:bg-emphasis"
-                (click)="dataService.showBackup.set(!dataService.showBackup())"
-              >
-                <span>{{ 'all.competition.team-assembly.players.backup' | translate }}</span>
-                @if (dataService.showBackup()) {
-                  <i class="pi pi-chevron-up"></i>
-                } @else {
-                  <i class="pi pi-chevron-down"></i>
-                }
-              </div>
-              @if (dataService.showBackup()) {
-                <div class="flex flex-col gap-1">
-                  @for (item of dataService.players()['BACKUP']; track item.id) {
-                    <div class="flex items-center gap-1">
-                      <p-checkbox
-                        [binary]="true"
-                        [ngModel]="dataService.isPlayerAvailable(item.id)"
-                        (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
-                        [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
-                      />
-                      <app-assembly-player
-                        class="cursor-grab active:cursor-grabbing flex-1"
-                        [player]="item"
-                        [levelException]="dataService.isException(item.id)"
-                        [eventType]="dataService.type()!"
-                        [cdkDragData]="item"
-                        cdkDrag
-                      />
-                    </div>
+            </ng-template>
+            <div
+              class="flex flex-col gap-2"
+              cdkDropList
+              id="playerList"
+              [cdkDropListData]="dataService.players()['REGULAR'].concat(dataService.players()['BACKUP'])"
+              [cdkDropListConnectedTo]="lists"
+              (cdkDropListDropped)="drop($event)"
+              [cdkDropListSortingDisabled]="true"
+            >
+              @for (item of dataService.players()['REGULAR']; track item.id) {
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    [binary]="true"
+                    [ngModel]="dataService.isPlayerAvailable(item.id)"
+                    (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
+                    [ariaLabel]="
+                      ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
+                    "
+                    [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
+                  />
+                  <app-assembly-player
+                    class="cursor-grab active:cursor-grabbing flex-1"
+                    [player]="item"
+                    [levelException]="dataService.isException(item.id)"
+                    [eventType]="dataService.type()!"
+                    [cdkDragData]="item"
+                    cdkDrag
+                  />
+                </div>
+              }
+              @if (dataService.players()['BACKUP'].length > 0) {
+                <p-divider />
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  variant="text"
+                  [attr.aria-expanded]="dataService.showBackup()"
+                  aria-controls="assembly-backup-players"
+                  (click)="dataService.showBackup.set(!dataService.showBackup())"
+                >
+                  <i [class]="dataService.showBackup() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" aria-hidden="true"></i>
+                  {{ 'all.competition.team-assembly.players.backup' | translate }}
+                </button>
+                <div id="assembly-backup-players" [hidden]="!dataService.showBackup()">
+                  @if (dataService.showBackup()) {
+                    @for (item of dataService.players()['BACKUP']; track item.id) {
+                      <div class="flex items-center gap-2 py-1">
+                        <p-checkbox
+                          [binary]="true"
+                          [ngModel]="dataService.isPlayerAvailable(item.id)"
+                          (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
+                          [ariaLabel]="
+                            ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
+                          "
+                          [pTooltip]="'all.competition.team-assembly.auto-generate.player-joining' | translate"
+                        />
+                        <app-assembly-player
+                          class="cursor-grab active:cursor-grabbing flex-1"
+                          [player]="item"
+                          [levelException]="dataService.isException(item.id)"
+                          [eventType]="dataService.type()!"
+                          [cdkDragData]="item"
+                          cdkDrag
+                        />
+                      </div>
+                    }
                   }
                 </div>
               }
-            }
-          </div>
+              @if (dataService.players()['REGULAR'].length === 0 && dataService.players()['BACKUP'].length === 0) {
+                <p-message severity="secondary">{{ 'all.team.no-players' | translate }}</p-message>
+              }
+            </div>
+          </p-card>
 
           <!-- Add player -->
           <div class="mt-2">

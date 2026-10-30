@@ -5,6 +5,36 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017c is Done with explicit user approval on 2026-10-30: the mounted desktop assembly player pool uses a native Card,
+named availability Checkboxes, a keyboard-operable backup Button, and an explicit localized empty state.
+The eight live names/ranks match baseline; synthetic backups verify the conditional branch without mutations.
+CDK IDs/data/connections, selection behavior, pool copy/return, and local form synchronization pass.
+The user requested no `[dt]`, `[pt]`, or host classes; all scoped token overrides are removed.
+No styling substitute or shared/theme change is introduced. Pool template class tokens drop from 40 to 23.
+All 141 competition tests, focused lint (41 existing warnings), and library build with 10 prerequisites pass.
+Installed Chrome verifies actual 820/1280/1440px in both themes, keyboard selection/disclosure, full names,
+accessible names, native keyboard focus, pointer drag/return, explicit empty state, and Dutch SSR again after correction.
+Minimum text contrast is 4.87:1 light / 6.65:1 dark; checked Checkbox border/focus is 3.65:1 / 10.22:1;
+native unchecked border fails at 1.48:1 / 1.40:1. Disclosure focus is 8.46:1 light (pass), 1.40:1 dark (fail).
+Those native contrast failures remain unchecked; the user accepted them as completion limits, not passing checks.
+Separately scoped DR-032 work remains open.
+The unchanged 390px branch retains 13 Selects and no player rows in both themes.
+Actual screen-reader output, exhaustive hydration, mounted English/French, authenticated/save workflows,
+and operational backup/empty records remain unchecked. Approval is not evidence that they passed.
+The user selected "Approve completion and commit with the disclosed native contrast and verification limits".
+Only DR-017c implementation, tests, and repository handoff are authorized for commit; no push.
+Post-approval repository-wide lint passes across all 34 projects with existing warnings and no errors.
+The completed player row is reused unchanged.
+Slots, mobile selectors, captain/add-player controls, summaries, generator, validation, partner statistics,
+theme, backend, and translation assets are excluded.
+Exact next action: confirm and scope one mounted desktop game-slot container child in a fresh invocation,
+excluding the completed rows and pool. DR-017 remains open.
+Native Checkbox/secondary Button contrast, including the disclosed remaining pool failures, is tracked as DR-032,
+not a hidden shared/theme change. The no-override correction and subsequent explicit approval are recorded separately
+in the [brief](work-items/DR-017c-assembly-player-pool.md). Do not reopen DR-017c or start another child here.
+
+### Previous completed focus
+
 DR-017b is Done with explicit user approval on 2026-10-30, after removing host styling and reverifying the correction.
 The existing input-only assembly player row is refreshed once for its five pool/slot call sites.
 Native warning Tags replace palette-colored icons, with localized names and hover/focus Tooltips.
@@ -27,8 +57,6 @@ Only [DR-017b](work-items/DR-017b-assembly-player-row.md) and its handoff are ap
 Exact next action in a fresh invocation: confirm and scope one mounted DR-017 player-pool/slot container child,
 excluding the completed row component. Do not reopen DR-017b or begin another implementation slice here.
 DR-017 remains open.
-
-### Previous completed focus
 
 DR-017a is Done with explicit user approval on 2026-10-30: the mounted `/competition/assembly` heading/filter chrome
 and the user's requested desktop time-range translation correction.
@@ -583,6 +611,7 @@ and linked from their registry rows.
 | [DR-017](work-items/DR-017-competition-assembly.md)           | Competition assembly                                    | Backlog |
 | [DR-017a](work-items/DR-017a-assembly-page-chrome.md)         | Assembly page heading and filter chrome                 | Done    |
 | [DR-017b](work-items/DR-017b-assembly-player-row.md)          | Reusable assembly player row                            | Done    |
+| [DR-017c](work-items/DR-017c-assembly-player-pool.md)         | Desktop assembly player-pool container                  | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -597,6 +626,7 @@ and linked from their registry rows.
 | DR-029                                                        | Legacy styling retirement and final regression          | Backlog |
 | DR-030                                                        | Shared header overflow at 320px                         | Backlog |
 | DR-031                                                        | Native FloatLabel focused-label contrast audit          | Backlog |
+| DR-032                                                        | Native Checkbox and secondary Button contrast audit     | Backlog |
 
 ## App and shared surfaces
 
@@ -735,6 +765,8 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
   DR-017a completes the mounted heading/filter chrome and the approved desktop time-range template correction.
   DR-017b covers only the existing player row reused in regular/backup pools and doubles/singles/substitutes.
+  DR-017c covers only the desktop pool surface, availability controls, and disclosure, without token overrides.
+  DR-032 tracks unchecked Checkbox/secondary Button focus contrast, including the pool's disclosed native failures.
   The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
   generation as functional follow-up, not completed visual scope.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.

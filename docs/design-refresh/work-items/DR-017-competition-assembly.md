@@ -21,6 +21,8 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [DR-017a: Page heading and filter chrome](DR-017a-assembly-page-chrome.md): the first implementation child.
 - [DR-017b: Reusable player row](DR-017b-assembly-player-row.md): the existing presentational component mounted in
   the regular player pool and reused by backup, doubles, singles, and substitute lists.
+- [DR-017c: Desktop player pool](DR-017c-assembly-player-pool.md): only the pool surface, availability controls,
+  and backup disclosure, reusing the completed row unchanged.
 - Scope later children only after confirming their mounted state: player pools/slots, generation controls,
   validation presentation, and partner combinations.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
@@ -28,6 +30,8 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
   Preserve that contract during visual work; scope functional completion separately.
 - FloatLabel focused-label contrast outside this page is deferred to DR-031, not a hidden parent/theme change.
+- Native unchecked Checkbox and secondary Button focus contrast is tracked as DR-032, including the desktop
+  pool's remaining failures after removing scoped tokens at the user's request.
 - Shared components, global theme, backend, and translations are not implicitly part of this parent.
 
 ## Acceptance and handoff
@@ -36,6 +40,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Scope the first child.
 - [x] Complete and review DR-017a with explicit user approval and recorded verification limits.
 - [x] Complete and review DR-017b with explicit user approval and recorded verification limits.
+- [x] Complete and review DR-017c with explicit user approval and recorded native contrast/verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -49,5 +54,11 @@ DR-017b refreshes the existing input-only player row for its five pool/slot call
 It is complete with explicit user approval on 2026-10-30 after removing host styling; see its brief for exact
 evidence and unchecked limits. Approval is not evidence that unperformed checks passed.
 Player-pool/slot containers and the other remaining surfaces are not implicitly complete.
-Exact next action in a fresh invocation: confirm and scope one mounted player-pool/slot container child.
-Do not reopen DR-017b or begin another implementation slice here.
+The next pool child is now scoped as DR-017c with a confirmed mounted consumer.
+DR-017c implements the native desktop player-pool Card, named controls, and keyboard disclosure without
+`[dt]`, `[pt]`, or authored host classes, as requested in user review.
+Focused tests/lint/build and browser behavior pass; native unchecked-border and dark disclosure-focus contrast
+failures remain disclosed and unchecked. The user approved completion/commit with those native contrast and
+verification limits on 2026-10-30; approval does not establish that failed or unperformed checks passed.
+Exact next action: confirm and scope one mounted desktop game-slot container child in a fresh invocation.
+Do not reopen DR-017b/DR-017c or start another child here. The parent remains open.

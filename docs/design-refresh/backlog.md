@@ -5,6 +5,36 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017a is Done with explicit user approval on 2026-10-30: the mounted `/competition/assembly` heading/filter chrome
+and the user's requested desktop time-range translation correction.
+The decorative English eyebrow and hand-built filter surface are replaced by a localized heading, native Card,
+responsive fluid controls, persistent semantic labels, and explicit accessible Select names.
+The authenticated save-menu trigger uses the existing localized Save name.
+Authored chrome class tokens drop from 41 to 33; two local SCSS rules are retired without new styles.
+All 112 competition tests, focused lint (41 existing warnings), repository-wide lint across 34 projects,
+and app build with 29 prerequisites pass.
+Headless Chrome verifies actual 390/1280/1440px, both themes, and unselected/populated query-restored filter Cards.
+Minimum measured text contrast is 4.87:1 light and at least 5.69:1 dark; club focus border is 3.65:1/10.22:1.
+Native season keyboard selection, live club/team/encounter reads, three component-tested locales, and Dutch SSR pass.
+Actual authenticated workflows, operational download/save, screen-reader output, mounted English/French switching,
+and exhaustive hydration remain unchecked; approval is not evidence that they passed.
+The user approved commit after fixing the desktop translations.
+Both mounted time-range Selects now use native named templates and localized accessible names;
+three real-locale component tests and mounted Dutch 1440px light/dark option-selection checks pass.
+Generation heading/buttons already use the correct translations. Translation assets and backend remain unchanged.
+Only DR-017a, the requested template correction, tests and handoff are authorized for commit; no push.
+The native FloatLabel focused label failed light contrast at 2.66:1 before persistent labels replaced it here;
+shared consumer auditing is deferred as DR-031.
+Except for that named-template correction, player pools/slots, generator and partner statistics, service logic,
+validation dialog, shared components,
+theme, backend, and translations are excluded.
+Exact next action in a fresh invocation: confirm and scope one mounted DR-017 player-pool/slot child.
+Do not reopen DR-017a or begin another implementation slice here.
+DR-017 remains open until its required children are scoped and complete.
+See the [parent](work-items/DR-017-competition-assembly.md) and [child brief](work-items/DR-017a-assembly-page-chrome.md).
+
+### Previous completed focus
+
 DR-016 is Done with explicit user approval on 2026-10-30 after a documentation-only consumer audit.
 DR-016a through DR-016g remain Done and are not reopened.
 The supplied competition mounts 12 sub-events and 26 draw links, all POULE; qualification has conditional route wiring
@@ -527,7 +557,8 @@ and linked from their registry rows.
 | [DR-016e](work-items/DR-016e-draw-states.md)                  | Competition draw loading, error, and overall-empty      | Done    |
 | [DR-016f](work-items/DR-016f-standings-section-chrome.md)     | Competition poule standings section chrome              | Done    |
 | [DR-016g](work-items/DR-016g-standings-terminology.md)        | Competition league standings terminology                | Done    |
-| DR-017                                                        | Competition assembly                                    | Backlog |
+| [DR-017](work-items/DR-017-competition-assembly.md)           | Competition assembly                                    | Backlog |
+| [DR-017a](work-items/DR-017a-assembly-page-chrome.md)         | Assembly page heading and filter chrome                 | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -541,6 +572,7 @@ and linked from their registry rows.
 | DR-028                                                        | Sync administration and team matching                   | Backlog |
 | DR-029                                                        | Legacy styling retirement and final regression          | Backlog |
 | DR-030                                                        | Shared header overflow at 320px                         | Backlog |
+| DR-031                                                        | Native FloatLabel focused-label contrast audit          | Backlog |
 
 ## App and shared surfaces
 
@@ -677,6 +709,9 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   Its routed conditional consumer remains unchanged. See the [parent reconciliation](work-items/DR-016-competition-draws.md)
   for remaining acceptance and review; no new consumer may be added solely for redesign verification.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
+  DR-017a completes the mounted heading/filter chrome and the approved desktop time-range template correction.
+  The parent records pre-existing populated-lineup NG01354 form-registration warnings and unimplemented PDF
+  generation as functional follow-up, not completed visual scope.
 - DR-018: `/competition/:competitionId/edit`. Cover information, dates, and settings; split by form section.
 - Preserve calculations, draw/encounter navigation, synchronization controls, and permission-dependent actions.
 - DR-015e confirms an existing missing-visual-code sync-status exception in the detail component.

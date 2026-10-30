@@ -4,7 +4,6 @@
   <section class="flex flex-col gap-4">
     <!-- Information Panels -->
     <div class="flex flex-wrap gap-4 max-md:flex-col">
-
       <p-fieldset [legend]="'all.competition.team-assembly.players.base' | translate" class="flex-1 min-w-[250px]">
         <div class="font-bold mb-2">Index: {{ dataService.base().index }}</div>
         @for (player of dataService.base().players; track player.id) {
@@ -191,7 +190,10 @@
             }
             @if (dataService.players()['BACKUP'].length > 0) {
               <p-divider />
-              <div class="flex justify-between items-center p-2 cursor-pointer hover:bg-emphasis" (click)="dataService.showBackup.set(!dataService.showBackup())">
+              <div
+                class="flex justify-between items-center p-2 cursor-pointer hover:bg-emphasis"
+                (click)="dataService.showBackup.set(!dataService.showBackup())"
+              >
                 <span>{{ 'all.competition.team-assembly.players.backup' | translate }}</span>
                 @if (dataService.showBackup()) {
                   <i class="pi pi-chevron-up"></i>
@@ -242,11 +244,7 @@
           @if (hasEditPermission()) {
             <div class="mt-4 bg-emphasis border border-surface rounded-border p-5">
               <p>{{ 'all.competition.team-assembly.change-team' | translate }}</p>
-              <p-button
-                [label]="'all.button.edit' | translate"
-                [outlined]="true"
-                severity="secondary"
-              />
+              <p-button [label]="'all.button.edit' | translate" [outlined]="true" severity="secondary" />
             </div>
           }
 
@@ -262,11 +260,12 @@
                   optionValue="value"
                   class="w-full"
                   inputId="time-range-select"
+                  [ariaLabel]="'all.competition.team-assembly.auto-generate.time-range' | translate"
                 >
-                  <ng-template let-option pTemplate="selectedItem">
+                  <ng-template #selectedItem let-option>
                     {{ option.label | translate }}
                   </ng-template>
-                  <ng-template let-option pTemplate="item">
+                  <ng-template #item let-option>
                     {{ option.label | translate }}
                   </ng-template>
                 </p-select>
@@ -275,15 +274,7 @@
 
               @if (selectedTimeRange() === 'last-weeks') {
                 <p-floatlabel variant="on">
-                  <input
-                    pInputText
-                    type="number"
-                    [(ngModel)]="selectedWeeks"
-                    class="w-full"
-                    id="weeks-input"
-                    min="1"
-                    max="52"
-                  />
+                  <input pInputText type="number" [(ngModel)]="selectedWeeks" class="w-full" id="weeks-input" min="1" max="52" />
                   <label for="weeks-input">{{ 'all.competition.team-assembly.auto-generate.weeks' | translate }}</label>
                 </p-floatlabel>
               }
@@ -359,9 +350,13 @@
                   {{ dataService.getSlotLabel(slotId).label | translate }}
                 </label>
                 @if (getSlotWinPct(slotId); as stat) {
-                  <span class="text-xs font-mono"
+                  <span
+                    class="text-xs font-mono"
                     [class]="stat.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                    [pTooltip]="'all.competition.team-assembly.stats.tooltip-text' | translate:{ wins: stat.wins, total: stat.total, pct: stat.winPct }">
+                    [pTooltip]="
+                      'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct }
+                    "
+                  >
                     {{ stat.wins }}/{{ stat.total }}
                   </span>
                 }
@@ -378,9 +373,13 @@
                     cdkDrag
                   />
                   @if (getPlayerStat(item.id); as stat) {
-                    <span class="text-xs font-mono ml-1"
+                    <span
+                      class="text-xs font-mono ml-1"
                       [class]="stat.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                      [pTooltip]="'all.competition.team-assembly.stats.tooltip-text' | translate:{ wins: stat.wins, total: stat.total, pct: stat.winPct }">
+                      [pTooltip]="
+                        'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct }
+                      "
+                    >
                       {{ stat.winPct }}%
                     </span>
                   }
@@ -390,9 +389,14 @@
                 @if (getSlotPairStat(slotId, getSlotPlayers(slotId)[0].id, getSlotPlayers(slotId)[1].id); as slotPair) {
                   <div class="flex justify-between items-center">
                     <span class="text-xs text-muted-color">{{ 'all.competition.team-assembly.stats.pair-on-slot' | translate }}</span>
-                    <span class="text-xs font-mono"
+                    <span
+                      class="text-xs font-mono"
                       [class]="slotPair.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                      [pTooltip]="'all.competition.team-assembly.stats.tooltip-text' | translate:{ wins: slotPair.wins, total: slotPair.total, pct: slotPair.winPct }">
+                      [pTooltip]="
+                        'all.competition.team-assembly.stats.tooltip-text'
+                          | translate: { wins: slotPair.wins, total: slotPair.total, pct: slotPair.winPct }
+                      "
+                    >
                       {{ slotPair.wins }}/{{ slotPair.total }} ({{ slotPair.winPct }}%)
                     </span>
                   </div>
@@ -400,9 +404,14 @@
                 @if (getTotalPairStat(getSlotPlayers(slotId)[0].id, getSlotPlayers(slotId)[1].id); as totalPair) {
                   <div class="flex justify-between items-center">
                     <span class="text-xs text-muted-color">{{ 'all.competition.team-assembly.stats.pair-total' | translate }}</span>
-                    <span class="text-xs font-mono"
+                    <span
+                      class="text-xs font-mono"
                       [class]="totalPair.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                      [pTooltip]="'all.competition.team-assembly.stats.tooltip-text' | translate:{ wins: totalPair.wins, total: totalPair.total, pct: totalPair.winPct }">
+                      [pTooltip]="
+                        'all.competition.team-assembly.stats.tooltip-text'
+                          | translate: { wins: totalPair.wins, total: totalPair.total, pct: totalPair.winPct }
+                      "
+                    >
                       {{ totalPair.wins }}/{{ totalPair.total }} ({{ totalPair.winPct }}%)
                     </span>
                   </div>
@@ -429,9 +438,13 @@
                   {{ dataService.getSlotLabel(slotId).label | translate }}
                 </label>
                 @if (getSlotWinPct(slotId); as stat) {
-                  <span class="text-xs font-mono"
+                  <span
+                    class="text-xs font-mono"
                     [class]="stat.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                    [pTooltip]="'all.competition.team-assembly.stats.tooltip-text' | translate:{ wins: stat.wins, total: stat.total, pct: stat.winPct }">
+                    [pTooltip]="
+                      'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct }
+                    "
+                  >
                     {{ stat.wins }}/{{ stat.total }}
                   </span>
                 }
@@ -448,9 +461,13 @@
                     cdkDrag
                   />
                   @if (getPlayerStat(item.id); as stat) {
-                    <span class="text-xs font-mono ml-1"
+                    <span
+                      class="text-xs font-mono ml-1"
                       [class]="stat.winPct >= 50 ? 'text-green-500' : 'text-red-500'"
-                      [pTooltip]="'all.competition.team-assembly.stats.tooltip-text' | translate:{ wins: stat.wins, total: stat.total, pct: stat.winPct }">
+                      [pTooltip]="
+                        'all.competition.team-assembly.stats.tooltip-text' | translate: { wins: stat.wins, total: stat.total, pct: stat.winPct }
+                      "
+                    >
                       {{ stat.winPct }}%
                     </span>
                   }

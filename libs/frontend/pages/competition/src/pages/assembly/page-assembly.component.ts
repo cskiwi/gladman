@@ -16,18 +16,19 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
 import { AssemblyComponent } from './components/assembly/assembly.component';
 import { AssemblyService } from './page-assembly.service';
 import { AssemblyGeneratorService } from './assembly-generator.service';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-page-assembly',
   standalone: true,
   imports: [
     BreadcrumbComponent,
+    CardModule,
     FormsModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
@@ -38,12 +39,11 @@ import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
     ToastModule,
     SelectModule,
     AutoCompleteModule,
-    FloatLabelModule,
     AssemblyComponent,
   ],
   providers: [MessageService, AssemblyService, AssemblyGeneratorService],
   templateUrl: './page-assembly.component.html',
-  styleUrl: './page-assembly.component.scss',
+  host: { class: 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageAssemblyComponent implements OnInit {

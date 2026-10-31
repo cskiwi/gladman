@@ -49,6 +49,8 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [DR-017n: Mobile substitutes](DR-017n-assembly-mobile-substitutes.md): only the confirmed mounted
   append picker, named native Card/Select and existing full-name presentation; preserve lineup semantics.
   Selected-substitutes management is not added by this presentation slice.
+- [DR-017o: Confirmation dialog](DR-017o-assembly-confirmation-dialog.md): only the confirmed mounted dialog
+  chrome/actions, restoring native footer presentation while preserving validation and pending-action dispatch.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -78,7 +80,18 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [x] Review and approve DR-017m with its disclosed verification limits.
 - [x] Review and approve DR-017n with its disclosed verification limits.
+- [x] Review and approve DR-017o with its disclosed verification limits.
 - [ ] Complete all required children and reconcile parent acceptance.
+
+DR-017o refreshes only the mounted confirmation dialog chrome/actions and restores its previously unrendered
+footer using PrimeNG's native named template. Reused validation content and pending-action methods are unchanged.
+All 297 competition tests, focused lint/build, eight fresh theme/width modal cases, scoped interactions and Dutch
+SSR pass. Native light Agree text/dark Cancel focus contrast failures remain DR-033; Message contrast remains DR-034.
+Its brief records unchecked screen-reader, mounted-locale, authenticated/save and exhaustive hydration limits.
+The user approved completion/commit with the disclosed native contrast failures and unchecked limits on 2026-10-31.
+Approval is not evidence that failed or unperformed checks passed. DR-017o is Done; the parent remains open.
+Exact next action: inspect remaining mounted assembly surfaces and reconcile the parent's remaining scope
+before selecting a further child in a fresh invocation. Do not reopen completed DR-017a-o.
 
 DR-017j refreshes only the mounted responsive captain/add-player searches. Two named templates keep each
 presentation in one place; native labels, full-name option/value text and long-name wrapping are verified.

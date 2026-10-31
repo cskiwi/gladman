@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017o is Done with explicit user approval on 2026-10-31: the mounted confirmation dialog has a translated title,
+named header dismissal, responsive gutters and visible native Cancel/Agree actions via PrimeNG's named footer.
+The previously missing footer was an obsolete template-query usage, not a missing application consumer.
+All 297 competition tests in 18 suites (11 new), focused lint (41 existing warnings, zero errors),
+library build and 10 prerequisites pass. Eight fresh light/dark 360/390/768/1440px cases pass naming,
+fit, initial cancellation focus, Escape and focus return, with zero page errors or mutations.
+Separate 390px theme checks pass Tab containment, Space/Enter, header/footer cancellation,
+browser-local no-network pending-action dispatch, warning-only content and long-message scrolling.
+Dutch SSR and fresh responsive hydration pass. Scoped utility tokens increase from zero to seven for
+width cap/gutters and the wrapping footer row. No new wrapper, translation asset, stylesheet or theme change.
+Native light Agree normal/keyboard text contrast fails at 3.65:1; native dark Cancel focus-ring contrast
+fails at 1.40:1. DR-033 retains these audits; native Message contrast remains DR-034.
+Screen-reader output, header-close quantitative contrast, mounted English/French, actual authenticated/save
+success/error workflows, drag/resize interaction and exhaustive hydration remain unverified.
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts the recorded native contrast failures and unchecked limits; it does not claim those checks passed.
+Only this slice/tests/handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes across all 34 projects
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: inspect remaining mounted assembly surfaces and reconcile DR-017's
+remaining scope before selecting one further child. Do not reopen completed DR-017a-o or begin that child here.
+See the [DR-017o brief](work-items/DR-017o-assembly-confirmation-dialog.md). Keep DR-017 open.
+
+### Previous completed focus: mobile substitutes
+
 DR-017n is Done with explicit user approval on 2026-10-31: the mounted mobile substitutes picker uses a named Card,
 translated existing prompt, native fluid sizing and stable full-name option identities.
 All 286 competition tests in 18 suites (8 new), lint (41 existing warnings, zero errors), library build
@@ -925,6 +950,7 @@ and linked from their registry rows.
 | [DR-017l](work-items/DR-017l-assembly-mobile-singles.md)      | Mobile assembly singles selectors                       | Done    |
 | [DR-017m](work-items/DR-017m-assembly-mobile-doubles.md)      | Mobile assembly doubles surfaces                        | Done    |
 | [DR-017n](work-items/DR-017n-assembly-mobile-substitutes.md)  | Mobile assembly substitutes picker                      | Done    |
+| [DR-017o](work-items/DR-017o-assembly-confirmation-dialog.md) | Assembly confirmation dialog chrome/actions             | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -1222,6 +1248,11 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-033 (additional mounted consumer during DR-017o): the native dialog Agree Button has light normal/keyboard
+  text contrast 3.65:1, below 4.5:1; its settled hover passes at 4.64:1. The native outlined Cancel Button's
+  dark keyboard focus ring is 1.40:1 against the dialog surface, below 3:1. Other measured title/action text
+  and focus combinations pass; quantitative header-close contrast remains unchecked.
+  Preserve native styling and audit shared preset/confirmed consumers separately, not with page-local overrides.
 - DR-035 (discovered during DR-017i): native Fieldset collapse/re-expansion removes the existing Select span
   and sortable-header `tabindex="0"`, preventing their subsequent keyboard access. Reproduced in isolated Chrome;
   installed PrimeNG `Fieldset.updateTabIndex()` removes rather than restores descendant tabindex on expansion.

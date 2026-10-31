@@ -103,13 +103,25 @@
   <app-assembly [formGroup]="dataService.formGroup" (validationOverview)="templateUpdated($event)" />
 </section>
 
-<p-dialog header="There are warnings" [visible]="showValidationDialog()" [modal]="true" [closable]="true" (onHide)="onDialogCancel()">
+<p-dialog
+  [header]="'all.v1.teamFormation.title' | translate"
+  [closeAriaLabel]="'all.button.cancel' | translate"
+  [visible]="showValidationDialog()"
+  [modal]="true"
+  [closable]="true"
+  styleClass="w-full max-w-xl m-4"
+  (onHide)="onDialogCancel()"
+>
   @if (validationOverview()?.template) {
     <ng-container *ngTemplateOutlet="validationOverview()!.template" />
   }
-  <ng-template pTemplate="footer">
-    <p-button [label]="'all.button.agree' | translate" (onClick)="onDialogConfirm()" severity="primary" />
-    <p-button [label]="'all.button.cancel' | translate" (onClick)="onDialogCancel()" severity="secondary" [outlined]="true" />
+  <ng-template #footer>
+    <div class="flex flex-wrap justify-end gap-2">
+      <button type="button" pButton severity="secondary" [outlined]="true" (click)="onDialogCancel()">
+        {{ 'all.button.cancel' | translate }}
+      </button>
+      <button type="button" pButton (click)="onDialogConfirm()">{{ 'all.button.agree' | translate }}</button>
+    </div>
   </ng-template>
 </p-dialog>
 

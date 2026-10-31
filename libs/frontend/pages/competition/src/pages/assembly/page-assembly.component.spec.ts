@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, input, output, signal, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, input, output, signal, TemplateRef, viewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import { AutoComplete } from 'primeng/autocomplete';
 import { MessageService } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
+import { Dialog } from 'primeng/dialog';
 import { Menu } from 'primeng/menu';
 import { Select } from 'primeng/select';
 import { of } from 'rxjs';
@@ -24,17 +25,23 @@ import { AssemblyComponent } from './components/assembly/assembly.component';
 import { PageAssemblyComponent } from './page-assembly.component';
 import { AssemblyService } from './page-assembly.service';
 
-@Component({ selector: 'app-assembly', template: '' })
+@Component({
+  selector: 'app-assembly',
+  template: '<ng-template #diagnostics><p data-testid="validation-diagnostic">Synthetic validation diagnostic</p></ng-template>',
+})
 class AssemblyStubComponent {
   readonly formGroup = input.required<FormGroup>();
   readonly validationOverview = output<{ valid: boolean; template: TemplateRef<HTMLElement> }>();
+  readonly diagnostics = viewChild.required<TemplateRef<HTMLElement>>('diagnostics');
 }
 
 const locales = ['en', 'nl_BE', 'fr_BE'].map((locale) => {
   const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
-  const asset: { competition: { 'team-assembly': { title: string; season: string; club: string; team: string; encounter: string } } } = JSON.parse(
-    readFileSync(assetPath, 'utf8'),
-  );
+  const asset: {
+    competition: { 'team-assembly': { title: string; season: string; club: string; team: string; encounter: string } };
+    button: { agree: string; cancel: string };
+    v1: { teamFormation: { title: string } };
+  } = JSON.parse(readFileSync(assetPath, 'utf8'));
   return { locale, asset };
 });
 
@@ -249,5 +256,126 @@ describe('Assembly page heading and filters', () => {
     expect(save).toHaveBeenCalledTimes(1);
     component.saveLoading.set(true);
     expect(component.saveMenuItems()[0].disabled).toBe(true);
+  });
+
+  function setOverview(valid = false): void {
+    const assembly = harness.fixture.debugElement.query(By.directive(AssemblyStubComponent)).injector.get(AssemblyStubComponent);
+    assembly.validationOverview.emit({ valid, template: assembly.diagnostics() });
+  }
+
+  function dialogElement(): HTMLElement {
+    const dialog = harness.routeNativeElement?.querySelector<HTMLElement>('[role="dialog"]');
+    if (!dialog) throw new Error('Missing assembly confirmation dialog');
+    return dialog;
+  }
+
+  function footerButtons(): HTMLButtonElement[] {
+    return [...dialogElement().querySelectorAll<HTMLButtonElement>('.p-dialog-footer button')];
+  }
+
+  it.each(locales)('renders translated native dialog chrome and real footer actions in $locale', async ({ locale, asset }) => {
+    TestBed.inject(TranslateService).use(locale);
+    await mount();
+    setOverview();
+    await component.download();
+    await settle();
+    const dialog = dialogElement();
+    const dialogComponent = harness.fixture.debugElement.query(By.directive(Dialog)).injector.get(Dialog);
+    const titleId = dialog.getAttribute('aria-labelledby');
+    expect(titleId).toBeTruthy();
+    expect(dialog.querySelector(`#${titleId}`)?.textContent).toBe(asset.v1.teamFormation.title);
+    expect(dialog.getAttribute('aria-modal')).toBe('true');
+    expect(dialog.querySelector('.p-dialog-close-button')?.getAttribute('aria-label')).toBe(asset.button.cancel);
+    expect(footerButtons().map((button) => button.textContent?.trim())).toEqual([asset.button.cancel, asset.button.agree]);
+    expect(footerButtons().every((button) => button.type === 'button' && button.classList.contains('p-button'))).toBe(true);
+    expect(footerButtons()[0].classList.contains('p-button-secondary')).toBe(true);
+    expect(footerButtons()[0].classList.contains('p-button-outlined')).toBe(true);
+    expect(dialogComponent.styleClass()).toBe('w-full max-w-xl m-4');
+    expect(dialogComponent.focusTrap()).toBe(true);
+    expect(dialogComponent.closeOnEscape()).toBe(true);
+    expect(dialogComponent.draggable()).toBe(true);
+    expect(dialogComponent.resizable()).toBe(true);
+    expect(dialog.querySelectorAll('[data-testid="validation-diagnostic"]')).toHaveLength(1);
+    expect(component.pendingAction()).toBe('download');
+  });
+
+  it.each(['download', 'save'] as const)('cancels a pending %s from the footer without executing it', async (action) => {
+    await mount();
+    setOverview();
+    const confirm = jest.spyOn(component, 'onDialogConfirm');
+    await component[action]();
+    await settle();
+    expect(component.pendingAction()).toBe(action);
+    component.saveLoading.set(true);
+    footerButtons()[0].click();
+    await settle();
+    expect(component.showValidationDialog()).toBe(false);
+    expect(component.pendingAction()).toBeNull();
+    expect(component.saveLoading()).toBe(false);
+    expect(confirm).not.toHaveBeenCalled();
+  });
+
+  it.each(['download', 'save'] as const)('confirms only the recorded pending %s action', async (action) => {
+    await mount();
+    setOverview();
+    const log = jest.spyOn(console, 'log').mockImplementation();
+    const mutate = jest.fn(() => of({ data: { createAssembly: true } }));
+    Object.assign(TestBed.inject(Apollo), { mutate });
+    await component[action]();
+    await settle();
+    const confirm = jest.spyOn(component, 'onDialogConfirm');
+    footerButtons()[1].click();
+    await settle();
+    expect(confirm).toHaveBeenCalledTimes(1);
+    expect(component.showValidationDialog()).toBe(false);
+    expect(component.pendingAction()).toBeNull();
+    expect(mutate).toHaveBeenCalledTimes(action === 'save' ? 1 : 0);
+    expect(log).toHaveBeenCalledTimes(action === 'download' ? 1 : 0);
+    if (action === 'save') {
+      expect(mutate).toHaveBeenCalledWith(expect.objectContaining({ variables: { assembly: expect.objectContaining({ teamId: null }) } }));
+    }
+    log.mockRestore();
+  });
+
+  it('keeps header dismissal on the cancellation path and allows reopening', async () => {
+    await mount();
+    setOverview();
+    await component.download();
+    await settle();
+    dialogElement().querySelector<HTMLButtonElement>('.p-dialog-close-button')?.click();
+    await settle();
+    expect(component.showValidationDialog()).toBe(false);
+    expect(component.pendingAction()).toBeNull();
+    await component.save();
+    await settle();
+    expect(component.pendingAction()).toBe('save');
+    expect(footerButtons()).toHaveLength(2);
+  });
+
+  it('does not open a confirmation dialog before a validation overview exists', async () => {
+    await mount();
+    await component.download();
+    await component.save();
+    await settle();
+    expect(component.showValidationDialog()).toBe(false);
+    expect(component.pendingAction()).toBeNull();
+    expect(component.saveLoading()).toBe(false);
+    expect(harness.routeNativeElement?.querySelector('[role="dialog"]')).toBeNull();
+  });
+
+  it.each(['download', 'save'] as const)('bypasses confirmation for a valid %s overview', async (action) => {
+    await mount();
+    setOverview(true);
+    const log = jest.spyOn(console, 'log').mockImplementation();
+    const mutate = jest.fn(() => of({ data: { createAssembly: true } }));
+    Object.assign(TestBed.inject(Apollo), { mutate });
+    await component[action]();
+    await settle();
+    expect(component.showValidationDialog()).toBe(false);
+    expect(component.pendingAction()).toBeNull();
+    expect(harness.routeNativeElement?.querySelector('[role="dialog"]')).toBeNull();
+    expect(mutate).toHaveBeenCalledTimes(action === 'save' ? 1 : 0);
+    expect(log).toHaveBeenCalledTimes(action === 'download' ? 1 : 0);
+    log.mockRestore();
   });
 });

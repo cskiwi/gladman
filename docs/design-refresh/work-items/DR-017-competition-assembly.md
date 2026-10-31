@@ -21,7 +21,8 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 The initial 2026-10-31 parent audit is superseded by subsequent user evidence and feedback.
 DR-017r is now a required presentation child: native change-team guidance Card and desktop/mobile
 search Card parity. DR-017s separately defers the unconfirmed authenticated Save popup.
-Parent completion requires DR-017r review and explicit acceptance of the preserved limits/Save deferral.
+DR-017r review is complete with explicit child approval. Separate parent approval on 2026-10-31 accepts
+the preserved limits and DR-017s Save deferral; deferred verification remains unchecked.
 
 - [DR-017a: Page heading and filter chrome](DR-017a-assembly-page-chrome.md): the first implementation child.
 - [DR-017b: Reusable player row](DR-017b-assembly-player-row.md): the existing presentational component mounted in
@@ -104,7 +105,8 @@ Parent completion requires DR-017r review and explicit acceptance of the preserv
 - [x] Review and approve DR-017q with its native contrast and disclosed verification limits.
 - [x] Complete confirmed-consumer children DR-017a-q and record their approval limits.
 - [x] Complete and approve required DR-017r change-team/search presentation corrections with disclosed limits.
-- [ ] Approve parent completion with DR-017s deferral and child verification limits disclosed.
+- [x] Reconcile all eighteen completed children against current source and mounted responsive consumers.
+- [x] Approve parent completion with DR-017s deferral and child verification limits disclosed.
 - [ ] Verify deferred authenticated Save presentation on a real authenticated consumer.
 - [ ] Resolve recorded native contrast failures and perform actual screen-reader, alternate mounted locales,
       exhaustive hydration and authenticated/save workflow checks. Child approval did not establish these passes.
@@ -113,7 +115,7 @@ Parent completion requires DR-017r review and explicit acceptance of the preserv
 
 This audit predates the user's mounted change-team evidence and requested mobile Card parity.
 Its counts and anonymous gates remain valid; its proposed DR-017r deferral/parent closure no longer applies.
-The current required next action is to complete/review DR-017r; Save is now DR-017s.
+DR-017r is now complete with explicit approval; Save remains DR-017s. The current parent action is recorded below.
 
 - `git --no-pager status --short` returned a clean worktree before this invocation.
 - A read-only Node scan of `docs/design-refresh/work-items/DR-017[a-q]-*.md` finds exactly 17 briefs,
@@ -155,6 +157,7 @@ The current required next action is to complete/review DR-017r; Save is now DR-0
 | Mobile singles, doubles and substitutes                           | DR-017l, DR-017m, DR-017n |
 | Confirmation dialog chrome/actions                                | DR-017o                   |
 | Loading, initial and error/retry feedback                         | DR-017p, DR-017q          |
+| Permission-only guidance and responsive search Card parity        | DR-017r                   |
 
 Existing row components and named templates already author repeated presentation once. A new smart/dumb split
 would add indirection without an uncovered shared presentation requirement; no extraction is made.
@@ -189,7 +192,7 @@ Do not treat the old closure proposal below as current approval readiness.
   reviewable child. Do not start that work in this invocation. A real permitted assembly session may separately
   unblock DR-017r; do not interpret parent closure as its implementation or verification.
 
-## Current implementation handoff
+## Historical DR-017r implementation handoff
 
 DR-017r now refreshes the user-confirmed guidance Card and mobile search Card parity.
 Seventy-four tests in five affected suites, focused lint (41 existing warnings, zero errors),
@@ -201,9 +204,79 @@ The user approved DR-017r completion/commit with disclosed verification limits o
 Its [brief](DR-017r-assembly-search-card-parity.md) retains the unchecked limits; approval is not a claim
 that permitted pixels/focus/contrast or other unperformed checks passed.
 Post-approval lint passes all 34 projects with existing warnings and zero errors.
-All required DR-017a-r children are Done; the parent is in Review, not implicitly Done.
-Exact next action: reconcile parent closure with DR-017s Save deferral and preserved child limits,
-then obtain separate parent approval. This child approval does not authorize parent closure or another UI slice.
+All required DR-017a-r children are Done. At that child handoff the parent remained in Review, not implicitly Done.
+Its next action was separate parent reconciliation/approval with DR-017s deferral and preserved child limits.
+That action is now fulfilled below; the child approval itself did not authorize parent closure or another UI slice.
+
+## Parent closure reconciliation
+
+The latest 2026-10-31 audit supersedes the preceding next-action statements. DR-017r is complete, not deferred.
+The selected slice is parent reconciliation only; the parent is Done by explicit approval with disclosed limits.
+No completed child is reopened and no second UI slice is selected.
+
+- The initial worktree was clean. Changed scope: this brief and the backlog only.
+- Passed: read-only Node scan of `DR-017[a-r]-*.md` finds eighteen briefs, eighteen authoritative Done rows,
+  checked review/approval evidence and recorded user approval text. This verifies historical evidence presence,
+  not a rerun of those child tests, builds or reviews.
+- Current source confirms the mounted route and native guidance Card with associated copy behind the existing
+  `hasEditPermission()` computation. The outlined Edit button still has no action handler.
+  The captain Card and add-player search use named templates across desktop/mobile, so no additional
+  smart/presentational component extraction is justified by this audit.
+- [Page action source](../../../libs/frontend/pages/competition/src/pages/assembly/page-assembly.component.html)
+  still gates the Save popup on `loggedIn()`; the model retains literal English `Save`.
+  DR-017s remains Backlog until a real authenticated mounted consumer can be checked and one bounded slice scoped.
+- Passed: Playwright MCP `browser_run_code_unsafe` creates four isolated contexts at 390/1440x900px,
+  visits the supplied encounter/team/club/season URL and waits for `dataService.loaded()`, the real
+  `isMobile()` branch and captain input. Each context toggles only its own actual `.dark-theme` class.
+  No permissions or application signals are simulated; every context closes in `finally`.
+- The first matrix fails an incorrect assertion that all desktop Selects are mobile lineup controls.
+  Source confirms desktop time-range/weeks Selects; the corrected audit counts lineup Selects only inside
+  `p-card[aria-labelledby^="assembly-mobile-"]`. No application fix is needed or made.
+
+| Width | Themes checked | Native Cards | Mobile lineup Selects | Desktop slot headings | Generator Selects |
+| ----- | -------------- | ------------ | --------------------- | --------------------- | ----------------- |
+| 390   | Light and dark | 14           | 13                    | 0                     | 0                 |
+| 1440  | Light and dark | 15           | 0                     | 9                     | 2                 |
+
+All four final cases pass three summary headings, two unique labeled Card-contained search inputs,
+loaded/responsive state and assembly-root viewport fit. `hasEditPermission()` is false; guidance and
+Save popup are absent. All report zero page errors and zero GraphQL mutation requests.
+These confirm current anonymous consumer wiring, not globally unused authenticated surfaces.
+The shared browser's theme/viewport and user-managed servers are unchanged.
+
+- Passed: repository formatting of both handoff documents with
+  `npm exec -- prettier --write --end-of-line lf "docs\design-refresh\backlog.md"
+"docs\design-refresh\work-items\DR-017-competition-assembly.md"` as one command, then `git diff --check`
+  and a read-only Node relative-link/LF check: 182 targets exist and both files are LF-only.
+  Git warns about future CRLF conversion; no repository configuration is changed.
+- Nx lint/build/tests: not run; no application change in this documentation-only slice.
+  Previous child results remain historical and are not relabeled as fresh passes.
+- New screenshots/pixel review, contrast measurements, keyboard interactions, screen-reader output,
+  permitted guidance pixels/focus, authenticated Save/Edit/PDF, mounted English/French and exhaustive
+  SSR/hydration: not run. Existing child limits and native contrast failures remain unchanged.
+- No new dependencies, SCSS, palettes, wrapper components, translation/backend changes or styling exceptions.
+  Utility/style comparison: unchanged application markup and styling.
+- Separate follow-ups remain DR-031/032/033/034/035/038 native accessibility audits, DR-036 mobile rule parity,
+  DR-037 empty copy, DR-039 filter/service synchronization, populated-form warnings and PDF integration.
+- Review required: explicitly accept parent closure for completed DR-017a-r, DR-017s Save deferral and all
+  preserved child limits. Until then keep DR-017 in Review, leave unchecked acceptance criteria unchecked,
+  and do not commit. Approval is not evidence that failed or unperformed checks passed.
+- After approval, record the decision here, mark the parent Done and commit only this parent handoff without
+  a push. Exact next candidate: DR-019; confirm the supplied mounted tournament detail URL and scope one
+  reviewable child in the next invocation, not this one.
+
+### Parent approval
+
+On 2026-10-31 the user selected "Approve parent completion and commit with disclosed limits" and
+reported no other requested actions. This separately approves parent closure for completed DR-017a-r,
+accepts DR-017s authenticated Save deferral and the preserved child verification limits, including native
+contrast failures and unperformed permitted/keyboard/screen-reader/locale/SSR-hydration/workflow checks.
+It does not establish that failed or unperformed checks passed; those acceptance criteria remain unchecked.
+DR-017 is Done by explicit approval. Only this brief and the backlog are authorized for this commit; no push.
+No subsequent application change requires rerunning child tests/builds or repository-wide application lint.
+Final formatting and whitespace checks cover the approval update.
+Exact next action: confirm the mounted DR-019 tournament detail route and scope one child in a fresh invocation.
+DR-017s remains independently deferred; do not reopen the completed children to manufacture a Save consumer.
 
 ## Historical child handoffs
 

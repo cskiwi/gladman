@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017 parent reconciliation is Done with explicit user approval on 2026-10-31.
+All eighteen required DR-017a-r children are Done
+with recorded approval; current source and four fresh isolated light/dark 390/1440px browser cases confirm
+the mounted responsive scope, shared search templates, native search Cards and anonymous Save/Edit gates.
+Mobile has fourteen Cards and thirteen lineup Selects; desktop has fifteen Cards, nine slot headings and
+two generator Selects (not lineup pickers). Both named search inputs are unique and Card-contained;
+three summary headings and viewport fit pass in all cases, with zero page errors or GraphQL mutations.
+The first audit incorrectly counted desktop generator Selects as lineup pickers; the corrected scoped
+assertion passes without changing application code. This is a consumer audit, not new pixel, contrast,
+keyboard, screen-reader, authenticated workflow, alternate-locale or exhaustive hydration validation.
+DR-017r is complete, not deferred. Only DR-017s authenticated Save presentation remains deferred;
+its literal English Save copy and the handlerless Edit/PDF integration contracts remain unchanged.
+Existing native contrast failures and all child verification limits remain disclosed, not resolved.
+Only the parent brief and backlog change; no application restyle, extraction or styling exception.
+The user selected "Approve parent completion and commit with disclosed limits", explicitly accepting
+DR-017s deferral and preserved child limits. Unchecked criteria remain unchecked; approval is not a pass.
+Only this parent handoff is approved for commit; no push.
+Exact next action: DR-019, confirm the supplied mounted tournament detail route and scope one child
+in the next invocation. Do not begin that UI slice here. DR-017s remains separately deferred.
+See the [parent reconciliation evidence](work-items/DR-017-competition-assembly.md#parent-closure-reconciliation).
+
+### Previous completed focus: search Card parity
+
 DR-017r is Done with explicit user approval on 2026-10-31 following the requested visual corrections.
 The supplied mounted-element evidence confirms the permission-only change-team guidance below the desktop
 player list. Refresh that custom surface with a native Card and make mobile captain/add-player searches
@@ -1041,7 +1064,7 @@ and linked from their registry rows.
 | [DR-016e](work-items/DR-016e-draw-states.md)                  | Competition draw loading, error, and overall-empty      | Done    |
 | [DR-016f](work-items/DR-016f-standings-section-chrome.md)     | Competition poule standings section chrome              | Done    |
 | [DR-016g](work-items/DR-016g-standings-terminology.md)        | Competition league standings terminology                | Done    |
-| [DR-017](work-items/DR-017-competition-assembly.md)           | Competition assembly                                    | Review  |
+| [DR-017](work-items/DR-017-competition-assembly.md)           | Competition assembly                                    | Done    |
 | [DR-017a](work-items/DR-017a-assembly-page-chrome.md)         | Assembly page heading and filter chrome                 | Done    |
 | [DR-017b](work-items/DR-017b-assembly-player-row.md)          | Reusable assembly player row                            | Done    |
 | [DR-017c](work-items/DR-017c-assembly-player-pool.md)         | Desktop assembly player-pool container                  | Done    |

@@ -43,6 +43,9 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [DR-017l: Mobile singles](DR-017l-assembly-mobile-singles.md): only the four mounted mobile singles
   surfaces, with native named Cards. User feedback also authorizes full-name options/values across all
   mobile lineup selectors; doubles/substitute surfaces and semantics remain unchanged.
+- [DR-017m: Mobile doubles](DR-017m-assembly-mobile-doubles.md): the four mounted doubles surfaces,
+  sharing native Cards and a compact repeated Select template with distinct accessible names;
+  preserve completed full-name presentation.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -70,6 +73,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017k with explicit user approval and recorded native Tooltip/verification limits.
 - [x] Complete and review DR-017l with explicit user approval and recorded verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
+- [x] Review and approve DR-017m with its disclosed verification limits.
 - [ ] Complete all required children and reconcile parent acceptance.
 
 DR-017j refreshes only the mounted responsive captain/add-player searches. Two named templates keep each
@@ -87,6 +91,13 @@ All 247 competition tests, focused lint/build and eight mounted theme/width case
 The user approved completion/commit with disclosed verification limits on 2026-10-30; DR-017k is Done.
 Final Dutch SSR and fresh hydration now pass, resolving DR-017j's specific unavailable final grouping recheck.
 Other disclosed verification limits remain unchanged; approval does not mean unperformed checks passed.
+DR-017m refreshes only the mounted mobile doubles surfaces with named native Cards and a compact repeated
+Select template. User feedback removes extra visible position labels; distinct accessible names remain.
+All 278 competition tests, focused lint/build and ten theme/width browser cases pass after that correction.
+The user explicitly approved completion/commit with disclosed verification limits on 2026-10-31; DR-017m is Done.
+Quantitative focus/option contrast, screen-reader, exhaustive hydration, mounted English/French and
+authenticated/save checks remain unchecked; approval does not establish that unperformed checks passed.
+Keep the parent open; confirm/scope one mounted mobile substitutes surface next, not a second slice here.
 DR-017l now refreshes only the mounted mobile singles selectors with native Cards and full-name fluid Selects.
 After user feedback, all 13 mobile lineup selectors share full-name option/value presentation.
 After correcting option adapters to retain native tracking IDs, all 267 competition tests and focused lint/build pass.

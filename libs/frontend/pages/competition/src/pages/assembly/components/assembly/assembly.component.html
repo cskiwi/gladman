@@ -74,46 +74,47 @@
 
         <!-- Game Slots with p-select -->
         @for (slotId of ['double1', 'double2', 'double3', 'double4']; track slotId) {
-          <p-fieldset [legend]="(dataService.getSlotLabel(slotId).prefix | translate) + ' ' + (dataService.getSlotLabel(slotId).label | translate)">
-            <p-select
-              [options]="getMobilePlayerOptions(slotId, 0)"
-              [ngModel]="getSlotPlayer(slotId, 0)"
-              [ngModelOptions]="{ standalone: true }"
-              optionLabel="label"
-              optionValue="value"
-              dataKey="id"
-              [placeholder]="'Select player 1'"
-              [showClear]="true"
-              (onChange)="onSlotPlayerChange(slotId, 0, $event.value)"
-              class="w-full"
-            >
-              <ng-template #item let-option>
-                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
-              </ng-template>
-              <ng-template #selectedItem let-option>
-                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
-              </ng-template>
-            </p-select>
-            <p-select
-              [options]="getMobilePlayerOptions(slotId, 1)"
-              [ngModel]="getSlotPlayer(slotId, 1)"
-              [ngModelOptions]="{ standalone: true }"
-              optionLabel="label"
-              optionValue="value"
-              dataKey="id"
-              [placeholder]="'Select player 2'"
-              [showClear]="true"
-              (onChange)="onSlotPlayerChange(slotId, 1, $event.value)"
-              class="w-full mt-2"
-            >
-              <ng-template #item let-option>
-                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
-              </ng-template>
-              <ng-template #selectedItem let-option>
-                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
-              </ng-template>
-            </p-select>
-          </p-fieldset>
+          <p-card role="region" [attr.aria-labelledby]="'assembly-mobile-' + slotId + '-title'">
+            <ng-template #title>
+              <h3 [id]="'assembly-mobile-' + slotId + '-title'" class="text-base font-semibold m-0">
+                {{ dataService.getSlotLabel(slotId).prefix | translate }} {{ dataService.getSlotLabel(slotId).label | translate }}
+              </h3>
+            </ng-template>
+            <div class="flex flex-col gap-2">
+              @for (position of [0, 1]; track position) {
+                @let inputId = 'assembly-mobile-' + slotId + '-' + position;
+                <p-select
+                  [options]="getMobilePlayerOptions(slotId, position)"
+                  [ngModel]="getSlotPlayer(slotId, position)"
+                  [ngModelOptions]="{ standalone: true }"
+                  optionLabel="label"
+                  optionValue="value"
+                  [inputId]="inputId"
+                  [ariaLabel]="
+                    (dataService.getSlotLabel(slotId).prefix | translate) +
+                    ' ' +
+                    (dataService.getSlotLabel(slotId).label | translate) +
+                    ' ' +
+                    ('all.competition.player' | translate) +
+                    ' ' +
+                    (position + 1)
+                  "
+                  dataKey="id"
+                  [placeholder]="'all.v1.teamFormation.teamFormation.selectPlayer' | translate"
+                  [showClear]="true"
+                  [fluid]="true"
+                  (onChange)="onSlotPlayerChange(slotId, position, $event.value)"
+                >
+                  <ng-template #item let-option>
+                    <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+                  </ng-template>
+                  <ng-template #selectedItem let-option>
+                    <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+                  </ng-template>
+                </p-select>
+              }
+            </div>
+          </p-card>
         }
         @for (slotId of ['single1', 'single2', 'single3', 'single4']; track slotId) {
           <p-card role="region" [attr.aria-labelledby]="'assembly-mobile-' + slotId + '-title'">

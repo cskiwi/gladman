@@ -5,6 +5,34 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017m is Done with explicit user approval on 2026-10-31: the four mounted mobile doubles surfaces
+use named native Cards and one repeated
+Select block. After user feedback, native translated select-player placeholders are the only visible
+prompts; eight distinct accessible slot/position names remain without extra visible labels.
+Completed full-name templates/values,
+indexed form/filtering behavior and excluded desktop/singles/substitutes remain unchanged.
+All 278 competition tests in 17 suites (11 new), focused lint (41 existing warnings, no errors),
+library build and 10 prerequisites pass. Six fresh mobile light/dark 360/390/768px cases verify
+names, keyboard assignment/Delete clearing, partner exclusion, Escape, Tab order and long-name fit.
+Four desktop 820/1440px theme cases, additional 390px pointer/empty/loading/unloaded checks and Dutch
+SSR/fresh hydration pass. The complete matrix reports zero page errors, NG0955 warnings or mutations.
+Final placeholders pass contrast at 4.87:1 light / 6.65:1 dark; selected values at 13.61:1 / 16.00:1.
+Scoped authored utility tokens increase from three to six for necessary heading/position spacing.
+All listed Nx/browser/SSR checks were rerun after removing visible labels.
+Actual screen-reader output, quantitative focus/option contrast, exhaustive hydration,
+mounted English/French and authenticated/save checks remain unverified. DR-037 records the existing
+English native empty-result copy on the Dutch route. No styling exceptions or dependencies.
+The user selected "Approve completion and commit with the disclosed verification limits" after the compact correction.
+Approval accepts the unchecked limits; it is not evidence that unperformed checks passed.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes across all 34 projects,
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: confirm/scope one mounted mobile substitutes surface child,
+excluding completed DR-017a-m. Keep DR-017 open; do not start it here.
+See the [DR-017m brief](work-items/DR-017m-assembly-mobile-doubles.md).
+
+### Previous completed focus: mobile singles
+
 DR-017l is Done with explicit user approval on 2026-10-31 after fixing user-reported NG0955 warnings.
 The adapter now preserves each player's ID for existing native `dataKey="id"` tracking.
 All 267 competition tests in 16 suites (20 new), focused lint (41 existing warnings, no errors),
@@ -872,6 +900,7 @@ and linked from their registry rows.
 | [DR-017j][dr-017j]                                            | Responsive assembly captain/add-player searches         | Done    |
 | [DR-017k][dr-017k]                                            | Reused assembly base/titular information summaries      | Done    |
 | [DR-017l](work-items/DR-017l-assembly-mobile-singles.md)      | Mobile assembly singles selectors                       | Done    |
+| [DR-017m](work-items/DR-017m-assembly-mobile-doubles.md)      | Mobile assembly doubles surfaces                        | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -891,12 +920,21 @@ and linked from their registry rows.
 | DR-034                                                        | Native Message severity text contrast audit             | Backlog |
 | DR-035                                                        | Native Fieldset descendant tab-stop restoration audit   | Backlog |
 | DR-036                                                        | Mobile assembly replacement and duplicate-rule parity   | Backlog |
+| DR-037                                                        | Native Select default feedback localization audit       | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-037: native Select feedback localization
+
+On 2026-10-31, the confirmed mounted mobile doubles Select on the Dutch `/competition/assembly` route
+shows English `No results found` when its browser-local player options are empty, in both themes.
+The native empty feedback remains usable; DR-017m reuses existing defaults and does not change shared configuration.
+Audit existing PrimeNG locale configuration and real consumers before scoping a separate locale fix.
+Do not add page-specific overrides or translation assets as a hidden side effect of a surface refresh.
 
 ### DR-036: mobile assembly rule parity
 

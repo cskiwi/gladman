@@ -427,6 +427,7 @@
       },
       "info": "Remarks concerning the team assembly",
       "level-exemption": "Player is exempt from ranking restrictions",
+      "load-error": "Unable to load the team's players. Please try again.",
       "mix1": "Men doubles",
       "mix2": "Women doubles",
       "mix3": "Mixed 1",
@@ -437,7 +438,9 @@
         "team": "Titulars",
         "title": "Possible titulars"
       },
+      "retry-load": "Try again",
       "season": "Season",
+      "select-team": "Select a club and team above to assemble your lineup.",
       "select-all": "Select/deselect all players",
       "single1": "Single 1",
       "single2": "Single 2",

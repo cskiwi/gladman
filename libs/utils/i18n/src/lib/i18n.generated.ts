@@ -434,6 +434,7 @@ export type I18nTranslations = {
                 };
                 "info": string;
                 "level-exemption": string;
+                "load-error": string;
                 "mix1": string;
                 "mix2": string;
                 "mix3": string;
@@ -444,7 +445,9 @@ export type I18nTranslations = {
                     "team": string;
                     "title": string;
                 };
+                "retry-load": string;
                 "season": string;
+                "select-team": string;
                 "select-all": string;
                 "single1": string;
                 "single2": string;

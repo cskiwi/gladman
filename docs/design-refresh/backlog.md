@@ -5,6 +5,32 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017q is Done with explicit user approval on 2026-10-31: the mounted assembly now has native localized initial/error feedback and
+a read-only retry action. Real English/Dutch/French copy and 14 new tests pass; all 319 competition tests
+in 20 suites, focused lint (41 existing warnings, zero errors), library build and 10 prerequisites pass.
+Eight light/dark 360/390/768/1440px cases pass layout, naming, keyboard dispatch and loading/loaded priority.
+Separate 390px theme checks pass intercepted query failure/retry, real-team recovery and focus preservation:
+failed retry refocuses the new button, successful retry focuses the named result region, and user-moved focus
+is not stolen. Native Message leave animations required retaining the previous focused-button identity.
+Dutch initial/loaded SSR and fresh hydration pass; no page errors or mutations occur in the final matrices.
+Initial text contrast passes at 7.74:1 light / 9.51:1 dark. Native error text is 4.41:1 light (fails 4.5:1)
+and 4.63:1 dark (passes); DR-034 retains that audit without page/global color overrides.
+Four added feedback utility tokens provide spacing/action alignment; no new wrapper, SCSS or shared/theme change.
+The named loaded-section focus target is a tightly coupled accessibility change, not a lineup restyle.
+New locale keys and their automatically generated translation types are included.
+Actual screen-reader output, mounted English/French, quantitative retry focus/icon contrast,
+forced error/loading SSR, authenticated/save workflows and exhaustive hydration remain unchecked.
+DR-039 records the pre-existing club/season selection-to-service mismatch; this slice preserves those gates.
+See the [DR-017q brief](work-items/DR-017q-assembly-load-feedback.md).
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts the native light error contrast failure and unchecked limits; it does not claim they passed.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects
+with existing warnings and zero errors. Only this slice/tests/handoff are approved for commit; no push.
+Exact next action: inspect remaining confirmed consumers and reconcile DR-017 parent scope; do not start that here.
+Keep DR-017 open. The permission-only change-team block still lacks a confirmed permitted consumer.
+
+### Previous completed focus: loading feedback
+
 DR-017p is Done with explicit user approval on 2026-10-31: the confirmed mounted loading branch has
 readable existing localized status text,
 polite/atomic semantics and a named native indeterminate ProgressBar.
@@ -981,7 +1007,7 @@ and linked from their registry rows.
 | [DR-017n](work-items/DR-017n-assembly-mobile-substitutes.md)  | Mobile assembly substitutes picker                      | Done    |
 | [DR-017o](work-items/DR-017o-assembly-confirmation-dialog.md) | Assembly confirmation dialog chrome/actions             | Done    |
 | [DR-017p](work-items/DR-017p-assembly-loading-feedback.md)    | Assembly loading feedback                               | Done    |
-| DR-017q                                                       | Assembly load-error and unselected feedback             | Backlog |
+| [DR-017q](work-items/DR-017q-assembly-load-feedback.md)       | Assembly load-error and unselected feedback             | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -1003,12 +1029,28 @@ and linked from their registry rows.
 | DR-036                                                        | Mobile assembly replacement and duplicate-rule parity   | Backlog |
 | DR-037                                                        | Native Select default feedback localization audit       | Backlog |
 | DR-038                                                        | Native ProgressBar value/track contrast audit           | Backlog |
+| DR-039                                                        | Assembly filter/service selection synchronization       | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-039: assembly filter/service selection synchronization
+
+Source inspection during DR-017q finds that `onClubSelect`, `onClubClear` and `onSeasonChange` reset
+`selectedTeamId`/`selectedEncounterId` but leave the service form's team/encounter and loaded lineup intact.
+Investigate stale lineup/query/retry state after changing or clearing filters in a separate functional slice.
+Preserve URL restoration, valid selection and real read consumers; do not use admin/save mutations for testing.
+DR-017q only reflects existing loading/loaded/error gates; it does not claim this mismatch is corrected.
+
+### DR-034 additional evidence: assembly load-error Message
+
+DR-017q measures native error Message text over its actual composited background at 4.41:1 light,
+below the 4.5:1 normal-text threshold, and 4.63:1 dark, passing. Native secondary initial guidance is
+7.74:1 light / 9.51:1 dark. All measurements use settled browser canvas sRGB luminance at four widths.
+Keep the existing cross-consumer Message audit open; do not introduce scoped colors or theme changes here.
 
 ### DR-038: native ProgressBar contrast
 
@@ -1173,8 +1215,9 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   for remaining acceptance and review; no new consumer may be added solely for redesign verification.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
   DR-017p covers only the naturally mounted loading indicator and its localized accessible feedback.
-  DR-017q retains the separate silent load-error/unselected-state follow-up: `AssemblyService.error` is populated
-  on query failure but the current template renders neither that error nor guidance before selection.
+  DR-017q completes native localized load-error/initial guidance and a read-only retry with explicit approval.
+  Its failure/success focus recovery uses a named programmatic result target without restyling loaded content.
+  Pre-existing filter/service synchronization is separately tracked as DR-039.
   The permission-only change-team block is unconfirmed on the supplied anonymous route and has no action handler.
   Do not add a consumer or invoke administrative mutations to justify refreshing it.
   DR-017a completes the mounted heading/filter chrome and the approved desktop time-range template correction.

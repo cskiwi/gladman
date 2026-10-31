@@ -427,6 +427,7 @@
       },
       "info": "Opmerkingen bij opstelling",
       "level-exemption": "Speler is vrijgesteld van de ranking restricties",
+      "load-error": "De spelers van de ploeg konden niet worden geladen. Probeer het opnieuw.",
       "mix1": "Heren Dubbel",
       "mix2": "Dames Dubbel",
       "mix3": "Gemengd 1",
@@ -437,7 +438,9 @@
         "team": "Titularissen",
         "title": "Mogelijke titularissen"
       },
+      "retry-load": "Opnieuw proberen",
       "season": "Seizoen",
+      "select-team": "Selecteer hierboven een club en ploeg om je opstelling samen te stellen.",
       "select-all": "Alle spelers selecteren/deselecteren",
       "single1": "Enkel 1",
       "single2": "Enkel 2",

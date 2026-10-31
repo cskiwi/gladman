@@ -1,6 +1,20 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import { CdkDrag, CdkDragDrop, CdkDropList, copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, TemplateRef, viewChild } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  Injector,
+  input,
+  output,
+  signal,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -59,6 +73,10 @@ import { TagModule } from 'primeng/tag';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssemblyComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly injector = inject(Injector);
+  private readonly retryButton = viewChild<ElementRef<HTMLButtonElement>>('retryButton');
+  private readonly assemblyResult = viewChild<ElementRef<HTMLElement>>('assemblyResult');
   private readonly authService = inject(AuthService);
   readonly generatorService = inject(AssemblyGeneratorService);
 
@@ -140,6 +158,24 @@ export class AssemblyComponent {
         this.refreshStats();
       }
     });
+  }
+
+  /** Restores retry/result focus after loading without stealing focus from another control. */
+  async retryLoad(): Promise<void> {
+    const previousButton = this.retryButton()?.nativeElement;
+    const restoreFocus = this.document.activeElement === previousButton;
+    await this.dataService.loadData(this.formGroup().get('encounter')?.value ?? undefined);
+    if (!restoreFocus) return;
+
+    afterNextRender(
+      () => {
+        const activeElement = this.document.activeElement;
+        if ((activeElement === this.document.body || activeElement === previousButton) && !this.dataService.loading()) {
+          (this.retryButton() ?? this.assemblyResult())?.nativeElement.focus();
+        }
+      },
+      { injector: this.injector },
+    );
   }
 
   async refreshStats(forceRefresh = false) {

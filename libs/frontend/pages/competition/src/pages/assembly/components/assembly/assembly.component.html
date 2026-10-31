@@ -6,7 +6,13 @@
     <p-progressbar mode="indeterminate" aria-labelledby="assembly-loading-status" />
   </div>
 } @else if (dataService.loaded()) {
-  <section class="flex flex-col gap-4">
+  <section
+    #assemblyResult
+    tabindex="-1"
+    role="region"
+    [attr.aria-label]="'all.competition.team-assembly.title' | translate"
+    class="flex flex-col gap-4"
+  >
     <!-- Information Panels -->
     <div class="flex flex-wrap gap-4 max-md:flex-col">
       <ng-container
@@ -604,6 +610,28 @@
       <app-partner-combinations />
     }
   </section>
+} @else if (dataService.error() !== null) {
+  <div class="flex flex-col gap-2">
+    <p-message severity="error" icon="pi pi-times-circle" role="alert" aria-live="assertive" aria-atomic="true">
+      {{ 'all.competition.team-assembly.load-error' | translate }}
+    </p-message>
+    <button
+      type="button"
+      pButton
+      severity="secondary"
+      [outlined]="true"
+      class="self-start"
+      #retryButton
+      [disabled]="!formGroup().get('team')?.value"
+      (click)="retryLoad()"
+    >
+      {{ 'all.competition.team-assembly.retry-load' | translate }}
+    </button>
+  </div>
+} @else {
+  <p-message severity="secondary" icon="pi pi-info-circle" role="status" aria-live="polite" aria-atomic="true">
+    {{ 'all.competition.team-assembly.select-team' | translate }}
+  </p-message>
 }
 
 <ng-template #captainSearchTemplate>

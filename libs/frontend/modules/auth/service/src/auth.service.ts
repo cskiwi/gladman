@@ -1,11 +1,13 @@
 import { isPlatformBrowser } from '@angular/common';
-import { computed, effect, inject, Injectable, PLATFORM_ID, signal, untracked } from '@angular/core';
+import { computed, effect, inject, Injectable, makeStateKey, PLATFORM_ID, signal, TransferState, untracked } from '@angular/core';
 import { Player } from '@app/models';
 import { AppState, AuthService as Auth0Service, RedirectLoginOptions } from '@auth0/auth0-angular';
 import { Apollo, gql } from 'apollo-angular';
 import { SsrCookieService } from 'ngx-cookie-service-ssr';
-import { lastValueFrom, withLatestFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { AUTH_KEY } from './auth.key';
+
+const AUTH_STATE_KEY = makeStateKey<{ loggedIn: boolean; user: Player | null }>('auth.state');
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +16,7 @@ export class AuthService {
   apollo = inject(Apollo);
   platform = inject(PLATFORM_ID);
   cookie = inject(SsrCookieService);
+  private readonly transferState = inject(TransferState);
   authService?: Auth0Service;
 
   // Signals for state management
@@ -139,6 +142,13 @@ export class AuthService {
 
   constructor() {
     if (isPlatformBrowser(this.platform)) {
+      const state = this.transferState.get(AUTH_STATE_KEY, null);
+      if (state) {
+        this.loggedInSignal.set(state.loggedIn);
+        this.userSignal.set(state.user);
+        this.transferState.remove(AUTH_STATE_KEY);
+      }
+
       this.authService = inject(Auth0Service);
 
       // Subscribe to Auth0 authentication state
@@ -149,6 +159,11 @@ export class AuthService {
         }
       });
     } else {
+      this.transferState.onSerialize(AUTH_STATE_KEY, () => ({
+        loggedIn: this.loggedIn(),
+        user: this.user(),
+      }));
+
       // Server-side: check for existing auth cookie
       if (this.cookie.check(AUTH_KEY)) {
         const storedToken = this.cookie.get(AUTH_KEY);

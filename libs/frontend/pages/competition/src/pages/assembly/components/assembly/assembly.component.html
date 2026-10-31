@@ -66,6 +66,9 @@
     @if (isMobile()) {
       <!-- MOBILE LAYOUT -->
       <div class="flex flex-col gap-4">
+        <ng-template #mobilePlayerOptionTemplate let-option>
+          <span class="whitespace-normal wrap-anywhere">{{ option.label }}</span>
+        </ng-template>
         <!-- Captain -->
         <ng-container *ngTemplateOutlet="captainSearchTemplate" />
 
@@ -73,53 +76,92 @@
         @for (slotId of ['double1', 'double2', 'double3', 'double4']; track slotId) {
           <p-fieldset [legend]="(dataService.getSlotLabel(slotId).prefix | translate) + ' ' + (dataService.getSlotLabel(slotId).label | translate)">
             <p-select
-              [options]="getAvailablePlayers(slotId, 0)"
+              [options]="getMobilePlayerOptions(slotId, 0)"
               [ngModel]="getSlotPlayer(slotId, 0)"
               [ngModelOptions]="{ standalone: true }"
-              [optionLabel]="'firstName'"
+              optionLabel="label"
+              optionValue="value"
               dataKey="id"
               [placeholder]="'Select player 1'"
               [showClear]="true"
               (onChange)="onSlotPlayerChange(slotId, 0, $event.value)"
               class="w-full"
-            />
+            >
+              <ng-template #item let-option>
+                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+              </ng-template>
+              <ng-template #selectedItem let-option>
+                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+              </ng-template>
+            </p-select>
             <p-select
-              [options]="getAvailablePlayers(slotId, 1)"
+              [options]="getMobilePlayerOptions(slotId, 1)"
               [ngModel]="getSlotPlayer(slotId, 1)"
               [ngModelOptions]="{ standalone: true }"
-              [optionLabel]="'firstName'"
+              optionLabel="label"
+              optionValue="value"
               dataKey="id"
               [placeholder]="'Select player 2'"
               [showClear]="true"
               (onChange)="onSlotPlayerChange(slotId, 1, $event.value)"
               class="w-full mt-2"
-            />
+            >
+              <ng-template #item let-option>
+                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+              </ng-template>
+              <ng-template #selectedItem let-option>
+                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+              </ng-template>
+            </p-select>
           </p-fieldset>
         }
         @for (slotId of ['single1', 'single2', 'single3', 'single4']; track slotId) {
-          <p-fieldset [legend]="(dataService.getSlotLabel(slotId).prefix | translate) + ' ' + (dataService.getSlotLabel(slotId).label | translate)">
+          <p-card role="region" [attr.aria-labelledby]="'assembly-mobile-' + slotId + '-title'">
+            <ng-template #title>
+              <h3 [id]="'assembly-mobile-' + slotId + '-title'" class="text-base font-semibold m-0">
+                {{ dataService.getSlotLabel(slotId).prefix | translate }} {{ dataService.getSlotLabel(slotId).label | translate }}
+              </h3>
+            </ng-template>
             <p-select
-              [options]="getAvailablePlayers(slotId, 0)"
+              [options]="getMobilePlayerOptions(slotId, 0)"
               [ngModel]="getSlotPlayer(slotId, 0)"
               [ngModelOptions]="{ standalone: true }"
-              [optionLabel]="'firstName'"
+              optionLabel="label"
+              optionValue="value"
+              [inputId]="'assembly-mobile-' + slotId"
+              [ariaLabelledBy]="'assembly-mobile-' + slotId + '-title'"
               dataKey="id"
-              [placeholder]="'Select player'"
+              [placeholder]="'all.v1.teamFormation.teamFormation.selectPlayer' | translate"
               [showClear]="true"
+              [fluid]="true"
               (onChange)="onSlotPlayerChange(slotId, 0, $event.value)"
-              class="w-full"
-            />
-          </p-fieldset>
+            >
+              <ng-template #item let-option>
+                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+              </ng-template>
+              <ng-template #selectedItem let-option>
+                <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+              </ng-template>
+            </p-select>
+          </p-card>
         }
         <p-fieldset [legend]="'all.competition.team-assembly.substitude' | translate">
           <p-select
-            [options]="getAvailablePlayers('substituteList')"
-            [optionLabel]="'firstName'"
+            [options]="getMobilePlayerOptions('substituteList')"
+            optionLabel="label"
+            optionValue="value"
             [placeholder]="'Select substitute'"
             [showClear]="true"
             (onChange)="onSlotPlayerChange('substituteList', dataService.substitutes().length, $event.value)"
             class="w-full"
-          />
+          >
+            <ng-template #item let-option>
+              <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+            </ng-template>
+            <ng-template #selectedItem let-option>
+              <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
+            </ng-template>
+          </p-select>
         </p-fieldset>
 
         <!-- Add player -->

@@ -244,6 +244,11 @@ export class AssemblyComponent {
     return this.dataService.getAvailablePlayersForSlot(slotId, index);
   }
 
+  /** Supplies native Select labels while retaining the original player as its form value. */
+  getMobilePlayerOptions(slotId: string, index?: number): { id: PlayerWithRanking['id']; label: string; value: PlayerWithRanking }[] {
+    return this.getAvailablePlayers(slotId, index).map((player) => ({ id: player.id, label: this.playerOptionLabel(player), value: player }));
+  }
+
   // Player search for adding
   playerSuggestions = signal<PlayerWithRanking[]>([]);
 

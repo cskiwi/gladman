@@ -40,6 +40,9 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   searches, reusing presentation across desktop/mobile without changing search services or lineup selectors.
 - [DR-017k: Base/titular summaries](DR-017k-assembly-player-summaries.md): the two mounted information
   summaries, sharing one native presentation while preserving validation-derived rankings and exemptions.
+- [DR-017l: Mobile singles](DR-017l-assembly-mobile-singles.md): only the four mounted mobile singles
+  surfaces, with native named Cards. User feedback also authorizes full-name options/values across all
+  mobile lineup selectors; doubles/substitute surfaces and semantics remain unchanged.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -65,6 +68,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017i with explicit user approval and recorded native Fieldset/verification limits.
 - [x] Complete and review DR-017j with explicit user approval and recorded native label/SSR/verification limits.
 - [x] Complete and review DR-017k with explicit user approval and recorded native Tooltip/verification limits.
+- [x] Complete and review DR-017l with explicit user approval and recorded verification limits.
 - [ ] Confirm and scope remaining mounted assembly surfaces.
 - [ ] Complete all required children and reconcile parent acceptance.
 
@@ -83,7 +87,15 @@ All 247 competition tests, focused lint/build and eight mounted theme/width case
 The user approved completion/commit with disclosed verification limits on 2026-10-30; DR-017k is Done.
 Final Dutch SSR and fresh hydration now pass, resolving DR-017j's specific unavailable final grouping recheck.
 Other disclosed verification limits remain unchanged; approval does not mean unperformed checks passed.
-In a fresh invocation, confirm/scope one remaining mounted mobile selector group, excluding completed DR-017a-k.
+DR-017l now refreshes only the mounted mobile singles selectors with native Cards and full-name fluid Selects.
+After user feedback, all 13 mobile lineup selectors share full-name option/value presentation.
+After correcting option adapters to retain native tracking IDs, all 267 competition tests and focused lint/build pass.
+Six fresh mobile theme/width cases explicitly report zero duplicated-key warnings across all 13 selectors.
+The earlier four desktop theme/width browser cases also pass.
+Dutch SSR and fresh hydration pass; disclosed screen-reader/focus/locale/authenticated limits remain unchecked.
+The user explicitly approved completion/commit with disclosed verification limits on 2026-10-31; DR-017l is Done.
+Approval is not evidence that unperformed checks passed. Scope one mounted mobile doubles surface group next,
+preserving completed full-name presentation and excluding DR-017a-l; do not start it in this invocation.
 Keep DR-017 open until all required children are complete.
 
 DR-017a is complete with explicit user approval on 2026-10-30 after a requested desktop time-range translation fix.

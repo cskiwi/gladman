@@ -5,6 +5,48 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017l is Done with explicit user approval on 2026-10-31 after fixing user-reported NG0955 warnings.
+The adapter now preserves each player's ID for existing native `dataKey="id"` tracking.
+All 267 competition tests in 16 suites (20 new), focused lint (41 existing warnings, no errors),
+library build and 10 prerequisites pass. Six fresh mobile theme/width cases open/reopen/select all 13
+controls, verify nonempty unique native keys and full-name selected values, and report zero NG0955
+console warnings or page errors. The real mounted eight-option baseline is also checked in every case.
+The earlier scope/evidence below remains historical:
+user feedback explicitly extended full-name display to all mobile lineup
+selectors (singles, doubles and substitutes). One shared option/value template now names and wraps all 13.
+Only naming/wrapping is extended; doubles/substitute surfaces and behavior remain unchanged.
+Final verification passes all 266 competition tests in 16 suites (19 new), focused lint (41 existing warnings),
+library build and 10 prerequisites. Six fresh mobile theme/width cases verify actual full-name options and
+selected values in all 13 controls, original doubles/substitute values and long-name fit. Four unchanged desktop
+theme/width cases, final Dutch SSR and hydration pass with no page errors or mutations.
+Scoped all-mobile selector static tokens increase from five to nine; wrapping is authored only once.
+The following additional interaction/contrast evidence describes the initial singles implementation:
+the four mounted mobile singles selectors share named native Cards and fluid Selects.
+Localized headings/placeholders and full-name options/values replace unnamed first-name-only controls.
+A typed label/value adapter reuses the existing full-name callback and retains original player form values.
+Existing options/filtering, standalone values, assignment/clearing and form synchronization remain unchanged.
+All 260 competition tests in 16 suites (13 new), focused lint (41 existing warnings, no errors),
+library build and 10 prerequisites pass. Six mobile 360/390/768px light/dark browser cases verify
+keyboard selection, Delete clearing, pointer clearing, Escape, Tab order, names and long-option/selected wrapping.
+Four 820/1440px theme cases retain desktop singles; final Dutch SSR and fresh hydration pass.
+Selected-text contrast passes at 13.61:1 light / 16.00:1 dark; no page errors or GraphQL mutations.
+Initial singles-only authored class tokens increased from one to seven before the shared-template correction.
+No styling exceptions, dependencies, shared/theme/service/backend/translation changes or commits.
+Screen-reader output, quantitative focus-ring/placeholder/option contrast, exhaustive hydration,
+mounted English/French and authenticated/save workflows remain unverified.
+DR-036 records existing mobile replacement/duplicate-rule gaps separately; no functional fix is hidden here.
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts the recorded limits; it does not establish that unchecked checks passed.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes for all 34 projects,
+with existing warnings and no errors.
+Exact next action in a fresh invocation: confirm/scope one mounted mobile doubles surface group,
+preserving the now-completed full-name presentation in all mobile selectors and excluding completed DR-017a-l.
+Keep DR-017 open.
+See the [DR-017l brief](work-items/DR-017l-assembly-mobile-singles.md).
+
+### Previous completed focus: player summaries
+
 DR-017k is Done with explicit user approval on 2026-10-30: the mounted base/titular summaries now share one native
 Card/list template. Validation-derived order, indices, rankings/sums and exemptions remain intact.
 Named regions, wrapping names and localized native exemption Tags replace duplicated Fieldsets/palette icons.
@@ -829,6 +871,7 @@ and linked from their registry rows.
 | [DR-017i][dr-017i]                                            | Desktop assembly partner combinations                   | Done    |
 | [DR-017j][dr-017j]                                            | Responsive assembly captain/add-player searches         | Done    |
 | [DR-017k][dr-017k]                                            | Reused assembly base/titular information summaries      | Done    |
+| [DR-017l](work-items/DR-017l-assembly-mobile-singles.md)      | Mobile assembly singles selectors                       | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -847,12 +890,25 @@ and linked from their registry rows.
 | DR-033                                                        | Native Button contrast and Tooltip association audit    | Backlog |
 | DR-034                                                        | Native Message severity text contrast audit             | Backlog |
 | DR-035                                                        | Native Fieldset descendant tab-stop restoration audit   | Backlog |
+| DR-036                                                        | Mobile assembly replacement and duplicate-rule parity   | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-036: mobile assembly rule parity
+
+- Discovered during DR-017l source inspection; this functional follow-up is not a styling exception.
+- In [AssemblyService](../../libs/frontend/pages/competition/src/pages/assembly/page-assembly.service.ts),
+  `getAvailablePlayersForSlot(slotId, 0)` preserves the selected player but calls capacity-limited `canDrop`
+  for alternatives. A filled singles slot therefore offers only its current player until cleared.
+- `setSlotPlayer` directly assigns/synchronizes/validates; it does not apply the cross-slot duplicate check
+  used by `movePlayer`. This behavior predates the refresh and remains unchanged.
+- Confirm expected mobile replacement and duplicate/capacity behavior, then scope a functional fix with
+  service/component regression tests and safe mounted interaction checks. Do not modify validation rules
+  or desktop drag/drop as an incidental design-refresh change.
 
 ### DR-001 and DR-002: establish the direction
 

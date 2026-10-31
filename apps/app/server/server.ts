@@ -99,7 +99,7 @@ export async function app() {
   const port = configService.get<number>('PORT', 5000);
 
   await app.init();
-  await app.listen(port, '0.0.0.0');  
+  await app.listen(port);  
   
   const { address } = app.getHttpServer().address() as AddressInfo;
   Logger.log(`Application is listening on http://${address}:${port}`, 'Bootstrap');

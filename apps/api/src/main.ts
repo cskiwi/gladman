@@ -8,7 +8,7 @@ async function bootstrap() {
   const logger = createWinstonLogger({ name: 'api', logDir: 'logs' });
   app.useLogger(logger);
 
-  await app.listen(port, '0.0.0.0');
+  await app.listen(port);
   Logger.log(`🚀 Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

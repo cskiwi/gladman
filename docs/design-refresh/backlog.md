@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017n is Done with explicit user approval on 2026-10-31: the mounted mobile substitutes picker uses a named Card,
+translated existing prompt, native fluid sizing and stable full-name option identities.
+All 286 competition tests in 18 suites (8 new), lint (41 existing warnings, zero errors), library build
+and 10 prerequisites pass. Six fresh mobile light/dark 360/390/768px cases verify names, prompt,
+focus, native sizing and the mounted eight-option baseline; four 820/1440px cases retain desktop.
+Placeholder contrast passes at 4.87:1 light / 6.65:1 dark. Separate fresh 390px light/dark checks pass
+keyboard assignment/Delete clearing, sequential appends/form arrays, exclusion, pointer selection/clear,
+Escape, Tab order, long-name option/value fit and empty/loading/unloaded gates.
+Dutch SSR and fresh responsive hydration pass. The final layout matrix reports no page errors or NG0955.
+Existing append-picker clearing does not remove an appended substitute; DR-036 retains functional parity work.
+Existing English empty-result feedback remains DR-037. No shared/global/backend/translation changes or exceptions.
+Auth/save workflows, actual screen-reader output, quantitative focus/option/selected-value contrast,
+exhaustive hydration and interaction-at-every-width coverage remain unverified.
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts unchecked limits; it is not evidence that unperformed checks passed.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes across all 34 projects
+with existing warnings and zero errors. Only this slice/tests/handoff are approved for commit; no push.
+Exact next action: confirm and scope one remaining mounted assembly surface, such as confirmation
+dialog chrome/actions, excluding completed DR-017a-n. Do not start that child here.
+See the [DR-017n brief](work-items/DR-017n-assembly-mobile-substitutes.md). Keep DR-017 open.
+
+### Previous completed focus: mobile doubles
+
 DR-017m is Done with explicit user approval on 2026-10-31: the four mounted mobile doubles surfaces
 use named native Cards and one repeated
 Select block. After user feedback, native translated select-player placeholders are the only visible
@@ -901,6 +924,7 @@ and linked from their registry rows.
 | [DR-017k][dr-017k]                                            | Reused assembly base/titular information summaries      | Done    |
 | [DR-017l](work-items/DR-017l-assembly-mobile-singles.md)      | Mobile assembly singles selectors                       | Done    |
 | [DR-017m](work-items/DR-017m-assembly-mobile-doubles.md)      | Mobile assembly doubles surfaces                        | Done    |
+| [DR-017n](work-items/DR-017n-assembly-mobile-substitutes.md)  | Mobile assembly substitutes picker                      | Done    |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |

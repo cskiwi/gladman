@@ -173,7 +173,7 @@ describe('Assembly mobile doubles surfaces', () => {
     expect(element.querySelectorAll('p-select')).toHaveLength(13);
     expect(select('double1', 0).options()).toEqual([]);
     expect(element.querySelector('#assembly-mobile-single1')).toBeTruthy();
-    expect(element.querySelector('p-fieldset p-select')).toBeTruthy();
+    expect(element.querySelector('#assembly-mobile-substitutes')).toBeTruthy();
     fixture.componentInstance.isMobile.set(false);
     await settle();
     expect(element.querySelector('#assembly-mobile-double1-title')).toBeNull();

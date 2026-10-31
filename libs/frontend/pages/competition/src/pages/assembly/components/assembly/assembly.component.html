@@ -146,15 +146,23 @@
             </p-select>
           </p-card>
         }
-        <p-fieldset [legend]="'all.competition.team-assembly.substitude' | translate">
+        <p-card role="region" aria-labelledby="assembly-mobile-substitutes-title">
+          <ng-template #title>
+            <h3 id="assembly-mobile-substitutes-title" class="text-base font-semibold m-0">
+              {{ 'all.competition.team-assembly.substitude' | translate }}
+            </h3>
+          </ng-template>
           <p-select
             [options]="getMobilePlayerOptions('substituteList')"
             optionLabel="label"
             optionValue="value"
-            [placeholder]="'Select substitute'"
+            inputId="assembly-mobile-substitutes"
+            ariaLabelledBy="assembly-mobile-substitutes-title"
+            dataKey="id"
+            [placeholder]="'all.v1.teamFormation.teamFormation.selectPlayer' | translate"
             [showClear]="true"
+            [fluid]="true"
             (onChange)="onSlotPlayerChange('substituteList', dataService.substitutes().length, $event.value)"
-            class="w-full"
           >
             <ng-template #item let-option>
               <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
@@ -163,7 +171,7 @@
               <ng-container *ngTemplateOutlet="mobilePlayerOptionTemplate; context: { $implicit: option }" />
             </ng-template>
           </p-select>
-        </p-fieldset>
+        </p-card>
 
         <!-- Add player -->
         <ng-container *ngTemplateOutlet="addPlayerSearchTemplate" />

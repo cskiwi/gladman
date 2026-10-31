@@ -75,6 +75,7 @@
             <p-select
               [options]="getAvailablePlayers(slotId, 0)"
               [ngModel]="getSlotPlayer(slotId, 0)"
+              [ngModelOptions]="{ standalone: true }"
               [optionLabel]="'firstName'"
               dataKey="id"
               [placeholder]="'Select player 1'"
@@ -85,6 +86,7 @@
             <p-select
               [options]="getAvailablePlayers(slotId, 1)"
               [ngModel]="getSlotPlayer(slotId, 1)"
+              [ngModelOptions]="{ standalone: true }"
               [optionLabel]="'firstName'"
               dataKey="id"
               [placeholder]="'Select player 2'"
@@ -99,6 +101,7 @@
             <p-select
               [options]="getAvailablePlayers(slotId, 0)"
               [ngModel]="getSlotPlayer(slotId, 0)"
+              [ngModelOptions]="{ standalone: true }"
               [optionLabel]="'firstName'"
               dataKey="id"
               [placeholder]="'Select player'"
@@ -140,6 +143,7 @@
                 <p-checkbox
                   [binary]="true"
                   [ngModel]="allPlayersSelected()"
+                  [ngModelOptions]="{ standalone: true }"
                   (ngModelChange)="toggleAllPlayers($event)"
                   [ariaLabel]="'all.competition.team-assembly.select-all' | translate"
                   [pTooltip]="'all.competition.team-assembly.select-all' | translate"
@@ -161,6 +165,7 @@
                     <p-checkbox
                       [binary]="true"
                       [ngModel]="dataService.isPlayerAvailable(item.id)"
+                      [ngModelOptions]="{ standalone: true }"
                       (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
                       [ariaLabel]="
                         ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
@@ -198,6 +203,7 @@
                           <p-checkbox
                             [binary]="true"
                             [ngModel]="dataService.isPlayerAvailable(item.id)"
+                            [ngModelOptions]="{ standalone: true }"
                             (ngModelChange)="dataService.togglePlayerAvailability(item.id)"
                             [ariaLabel]="
                               ('all.competition.team-assembly.auto-generate.player-joining' | translate) + ': ' + item.firstName + ' ' + item.lastName
@@ -246,6 +252,7 @@
                 <p-select
                   [options]="timeRangeOptions"
                   [(ngModel)]="selectedTimeRange"
+                  [ngModelOptions]="{ standalone: true }"
                   optionValue="value"
                   [fluid]="true"
                   inputId="time-range-select"
@@ -263,7 +270,16 @@
 
               @if (selectedTimeRange() === 'last-weeks') {
                 <p-floatlabel variant="on">
-                  <input pInputText type="number" [(ngModel)]="selectedWeeks" [fluid]="true" id="weeks-input" min="1" max="52" />
+                  <input
+                    pInputText
+                    type="number"
+                    [(ngModel)]="selectedWeeks"
+                    [ngModelOptions]="{ standalone: true }"
+                    [fluid]="true"
+                    id="weeks-input"
+                    min="1"
+                    max="52"
+                  />
                   <label for="weeks-input">{{ 'all.competition.team-assembly.auto-generate.weeks' | translate }}</label>
                 </p-floatlabel>
               }

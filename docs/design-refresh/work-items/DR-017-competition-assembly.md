@@ -18,6 +18,11 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 
 ## Children and remaining scope
 
+The initial 2026-10-31 parent audit is superseded by subsequent user evidence and feedback.
+DR-017r is now a required presentation child: native change-team guidance Card and desktop/mobile
+search Card parity. DR-017s separately defers the unconfirmed authenticated Save popup.
+Parent completion requires DR-017r review and explicit acceptance of the preserved limits/Save deferral.
+
 - [DR-017a: Page heading and filter chrome](DR-017a-assembly-page-chrome.md): the first implementation child.
 - [DR-017b: Reusable player row](DR-017b-assembly-player-row.md): the existing presentational component mounted in
   the regular player pool and reused by backup, doubles, singles, and substitute lists.
@@ -35,7 +40,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   summary and existing template reused in the confirmation dialog; exclude dialog chrome/actions and rules.
 - [DR-017i: Partner combinations](DR-017i-assembly-partner-combinations.md): the confirmed mounted desktop statistics
   disclosure, responsive named controls and native table/percentage presentation; preserve services and mobile.
-- Scope later children only after confirming their mounted state: remaining assembly controls.
+- Scope additional children only after confirming a real consumer not already covered by DR-017a-q.
 - [DR-017j: Captain/add-player searches](DR-017j-assembly-player-searches.md): the two mounted responsive
   searches, reusing presentation across desktop/mobile without changing search services or lineup selectors.
 - [DR-017k: Base/titular summaries](DR-017k-assembly-player-summaries.md): the two mounted information
@@ -58,8 +63,11 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   Retry restores error-button/result-region focus without stealing user-moved focus; loading/loaded priority
   and completed DR-017a-p presentation remain unchanged. DR-034 retains the native light error contrast failure;
   DR-039 records the pre-existing filter/service synchronization concern.
-- Remaining permission-only change-team block is not confirmed mounted on the supplied anonymous route.
-  Its Edit button has no action handler; defer until a real permitted consumer can be verified.
+- [DR-017r: Change-team/search Card parity](DR-017r-assembly-search-card-parity.md): user-supplied mounted
+  element evidence confirms the permission-only guidance; refresh its surface and use desktop Card
+  presentation for mobile captain/add-player. Preserve the handlerless Edit contract.
+- The page's authenticated Save popup is also absent on that route. Its model has a literal English
+  `Save` label; DR-017s records this without changing save or permission contracts.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -68,7 +76,8 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - Native unchecked Checkbox and secondary Button focus contrast is tracked as DR-032, including the desktop
   pool's remaining failures after removing scoped tokens at the user's request.
 - Native Message text contrast is tracked as DR-034 after DR-017h's light severity/dark error measurements.
-- Shared components, global theme, backend, and translations are not implicitly part of this parent.
+- Shared components, global theme and backend are not implicitly part of this parent.
+  DR-017q's explicitly scoped translation assets/types are complete; other locale changes remain excluded.
 
 ## Acceptance and handoff
 
@@ -86,13 +95,119 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Complete and review DR-017j with explicit user approval and recorded native label/SSR/verification limits.
 - [x] Complete and review DR-017k with explicit user approval and recorded native Tooltip/verification limits.
 - [x] Complete and review DR-017l with explicit user approval and recorded verification limits.
-- [ ] Confirm and scope remaining mounted assembly surfaces.
+- [x] Confirm remaining anonymous responsive surfaces and map them to completed children.
+- [x] Reconcile later mounted change-team evidence and defer only the unconfirmed Save popup as DR-017s.
 - [x] Review and approve DR-017m with its disclosed verification limits.
 - [x] Review and approve DR-017n with its disclosed verification limits.
 - [x] Review and approve DR-017o with its disclosed verification limits.
 - [x] Review and approve DR-017p with explicit user approval and disclosed verification limits.
 - [x] Review and approve DR-017q with its native contrast and disclosed verification limits.
-- [ ] Complete all required children and reconcile parent acceptance.
+- [x] Complete confirmed-consumer children DR-017a-q and record their approval limits.
+- [x] Complete and approve required DR-017r change-team/search presentation corrections with disclosed limits.
+- [ ] Approve parent completion with DR-017s deferral and child verification limits disclosed.
+- [ ] Verify deferred authenticated Save presentation on a real authenticated consumer.
+- [ ] Resolve recorded native contrast failures and perform actual screen-reader, alternate mounted locales,
+      exhaustive hydration and authenticated/save workflow checks. Child approval did not establish these passes.
+
+## Parent reconciliation evidence: 2026-10-31
+
+This audit predates the user's mounted change-team evidence and requested mobile Card parity.
+Its counts and anonymous gates remain valid; its proposed DR-017r deferral/parent closure no longer applies.
+The current required next action is to complete/review DR-017r; Save is now DR-017s.
+
+- `git --no-pager status --short` returned a clean worktree before this invocation.
+- A read-only Node scan of `docs/design-refresh/work-items/DR-017[a-q]-*.md` finds exactly 17 briefs,
+  each with checked review/approval evidence. The authoritative backlog records all 17 as Done.
+  Previous results and user approvals are historical evidence, not checks rerun by this audit.
+- The [competition routes](../../../libs/frontend/pages/competition/src/lib.routes.ts) still mount
+  `PageAssemblyComponent` at `/competition/assembly`; its page template still mounts `app-assembly`,
+  the reused validation dialog and Toast.
+- Installed Playwright/Chrome consumer audit:
+  PowerShell single-quoted here-string piped to `node -`, using
+  `require('playwright').chromium.launch({ channel: 'chrome', headless: true })`.
+  Four fresh contexts use 390/1440px by 900px and both actual `.dark-theme` class states.
+  Each navigates the supplied real assembly URL with existing encounter/team/club/season query parameters.
+  No fixture, permissions change, operational action, new route, package or persistent preference is used.
+- The first matrix fails because visible SSR markup is not sufficient evidence of client loaded/mobile state.
+  The corrected matrix uses `page.waitForFunction` to require the real Angular component's
+  `dataService.loaded() === true`, expected `isMobile()` value and corresponding mounted content.
+  No application fix or arbitrary success-shaped fallback is used.
+- All four corrected cases pass: three information/validation headings and two search inputs are mounted;
+  390px has 13 native lineup Selects across nine Cards and no desktop slots/partner table;
+  1440px has nine desktop slot headings (four doubles, four singles, substitutes) and partner combinations,
+  with no mobile lineup Selects. The assembly root fits the viewport in all four cases.
+- `loggedIn()` and `hasEditPermission()` are false in all four cases; no Save popup is mounted.
+  Source confirms the Edit button has no click handler and Save remains an English model label.
+  These establish conditional wiring and anonymous exclusion, not global disuse or permitted verification.
+- Final isolated cases report zero `pageerror` events and zero GraphQL mutation requests.
+  Contexts/browser close in `finally`. The shared MCP browser remains on the supplied route with its original
+  dark class and 1571x1221 viewport; no user-managed server or browser is stopped.
+
+| Confirmed surface                                                 | Completed child coverage  |
+| ----------------------------------------------------------------- | ------------------------- |
+| Page heading, filters and action chrome                           | DR-017a                   |
+| Presentational rows reused by pool/slots                          | DR-017b                   |
+| Desktop pool, availability and backup disclosure                  | DR-017c                   |
+| Desktop doubles, singles and substitutes                          | DR-017d, DR-017e, DR-017f |
+| Desktop generation controls and partner combinations              | DR-017g, DR-017i          |
+| Validation summary and shared dialog message content              | DR-017h                   |
+| Responsive captain/add-player searches and base/titular summaries | DR-017j, DR-017k          |
+| Mobile singles, doubles and substitutes                           | DR-017l, DR-017m, DR-017n |
+| Confirmation dialog chrome/actions                                | DR-017o                   |
+| Loading, initial and error/retry feedback                         | DR-017p, DR-017q          |
+
+Existing row components and named templates already author repeated presentation once. A new smart/dumb split
+would add indirection without an uncovered shared presentation requirement; no extraction is made.
+Existing CDK animation/preview SCSS is retained, not declared obsolete or removed without drag/drop verification.
+
+## Historical audit validation and next action
+
+The following documentation-only audit results are retained as history. Current implementation validation
+and exact next action are in the [DR-017r brief](DR-017r-assembly-search-card-parity.md).
+Do not treat the old closure proposal below as current approval readiness.
+
+- Changed scope: this brief and the backlog only. No application, tests, translations, styles or workflow files.
+- Passed: the four read-only mounted consumer cases and the 17-child approval-presence scan described above.
+- Passed: `npm exec -- prettier --write --end-of-line lf "docs\design-refresh\backlog.md"
+"docs\design-refresh\work-items\DR-017-competition-assembly.md"` (one command).
+- Passed: `git diff --check`; only this brief and backlog are modified.
+  Git warns that a future checkout may replace LF with CRLF; both actual edited files contain LF only.
+- Passed: read-only Node inline-relative-Markdown-link/LF scan checks 125 existing targets with
+  `fs.existsSync`; none are missing and neither file contains carriage returns.
+- Nx lint/build/tests: not run; documentation-only reconciliation does not require application tasks.
+  DR-017q's 319 tests/lint/build and previous child checks remain historical, not rerun results.
+- New visual/pixel review, quantitative contrast, keyboard interactions, actual screen-reader output,
+  alternate mounted locales, operational save/edit/PDF and exhaustive SSR/hydration: not run.
+  The final audit waits for client rendering but does not constitute exhaustive hydration validation.
+- Native contrast follow-ups DR-031/032/033/034/035/038, mobile rule parity DR-036, empty copy DR-037,
+  and filter/service mismatch DR-039 stay separate. Populated-form warnings and missing PDF integration
+  remain recorded functional follow-up; no styling exception or global workaround is introduced.
+- Exact next action: obtain parent approval of completed confirmed-consumer scope, DR-017r deferral and these
+  preserved limits. Until then keep DR-017 in Review and do not commit.
+  Approval must be recorded here before marking the parent Done with unchecked limits retained.
+- After approval, next candidate: DR-019, confirm the supplied mounted tournament detail route and scope one
+  reviewable child. Do not start that work in this invocation. A real permitted assembly session may separately
+  unblock DR-017r; do not interpret parent closure as its implementation or verification.
+
+## Current implementation handoff
+
+DR-017r now refreshes the user-confirmed guidance Card and mobile search Card parity.
+Seventy-four tests in five affected suites, focused lint (41 existing warnings, zero errors),
+production library build/ten prerequisites and eight fresh responsive/theme browser checks pass.
+Six scoped captain/mobile-add screenshots were inspected; Dutch loaded SSR/fresh client rendering pass.
+The anonymous browser does not verify the post-change permitted guidance; component tests cover its real
+permission computation and native presentation, not mounted permitted pixels/focus/contrast.
+The user approved DR-017r completion/commit with disclosed verification limits on 2026-10-31.
+Its [brief](DR-017r-assembly-search-card-parity.md) retains the unchecked limits; approval is not a claim
+that permitted pixels/focus/contrast or other unperformed checks passed.
+Post-approval lint passes all 34 projects with existing warnings and zero errors.
+All required DR-017a-r children are Done; the parent is in Review, not implicitly Done.
+Exact next action: reconcile parent closure with DR-017s Save deferral and preserved child limits,
+then obtain separate parent approval. This child approval does not authorize parent closure or another UI slice.
+
+## Historical child handoffs
+
+The following child-stage next actions are historical and superseded by the current parent handoff above.
 
 DR-017o refreshes only the mounted confirmation dialog chrome/actions and restores its previously unrendered
 footer using PrimeNG's native named template. Reused validation content and pending-action methods are unchanged.

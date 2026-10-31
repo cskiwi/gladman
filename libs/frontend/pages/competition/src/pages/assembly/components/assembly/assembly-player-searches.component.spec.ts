@@ -15,8 +15,9 @@ import { AssemblyComponent } from './assembly.component';
 const locales = ['en', 'nl_BE', 'fr_BE'].map((locale) => {
   const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
   const asset: {
-    competition: { 'team-assembly': { captain: string } };
+    competition: { 'team-assembly': { captain: string; 'change-team': string; players: { title: string } } };
     club: { teamBuilder: { addPlayer: string } };
+    button: { edit: string };
   } = JSON.parse(readFileSync(assetPath, 'utf8'));
   return { locale, asset };
 });
@@ -195,18 +196,25 @@ describe.each([false, true])('Assembly player searches (mobile: %s)', (mobile) =
     expect(element.querySelectorAll('p-select')).toHaveLength(mobile ? 1 : 13);
   });
 
-  it('places desktop captain above the player Card and add-player inside it, preserving mobile positions', () => {
+  it('uses the desktop Card presentation for both searches while preserving responsive grouping', () => {
     const captain = input('assembly-captain');
     const add = input('assembly-add-player');
-    const pool = element.querySelector('p-card[aria-labelledby="assembly-pool-title"]');
+    const pool = element.querySelector(`p-card[aria-labelledby="${mobile ? 'assembly-mobile-player-pool-title' : 'assembly-pool-title'}"]`);
+    expect(pool).not.toBeNull();
+    expect(captain.closest('p-card')).not.toBe(pool);
+    expect(captain.closest('p-card')?.getAttribute('aria-label')).toBe(locales[0].asset.competition['team-assembly'].captain);
+    expect(add.closest('p-card')).toBe(pool);
+    expect(pool?.querySelector('h2')?.textContent?.trim()).toBe(locales[0].asset.competition['team-assembly'].players.title);
+    expect(captain.closest('p-card')?.querySelectorAll('p-card')).toHaveLength(0);
+    expect(add.closest('p-card')?.querySelectorAll('p-card')).toHaveLength(0);
     if (mobile) {
-      expect(pool).toBeNull();
-      expect(captain.closest('p-card')).toBeNull();
-      expect(add.closest('p-card')).toBeNull();
+      expect(element.querySelector('#playerList')).toBeNull();
+      expect(element.querySelectorAll('p-select')).toHaveLength(13);
+      const substitutes = element.querySelector('p-card[aria-labelledby="assembly-mobile-substitutes-title"]');
+      if (!substitutes) throw new Error('Missing mobile substitutes Card');
+      expect(captain.compareDocumentPosition(substitutes) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(substitutes.compareDocumentPosition(add) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     } else {
-      expect(captain.closest('p-card')).not.toBe(pool);
-      expect(captain.closest('p-card')?.getAttribute('aria-label')).toBe(locales[0].asset.competition['team-assembly'].captain);
-      expect(add.closest('p-card')).toBe(pool);
       const list = element.querySelector('#playerList');
       if (!list) throw new Error('Missing grouped player list');
       expect(captain.compareDocumentPosition(list) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -216,5 +224,39 @@ describe.each([false, true])('Assembly player searches (mobile: %s)', (mobile) =
       expect(list.contains(captain)).toBe(false);
       expect(list.contains(add)).toBe(false);
     }
+  });
+
+  it.each([false, true])('keeps native change-team guidance gated by desktop permission (%s)', async (permitted) => {
+    fixture.destroy();
+    jest.spyOn(TestBed.inject(AuthService), 'hasAnyPermission').mockReturnValue(permitted);
+    service.formGroup.get('club')?.setValue('test-club');
+    fixture = TestBed.createComponent(AssemblyComponent);
+    fixture.componentRef.setInput('formGroup', service.formGroup);
+    fixture.componentInstance.isMobile.set(mobile);
+    element = fixture.nativeElement;
+    await settle();
+
+    const guidance = element.querySelector('#assembly-change-team-description');
+    if (mobile || !permitted) {
+      expect(guidance).toBeNull();
+      return;
+    }
+    expect(guidance?.textContent?.trim()).toBe(locales[0].asset.competition['team-assembly']['change-team']);
+    const card = guidance?.closest('p-card');
+    expect(card?.getAttribute('role')).toBe('region');
+    expect(card?.getAttribute('aria-label')).toBe(locales[0].asset.button.edit);
+    expect(card?.getAttribute('aria-describedby')).toBe('assembly-change-team-description');
+    expect(card?.classList.contains('bg-emphasis')).toBe(false);
+    const button = card?.querySelector('button');
+    expect(button?.textContent?.trim()).toBe(locales[0].asset.button.edit);
+    expect(button?.classList.contains('p-button-outlined')).toBe(true);
+    expect(button?.classList.contains('p-button-secondary')).toBe(true);
+    const add = jest.spyOn(service, 'addPlayer').mockImplementation();
+    const captain = service.formGroup.get('captain')?.value;
+    button?.click();
+    await settle();
+    expect(service.formGroup.get('captain')?.value).toBe(captain);
+    expect(add).not.toHaveBeenCalled();
+    expect(TestBed.inject(AuthService).hasAnyPermission).toHaveBeenCalledWith(['test-club_edit:team', 'edit-any:club']);
   });
 });

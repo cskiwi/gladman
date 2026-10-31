@@ -5,6 +5,35 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-017p is Done with explicit user approval on 2026-10-31: the confirmed mounted loading branch has
+readable existing localized status text,
+polite/atomic semantics and a named native indeterminate ProgressBar.
+All 305 competition tests in 19 suites (8 new), focused lint (41 existing warnings, zero errors),
+library build and 10 prerequisites pass after the semantic text-contrast correction.
+Eight fresh isolated Chrome light/dark 360/390/768/1440px cases pass naming, fit, loading priority,
+focus preservation, Tab-to-Club and loaded branch restoration; all eight scoped screenshots were inspected.
+The final matrix has zero page errors, hydration diagnostics or mutations.
+Status text contrast passes at 18.20:1 light / 16.64:1 dark.
+The preserved native light progress value/track contrast is 2.97:1, below 3:1; DR-038 retains the separate audit.
+No services, translation assets, shared/global styles, new wrappers or completed DR-017a-o changed.
+Loading utilities increase from zero to five for one shared spacing row and readable semantic text.
+The real SSR response is correctly loaded with no stale loading element; forced server-loading SSR,
+actual screen-reader announcements, mounted English/French, authenticated/save workflows and exhaustive
+hydration remain unverified.
+The user selected "Approve completion and commit with the disclosed verification limits".
+Approval accepts the recorded native contrast failure and unchecked limits; it does not claim they passed.
+Only this slice/tests/handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes across all 34 projects
+with existing warnings and zero errors.
+See the [DR-017p brief](work-items/DR-017p-assembly-loading-feedback.md).
+Exact next action in a fresh invocation: confirm and scope DR-017q's load-error/unselected feedback
+using the mounted assembly route and real service gates.
+Do not start DR-017q here.
+The permission-only change-team block has no click handler and was not mounted for the supplied anonymous route.
+Do not redesign it without confirming an actual permitted consumer. Keep DR-017 open.
+
+### Previous completed focus: confirmation dialog
+
 DR-017o is Done with explicit user approval on 2026-10-31: the mounted confirmation dialog has a translated title,
 named header dismissal, responsive gutters and visible native Cancel/Agree actions via PrimeNG's named footer.
 The previously missing footer was an obsolete template-query usage, not a missing application consumer.
@@ -951,6 +980,8 @@ and linked from their registry rows.
 | [DR-017m](work-items/DR-017m-assembly-mobile-doubles.md)      | Mobile assembly doubles surfaces                        | Done    |
 | [DR-017n](work-items/DR-017n-assembly-mobile-substitutes.md)  | Mobile assembly substitutes picker                      | Done    |
 | [DR-017o](work-items/DR-017o-assembly-confirmation-dialog.md) | Assembly confirmation dialog chrome/actions             | Done    |
+| [DR-017p](work-items/DR-017p-assembly-loading-feedback.md)    | Assembly loading feedback                               | Done    |
+| DR-017q                                                       | Assembly load-error and unselected feedback             | Backlog |
 | DR-018                                                        | Competition editing                                     | Backlog |
 | DR-019                                                        | Tournament detail and club tournaments                  | Backlog |
 | DR-020                                                        | Tournament creation and editing                         | Backlog |
@@ -971,12 +1002,22 @@ and linked from their registry rows.
 | DR-035                                                        | Native Fieldset descendant tab-stop restoration audit   | Backlog |
 | DR-036                                                        | Mobile assembly replacement and duplicate-rule parity   | Backlog |
 | DR-037                                                        | Native Select default feedback localization audit       | Backlog |
+| DR-038                                                        | Native ProgressBar value/track contrast audit           | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-038: native ProgressBar contrast
+
+DR-017p measures the unchanged native indeterminate ProgressBar on the real assembly route:
+light value/track is 2.97:1, below the 3:1 graphic threshold; value/canvas is 3.35:1.
+Dark value/track is 8.81:1 and value/canvas is 10.63:1.
+The added semantic status text independently explains loading and passes at 18.20:1 light / 16.64:1 dark.
+Audit the native preset/component across confirmed consumers separately; do not add page-scoped tokens or colors.
+These are browser sRGB canvas measurements after theme/layout settling, not a complete accessibility certification.
 
 ### DR-037: native Select feedback localization
 
@@ -1131,6 +1172,11 @@ Project: `frontend-pages-competition`. Source: [competition feature][competition
   Its routed conditional consumer remains unchanged. See the [parent reconciliation](work-items/DR-016-competition-draws.md)
   for remaining acceptance and review; no new consumer may be added solely for redesign verification.
 - DR-017: `/competition/assembly`. Cover player assembly and partner combinations.
+  DR-017p covers only the naturally mounted loading indicator and its localized accessible feedback.
+  DR-017q retains the separate silent load-error/unselected-state follow-up: `AssemblyService.error` is populated
+  on query failure but the current template renders neither that error nor guidance before selection.
+  The permission-only change-team block is unconfirmed on the supplied anonymous route and has no action handler.
+  Do not add a consumer or invoke administrative mutations to justify refreshing it.
   DR-017a completes the mounted heading/filter chrome and the approved desktop time-range template correction.
   DR-017b covers only the existing player row reused in regular/backup pools and doubles/singles/substitutes.
   DR-017c covers only the desktop pool surface, availability controls, and disclosure, without token overrides.

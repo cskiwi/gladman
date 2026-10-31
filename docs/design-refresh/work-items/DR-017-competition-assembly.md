@@ -51,6 +51,12 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
   Selected-substitutes management is not added by this presentation slice.
 - [DR-017o: Confirmation dialog](DR-017o-assembly-confirmation-dialog.md): only the confirmed mounted dialog
   chrome/actions, restoring native footer presentation while preserving validation and pending-action dispatch.
+- [DR-017p: Loading feedback](DR-017p-assembly-loading-feedback.md): the naturally mounted native indeterminate
+  ProgressBar, readable existing translated loading copy and an accessible association.
+- DR-017q: separately scope load-error/unselected feedback. The service stores query errors, but the template
+  currently has no error branch or initial selection guidance. Do not change those gates in DR-017p.
+- Remaining permission-only change-team block is not confirmed mounted on the supplied anonymous route.
+  Its Edit button has no action handler; defer until a real permitted consumer can be verified.
 - Existing populated lineup emits NG01354 warnings about child controls not registering with the parent FormGroup.
   Investigate that functional concern separately before claiming lineup form regression coverage.
 - Existing PDF download is still a logged request with an integration TODO, not document generation.
@@ -81,6 +87,7 @@ description: 'Incremental refresh of the mounted competition assembly workflow.'
 - [x] Review and approve DR-017m with its disclosed verification limits.
 - [x] Review and approve DR-017n with its disclosed verification limits.
 - [x] Review and approve DR-017o with its disclosed verification limits.
+- [x] Review and approve DR-017p with explicit user approval and disclosed verification limits.
 - [ ] Complete all required children and reconcile parent acceptance.
 
 DR-017o refreshes only the mounted confirmation dialog chrome/actions and restores its previously unrendered
@@ -90,8 +97,17 @@ SSR pass. Native light Agree text/dark Cancel focus contrast failures remain DR-
 Its brief records unchecked screen-reader, mounted-locale, authenticated/save and exhaustive hydration limits.
 The user approved completion/commit with the disclosed native contrast failures and unchecked limits on 2026-10-31.
 Approval is not evidence that failed or unperformed checks passed. DR-017o is Done; the parent remains open.
-Exact next action: inspect remaining mounted assembly surfaces and reconcile the parent's remaining scope
-before selecting a further child in a fresh invocation. Do not reopen completed DR-017a-o.
+The 2026-10-31 remaining-surface reconciliation selects DR-017p's naturally mounted loading feedback only.
+Load-error/unselected feedback remains DR-017q; the unconfirmed permission-only change-team block is deferred.
+DR-017p adds readable localized polite status and a named native ProgressBar without changing service gates.
+All 305 tests, focused lint/build, eight isolated responsive/theme cases and loaded SSR checks pass.
+The status text passes contrast; unchanged native light value/track contrast is 2.97:1 and is retained in DR-038.
+Actual screen-reader announcements, loading-state SSR, mounted alternate locales and authenticated/save checks
+remain unverified. The user selected "Approve completion and commit with the disclosed verification limits"
+on 2026-10-31. Approval accepts the native contrast failure and unchecked limits, not a claim they passed.
+DR-017p is Done; the parent remains open.
+Exact next action in a fresh invocation: confirm and scope DR-017q's load-error/unselected feedback.
+Do not start it here or reopen completed DR-017a-p.
 
 DR-017j refreshes only the mounted responsive captain/add-player searches. Two named templates keep each
 presentation in one place; native labels, full-name option/value text and long-name wrapping are verified.

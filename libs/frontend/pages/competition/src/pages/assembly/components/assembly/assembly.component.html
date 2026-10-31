@@ -1,5 +1,10 @@
 @if (dataService.loading()) {
-  <p-progressbar mode="indeterminate" />
+  <div class="flex flex-col gap-2">
+    <p id="assembly-loading-status" class="m-0 text-color" role="status" aria-live="polite" aria-atomic="true">
+      {{ 'all.loading.players' | translate }}
+    </p>
+    <p-progressbar mode="indeterminate" aria-labelledby="assembly-loading-status" />
+  </div>
 } @else if (dataService.loaded()) {
   <section class="flex flex-col gap-4">
     <!-- Information Panels -->

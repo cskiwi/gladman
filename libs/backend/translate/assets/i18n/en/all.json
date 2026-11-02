@@ -1832,6 +1832,15 @@
     "registration": "Registration Information",
     "single": "Single",
     "spotsLeft": "{{count}} spots left",
+    "summary": {
+      "closes": "Closes {{date}}",
+      "opens": "Opens {{date}}",
+      "phase": "Phase",
+      "registration": "Registration",
+      "subEvents": "Sub-events",
+      "typeCountOne": "across {{count}} type",
+      "typeCountOther": "across {{count}} types"
+    },
     "title": "Tournaments",
     "types": {
       "men": "Men's",

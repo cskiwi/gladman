@@ -1832,6 +1832,15 @@
     "registration": "Informations sur l'inscription",
     "single": "Seulement",
     "spotsLeft": "{{count}} places environ",
+    "summary": {
+      "closes": "Clôture le {{date}}",
+      "opens": "Ouverture le {{date}}",
+      "phase": "Phase",
+      "registration": "Inscription",
+      "subEvents": "Séries",
+      "typeCountOne": "sur {{count}} type",
+      "typeCountOther": "sur {{count}} types"
+    },
     "title": "Tournois",
     "types": {
       "men": "Hommes",

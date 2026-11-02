@@ -1839,6 +1839,15 @@ export type I18nTranslations = {
             "registration": string;
             "single": string;
             "spotsLeft": string;
+            "summary": {
+                "closes": string;
+                "opens": string;
+                "phase": string;
+                "registration": string;
+                "subEvents": string;
+                "typeCountOne": string;
+                "typeCountOther": string;
+            };
             "title": string;
             "types": {
                 "men": string;

@@ -1,17 +1,19 @@
 import { DatePipe, NgTemplateOutlet, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HeroComponent } from '@app/frontend-components/hero';
+import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { SyncButtonComponent, SyncButtonConfig, SyncStatusIndicatorComponent, SyncStatusConfig } from '@app/frontend-components/sync';
 import { SeoService } from '@app/frontend-modules-seo/service';
 import { AuthService } from '@app/frontend-modules-auth/service';
+import { TournamentPhase } from '@app/models-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
 import { DetailService } from './page-detail.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TabsModule } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-page-detail',
@@ -24,10 +26,13 @@ import { ButtonModule } from 'primeng/button';
     RouterModule,
     TranslateModule,
     HeroComponent,
+    HeroAvatarComponent,
+    HeroTitleComponent,
     SyncButtonComponent,
     SyncStatusIndicatorComponent,
     TabsModule,
     ButtonModule,
+    TagModule,
   ],
   templateUrl: './page-detail.component.html',
   styleUrl: './page-detail.component.scss',
@@ -167,10 +172,22 @@ export class PageDetailComponent {
   });
 
   totalDraws = computed(() => {
-    return this.groupedSubEvents().reduce(
-      (sum, g) => sum + g.events.reduce((s, e) => s + (e.drawTournaments?.length || 0), 0),
-      0,
-    );
+    return this.groupedSubEvents().reduce((sum, g) => sum + g.events.reduce((s, e) => s + (e.drawTournaments?.length || 0), 0), 0);
+  });
+
+  protected readonly phaseLabel = computed(() => {
+    const phase = this.tournament()?.phase;
+    if (!phase) return 'all.common.unknown';
+    const labels: Record<TournamentPhase, string> = {
+      [TournamentPhase.DRAFT]: 'all.tournament.phases.draft',
+      [TournamentPhase.ENROLLMENT_OPEN]: 'all.tournament.phases.enrollmentOpen',
+      [TournamentPhase.ENROLLMENT_CLOSED]: 'all.tournament.phases.enrollmentClosed',
+      [TournamentPhase.DRAWS_MADE]: 'all.tournament.phases.drawsMade',
+      [TournamentPhase.SCHEDULED]: 'all.tournament.phases.scheduled',
+      [TournamentPhase.IN_PROGRESS]: 'all.tournament.phases.inProgress',
+      [TournamentPhase.COMPLETED]: 'all.tournament.phases.completed',
+    };
+    return labels[phase];
   });
 
   // Sync configuration for tournament level
@@ -221,7 +238,9 @@ export class PageDetailComponent {
   }
 
   // Helper method to create sync status config for individual subevents
-  getSubEventSyncStatusConfig(subEvent: { visualCode?: string; name?: string; lastSync?: Date | string | null } | null | undefined): SyncStatusConfig | null {
+  getSubEventSyncStatusConfig(
+    subEvent: { visualCode?: string; name?: string; lastSync?: Date | string | null } | null | undefined,
+  ): SyncStatusConfig | null {
     const tournament = this.tournament();
 
     if (!tournament || !subEvent || !this.auth.loggedIn()) {

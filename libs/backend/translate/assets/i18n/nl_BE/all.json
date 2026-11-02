@@ -1832,6 +1832,15 @@
     "registration": "Inschrijving Informatie",
     "single": "Enkel",
     "spotsLeft": "{{count}} plaatsen over",
+    "summary": {
+      "closes": "Sluit {{date}}",
+      "opens": "Opent {{date}}",
+      "phase": "Fase",
+      "registration": "Inschrijving",
+      "subEvents": "Reeksen",
+      "typeCountOne": "over {{count}} type",
+      "typeCountOther": "over {{count}} types"
+    },
     "title": "Toernooien",
     "types": {
       "men": "Heren",

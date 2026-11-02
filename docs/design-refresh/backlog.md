@@ -5,6 +5,22 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-019g is Done with explicit user approval: the tournament-detail draw external-link query mismatch is reproduced.
+The mounted supplied route contains 95 internal draw links, 30 external sub-event links and zero external draw links.
+The actual detail query omits draw `visualCode`; adding only that selection in a read-only comparison returns codes
+for all 95 draws, with all other response data unchanged. The backend already exposes the field anonymously.
+Existing mocked component tests supply codes independently of the query, so they cannot catch this omission.
+This investigation changes documentation only; the user-visible bug is not fixed.
+See the [query-contract brief](work-items/DR-019g-draw-external-link-contract.md).
+The user selected "Approve DR-019g and commit the investigation" on 2026-11-02.
+Only the documentation-only investigation and backlog handoff are approved for commit; no push.
+Formatting, whitespace and all 11 brief evidence links pass. No application validation is claimed.
+Exact next action: scope DR-042's one-field detail-query repair and query-contract regression tests,
+then verify the newly reachable native external actions.
+Do not start that repair or another design slice in this invocation. DR-019 remains Done.
+
+### Previous completed focus: obsolete club tournament page retirement
+
 DR-019e is Done with explicit user approval of retirement and the disclosed verification limits.
 The user confirmed `/tournament/club/:clubId` should not exist and requested removal of the page, routes and links.
 Its component/template/SCSS/service/barrel and lazy route are removed; the feature barrel no longer exports it.
@@ -1218,7 +1234,7 @@ and linked from their registry rows.
 | [DR-019d](work-items/DR-019d-tournament-events.md)            | Tournament detail sub-events and draw-link presentation   | Done    |
 | [DR-019e](work-items/DR-019e-club-tournament-chrome.md)       | Retire obsolete tournament club page                      | Done    |
 | [DR-019f](work-items/DR-019f-tournament-feedback.md)          | Tournament detail loading/error feedback                  | Done    |
-| DR-019g                                                       | Investigate draw external-link visualCode query contract  | Backlog |
+| [DR-019g](work-items/DR-019g-draw-external-link-contract.md)  | Investigate draw external-link visualCode query contract  | Done    |
 | DR-019h                                                       | Club tournament tabs; withdrawn with page retirement      | Done    |
 | DR-020                                                        | Tournament creation and editing                           | Backlog |
 | DR-021                                                        | Tournament enrollment workflows                           | Backlog |
@@ -1242,12 +1258,26 @@ and linked from their registry rows.
 | DR-039                                                        | Assembly filter/service selection synchronization         | Backlog |
 | DR-040                                                        | Investigate competition detail resource error rendering   | Backlog |
 | DR-041                                                        | Club tournament repairs; withdrawn with page retirement   | Done    |
+| DR-042                                                        | Restore tournament detail draw external-link query field  | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-042: tournament detail draw external-link repair
+
+The [DR-019g investigation](work-items/DR-019g-draw-external-link-contract.md) reproduces the missing draw
+`visualCode` selection against the actual anonymous local API and mounted tournament detail route.
+DR-019g is approved complete. In the next invocation, create one repair brief: add the existing field only under detail's
+`tournamentSubEvents.drawTournaments`, and assert that exact nested selection in the executed query.
+Retain native link styling, accessible names, `target`/`rel`, missing-code gates and all internal draw routes.
+Check both missing tournament code and missing draw code, including localized unnamed-draw labels.
+Run focused Nx lint/tests/build, then verify mounted links in light/dark and narrow/wide layouts,
+all type tabs, keyboard/focus and SSR. External-site availability is not an application acceptance dependency.
+No backend, translations, shared abstraction, global styling or draw-destination redesign is needed.
+This is a separate functional discovery, not a required child reopening completed DR-019.
 
 ### DR-017r: user-confirmed change-team guidance and search Card parity
 

@@ -5,6 +5,8 @@ import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ToastModule } from 'primeng/toast';
 import { TabsModule } from 'primeng/tabs';
@@ -42,6 +44,8 @@ const GET_TOURNAMENT_WITH_DETAILS = gql`
   imports: [
     BreadcrumbComponent,
     ButtonModule,
+    CardModule,
+    MessageModule,
     SkeletonModule,
     ToastModule,
     TabsModule,
@@ -175,10 +179,5 @@ export class PageEditComponent {
     const settingsComponent = this.settingsComponent();
 
     return (infoComponent?.isDirty ?? false) || (settingsComponent?.isDirty ?? false);
-  }
-
-  onActiveIndexChange(event: Event | { index?: number | string }): void {
-    const idx = (event as { index?: number | string })?.index;
-    this.activeTabIndex.set(idx?.toString() || '0');
   }
 }

@@ -1,65 +1,39 @@
 @if (!loading()) {
   @if (this.tournament(); as tournament) {
-    <!-- Breadcrumb -->
-    <app-breadcrumb [items]="[
-      { label: tournament.name, routerLink: ['/', 'tournament', tournament.id] },
-      { label: ('all.tournament.edit.title' | translate) },
-    ]" />
+    <app-breadcrumb
+      [items]="[{ label: tournament.name, routerLink: ['/', 'tournament', tournament.id] }, { label: ('all.tournament.edit.title' | translate) }]"
+    />
 
-    <!-- Header -->
-    <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
-      <div class="flex flex-col gap-1">
-        <span class="t-eyebrow">{{ 'all.tournament.edit.subtitle' | translate }}</span>
-        <h1 class="font-display text-3xl md:text-4xl font-bold text-color leading-tight tracking-tight m-0">{{ 'all.tournament.edit.title' | translate }}</h1>
+    <header class="flex flex-wrap items-start justify-between gap-4 mb-6">
+      <div class="min-w-0">
+        <h1 class="text-2xl font-semibold text-color m-0">{{ 'all.tournament.edit.title' | translate }}</h1>
+        <p class="text-color break-words mt-2 mb-0">{{ tournament.name }}</p>
+        <p class="text-color mt-2 mb-0">{{ 'all.tournament.edit.subtitle' | translate }}</p>
       </div>
-      <div class="flex gap-2 flex-wrap">
-        <p-button
-          [label]="'all.tournament.edit.actions.cancel' | translate"
-          icon="pi pi-times"
-          severity="secondary"
-          [outlined]="true"
-          size="small"
-          (click)="cancel()"
-        />
-        <p-button
-          [label]="'all.tournament.edit.actions.save-current' | translate"
-          icon="pi pi-check"
-          [outlined]="true"
-          size="small"
-          (click)="saveCurrentTab()"
-        />
-        <p-button
-          [label]="'all.tournament.edit.actions.save-all' | translate"
-          icon="pi pi-save"
-          size="small"
-          (click)="saveAll()"
-          [disabled]="!hasUnsavedChanges"
-        />
+      <div class="flex flex-wrap gap-2">
+        <button pButton type="button" severity="secondary" [outlined]="true" size="small" (click)="cancel()">
+          <span pButtonLabel>{{ 'all.tournament.edit.actions.cancel' | translate }}</span>
+        </button>
+        <button pButton type="button" [outlined]="true" size="small" (click)="saveCurrentTab()">
+          <span pButtonLabel>{{ 'all.tournament.edit.actions.save-current' | translate }}</span>
+        </button>
+        <button pButton type="button" size="small" (click)="saveAll()" [disabled]="!hasUnsavedChanges">
+          <span pButtonLabel>{{ 'all.tournament.edit.actions.save-all' | translate }}</span>
+        </button>
       </div>
-    </div>
+    </header>
 
     @if (hasUnsavedChanges) {
-      <div
-        class="mb-4 px-4 py-3 rounded-lg flex items-center gap-2 text-sm"
-        style="background: var(--g-pending-muted, rgba(245, 158, 11, 0.12)); color: var(--g-pending, rgb(180, 83, 9))"
-      >
-        <i class="pi pi-exclamation-triangle"></i>
-        <span class="font-medium">{{ 'all.tournament.edit.messages.unsaved-changes' | translate }}</span>
+      <div class="mb-4">
+        <p-message severity="warn">{{ 'all.tournament.edit.messages.unsaved-changes' | translate }}</p-message>
       </div>
     }
 
-    <!-- Tabs card -->
-    <div class="bg-emphasis border border-surface rounded-border p-5">
-      <p-tabs [value]="activeTabIndex()" (activeIndexChange)="onActiveIndexChange($event)">
+    <p-card>
+      <p-tabs [value]="activeTabIndex()" (valueChange)="$event !== undefined && activeTabIndex.set($event.toString())">
         <p-tablist>
-          <p-tab value="0">
-            <i class="pi pi-info-circle mr-2"></i>
-            {{ 'all.tournament.edit.tabs.info' | translate }}
-          </p-tab>
-          <p-tab value="1">
-            <i class="pi pi-cog mr-2"></i>
-            {{ 'all.tournament.edit.tabs.settings' | translate }}
-          </p-tab>
+          <p-tab value="0">{{ 'all.tournament.edit.tabs.info' | translate }}</p-tab>
+          <p-tab value="1">{{ 'all.tournament.edit.tabs.settings' | translate }}</p-tab>
         </p-tablist>
 
         <p-tabpanels>
@@ -71,23 +45,20 @@
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
-    </div>
+    </p-card>
   }
 } @else {
   <div class="flex flex-col gap-6">
-    <p-skeleton width="20rem" height="1rem" />
-    <p-skeleton width="24rem" height="2rem" />
-    <div class="bg-emphasis border border-surface rounded-border p-5">
-      <p-skeleton width="100%" height="20rem" />
-    </div>
+    <p-skeleton height="1rem" />
+    <p-skeleton height="2rem" />
+    <p-card>
+      <p-skeleton height="20rem" />
+    </p-card>
   </div>
 }
 
 @if (error(); as errorMessage) {
-  <div class="flex items-center gap-2 p-4 rounded-lg mt-4" style="background: var(--g-loss-muted); color: var(--g-loss)">
-    <i class="pi pi-exclamation-triangle"></i>
-    <span>{{ errorMessage }}</span>
-  </div>
+  <p-message severity="error">{{ errorMessage }}</p-message>
 }
 
 <p-toast position="top-right" />

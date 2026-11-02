@@ -5,6 +5,33 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-020c is Done with explicit user approval: compact editing heading/real context, native Card, Messages,
+tabs and native button labels.
+The supplied editing route mounts anonymously with permission-disabled child controls.
+Child forms, save payloads, permissions, shared theme, backend, translations and creation slices are unchanged.
+Native tab value changes now update the existing signal so Save current follows the visible tab.
+Ten new regressions pass; final focused lint, all 75 tests, production library build and ten prerequisites pass.
+Authored template class tokens drop 59 to 25; two inline-colored banners and fixed loading widths are removed.
+Eight final light/dark 360/390/768/1440px cases pass loaded/fixture fit, both tabs and native feedback.
+Four final keyboard cases pass Tab/Arrow/Enter/Space and tabpanel naming references.
+Monitored final matrix has zero page errors and GraphQL mutations. Dutch HTTP SSR/client heading/context match.
+Heading/context/subtitle contrast passes; native light Cancel/Save-current/selected-tab/warning/error text
+and dark Cancel outline fail. DR-032/033/034 and new DR-044 retain those shared audits, not page overrides.
+Actual screen-reader, real authenticated saves/outages, mounted English/French, null-data/empty responses
+and exhaustive focus/contrast/overlays/hydration remain unverified. No styling exceptions.
+Port 3000 served stale chrome; an isolated port-3001 Nx server verified final source without touching that process.
+The temporary server is stopped after verification.
+See the [active brief](work-items/DR-020c-editing-chrome.md).
+The user selected "Approve DR-020c and commit with disclosed limits" on 2026-11-02.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Unchecked contrast/workflow criteria remain unchecked; acceptance is not evidence that they passed.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects from cache,
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: scope DR-020d editing information-tab presentation on the confirmed route.
+Do not begin DR-020d/e here. DR-020 remains open; DR-020d is the next candidate, not an implementation started here.
+
+### Previous completed focus: creation fields
+
 DR-020b is Done with explicit user approval after feedback: never use `[pt]` or `[dt]`.
 The range control now uses native `ariaLabelledBy` for its label and help, with neither binding present.
 The corrected template passes lint, all 65 tests, production library build and ten prerequisites.
@@ -1320,7 +1347,7 @@ and linked from their registry rows.
 | [DR-020](work-items/DR-020-tournament-forms.md)               | Tournament creation and editing                           | In progress |
 | [DR-020a](work-items/DR-020a-creation-chrome.md)              | Creation chrome and native form Card                      | Done        |
 | [DR-020b](work-items/DR-020b-creation-fields.md)              | Creation fields and mutation feedback                     | Done        |
-| DR-020c                                                       | Editing chrome and actions                                | Backlog     |
+| [DR-020c](work-items/DR-020c-editing-chrome.md)               | Editing chrome and actions                                | Done        |
 | DR-020d                                                       | Editing information tab                                   | Backlog     |
 | DR-020e                                                       | Editing settings tab                                      | Backlog     |
 | DR-021                                                        | Tournament enrollment workflows                           | Backlog     |
@@ -1346,6 +1373,7 @@ and linked from their registry rows.
 | DR-041                                                        | Club tournament repairs; withdrawn with page retirement   | Done        |
 | [DR-042](work-items/DR-042-draw-external-link-repair.md)      | Restore tournament detail draw external-link query field  | Done        |
 | DR-043                                                        | Native DatePicker accessibility-label localization audit  | Backlog     |
+| DR-044                                                        | Native Tabs selected-text contrast audit                  | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -1399,6 +1427,18 @@ Source inspection during DR-017q finds that `onClubSelect`, `onClubClear` and `o
 Investigate stale lineup/query/retry state after changing or clearing filters in a separate functional slice.
 Preserve URL restoration, valid selection and real read consumers; do not use admin/save mutations for testing.
 DR-017q only reflects existing loading/loaded/error gates; it does not claim this mismatch is corrected.
+
+### DR-032/033/034/044: editing chrome contrast evidence
+
+DR-020c's final mounted editing route measures settled native Cancel text at 4.46:1 light / 6.91:1 dark,
+and its outline against the canvas at 7.74:1 / 1.46:1 (DR-032). Save-current text is 3.35:1 / 10.63:1
+(DR-033). Native warning Message text is 2.83:1 / 7.98:1; native error text is 4.41:1 / 4.63:1
+(DR-034). Light normal-text and dark secondary-outline failures remain open.
+Native selected tab text is 3.65:1 / 10.22:1; unselected text is 4.87:1 / 6.65:1.
+New DR-044 must audit selected Tabs text across confirmed consumers before any shared token change.
+Use the 4.5:1 normal-text threshold, not the 3:1 large-text/non-text threshold, for these small tab labels.
+Heading/context/subtitle use semantic text and pass at 18.20:1 / 16.64:1.
+No shared or scoped palette override is introduced. See the [brief](work-items/DR-020c-editing-chrome.md).
 
 ### DR-034 additional evidence: creation read-error Message
 

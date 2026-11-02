@@ -1,6 +1,6 @@
 ---
 title: 'DR-019: Tournament browsing'
-description: 'Parent scope and child sequencing for tournament detail and club browsing.'
+description: 'Parent scope for tournament detail and retirement of obsolete club browsing.'
 ---
 
 ## Identity and scope
@@ -13,7 +13,8 @@ description: 'Parent scope and child sequencing for tournament detail and club b
   Internationaal Tornooi Lokerse BC 2023 on 2026-10-31.
 - [Feature routes](../../../libs/frontend/pages/tournament/src/lib.routes.ts) mount the
   [detail page](../../../libs/frontend/pages/tournament/src/pages/detail/page-detail.component.ts).
-- Club browsing is a separate route, `/tournament/club/:clubId`; confirm a current consumer before selection.
+- The obsolete `/tournament/club/:clubId` page was confirmed on 2026-11-02, then explicitly retired
+  by user request under DR-019e. Do not recreate it or repair its deleted data queries.
 - Exclude creation/editing, enrollment submissions, draw pages, live displays and admin operations (DR-020 to DR-026).
 
 ## Required children
@@ -23,7 +24,8 @@ description: 'Parent scope and child sequencing for tournament detail and club b
 | [DR-019a](DR-019a-tournament-identity.md)        | Complete tournament hero parity             | Confirmed mounted; corrected after user review |
 | [DR-019c](DR-019c-tournament-live-navigation.md) | Four public live-navigation links on detail | Confirmed mounted; selected on 2026-11-02      |
 | [DR-019d](DR-019d-tournament-events.md)          | Sub-event groups and draw links on detail   | Confirmed loaded; selected on 2026-11-02       |
-| DR-019e                                          | Club tournament browsing                    | Confirm actual route consumer before selection |
+| [DR-019e](DR-019e-club-tournament-chrome.md)     | Retire obsolete tournament club page        | Approved complete with disclosed limits        |
+| DR-019h                                          | Withdrawn club tournament tab redesign      | Closed by user-directed page retirement        |
 | [DR-019f](DR-019f-tournament-feedback.md)        | Detail loading/error feedback               | Approved complete with disclosed limits        |
 
 Keep this parent open until required children are complete or explicitly deferred with approval.
@@ -52,7 +54,8 @@ DR-019a after user feedback. It is not a required child or a future implementati
 - DR-019a includes English/Dutch/French tournament summary translations and automatically generated types.
   No backend query, shared component or global theme change.
 - The Playwright MCP profile is already in use; the integrated browser successfully confirms the real consumer.
-- Parent validation/review remains pending; individual child evidence must not become a parent-wide pass.
+- Parent closure follows the approved required children and user-directed withdrawal of obsolete work.
+  Individual child evidence and accepted limits must not become a claim of a new parent-wide validation pass.
 - On 2026-10-31 the user requested the same look/feel as competition detail.
   The supplied `/competition/pbo-competitie-2026-2027` reference is mounted and compared at 390/1440px.
   Initial identity-only parity was rejected as insufficient; the same review now covers the complete hero.
@@ -66,3 +69,16 @@ DR-019a after user feedback. It is not a required child or a future implementati
   tests/translations/generated types and handoff. Keep this parent open.
 - DR-019f is approved complete with disclosed verification limits. Do not start another child here.
   Confirm a real DR-019e club-browsing consumer before scoping that next candidate in a fresh invocation.
+- On the subsequent 2026-11-02 invocation, DR-019e's consumer was confirmed and scope bounded to chrome.
+  `ClubTeamsDetail`, `ClubTournamentHistory` and `ClubStatistics` return HTTP 400 schema validation errors;
+  resource-read exceptions and untranslated labels are also reproduced. No application styling was changed.
+  The user then confirmed this page should not exist and requested removal of page/routes/links.
+  DR-019e now removes the route, feature export and all five page files; no inbound application links were found.
+  DR-019h and DR-041 are withdrawn, not implemented or repaired. The real club-detail tournaments tab is preserved.
+  Focused lint, 45 tests, production library build and ten prerequisites pass.
+  The retired URL uses existing unmatched-route behavior (NG04002, ending at `/`); no redirect/404 was added.
+  Tournament detail and the real club's Toernooien tab still load.
+  The user selected "Approve DR-019e and commit with disclosed limits" on 2026-11-02.
+  DR-019e is complete with accepted unmatched-route behavior and unperformed checks retained in its brief.
+  All required children are approved complete; DR-019h/DR-041 are withdrawn, so the parent is now complete.
+  DR-019g remains a separate discovery to scope next, not an unfinished required browsing child.

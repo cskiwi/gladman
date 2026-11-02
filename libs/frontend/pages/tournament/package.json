@@ -20,8 +20,7 @@
     "socket.io-client": "^4.7.5",
     "@angular/cdk": "^22.1.8",
     "ngx-cookie-service-ssr": "^22.0.0",
-    "@app/frontend-utils": "*",
-    "chart.js": "^4.5.1"
+    "@app/frontend-utils": "*"
   },
   "sideEffects": false
 }

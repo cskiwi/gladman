@@ -6,10 +6,6 @@ export const routes: Route[] = [
     loadComponent: () => import('@app/frontend-components/layout').then((m) => m.CenterLayoutComponent),
     children: [
       {
-        path: 'club/:clubId',
-        loadComponent: () => import('./pages/club-detail/page-club-detail.component').then((m) => m.PageClubDetailComponent),
-      },
-      {
         path: 'create',
         loadComponent: () => import('./pages/create/page-create.component').then((m) => m.PageCreateComponent),
       },

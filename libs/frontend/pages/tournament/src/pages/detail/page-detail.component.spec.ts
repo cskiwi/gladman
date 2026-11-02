@@ -17,6 +17,7 @@ import { PageDetailComponent } from './page-detail.component';
 
 const createTournament = () => ({
   id: 'tournament',
+  slug: 'test-tournament',
   name: 'Test tournament',
   tournamentNumber: 'TEST_2026',
   dates: '2026-04-29, 2026-04-30',
@@ -82,6 +83,11 @@ describe('Tournament detail hero', () => {
     translations.setTranslation('en', {
       all: {
         tournament: {
+          events: 'Tournament Events',
+          drawFallbackName: 'Draw {{number}}',
+          noDrawsYet: 'No draws configured yet',
+          types: { men: 'Men', women: 'Women', mix: 'Mixed', other: 'Other' },
+          gameTypes: { singles: 'Singles', doubles: 'Doubles', mixed: 'Mixed', other: 'Other' },
           official: 'Official tournament',
           draws: 'Draws',
           phases: { draft: 'Draft' },
@@ -115,7 +121,8 @@ describe('Tournament detail hero', () => {
         name: string;
         eventType: string;
         gameType: string;
-        drawTournaments: { id: string; name: string }[];
+        visualCode?: string;
+        drawTournaments: { id: string; name: string; type?: string; size?: number; visualCode?: string }[];
       }[];
     },
   ) {
@@ -281,6 +288,128 @@ describe('Tournament detail hero', () => {
     expect(anchor?.getAttribute('target')).toBe('_blank');
     expect(anchor?.getAttribute('rel')).toBe('noopener noreferrer');
     expect(anchor?.querySelector('i')?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('omits the events section for zero sub-events', () => {
+    expect(element.querySelector('#tournament-events-title')).toBeNull();
+    expect(element.querySelector('p-tabs')).toBeNull();
+  });
+
+  it('uses competition-aligned native Cards, heading hierarchy, draw links and wrapping metadata for one group', async () => {
+    await renderTournament({
+      ...createTournament(),
+      tournamentSubEvents: [
+        {
+          id: 'men',
+          name: 'Men singles',
+          eventType: 'M1',
+          gameType: 'S',
+          visualCode: 'event-code',
+          drawTournaments: [
+            { id: 'draw-one', name: 'A very long draw name', type: 'KO', size: 16, visualCode: 'draw-code' },
+            { id: 'draw-two', name: '' },
+          ],
+        },
+      ],
+    });
+    const section = element.querySelector('section[aria-labelledby="tournament-events-title"]');
+    expect(section?.querySelector('h2')?.textContent?.trim()).toBe('Tournament Events');
+    expect(section?.querySelector('h3')?.textContent?.trim()).toBe('Singles');
+    expect(section?.querySelector('h4')?.textContent?.trim()).toBe('Men singles');
+    expect(section?.querySelector('.p-card article')).toBeTruthy();
+    expect(section?.querySelector('p-tabs')).toBeNull();
+    const links = [...(section?.querySelectorAll('li > a:first-child') ?? [])];
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/tournament/test-tournament/sub-events/men/draws/draw-one',
+      '/tournament/test-tournament/sub-events/men/draws/draw-two',
+    ]);
+    expect(links.map((link) => link.querySelector('[pButtonLabel] > span')?.textContent?.trim())).toEqual(['A very long draw name', 'Draw 2']);
+    expect(links[0].textContent).toContain('KO');
+    expect(links[0].textContent).toContain('S16');
+    expect(links[1].querySelector('[pButtonLabel] > span:nth-child(2)')).toBeNull();
+    for (const link of links) {
+      expect(link.classList.contains('p-button-outlined')).toBe(true);
+      expect(link.classList.contains('p-button-secondary')).toBe(true);
+      expect(link.querySelector('.whitespace-normal.break-words')).toBeTruthy();
+      expect(link.classList.contains('focus-visible:ring-primary')).toBe(true);
+    }
+    const external = [...(section?.querySelectorAll('a[target="_blank"]') ?? [])];
+    expect(external.map((link) => link.getAttribute('href'))).toEqual([
+      'https://www.toernooi.nl/sport/event.aspx?id=external-code&event=event-code',
+      'https://www.toernooi.nl/tournament/external-code/draw/draw-code',
+    ]);
+    expect(external.map((link) => link.getAttribute('aria-label'))).toEqual(['Men singles (toernooi.nl)', 'A very long draw name (toernooi.nl)']);
+    for (const link of external) {
+      expect(link.classList.contains('p-button-text')).toBe(true);
+      expect(link.classList.contains('p-button-secondary')).toBe(true);
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+      expect(link.querySelector('i')?.getAttribute('aria-hidden')).toBe('true');
+    }
+    expect(section?.querySelector('.t-eyebrow, .t-mono, .truncate, .g-subevent, .g-draw-row')).toBeNull();
+  });
+
+  it('preserves ordered type Tabs, numeric event ordering and singles/doubles/mixed grouping', async () => {
+    await renderTournament({
+      ...createTournament(),
+      tournamentSubEvents: [
+        { id: 'other', name: 'Other', eventType: '', gameType: '', drawTournaments: [] },
+        { id: 'mix', name: 'Mixed', eventType: 'MX1', gameType: 'MX', drawTournaments: [] },
+        { id: 'women', name: 'Women', eventType: 'F1', gameType: 'S', drawTournaments: [] },
+        { id: 'men-10', name: 'Men 10', eventType: 'M10', gameType: 'S', drawTournaments: [] },
+        { id: 'men-2', name: 'Men 2', eventType: 'M2', gameType: 'S', drawTournaments: [] },
+        { id: 'men-double', name: 'Men doubles', eventType: 'M1', gameType: 'D', drawTournaments: [] },
+      ],
+    });
+    const tabs = [...element.querySelectorAll<HTMLElement>('p-tab')];
+    expect(tabs.map((tab) => tab.textContent?.trim())).toEqual(['Men', 'Women', 'Mixed', 'Other']);
+    expect(element.querySelector('p-tab[aria-selected="true"]')?.textContent?.trim()).toBe('Men');
+    const men = element.querySelector('p-tabpanel');
+    expect([...(men?.querySelectorAll('h3') ?? [])].map((heading) => heading.textContent?.trim())).toEqual(['Singles', 'Doubles']);
+    expect([...(men?.querySelectorAll('h4') ?? [])].map((heading) => heading.textContent?.trim())).toEqual(['Men 2', 'Men 10', 'Men doubles']);
+    tabs[1].click();
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('p-tab[aria-selected="true"]')?.textContent?.trim()).toBe('Women');
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('uses actual tournament fallback/empty copy and native empty Message in %s', async (locale) => {
+    const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
+    const asset: { tournament: { drawFallbackName: string; noDrawsYet: string } } = JSON.parse(readFileSync(assetPath, 'utf8'));
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    await renderTournament({
+      ...createTournament(),
+      tournamentSubEvents: [
+        { id: 'empty', name: 'Empty', eventType: 'M1', gameType: 'S', drawTournaments: [] },
+        { id: 'fallback', name: 'Fallback', eventType: 'M2', gameType: 'S', drawTournaments: [{ id: 'draw', name: '' }] },
+      ],
+    });
+    const section = element.querySelector('section[aria-labelledby="tournament-events-title"]');
+    const message = section?.querySelector('p-message');
+    expect(message?.textContent?.trim()).toBe(asset.tournament.noDrawsYet);
+    expect(message?.classList.contains('p-message-secondary')).toBe(true);
+    expect(message?.getAttribute('role')).toBe('status');
+    expect(section?.querySelector('li a')?.textContent?.trim()).toBe(asset.tournament.drawFallbackName.replace('{{number}}', '1'));
+    expect(section?.querySelector('a[target="_blank"]')).toBeNull();
+  });
+
+  it('preserves authenticated sub-event sync configs without granting admin permission', async () => {
+    const tournament = {
+      ...createTournament(),
+      tournamentSubEvents: [{ id: 'men', name: 'Men singles', eventType: 'M1', gameType: 'S', visualCode: 'event-code', drawTournaments: [] }],
+    };
+    await renderTournament(tournament);
+    expect(element.querySelector('section[aria-labelledby="tournament-events-title"] app-sync-button')).toBeNull();
+    loggedIn.set(true);
+    await renderTournament(tournament);
+    const section = harness.routeDebugElement?.query(By.css('section[aria-labelledby="tournament-events-title"]'));
+    const configs = section?.queryAll(By.directive(SyncStubComponent)).map((node) => node.componentInstance.config());
+    expect(configs).toEqual([
+      { entityType: 'event', entityCode: 'event-code', entityName: 'Men singles', lastSync: null },
+      { level: 'sub-event', subEventId: 'men', eventName: 'Test tournament', subEventName: 'Men singles' },
+    ]);
+    expect(element.querySelector('[actions] .pi-cog')).toBeNull();
   });
 
   it.each([

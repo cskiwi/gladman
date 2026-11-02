@@ -22,7 +22,7 @@ description: 'Parent scope and child sequencing for tournament detail and club b
 | ------------------------------------------------ | ------------------------------------------- | ---------------------------------------------- |
 | [DR-019a](DR-019a-tournament-identity.md)        | Complete tournament hero parity             | Confirmed mounted; corrected after user review |
 | [DR-019c](DR-019c-tournament-live-navigation.md) | Four public live-navigation links on detail | Confirmed mounted; selected on 2026-11-02      |
-| DR-019d                                          | Sub-event groups and draw links on detail   | Confirmed mounted; reduce further if needed    |
+| [DR-019d](DR-019d-tournament-events.md)          | Sub-event groups and draw links on detail   | Confirmed loaded; selected on 2026-11-02       |
 | DR-019e                                          | Club tournament browsing                    | Confirm actual route consumer before selection |
 | DR-019f                                          | Detail loading/error feedback               | Confirm state consumers and scope separately   |
 
@@ -38,7 +38,12 @@ DR-019a after user feedback. It is not a required child or a future implementati
 - Live links now use a native Card/outlined anchors, wrapping copy and semantic focus rings: DR-019c.
   Eight isolated responsive/theme cases and focused Nx checks pass. The user approved completion/commit
   with disclosed verification limits on 2026-11-02; unchecked child criteria remain unchecked.
-- Events retain custom articles, draw links, English fallback/empty text and SCSS: DR-019d.
+- Events now use competition-aligned native Cards, headings, outlined draw links, named external actions and
+  localized fallback/empty feedback: [DR-019d](DR-019d-tournament-events.md), approved complete with disclosed limits.
+  Thirty-five tests, focused lint, production library build and eight isolated theme/width cases pass.
+  Keep the child's disclosed verification limits; do not infer parent-wide acceptance.
+- Separate discovery DR-019g: existing draw external links require `draw.visualCode`, absent from the detail query.
+  Preserve the branch/URL; investigate its data contract separately, not as a hidden visual-slice query change.
 - Loading retains rectangle skeleton/custom surface; errors retain inline loss colors: DR-019f.
 - Live links, events and feedback are not changed by DR-019a.
 - DR-019a includes English/Dutch/French tournament summary translations and automatically generated types.
@@ -53,6 +58,7 @@ DR-019a after user feedback. It is not a required child or a future implementati
   Carry this direction into DR-019c-f; differences in domain data/actions remain intentional.
 - The user approved corrected DR-019a completion and commit with disclosed verification limits.
   The child brief preserves unchecked criteria; the parent remains open and no second child starts here.
-- DR-019c is approved complete with disclosed limits; commit only its implementation/tests/handoff.
-  Keep the parent open and other children unstarted. The next candidate is DR-019d;
-  confirm and reduce that mounted event/draw area to one reviewable slice in a fresh invocation.
+- DR-019c/d are approved complete with disclosed limits. The user selected
+  "Approve DR-019d and commit with disclosed verification limits"; commit only that child's implementation,
+  tests/translations/generated types and handoff. Keep this parent open.
+  The next candidate is DR-019f: confirm and scope loading/error feedback in a fresh invocation.

@@ -1689,7 +1689,9 @@
         "title": "Games"
       }
     },
+    "drawFallbackName": "Draw {{number}}",
     "draws": "Draws",
+    "noDrawsYet": "No draws configured yet",
     "edit": {
       "actions": {
         "cancel": "Cancel",

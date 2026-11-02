@@ -2,39 +2,6 @@
   display: block;
 }
 
-.section-title {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: var(--p-text-color);
-  letter-spacing: -0.005em;
-}
-
-.subevent-name {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--p-text-color);
-  line-height: 1.25;
-  letter-spacing: -0.005em;
-}
-
-.g-subevent {
-  transition:
-    border-color 0.15s ease,
-    transform 0.15s ease;
-
-  &:hover {
-    border-color: var(--p-primary-400);
-  }
-}
-
-.g-draw-row {
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease;
-}
-
 .games {
   display: flex;
   flex-direction: row;

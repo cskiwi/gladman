@@ -1,4 +1,4 @@
-import { DatePipe, NgTemplateOutlet, SlicePipe } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
@@ -15,13 +15,13 @@ import { TabsModule } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-page-detail',
   imports: [
     BreadcrumbComponent,
     DatePipe,
-    SlicePipe,
     NgTemplateOutlet,
     SkeletonModule,
     RouterModule,
@@ -35,6 +35,7 @@ import { CardModule } from 'primeng/card';
     ButtonModule,
     TagModule,
     CardModule,
+    MessageModule,
   ],
   templateUrl: './page-detail.component.html',
   styleUrl: './page-detail.component.scss',

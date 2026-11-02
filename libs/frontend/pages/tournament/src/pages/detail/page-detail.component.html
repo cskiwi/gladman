@@ -168,13 +168,10 @@
 
     <!-- Tournament Events Section -->
     @if (groupedSubEvents().length > 0) {
-      <section class="mb-6">
-        <div class="flex items-end justify-between flex-wrap gap-3 mb-5">
-          <div class="flex flex-col gap-1">
-            <span class="t-eyebrow">Events</span>
-            <h2 class="section-title m-0">{{ 'all.tournament.events' | translate }}</h2>
-          </div>
-        </div>
+      <section class="mb-6" aria-labelledby="tournament-events-title">
+        <h2 id="tournament-events-title" class="m-0 mb-5 text-xl font-semibold text-color">
+          {{ 'all.tournament.events' | translate }}
+        </h2>
 
         @if (groupedSubEvents().length > 1) {
           <p-tabs [value]="groupedSubEvents()[0].type">
@@ -230,85 +227,101 @@
   @for (gameTypeTab of group.gameTypeTabs; track gameTypeTab.gameType) {
     <div class="mb-8" [attr.id]="'gametype-' + group.type + '-' + gameTypeTab.gameType">
       <div class="flex items-center gap-3 mb-4">
-        <span class="t-eyebrow">{{ gameTypeTab.label | translate }}</span>
-        <div class="flex-1 h-px bg-emphasis"></div>
-        <span class="t-mono text-xs text-muted-color">{{ gameTypeTab.events.length }}</span>
+        <h3 class="m-0 text-lg font-semibold text-color">{{ gameTypeTab.label | translate }}</h3>
+        <span class="text-sm text-muted-color">({{ gameTypeTab.events.length }})</span>
       </div>
 
       <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         @for (subEvent of gameTypeTab.events; track subEvent.id) {
-          <article class="g-subevent bg-emphasis border border-surface rounded-border p-5 flex flex-col gap-4">
-            <header class="flex items-start justify-between gap-2">
-              <div class="flex flex-col gap-1 min-w-0">
-                <span class="t-eyebrow">Event</span>
-                <h3 class="subevent-name m-0">{{ subEvent.name }}</h3>
-              </div>
-              <div class="flex items-center gap-1 flex-shrink-0">
-                @if (tournament.visualCode && subEvent.visualCode) {
-                  <a
-                    [href]="'https://www.toernooi.nl/sport/event.aspx?id=' + tournament.visualCode + '&event=' + subEvent.visualCode"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center w-6 h-6 rounded-sm text-muted-color hover:text-primary hover:bg-emphasis transition-colors no-underline"
-                    title="View on toernooi.nl"
-                  >
-                    <i class="pi pi-external-link text-xs"></i>
-                  </a>
-                }
-                @if (getSubEventSyncStatusConfig(subEvent); as statusConfig) {
-                  <app-sync-status-indicator [config]="statusConfig" />
-                }
-                @if (getSubEventSyncConfig(subEvent); as config) {
-                  <app-sync-button [config]="config" />
-                }
-              </div>
-            </header>
-
-            @if (subEvent.drawTournaments && subEvent.drawTournaments.length > 0) {
-              <div class="flex flex-col gap-2">
-                <div class="flex items-center justify-between">
-                  <span class="t-eyebrow">{{ 'all.tournament.draws' | translate }}</span>
-                  <span class="t-mono text-xs text-muted-color">{{ subEvent.drawTournaments.length }}</span>
+          <p-card class="block min-w-0 h-full border border-surface">
+            <article class="flex h-full flex-col gap-4">
+              <header class="flex items-start justify-between gap-2">
+                <div class="flex flex-col gap-1 min-w-0">
+                  <h4 class="m-0 text-lg font-semibold text-color break-words">{{ subEvent.name }}</h4>
                 </div>
-                <div class="flex flex-col gap-1.5">
-                  @for (draw of subEvent.drawTournaments; track draw.id) {
-                    <div class="flex items-center gap-1.5">
-                      <a
-                        [routerLink]="['/', 'tournament', tournament.slug, 'sub-events', subEvent.id, 'draws', draw.id]"
-                        class="g-draw-row flex-1 flex items-center justify-between rounded-md bg-emphasis border border-surface px-3 py-2 text-sm hover:border-primary transition-colors no-underline"
-                      >
-                        <span class="font-medium text-color truncate">{{ draw.name || 'Draw ' + (draw.id | slice: 0 : 8) }}</span>
-                        <span class="text-muted-color text-xs flex items-center gap-2 flex-shrink-0 t-mono">
-                          @if (draw.type) {
-                            <span>{{ draw.type }}</span>
-                          }
-                          @if (draw.size) {
-                            <span>S{{ draw.size }}</span>
-                          }
-                        </span>
-                      </a>
-                      @if (tournament.visualCode && draw.visualCode) {
-                        <a
-                          [href]="'https://www.toernooi.nl/tournament/' + tournament.visualCode + '/draw/' + draw.visualCode"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="inline-flex items-center justify-center w-7 h-7 rounded-md text-muted-color hover:text-primary hover:bg-emphasis transition-colors no-underline flex-shrink-0"
-                          title="View draw on toernooi.nl"
-                        >
-                          <i class="pi pi-external-link text-xs"></i>
-                        </a>
-                      }
-                    </div>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                  @if (tournament.visualCode && subEvent.visualCode) {
+                    <a
+                      pButton
+                      severity="secondary"
+                      variant="text"
+                      size="small"
+                      [href]="'https://www.toernooi.nl/sport/event.aspx?id=' + tournament.visualCode + '&event=' + subEvent.visualCode"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="shrink-0 no-underline focus-visible:outline-none! focus-visible:ring-2! focus-visible:ring-primary"
+                      [attr.aria-label]="subEvent.name + ' (toernooi.nl)'"
+                    >
+                      <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>
+                    </a>
+                  }
+                  @if (getSubEventSyncStatusConfig(subEvent); as statusConfig) {
+                    <app-sync-status-indicator [config]="statusConfig" />
+                  }
+                  @if (getSubEventSyncConfig(subEvent); as config) {
+                    <app-sync-button [config]="config" />
                   }
                 </div>
-              </div>
-            } @else {
-              <div class="flex items-center gap-2 px-3 py-2 rounded-md bg-emphasis border border-dashed border-surface text-xs text-muted-color">
-                <i class="pi pi-info-circle"></i>
-                No draws configured yet
-              </div>
-            }
-          </article>
+              </header>
+
+              @if (subEvent.drawTournaments && subEvent.drawTournaments.length > 0) {
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm text-muted-color">{{ 'all.tournament.draws' | translate }}</span>
+                    <span class="text-sm text-muted-color">{{ subEvent.drawTournaments.length }}</span>
+                  </div>
+                  <ul class="m-0 flex list-none flex-col gap-2 p-0">
+                    @for (draw of subEvent.drawTournaments; track draw.id; let drawIndex = $index) {
+                      @let drawName = draw.name || ('all.tournament.drawFallbackName' | translate: { number: drawIndex + 1 });
+                      <li class="flex items-center gap-2">
+                        <a
+                          pButton
+                          severity="secondary"
+                          [outlined]="true"
+                          size="small"
+                          [routerLink]="['/', 'tournament', tournament.slug, 'sub-events', subEvent.id, 'draws', draw.id]"
+                          class="min-w-0 flex-1 no-underline focus-visible:outline-none! focus-visible:ring-2! focus-visible:ring-primary"
+                        >
+                          <span pButtonLabel class="min-w-0 w-full text-left text-color">
+                            <span class="block whitespace-normal break-words">{{ drawName }}</span>
+                            @if (draw.type || draw.size) {
+                              <span class="flex flex-wrap gap-2 text-xs font-normal text-muted-color">
+                                @if (draw.type) {
+                                  <span>{{ draw.type }}</span>
+                                }
+                                @if (draw.size) {
+                                  <span>S{{ draw.size }}</span>
+                                }
+                              </span>
+                            }
+                          </span>
+                        </a>
+                        @if (tournament.visualCode && draw.visualCode) {
+                          <a
+                            pButton
+                            severity="secondary"
+                            variant="text"
+                            size="small"
+                            [href]="'https://www.toernooi.nl/tournament/' + tournament.visualCode + '/draw/' + draw.visualCode"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="shrink-0 no-underline focus-visible:outline-none! focus-visible:ring-2! focus-visible:ring-primary"
+                            [attr.aria-label]="drawName + ' (toernooi.nl)'"
+                          >
+                            <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>
+                          </a>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              } @else {
+                <p-message severity="secondary" size="small" icon="pi pi-info-circle" role="status" aria-live="polite">
+                  {{ 'all.tournament.noDrawsYet' | translate }}
+                </p-message>
+              }
+            </article>
+          </p-card>
         }
       </div>
     </div>

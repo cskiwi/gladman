@@ -1689,7 +1689,9 @@
         "title": "Correspondances"
       }
     },
+    "drawFallbackName": "Série {{number}}",
     "draws": "Série",
+    "noDrawsYet": "Aucune série configurée pour le moment",
     "edit": {
       "actions": {
         "cancel": "Annuler",

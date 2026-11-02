@@ -1696,7 +1696,9 @@ export type I18nTranslations = {
                     "title": string;
                 };
             };
+            "drawFallbackName": string;
             "draws": string;
+            "noDrawsYet": string;
             "edit": {
                 "actions": {
                     "cancel": string;

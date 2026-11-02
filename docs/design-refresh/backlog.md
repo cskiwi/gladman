@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-019d is Done with explicit user approval: tournament sub-events use competition-aligned native Cards, semantic headings,
+outlined draw anchors, named external text actions and localized fallback/empty feedback.
+Native type Tabs, grouping/order/counts, slug-based routes, metadata and sync gates remain intact.
+Thirty-five tests, focused tournament/translation lint and the production library build plus ten prerequisites pass.
+Eight isolated light/dark 360/390/768/1440px browser cases pass all three tabs, fit, responsive columns,
+95 actual draw routes, keyboard activation, synthetic long-name wrapping and settled text/focus contrast.
+Minimum hover/focus text contrast is 4.66:1 light / 6.28:1 dark; draw/external ring contrast is
+3.65:1 light / 10.22:1 dark. Four paired competition cases confirm Card classes and heading typography.
+Loaded Dutch SSR content matches client headings; keyboard Enter reaches the first draw and Back restores 95 links.
+Final isolated cases have zero page errors/mutations. Actual screen-reader, mounted English/French,
+exhaustive hydration and mounted authenticated workflows remain unverified.
+Empty/fallback states and draw-external-code branches are fixture-covered, not mounted-data passes.
+Hero, live navigation, destination pages, shared/global styling and loading/error feedback remain excluded.
+The existing missing draw `visualCode` query contract is recorded separately as DR-019g, not changed here.
+The user selected "Approve DR-019d and commit with disclosed verification limits".
+Only its implementation/tests/translations/generated types and repository handoff are approved for commit. No push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors. Unchecked criteria remain unchecked; acceptance is not a performed check.
+Exact next action in a fresh invocation: confirm and scope DR-019f detail loading/error feedback.
+See the [event/draw brief](work-items/DR-019d-tournament-events.md).
+Do not begin another child here. DR-019 remains open.
+
+### Previous completed focus: live navigation
+
 DR-019c is Done with explicit user approval: the four mounted tournament live-navigation links use secondary outlined anchors,
 a semantic heading, wrapping localized descriptions and one native Card matching competition content surfaces.
 Routes, order and public availability remain unchanged; hero, events, feedback and live destination pages are excluded.
@@ -1146,9 +1170,10 @@ and linked from their registry rows.
 | [DR-019a](work-items/DR-019a-tournament-identity.md)          | Tournament complete hero parity                           | Done        |
 | DR-019b                                                       | Reserved history: summaries/actions absorbed into DR-019a | Backlog     |
 | [DR-019c](work-items/DR-019c-tournament-live-navigation.md)   | Tournament detail live-navigation links                   | Done        |
-| DR-019d                                                       | Tournament detail sub-events and draw-link presentation   | Backlog     |
+| [DR-019d](work-items/DR-019d-tournament-events.md)            | Tournament detail sub-events and draw-link presentation   | Done        |
 | DR-019e                                                       | Club tournament browsing; consumer confirmation needed    | Backlog     |
 | DR-019f                                                       | Tournament detail loading/error feedback                  | Backlog     |
+| DR-019g                                                       | Investigate draw external-link visualCode query contract  | Backlog     |
 | DR-020                                                        | Tournament creation and editing                           | Backlog     |
 | DR-021                                                        | Tournament enrollment workflows                           | Backlog     |
 | DR-022                                                        | Tournament draw detail                                    | Backlog     |

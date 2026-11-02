@@ -1689,7 +1689,9 @@
         "title": "Wedstrijden"
       }
     },
+    "drawFallbackName": "Reeks {{number}}",
     "draws": "Reeks",
+    "noDrawsYet": "Nog geen reeksen ingesteld",
     "edit": {
       "actions": {
         "cancel": "Annuleren",

@@ -5,6 +5,35 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-020a is Done with explicit user approval after follow-up feedback: the loaded form uses native `p-card`;
+its two actions use modern `button[pButton]`/`pButtonLabel` syntax without changing behavior.
+The user approved completion/commit with disclosed limits, then requested this correction before committing.
+Creation heading and native Card/Skeleton/info/error read feedback are implemented.
+The real club tournaments action links to `/tournament/create?clubId=...`; isolated Chrome mounted the supplied
+club's creation form on 2026-11-02 without submitting. Fields, mutation feedback, action logic and editing are excluded.
+The club resource read is guarded on error so the native failure branch can render.
+Scoped class tokens drop from 44 to 10 after the form Card correction; two inline-colored read banners are removed.
+All 60 tournament tests, focused lint, production library build and ten prerequisites pass.
+Eight settled light/dark 360/390/768/1440px cases pass scoped fit, real club content, normal Tab movement,
+native read-state semantics and browser-local loading/error fixtures; no page errors or GraphQL mutations.
+Dutch SSR/client heading/context match. Heading/context contrast is 18.20:1 light / 16.64:1 dark;
+info Message is 4.75:1 / 4.59:1. Native error text fails light at 4.41:1, passes dark at 4.64:1; DR-034 retains it.
+Actual screen-reader, exhaustive focus/hydration, mounted English/French, authenticated/create/cancel,
+real outage/retry and excluded form/date-picker workflows remain unverified. No styling exceptions.
+See the [parent scope](work-items/DR-020-tournament-forms.md) and [active brief](work-items/DR-020a-creation-chrome.md).
+The user restored port 3000; the completed final matrix verifies native Card/body and two native button labels,
+invalid/busy gating, decorative spinner and Dutch SSR in all eight cases. No connectivity blocker remains.
+Component tests verify cancel and form-submit contracts without invoking mutations.
+The user selected "Approve corrected DR-020a and commit with disclosed limits" on 2026-11-02.
+Only this slice and its handoff are approved for commit; no push. Unchecked criteria stay unchecked.
+Final repository-wide lint passes all 34 projects with existing warnings and zero errors.
+Exact next action in a fresh invocation: scope DR-020b creation fields/mutation feedback,
+preserving the completed native Card and action syntax. Do not start another child here.
+DR-020 stays open.
+DR-020b is the next candidate; creation/save logic remains unchanged.
+
+### Previous completed focus: draw external-link repair
+
 DR-042 is Done with explicit user approval: tournament detail requests draw `visualCode`, restoring 95 external actions.
 The exact-path executed-query regression fails before the repair and passes after; all 53 tournament tests,
 focused lint, production library build and ten prerequisites pass.
@@ -1178,107 +1207,112 @@ Each row is a trackable area, not a promise to migrate that entire area in one c
 areas into child items before starting them. Briefs are created on demand from the [template](work-item-template.md)
 and linked from their registry rows.
 
-| ID                                                            | Area                                                      | Status  |
-| ------------------------------------------------------------- | --------------------------------------------------------- | ------- |
-| [DR-001][baseline]                                            | Theme and design baseline                                 | Done    |
-| [DR-002][pilot]                                               | Home page pilot                                           | Done    |
-| [DR-003][shell-work-item]                                     | App shell, navigation, search, and layouts                | Done    |
-| [DR-004][heading-work-item]                                   | Shared headings, hero, and breadcrumb                     | Done    |
-| DR-005                                                        | Shared ranking, statistics, and status patterns           | Backlog |
-| [DR-005a][tier-badge-work-item]                               | Shared tier badge                                         | Done    |
-| [DR-005b][form-sequence-work-item]                            | Shared form sequence                                      | Done    |
-| [DR-005c](work-items/DR-005c-sparkline.md)                    | Shared sparkline                                          | Done    |
-| [DR-005d](work-items/DR-005d-stat-card.md)                    | Shared stat-card                                          | Done    |
-| [DR-005e](work-items/DR-005e-ranking-progress.md)             | Shared ranking progress                                   | Done    |
-| DR-006                                                        | Shared games, matches, and brackets                       | Backlog |
-| [DR-006a](work-items/DR-006a-recent-game-points.md)           | Mounted player recent-game point indicators               | Done    |
-| [DR-006b](work-items/DR-006b-recent-game-scores.md)           | Mounted player recent-game set scores                     | Done    |
-| [DR-006c](work-items/DR-006c-recent-game-results.md)          | Mounted player recent-game result indicator               | Done    |
-| [DR-006d](work-items/DR-006d-recent-game-filters.md)          | Mounted player recent-game heading and filters            | Done    |
-| [DR-006e](work-items/DR-006e-recent-game-loading.md)          | Mounted player recent-game loading presentation           | Done    |
-| [DR-006f](work-items/DR-006f-upcoming-game-cards.md)          | Mounted player populated upcoming-game cards              | Done    |
-| [DR-006g](work-items/DR-006g-upcoming-game-states.md)         | Mounted player upcoming-games presentation                | Done    |
-| [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md)     | Shared upcoming encounter cards                           | Done    |
-| [DR-006i](work-items/DR-006i-played-encounter-cards.md)       | Shared played encounter cards and expanded presentation   | Done    |
-| [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)      | Shared bracket responsive layout                          | Done    |
-| DR-007                                                        | Shared form controls and sync feedback                    | Backlog |
-| DR-008                                                        | Player detail                                             | Backlog |
-| [DR-008a](work-items/DR-008a-player-hero-actions.md)          | Player hero actions                                       | Done    |
-| DR-009                                                        | Player head-to-head                                       | Backlog |
-| DR-010                                                        | Player ranking breakdown                                  | Backlog |
-| DR-011                                                        | Player editing                                            | Backlog |
-| DR-012                                                        | Club detail and browsing tabs                             | Backlog |
-| DR-013                                                        | Club team builder                                         | Backlog |
-| DR-014                                                        | Club team detail                                          | Backlog |
-| DR-015                                                        | Competition detail and sub-event presentation             | Backlog |
-| [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                               | Done    |
-| [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement         | Done    |
-| [DR-015c](work-items/DR-015c-competition-draw-links.md)       | Competition draw links and empty presentation             | Done    |
-| [DR-015d](work-items/DR-015d-competition-metadata.md)         | Competition sub-event metadata Tags                       | Done    |
-| [DR-015e](work-items/DR-015e-competition-hero-link.md)        | Competition hero external link                            | Done    |
-| [DR-015f](work-items/DR-015f-competition-statistics.md)       | Competition hero statistics and localization              | Done    |
-| [DR-015g](work-items/DR-015g-competition-draw-copy.md)        | Competition draw fallback and empty copy                  | Done    |
-| [DR-016](work-items/DR-016-competition-draws.md)              | Competition draws                                         | Done    |
-| [DR-016a](work-items/DR-016a-poule-standings.md)              | Competition poule standings                               | Done    |
-| [DR-016b](work-items/DR-016b-draw-hero.md)                    | Competition draw hero identity and actions                | Done    |
-| [DR-016c](work-items/DR-016c-draw-statistics.md)              | Competition draw hero statistics                          | Done    |
-| [DR-016d](work-items/DR-016d-encounter-section-chrome.md)     | Competition draw encounter section chrome                 | Done    |
-| [DR-016e](work-items/DR-016e-draw-states.md)                  | Competition draw loading, error, and overall-empty        | Done    |
-| [DR-016f](work-items/DR-016f-standings-section-chrome.md)     | Competition poule standings section chrome                | Done    |
-| [DR-016g](work-items/DR-016g-standings-terminology.md)        | Competition league standings terminology                  | Done    |
-| [DR-017](work-items/DR-017-competition-assembly.md)           | Competition assembly                                      | Done    |
-| [DR-017a](work-items/DR-017a-assembly-page-chrome.md)         | Assembly page heading and filter chrome                   | Done    |
-| [DR-017b](work-items/DR-017b-assembly-player-row.md)          | Reusable assembly player row                              | Done    |
-| [DR-017c](work-items/DR-017c-assembly-player-pool.md)         | Desktop assembly player-pool container                    | Done    |
-| [DR-017d](work-items/DR-017d-assembly-doubles-slots.md)       | Desktop assembly doubles-slot containers                  | Done    |
-| [DR-017e](work-items/DR-017e-assembly-singles-slots.md)       | Desktop assembly singles-slot containers                  | Done    |
-| [DR-017f](work-items/DR-017f-assembly-substitutes.md)         | Desktop assembly substitutes container                    | Done    |
-| [DR-017g](work-items/DR-017g-assembly-generation-controls.md) | Desktop assembly generation controls                      | Done    |
-| [DR-017h](work-items/DR-017h-assembly-validation-overview.md) | Assembly validation overview and reused message content   | Done    |
-| [DR-017i][dr-017i]                                            | Desktop assembly partner combinations                     | Done    |
-| [DR-017j][dr-017j]                                            | Responsive assembly captain/add-player searches           | Done    |
-| [DR-017k][dr-017k]                                            | Reused assembly base/titular information summaries        | Done    |
-| [DR-017l](work-items/DR-017l-assembly-mobile-singles.md)      | Mobile assembly singles selectors                         | Done    |
-| [DR-017m](work-items/DR-017m-assembly-mobile-doubles.md)      | Mobile assembly doubles surfaces                          | Done    |
-| [DR-017n](work-items/DR-017n-assembly-mobile-substitutes.md)  | Mobile assembly substitutes picker                        | Done    |
-| [DR-017o](work-items/DR-017o-assembly-confirmation-dialog.md) | Assembly confirmation dialog chrome/actions               | Done    |
-| [DR-017p](work-items/DR-017p-assembly-loading-feedback.md)    | Assembly loading feedback                                 | Done    |
-| [DR-017q](work-items/DR-017q-assembly-load-feedback.md)       | Assembly load-error and unselected feedback               | Done    |
-| [DR-017r](work-items/DR-017r-assembly-search-card-parity.md)  | Assembly change-team Card and responsive search parity    | Done    |
-| DR-017s                                                       | Deferred authenticated assembly Save popup                | Backlog |
-| DR-018                                                        | Competition editing                                       | Backlog |
-| [DR-019](work-items/DR-019-tournament-browsing.md)            | Tournament detail and retired club tournaments            | Done    |
-| [DR-019a](work-items/DR-019a-tournament-identity.md)          | Tournament complete hero parity                           | Done    |
-| DR-019b                                                       | Reserved history: summaries/actions absorbed into DR-019a | Backlog |
-| [DR-019c](work-items/DR-019c-tournament-live-navigation.md)   | Tournament detail live-navigation links                   | Done    |
-| [DR-019d](work-items/DR-019d-tournament-events.md)            | Tournament detail sub-events and draw-link presentation   | Done    |
-| [DR-019e](work-items/DR-019e-club-tournament-chrome.md)       | Retire obsolete tournament club page                      | Done    |
-| [DR-019f](work-items/DR-019f-tournament-feedback.md)          | Tournament detail loading/error feedback                  | Done    |
-| [DR-019g](work-items/DR-019g-draw-external-link-contract.md)  | Investigate draw external-link visualCode query contract  | Done    |
-| DR-019h                                                       | Club tournament tabs; withdrawn with page retirement      | Done    |
-| DR-020                                                        | Tournament creation and editing                           | Backlog |
-| DR-021                                                        | Tournament enrollment workflows                           | Backlog |
-| DR-022                                                        | Tournament draw detail                                    | Backlog |
-| DR-023                                                        | Tournament admin: enrollments and check-in                | Backlog |
-| DR-024                                                        | Tournament admin: draws and scheduling                    | Backlog |
-| DR-025                                                        | Tournament admin: settings and phase controls             | Backlog |
-| DR-026                                                        | Tournament live displays and kiosk                        | Backlog |
-| DR-027                                                        | Global admin and search indexing                          | Backlog |
-| DR-028                                                        | Sync administration and team matching                     | Backlog |
-| DR-029                                                        | Legacy styling retirement and final regression            | Backlog |
-| DR-030                                                        | Shared header overflow at 320px                           | Backlog |
-| DR-031                                                        | Native FloatLabel focused-label contrast audit            | Backlog |
-| DR-032                                                        | Native Checkbox and secondary Button contrast audit       | Backlog |
-| DR-033                                                        | Native Button contrast and Tooltip association audit      | Backlog |
-| DR-034                                                        | Native Message severity text contrast audit               | Backlog |
-| DR-035                                                        | Native Fieldset descendant tab-stop restoration audit     | Backlog |
-| DR-036                                                        | Mobile assembly replacement and duplicate-rule parity     | Backlog |
-| DR-037                                                        | Native Select default feedback localization audit         | Backlog |
-| DR-038                                                        | Native ProgressBar value/track contrast audit             | Backlog |
-| DR-039                                                        | Assembly filter/service selection synchronization         | Backlog |
-| DR-040                                                        | Investigate competition detail resource error rendering   | Backlog |
-| DR-041                                                        | Club tournament repairs; withdrawn with page retirement   | Done    |
-| [DR-042](work-items/DR-042-draw-external-link-repair.md)      | Restore tournament detail draw external-link query field  | Done    |
+| ID                                                            | Area                                                      | Status      |
+| ------------------------------------------------------------- | --------------------------------------------------------- | ----------- |
+| [DR-001][baseline]                                            | Theme and design baseline                                 | Done        |
+| [DR-002][pilot]                                               | Home page pilot                                           | Done        |
+| [DR-003][shell-work-item]                                     | App shell, navigation, search, and layouts                | Done        |
+| [DR-004][heading-work-item]                                   | Shared headings, hero, and breadcrumb                     | Done        |
+| DR-005                                                        | Shared ranking, statistics, and status patterns           | Backlog     |
+| [DR-005a][tier-badge-work-item]                               | Shared tier badge                                         | Done        |
+| [DR-005b][form-sequence-work-item]                            | Shared form sequence                                      | Done        |
+| [DR-005c](work-items/DR-005c-sparkline.md)                    | Shared sparkline                                          | Done        |
+| [DR-005d](work-items/DR-005d-stat-card.md)                    | Shared stat-card                                          | Done        |
+| [DR-005e](work-items/DR-005e-ranking-progress.md)             | Shared ranking progress                                   | Done        |
+| DR-006                                                        | Shared games, matches, and brackets                       | Backlog     |
+| [DR-006a](work-items/DR-006a-recent-game-points.md)           | Mounted player recent-game point indicators               | Done        |
+| [DR-006b](work-items/DR-006b-recent-game-scores.md)           | Mounted player recent-game set scores                     | Done        |
+| [DR-006c](work-items/DR-006c-recent-game-results.md)          | Mounted player recent-game result indicator               | Done        |
+| [DR-006d](work-items/DR-006d-recent-game-filters.md)          | Mounted player recent-game heading and filters            | Done        |
+| [DR-006e](work-items/DR-006e-recent-game-loading.md)          | Mounted player recent-game loading presentation           | Done        |
+| [DR-006f](work-items/DR-006f-upcoming-game-cards.md)          | Mounted player populated upcoming-game cards              | Done        |
+| [DR-006g](work-items/DR-006g-upcoming-game-states.md)         | Mounted player upcoming-games presentation                | Done        |
+| [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md)     | Shared upcoming encounter cards                           | Done        |
+| [DR-006i](work-items/DR-006i-played-encounter-cards.md)       | Shared played encounter cards and expanded presentation   | Done        |
+| [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)      | Shared bracket responsive layout                          | Done        |
+| DR-007                                                        | Shared form controls and sync feedback                    | Backlog     |
+| DR-008                                                        | Player detail                                             | Backlog     |
+| [DR-008a](work-items/DR-008a-player-hero-actions.md)          | Player hero actions                                       | Done        |
+| DR-009                                                        | Player head-to-head                                       | Backlog     |
+| DR-010                                                        | Player ranking breakdown                                  | Backlog     |
+| DR-011                                                        | Player editing                                            | Backlog     |
+| DR-012                                                        | Club detail and browsing tabs                             | Backlog     |
+| DR-013                                                        | Club team builder                                         | Backlog     |
+| DR-014                                                        | Club team detail                                          | Backlog     |
+| DR-015                                                        | Competition detail and sub-event presentation             | Backlog     |
+| [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                               | Done        |
+| [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement         | Done        |
+| [DR-015c](work-items/DR-015c-competition-draw-links.md)       | Competition draw links and empty presentation             | Done        |
+| [DR-015d](work-items/DR-015d-competition-metadata.md)         | Competition sub-event metadata Tags                       | Done        |
+| [DR-015e](work-items/DR-015e-competition-hero-link.md)        | Competition hero external link                            | Done        |
+| [DR-015f](work-items/DR-015f-competition-statistics.md)       | Competition hero statistics and localization              | Done        |
+| [DR-015g](work-items/DR-015g-competition-draw-copy.md)        | Competition draw fallback and empty copy                  | Done        |
+| [DR-016](work-items/DR-016-competition-draws.md)              | Competition draws                                         | Done        |
+| [DR-016a](work-items/DR-016a-poule-standings.md)              | Competition poule standings                               | Done        |
+| [DR-016b](work-items/DR-016b-draw-hero.md)                    | Competition draw hero identity and actions                | Done        |
+| [DR-016c](work-items/DR-016c-draw-statistics.md)              | Competition draw hero statistics                          | Done        |
+| [DR-016d](work-items/DR-016d-encounter-section-chrome.md)     | Competition draw encounter section chrome                 | Done        |
+| [DR-016e](work-items/DR-016e-draw-states.md)                  | Competition draw loading, error, and overall-empty        | Done        |
+| [DR-016f](work-items/DR-016f-standings-section-chrome.md)     | Competition poule standings section chrome                | Done        |
+| [DR-016g](work-items/DR-016g-standings-terminology.md)        | Competition league standings terminology                  | Done        |
+| [DR-017](work-items/DR-017-competition-assembly.md)           | Competition assembly                                      | Done        |
+| [DR-017a](work-items/DR-017a-assembly-page-chrome.md)         | Assembly page heading and filter chrome                   | Done        |
+| [DR-017b](work-items/DR-017b-assembly-player-row.md)          | Reusable assembly player row                              | Done        |
+| [DR-017c](work-items/DR-017c-assembly-player-pool.md)         | Desktop assembly player-pool container                    | Done        |
+| [DR-017d](work-items/DR-017d-assembly-doubles-slots.md)       | Desktop assembly doubles-slot containers                  | Done        |
+| [DR-017e](work-items/DR-017e-assembly-singles-slots.md)       | Desktop assembly singles-slot containers                  | Done        |
+| [DR-017f](work-items/DR-017f-assembly-substitutes.md)         | Desktop assembly substitutes container                    | Done        |
+| [DR-017g](work-items/DR-017g-assembly-generation-controls.md) | Desktop assembly generation controls                      | Done        |
+| [DR-017h](work-items/DR-017h-assembly-validation-overview.md) | Assembly validation overview and reused message content   | Done        |
+| [DR-017i][dr-017i]                                            | Desktop assembly partner combinations                     | Done        |
+| [DR-017j][dr-017j]                                            | Responsive assembly captain/add-player searches           | Done        |
+| [DR-017k][dr-017k]                                            | Reused assembly base/titular information summaries        | Done        |
+| [DR-017l](work-items/DR-017l-assembly-mobile-singles.md)      | Mobile assembly singles selectors                         | Done        |
+| [DR-017m](work-items/DR-017m-assembly-mobile-doubles.md)      | Mobile assembly doubles surfaces                          | Done        |
+| [DR-017n](work-items/DR-017n-assembly-mobile-substitutes.md)  | Mobile assembly substitutes picker                        | Done        |
+| [DR-017o](work-items/DR-017o-assembly-confirmation-dialog.md) | Assembly confirmation dialog chrome/actions               | Done        |
+| [DR-017p](work-items/DR-017p-assembly-loading-feedback.md)    | Assembly loading feedback                                 | Done        |
+| [DR-017q](work-items/DR-017q-assembly-load-feedback.md)       | Assembly load-error and unselected feedback               | Done        |
+| [DR-017r](work-items/DR-017r-assembly-search-card-parity.md)  | Assembly change-team Card and responsive search parity    | Done        |
+| DR-017s                                                       | Deferred authenticated assembly Save popup                | Backlog     |
+| DR-018                                                        | Competition editing                                       | Backlog     |
+| [DR-019](work-items/DR-019-tournament-browsing.md)            | Tournament detail and retired club tournaments            | Done        |
+| [DR-019a](work-items/DR-019a-tournament-identity.md)          | Tournament complete hero parity                           | Done        |
+| DR-019b                                                       | Reserved history: summaries/actions absorbed into DR-019a | Backlog     |
+| [DR-019c](work-items/DR-019c-tournament-live-navigation.md)   | Tournament detail live-navigation links                   | Done        |
+| [DR-019d](work-items/DR-019d-tournament-events.md)            | Tournament detail sub-events and draw-link presentation   | Done        |
+| [DR-019e](work-items/DR-019e-club-tournament-chrome.md)       | Retire obsolete tournament club page                      | Done        |
+| [DR-019f](work-items/DR-019f-tournament-feedback.md)          | Tournament detail loading/error feedback                  | Done        |
+| [DR-019g](work-items/DR-019g-draw-external-link-contract.md)  | Investigate draw external-link visualCode query contract  | Done        |
+| DR-019h                                                       | Club tournament tabs; withdrawn with page retirement      | Done        |
+| [DR-020](work-items/DR-020-tournament-forms.md)               | Tournament creation and editing                           | In progress |
+| [DR-020a](work-items/DR-020a-creation-chrome.md)              | Creation chrome and native form Card                      | Done        |
+| DR-020b                                                       | Creation fields and mutation feedback                     | Backlog     |
+| DR-020c                                                       | Editing chrome and actions                                | Backlog     |
+| DR-020d                                                       | Editing information tab                                   | Backlog     |
+| DR-020e                                                       | Editing settings tab                                      | Backlog     |
+| DR-021                                                        | Tournament enrollment workflows                           | Backlog     |
+| DR-022                                                        | Tournament draw detail                                    | Backlog     |
+| DR-023                                                        | Tournament admin: enrollments and check-in                | Backlog     |
+| DR-024                                                        | Tournament admin: draws and scheduling                    | Backlog     |
+| DR-025                                                        | Tournament admin: settings and phase controls             | Backlog     |
+| DR-026                                                        | Tournament live displays and kiosk                        | Backlog     |
+| DR-027                                                        | Global admin and search indexing                          | Backlog     |
+| DR-028                                                        | Sync administration and team matching                     | Backlog     |
+| DR-029                                                        | Legacy styling retirement and final regression            | Backlog     |
+| DR-030                                                        | Shared header overflow at 320px                           | Backlog     |
+| DR-031                                                        | Native FloatLabel focused-label contrast audit            | Backlog     |
+| DR-032                                                        | Native Checkbox and secondary Button contrast audit       | Backlog     |
+| DR-033                                                        | Native Button contrast and Tooltip association audit      | Backlog     |
+| DR-034                                                        | Native Message severity text contrast audit               | Backlog     |
+| DR-035                                                        | Native Fieldset descendant tab-stop restoration audit     | Backlog     |
+| DR-036                                                        | Mobile assembly replacement and duplicate-rule parity     | Backlog     |
+| DR-037                                                        | Native Select default feedback localization audit         | Backlog     |
+| DR-038                                                        | Native ProgressBar value/track contrast audit             | Backlog     |
+| DR-039                                                        | Assembly filter/service selection synchronization         | Backlog     |
+| DR-040                                                        | Investigate competition detail resource error rendering   | Backlog     |
+| DR-041                                                        | Club tournament repairs; withdrawn with page retirement   | Done        |
+| [DR-042](work-items/DR-042-draw-external-link-repair.md)      | Restore tournament detail draw external-link query field  | Done        |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -1332,6 +1366,14 @@ Source inspection during DR-017q finds that `onClubSelect`, `onClubClear` and `o
 Investigate stale lineup/query/retry state after changing or clearing filters in a separate functional slice.
 Preserve URL restoration, valid selection and real read consumers; do not use admin/save mutations for testing.
 DR-017q only reflects existing loading/loaded/error gates; it does not claim this mismatch is corrected.
+
+### DR-034 additional evidence: creation read-error Message
+
+DR-020a's native error Message measures 4.41:1 in light mode (fails AA normal text) and 4.64:1 in dark
+(passes), with alpha background colors composited over ancestors. Info passes at 4.75:1 / 4.59:1.
+Eight settled light/dark 360/390/768/1440px cases use browser-local read fixtures, not real outages.
+No page-specific override or shared theme change is introduced; keep the failed light check open.
+See the [creation brief](work-items/DR-020a-creation-chrome.md).
 
 ### DR-034 additional evidence: assembly load-error Message
 

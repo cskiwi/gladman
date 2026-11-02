@@ -47,7 +47,7 @@ export class CreateTournamentService {
   });
 
   // Public selectors
-  club = computed(() => this.clubResource.value());
+  club = computed(() => (this.clubResource.error() ? undefined : this.clubResource.value()));
   loading = computed(() => this.clubResource.isLoading());
   error = computed(() => this.clubResource.error()?.message || null);
 

@@ -4,9 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CreateTournamentService } from './page-create.service';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
@@ -20,6 +22,8 @@ import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
     RouterModule,
     TranslateModule,
     ButtonModule,
+    CardModule,
+    MessageModule,
     InputTextModule,
     DatePickerModule,
     CheckboxModule,

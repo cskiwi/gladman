@@ -11,7 +11,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { of } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ButtonDirective } from 'primeng/button';
 import { PageDetailComponent } from './page-detail.component';
 
@@ -91,6 +92,7 @@ describe('Tournament detail hero', () => {
           official: 'Official tournament',
           draws: 'Draws',
           phases: { draft: 'Draft' },
+          edit: { messages: { loading: 'Loading tournament data...' } },
           summary: {
             subEvents: 'Sub-events',
             registration: 'Registration',
@@ -131,6 +133,92 @@ describe('Tournament detail hero', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
   }
+
+  it('renders existing HTTP error feedback without throwing from the resource value', async () => {
+    query.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 404, url: '/graphql' })));
+    await harness.navigateByUrl('/tournament/missing', PageDetailComponent);
+    await harness.fixture.whenStable();
+    expect(() => harness.detectChanges()).not.toThrow();
+    expect(element.textContent).toContain('Failed to load tournament');
+    expect(element.querySelector('app-hero')).toBeNull();
+    const message = element.querySelector('p-message');
+    expect(message?.classList.contains('p-message-error')).toBe(true);
+    expect(message?.getAttribute('role')).toBe('alert');
+    expect(message?.getAttribute('aria-live')).toBe('polite');
+    expect(message?.querySelector('.pi-exclamation-triangle')).not.toBeNull();
+    expect(message?.querySelector('button')).toBeNull();
+    expect(element.querySelector('p-progressbar, p-skeleton')).toBeNull();
+    expect(element.querySelector('[style*="--g-loss"]')).toBeNull();
+  });
+
+  it('shows named indeterminate progress until the request resolves, then restores loaded content', async () => {
+    const pending = new Subject<{ data: { tournamentEvent: ReturnType<typeof createTournament> } }>();
+    query.mockReturnValue(pending);
+    await harness.navigateByUrl('/tournament/pending', PageDetailComponent);
+    harness.detectChanges();
+    const progress = element.querySelector('p-progressbar');
+    expect(progress?.getAttribute('role')).toBe('progressbar');
+    expect(progress?.getAttribute('aria-label')).toBe('Loading tournament data...');
+    expect(progress?.classList.contains('p-progressbar-indeterminate')).toBe(true);
+    expect(progress?.hasAttribute('aria-valuenow')).toBe(false);
+    expect(element.querySelector('app-hero, p-message, p-skeleton')).toBeNull();
+    pending.next({ data: { tournamentEvent: createTournament() } });
+    pending.complete();
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('h1')?.textContent).toBe('Test tournament');
+    expect(element.querySelector('p-progressbar, p-message')).toBeNull();
+  });
+
+  it.each([
+    { error: new HttpErrorResponse({ status: 503, statusText: 'Service Unavailable' }), text: 'Service Unavailable' },
+    { error: new Error('Unmapped failure'), text: 'An error occurred' },
+  ])('preserves mapped error text: $text and recovers on subsequent route loads', async ({ error, text }) => {
+    query.mockReturnValue(throwError(() => error));
+    await harness.navigateByUrl('/tournament/failed', PageDetailComponent);
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('p-message')?.textContent?.trim()).toBe(text);
+    expect(element.querySelector('app-hero')).toBeNull();
+    const pending = new Subject<{ data: { tournamentEvent: ReturnType<typeof createTournament> } }>();
+    query.mockReturnValue(pending);
+    await harness.navigateByUrl('/tournament/recovery', PageDetailComponent);
+    harness.detectChanges();
+    expect(element.querySelector('p-message')).toBeNull();
+    expect(element.querySelector('p-progressbar')).not.toBeNull();
+    pending.next({ data: { tournamentEvent: createTournament() } });
+    pending.complete();
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('h1')?.textContent).toBe('Test tournament');
+    expect(element.querySelector('p-message, p-progressbar')).toBeNull();
+    expect(element.querySelector('section[aria-labelledby="tournament-events-title"]')).toBeNull();
+  });
+
+  it('renders a missing tournament result as an explicit error, not a loaded empty page', async () => {
+    query.mockReturnValue(of({ data: { tournamentEvent: null } }));
+    await harness.navigateByUrl('/tournament/no-result', PageDetailComponent);
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(element.querySelector('p-message')?.textContent?.trim()).toBe('An error occurred');
+    expect(element.querySelector('app-hero, p-progressbar')).toBeNull();
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('uses existing localized progress copy in %s', async (locale) => {
+    const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
+    const asset: { tournament: { edit: { messages: { loading: string } } } } = JSON.parse(readFileSync(assetPath, 'utf8'));
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    const pending = new Subject<{ data: { tournamentEvent: ReturnType<typeof createTournament> } }>();
+    query.mockReturnValue(pending);
+    await harness.navigateByUrl(`/tournament/pending-${locale}`, PageDetailComponent);
+    harness.detectChanges();
+    expect(element.querySelector('p-progressbar')?.getAttribute('aria-label')).toBe(asset.tournament.edit.messages.loading);
+    pending.next({ data: { tournamentEvent: createTournament() } });
+    pending.complete();
+    await harness.fixture.whenStable();
+  });
 
   it('uses shared native circular avatar and a single wrapping heading', () => {
     expect(element.querySelector('app-hero-avatar .p-avatar-circle')?.textContent).toBe('TT');

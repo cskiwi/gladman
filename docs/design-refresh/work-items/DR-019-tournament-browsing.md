@@ -24,7 +24,7 @@ description: 'Parent scope and child sequencing for tournament detail and club b
 | [DR-019c](DR-019c-tournament-live-navigation.md) | Four public live-navigation links on detail | Confirmed mounted; selected on 2026-11-02      |
 | [DR-019d](DR-019d-tournament-events.md)          | Sub-event groups and draw links on detail   | Confirmed loaded; selected on 2026-11-02       |
 | DR-019e                                          | Club tournament browsing                    | Confirm actual route consumer before selection |
-| DR-019f                                          | Detail loading/error feedback               | Confirm state consumers and scope separately   |
+| [DR-019f](DR-019f-tournament-feedback.md)        | Detail loading/error feedback               | Approved complete with disclosed limits        |
 
 Keep this parent open until required children are complete or explicitly deferred with approval.
 Do not infer that routes behind links have been reviewed.
@@ -44,7 +44,10 @@ DR-019a after user feedback. It is not a required child or a future implementati
   Keep the child's disclosed verification limits; do not infer parent-wide acceptance.
 - Separate discovery DR-019g: existing draw external links require `draw.visualCode`, absent from the detail query.
   Preserve the branch/URL; investigate its data contract separately, not as a hidden visual-slice query change.
-- Loading retains rectangle skeleton/custom surface; errors retain inline loss colors: DR-019f.
+- DR-019f implements native loading/error feedback and fixes the reproduced error-state resource read.
+  Forty-three tests, focused lint/build and eight responsive/theme browser cases pass.
+  Native light Message/progress contrast fails the existing thresholds (DR-034/DR-038); no styling override.
+  Its brief preserves exact checks and user-accepted limits; parent-wide acceptance is not implied.
 - Live links, events and feedback are not changed by DR-019a.
 - DR-019a includes English/Dutch/French tournament summary translations and automatically generated types.
   No backend query, shared component or global theme change.
@@ -61,4 +64,5 @@ DR-019a after user feedback. It is not a required child or a future implementati
 - DR-019c/d are approved complete with disclosed limits. The user selected
   "Approve DR-019d and commit with disclosed verification limits"; commit only that child's implementation,
   tests/translations/generated types and handoff. Keep this parent open.
-  The next candidate is DR-019f: confirm and scope loading/error feedback in a fresh invocation.
+- DR-019f is approved complete with disclosed verification limits. Do not start another child here.
+  Confirm a real DR-019e club-browsing consumer before scoping that next candidate in a fresh invocation.

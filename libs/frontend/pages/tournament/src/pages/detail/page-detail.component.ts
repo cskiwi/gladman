@@ -10,7 +10,7 @@ import { TournamentPhase } from '@app/models-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
 import { DetailService } from './page-detail.service';
-import { SkeletonModule } from 'primeng/skeleton';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { TabsModule } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -23,7 +23,7 @@ import { MessageModule } from 'primeng/message';
     BreadcrumbComponent,
     DatePipe,
     NgTemplateOutlet,
-    SkeletonModule,
+    ProgressBarModule,
     RouterModule,
     TranslateModule,
     HeroComponent,

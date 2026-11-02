@@ -197,29 +197,13 @@
     }
   }
 } @else {
-  <!-- Loading skeleton -->
-  <div class="flex flex-col gap-6">
-    <p-skeleton width="18rem" height="1rem" />
-    <div class="bg-emphasis border border-surface rounded-border p-6 flex items-center gap-4">
-      <p-skeleton shape="rectangle" width="6rem" height="6rem" />
-      <div class="flex-1 space-y-2">
-        <p-skeleton width="16rem" height="2rem" />
-        <p-skeleton width="10rem" height="1rem" />
-      </div>
-    </div>
-    <div class="grid gap-3 md:grid-cols-4">
-      @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton height="4rem" />
-      }
-    </div>
-  </div>
+  <p-progressbar mode="indeterminate" class="h-1" [attr.aria-label]="'all.tournament.edit.messages.loading' | translate" />
 }
 
 @if (error()) {
-  <div class="flex items-center gap-2 p-4 rounded-lg mt-4" style="background: var(--g-loss-muted); color: var(--g-loss)">
-    <i class="pi pi-exclamation-triangle"></i>
+  <p-message severity="error" icon="pi pi-exclamation-triangle" class="mt-4 w-full">
     {{ error() }}
-  </div>
+  </p-message>
 }
 
 <!-- Reusable group rendering -->

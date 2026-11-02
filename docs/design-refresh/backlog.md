@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-019f is Done with explicit user approval: tournament detail uses competition-aligned native ProgressBar/error Message.
+A reproduced resource-read exception is fixed with a guarded selector so failures render instead of leaving a blank page.
+Completed hero/live/events, query, error mapping, routes, localization and gates remain unchanged.
+Forty-three tests, focused lint, production library build and ten prerequisite tasks pass.
+Eight isolated light/dark 360/390/768/1440px cases pass named progress, mapped failure, recovery, native semantics,
+fit, restored content/132 anchors and normal Tab movement, with zero page errors/console errors/mutations.
+Loaded Dutch SSR/client content matches; a real missing-tournament GET returns native SSR error feedback.
+Native light error-text contrast is 4.41:1 (fails 4.5:1) and progress value/track 2.97:1 (fails 3:1);
+dark passes at 4.63:1/8.81:1. DR-034/DR-038 retain those cross-consumer audits, without scoped styling overrides.
+Actual screen-reader, mounted English/French, authenticated workflows, real network failure/retry and exhaustive hydration
+remain unverified. Asset tests and browser-local read fixtures do not stand in for those checks.
+Source-only discovery DR-040 records competition detail's similar unguarded resource read for separate investigation.
+See the [feedback brief](work-items/DR-019f-tournament-feedback.md).
+The user selected "Approve DR-019f and commit with disclosed verification limits".
+This accepts the listed limits without claiming failed or unperformed checks passed.
+Only DR-019f implementation, tests and repository handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects with existing warnings,
+zero errors. Unchecked criteria remain unchecked.
+Exact next action in a fresh invocation: confirm a real DR-019e club-browsing consumer and scope one child.
+Do not begin it here. DR-019 remains open.
+
+### Previous completed focus: event/draw presentation
+
 DR-019d is Done with explicit user approval: tournament sub-events use competition-aligned native Cards, semantic headings,
 outlined draw anchors, named external text actions and localized fallback/empty feedback.
 Native type Tabs, grouping/order/counts, slug-based routes, metadata and sync gates remain intact.
@@ -1172,7 +1195,7 @@ and linked from their registry rows.
 | [DR-019c](work-items/DR-019c-tournament-live-navigation.md)   | Tournament detail live-navigation links                   | Done        |
 | [DR-019d](work-items/DR-019d-tournament-events.md)            | Tournament detail sub-events and draw-link presentation   | Done        |
 | DR-019e                                                       | Club tournament browsing; consumer confirmation needed    | Backlog     |
-| DR-019f                                                       | Tournament detail loading/error feedback                  | Backlog     |
+| [DR-019f](work-items/DR-019f-tournament-feedback.md)          | Tournament detail loading/error feedback                  | Done        |
 | DR-019g                                                       | Investigate draw external-link visualCode query contract  | Backlog     |
 | DR-020                                                        | Tournament creation and editing                           | Backlog     |
 | DR-021                                                        | Tournament enrollment workflows                           | Backlog     |
@@ -1194,6 +1217,7 @@ and linked from their registry rows.
 | DR-037                                                        | Native Select default feedback localization audit         | Backlog     |
 | DR-038                                                        | Native ProgressBar value/track contrast audit             | Backlog     |
 | DR-039                                                        | Assembly filter/service selection synchronization         | Backlog     |
+| DR-040                                                        | Investigate competition detail resource error rendering   | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -1242,6 +1266,10 @@ below the 4.5:1 normal-text threshold, and 4.63:1 dark, passing. Native secondar
 7.74:1 light / 9.51:1 dark. All measurements use settled browser canvas sRGB luminance at four widths.
 Keep the existing cross-consumer Message audit open; do not introduce scoped colors or theme changes here.
 
+DR-019f confirms the same native error Message failure on tournament detail: 4.41:1 light / 4.63:1 dark,
+at 360/390/768/1440px. The error branch is now reachable after its guarded resource read.
+Keep this consumer in the shared audit; no tournament-specific token/color workaround was introduced.
+
 ### DR-038: native ProgressBar contrast
 
 DR-017p measures the unchanged native indeterminate ProgressBar on the real assembly route:
@@ -1250,6 +1278,17 @@ Dark value/track is 8.81:1 and value/canvas is 10.63:1.
 The added semantic status text independently explains loading and passes at 18.20:1 light / 16.64:1 dark.
 Audit the native preset/component across confirmed consumers separately; do not add page-scoped tokens or colors.
 These are browser sRGB canvas measurements after theme/layout settling, not a complete accessibility certification.
+
+DR-019f adds the tournament detail native indeterminate ProgressBar as a confirmed consumer:
+light value/track 2.97:1, dark 8.81:1 at 360/390/768/1440px.
+Its existing localized accessible name identifies loading; that is not proof of graphic-contrast compliance.
+
+### DR-040: competition detail resource error rendering
+
+Source inspection during DR-019f finds competition detail's public selector still reads `competitionResource.value()`
+without checking `hasValue()`, the same pattern reproduced as an exception in tournament detail.
+Investigate the actual competition error state separately, including SEO/template readers and recovery.
+This is source evidence, not a reproduced competition-route failure or permission to expand DR-019f.
 
 ### DR-037: native Select feedback localization
 

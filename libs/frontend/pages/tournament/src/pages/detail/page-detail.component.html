@@ -139,55 +139,31 @@
     </app-hero>
 
     <!-- Live Pages Section -->
-    <section class="mb-6">
-      <div class="flex items-end justify-between flex-wrap gap-3 mb-4">
-        <div class="flex flex-col gap-1">
-          <span class="t-eyebrow">Live</span>
-          <h2 class="section-title m-0">{{ 'all.tournament.live.title' | translate }}</h2>
-        </div>
-      </div>
-      <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <a
-          [routerLink]="['/', 'tournament', tournament.id, 'live', 'courts']"
-          class="g-live-card flex items-center gap-3 p-4 bg-emphasis border border-surface rounded-border hover:border-primary transition-colors no-underline"
-        >
-          <i class="pi pi-th-large text-xl text-primary"></i>
-          <div class="flex flex-col min-w-0">
-            <span class="font-semibold text-color truncate">{{ 'all.tournament.live.courts' | translate }}</span>
-            <span class="text-xs text-muted-color truncate">{{ 'all.tournament.live.courtsDesc' | translate }}</span>
-          </div>
-        </a>
-        <a
-          [routerLink]="['/', 'tournament', tournament.id, 'live', 'results']"
-          class="g-live-card flex items-center gap-3 p-4 bg-emphasis border border-surface rounded-border hover:border-primary transition-colors no-underline"
-        >
-          <i class="pi pi-check-circle text-xl" style="color: var(--g-win)"></i>
-          <div class="flex flex-col min-w-0">
-            <span class="font-semibold text-color truncate">{{ 'all.tournament.live.results' | translate }}</span>
-            <span class="text-xs text-muted-color truncate">{{ 'all.tournament.live.resultsDesc' | translate }}</span>
-          </div>
-        </a>
-        <a
-          [routerLink]="['/', 'tournament', tournament.id, 'live', 'upcoming']"
-          class="g-live-card flex items-center gap-3 p-4 bg-emphasis border border-surface rounded-border hover:border-primary transition-colors no-underline"
-        >
-          <i class="pi pi-clock text-xl" style="color: var(--g-pending, var(--p-orange-500))"></i>
-          <div class="flex flex-col min-w-0">
-            <span class="font-semibold text-color truncate">{{ 'all.tournament.live.upcoming' | translate }}</span>
-            <span class="text-xs text-muted-color truncate">{{ 'all.tournament.live.upcomingDesc' | translate }}</span>
-          </div>
-        </a>
-        <a
-          [routerLink]="['/', 'tournament', tournament.id, 'live', 'kiosk']"
-          class="g-live-card flex items-center gap-3 p-4 bg-emphasis border border-surface rounded-border hover:border-primary transition-colors no-underline"
-        >
-          <i class="pi pi-window-maximize text-xl text-primary"></i>
-          <div class="flex flex-col min-w-0">
-            <span class="font-semibold text-color truncate">{{ 'all.tournament.live.kiosk' | translate }}</span>
-            <span class="text-xs text-muted-color truncate">{{ 'all.tournament.live.kioskDesc' | translate }}</span>
-          </div>
-        </a>
-      </div>
+    <section class="mb-6" aria-labelledby="tournament-live-title">
+      <p-card class="block border border-surface">
+        <h2 id="tournament-live-title" class="m-0 mb-4 text-xl font-semibold text-color">
+          {{ 'all.tournament.live.title' | translate }}
+        </h2>
+        <nav class="grid gap-3 md:grid-cols-2 lg:grid-cols-4" aria-labelledby="tournament-live-title">
+          @for (page of livePages; track page.path) {
+            <a
+              pButton
+              severity="secondary"
+              [outlined]="true"
+              [routerLink]="['/', 'tournament', tournament.id, 'live', page.path]"
+              class="min-w-0 no-underline focus-visible:outline-none! focus-visible:ring-2! focus-visible:ring-primary"
+            >
+              <i pButtonIcon [class]="page.icon" aria-hidden="true"></i>
+              <span pButtonLabel class="min-w-0 w-full text-left text-color">
+                <span class="block whitespace-normal break-words">{{ page.label | translate }}</span>
+                <span class="block whitespace-normal break-words text-sm font-normal text-muted-color">
+                  {{ page.description | translate }}
+                </span>
+              </span>
+            </a>
+          }
+        </nav>
+      </p-card>
     </section>
 
     <!-- Tournament Events Section -->

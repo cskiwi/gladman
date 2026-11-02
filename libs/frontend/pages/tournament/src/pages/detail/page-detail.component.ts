@@ -14,6 +14,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { TabsModule } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-page-detail',
@@ -33,6 +34,7 @@ import { TagModule } from 'primeng/tag';
     TabsModule,
     ButtonModule,
     TagModule,
+    CardModule,
   ],
   templateUrl: './page-detail.component.html',
   styleUrl: './page-detail.component.scss',
@@ -40,6 +42,13 @@ import { TagModule } from 'primeng/tag';
 })
 export class PageDetailComponent {
   private readonly auth = inject(AuthService);
+
+  protected readonly livePages = [
+    { path: 'courts', icon: 'pi pi-th-large', label: 'all.tournament.live.courts', description: 'all.tournament.live.courtsDesc' },
+    { path: 'results', icon: 'pi pi-check-circle', label: 'all.tournament.live.results', description: 'all.tournament.live.resultsDesc' },
+    { path: 'upcoming', icon: 'pi pi-clock', label: 'all.tournament.live.upcoming', description: 'all.tournament.live.upcomingDesc' },
+    { path: 'kiosk', icon: 'pi pi-window-maximize', label: 'all.tournament.live.kiosk', description: 'all.tournament.live.kioskDesc' },
+  ] as const;
 
   // Permission check for admin access
   canEdit = computed(() => {

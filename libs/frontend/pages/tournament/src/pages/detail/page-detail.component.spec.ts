@@ -193,7 +193,7 @@ describe('Tournament detail hero', () => {
     expect(enrollmentLink?.urlTree?.toString()).toBe('/tournament/tournament/my-enrollments');
     expect(element.querySelector('[actions] a')?.getAttribute('href')).toBe('https://www.toernooi.nl/tournament/external-code');
     expect(element.querySelector('[stats]')?.textContent).toContain('Draft');
-    expect(element.querySelectorAll('.g-live-card')).toHaveLength(4);
+    expect(element.querySelectorAll('nav[aria-labelledby="tournament-live-title"] a')).toHaveLength(4);
   });
 
   it('preserves permitted admin/enrollment-open and logged-in sync gates', async () => {
@@ -223,6 +223,51 @@ describe('Tournament detail hero', () => {
       'Registration',
       'Phase',
     ]);
+  });
+
+  it('uses four public native outlined links with the original tournament-ID routes and order', async () => {
+    const navigation = harness.routeDebugElement?.query(By.css('nav[aria-labelledby="tournament-live-title"]'));
+    expect(element.querySelector('section[aria-labelledby="tournament-live-title"] .p-card')).toBeTruthy();
+    const links = navigation?.queryAll(By.css('a')) ?? [];
+    expect(links).toHaveLength(4);
+    expect(links.map((link) => link.injector.get(RouterLink).urlTree?.toString())).toEqual(
+      ['courts', 'results', 'upcoming', 'kiosk'].map((path) => `/tournament/tournament/live/${path}`),
+    );
+    for (const link of links) {
+      expect(link.injector.get(ButtonDirective)).toBeTruthy();
+      const anchor: HTMLAnchorElement = link.nativeElement;
+      expect(anchor.classList.contains('p-button-secondary')).toBe(true);
+      expect(anchor.classList.contains('p-button-outlined')).toBe(true);
+      expect(anchor.classList.contains('focus-visible:ring-primary')).toBe(true);
+      expect(anchor.getAttribute('target')).toBeNull();
+      expect(anchor.querySelector('i')?.getAttribute('aria-hidden')).toBe('true');
+    }
+    loggedIn.set(true);
+    hasAnyPermission.mockReturnValue(true);
+    await renderTournament({ ...createTournament(), id: 'another-tournament', phase: TournamentPhase.COMPLETED });
+    expect([...element.querySelectorAll('nav[aria-labelledby="tournament-live-title"] a')].map((link) => link.getAttribute('href'))).toEqual(
+      ['courts', 'results', 'upcoming', 'kiosk'].map((path) => `/tournament/another-tournament/live/${path}`),
+    );
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('preserves actual live-navigation labels/descriptions and heading in %s', async (locale) => {
+    const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
+    const asset: { tournament: { live: Record<string, string> } } = JSON.parse(readFileSync(assetPath, 'utf8'));
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    await renderTournament(createTournament());
+    const navigation = element.querySelector('nav[aria-labelledby="tournament-live-title"]');
+    expect(element.querySelectorAll('#tournament-live-title')).toHaveLength(1);
+    expect(element.querySelector('#tournament-live-title')?.textContent?.trim()).toBe(asset.tournament.live['title']);
+    const links = [...(navigation?.querySelectorAll('a') ?? [])];
+    expect(links).toHaveLength(4);
+    for (const [index, path] of ['courts', 'results', 'upcoming', 'kiosk'].entries()) {
+      const lines = [...links[index].querySelectorAll('[pButtonLabel] > span')];
+      expect(lines.map((line) => line.textContent?.trim())).toEqual([asset.tournament.live[path], asset.tournament.live[`${path}Desc`]]);
+      expect(lines.every((line) => line.classList.contains('whitespace-normal'))).toBe(true);
+    }
+    expect(navigation?.querySelector('[style], .truncate, .g-live-card')).toBeNull();
   });
 
   it('uses the competition native external button presentation and accessible name', () => {

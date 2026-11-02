@@ -18,13 +18,13 @@ description: 'Parent scope and child sequencing for tournament detail and club b
 
 ## Required children
 
-| ID                                        | Scope                                       | Selection condition                            |
-| ----------------------------------------- | ------------------------------------------- | ---------------------------------------------- |
-| [DR-019a](DR-019a-tournament-identity.md) | Complete tournament hero parity             | Confirmed mounted; corrected after user review |
-| DR-019c                                   | Four public live-navigation links on detail | Confirmed mounted; scope separately            |
-| DR-019d                                   | Sub-event groups and draw links on detail   | Confirmed mounted; reduce further if needed    |
-| DR-019e                                   | Club tournament browsing                    | Confirm actual route consumer before selection |
-| DR-019f                                   | Detail loading/error feedback               | Confirm state consumers and scope separately   |
+| ID                                               | Scope                                       | Selection condition                            |
+| ------------------------------------------------ | ------------------------------------------- | ---------------------------------------------- |
+| [DR-019a](DR-019a-tournament-identity.md)        | Complete tournament hero parity             | Confirmed mounted; corrected after user review |
+| [DR-019c](DR-019c-tournament-live-navigation.md) | Four public live-navigation links on detail | Confirmed mounted; selected on 2026-11-02      |
+| DR-019d                                          | Sub-event groups and draw links on detail   | Confirmed mounted; reduce further if needed    |
+| DR-019e                                          | Club tournament browsing                    | Confirm actual route consumer before selection |
+| DR-019f                                          | Detail loading/error feedback               | Confirm state consumers and scope separately   |
 
 Keep this parent open until required children are complete or explicitly deferred with approval.
 Do not infer that routes behind links have been reviewed.
@@ -35,7 +35,9 @@ DR-019a after user feedback. It is not a required child or a future implementati
 
 - Initial hero summaries had literal English copy, uppercase phase and custom metric styling.
   The corrected DR-019a removes these and localizes the complete hero.
-- Live links use custom surfaces and inline result/upcoming colors: DR-019c.
+- Live links now use a native Card/outlined anchors, wrapping copy and semantic focus rings: DR-019c.
+  Eight isolated responsive/theme cases and focused Nx checks pass. The user approved completion/commit
+  with disclosed verification limits on 2026-11-02; unchecked child criteria remain unchecked.
 - Events retain custom articles, draw links, English fallback/empty text and SCSS: DR-019d.
 - Loading retains rectangle skeleton/custom surface; errors retain inline loss colors: DR-019f.
 - Live links, events and feedback are not changed by DR-019a.
@@ -51,4 +53,6 @@ DR-019a after user feedback. It is not a required child or a future implementati
   Carry this direction into DR-019c-f; differences in domain data/actions remain intentional.
 - The user approved corrected DR-019a completion and commit with disclosed verification limits.
   The child brief preserves unchecked criteria; the parent remains open and no second child starts here.
-- Exact next candidate: scope DR-019c, the mounted detail page's four live-navigation links.
+- DR-019c is approved complete with disclosed limits; commit only its implementation/tests/handoff.
+  Keep the parent open and other children unstarted. The next candidate is DR-019d;
+  confirm and reduce that mounted event/draw area to one reviewable slice in a fresh invocation.

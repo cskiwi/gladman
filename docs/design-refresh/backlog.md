@@ -5,6 +5,28 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-019c is Done with explicit user approval: the four mounted tournament live-navigation links use secondary outlined anchors,
+a semantic heading, wrapping localized descriptions and one native Card matching competition content surfaces.
+Routes, order and public availability remain unchanged; hero, events, feedback and live destination pages are excluded.
+Twenty-eight tests, focused lint, production library build and ten prerequisites pass.
+Eight isolated light/dark 360/390/768/1440px browser cases pass fit, responsive columns, routes, keyboard order,
+2px focus rings and settled text/ring contrast. Minimum text contrast is 4.66:1 light / 6.28:1 dark;
+ring contrast is 3.65:1 light / 10.22:1 dark. A first bare-canvas attempt failed light description contrast;
+the native Card resolves it without new styling rules or theme changes.
+Dutch loaded SSR/client content matches with HTTP 200; keyboard Enter opens courts and Back restores the links.
+Zero page errors/mutations occur. Actual screen-reader, mounted English/French, exhaustive hydration and authenticated
+live workflows remain unverified; asset/gate tests do not stand in for these checks.
+The user selected "Approve DR-019c and commit with disclosed verification limits".
+Only this child implementation/tests and repository handoff are approved for commit; no push is requested.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects with existing warnings
+and zero errors.
+Unchecked criteria remain unchecked; acceptance does not turn unperformed checks into passes.
+Exact next action in a fresh invocation: confirm and scope one mounted DR-019d sub-event/draw presentation child.
+Do not begin it here.
+See the [live-navigation brief](work-items/DR-019c-tournament-live-navigation.md). DR-019 remains open.
+
+### Previous completed focus: tournament hero parity
+
 DR-019a is Done with explicit user approval after correcting identity-only presentation to complete hero parity.
 The competition reference now also drives summary typography, normal-case labels, stacked counts/type copy,
 registration/phase text, emphasized calendar metadata, number Tag and native external Button presentation.
@@ -1123,7 +1145,7 @@ and linked from their registry rows.
 | [DR-019](work-items/DR-019-tournament-browsing.md)            | Tournament detail and club tournaments                    | In progress |
 | [DR-019a](work-items/DR-019a-tournament-identity.md)          | Tournament complete hero parity                           | Done        |
 | DR-019b                                                       | Reserved history: summaries/actions absorbed into DR-019a | Backlog     |
-| DR-019c                                                       | Tournament detail live-navigation links                   | Backlog     |
+| [DR-019c](work-items/DR-019c-tournament-live-navigation.md)   | Tournament detail live-navigation links                   | Done        |
 | DR-019d                                                       | Tournament detail sub-events and draw-link presentation   | Backlog     |
 | DR-019e                                                       | Club tournament browsing; consumer confirmation needed    | Backlog     |
 | DR-019f                                                       | Tournament detail loading/error feedback                  | Backlog     |

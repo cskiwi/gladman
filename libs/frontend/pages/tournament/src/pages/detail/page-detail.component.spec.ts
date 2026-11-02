@@ -9,6 +9,7 @@ import { SeoService } from '@app/frontend-modules-seo/service';
 import { TournamentPhase } from '@app/models-enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
+import { DocumentNode, Kind, SelectionSetNode } from 'graphql';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
@@ -133,6 +134,24 @@ describe('Tournament detail hero', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
   }
+
+  it('requests visualCode at the exact draw path in the executed detail query', () => {
+    const document: DocumentNode = query.mock.calls[0][0].query;
+    const operation = document.definitions.find((definition) => definition.kind === Kind.OPERATION_DEFINITION);
+    let selectionSet: SelectionSetNode | undefined = operation?.selectionSet;
+    for (const name of ['tournamentEvent', 'tournamentSubEvents', 'drawTournaments']) {
+      const field = selectionSet?.selections.find((selection) => selection.kind === Kind.FIELD && selection.name.value === name);
+      selectionSet = field?.kind === Kind.FIELD ? field.selectionSet : undefined;
+      expect(selectionSet).toBeDefined();
+    }
+    expect(selectionSet?.selections.map((selection) => (selection.kind === Kind.FIELD ? selection.name.value : null))).toEqual([
+      'id',
+      'name',
+      'type',
+      'size',
+      'visualCode',
+    ]);
+  });
 
   it('renders existing HTTP error feedback without throwing from the resource value', async () => {
     query.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 404, url: '/graphql' })));
@@ -458,6 +477,63 @@ describe('Tournament detail hero', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
     expect(element.querySelector('p-tab[aria-selected="true"]')?.textContent?.trim()).toBe('Women');
+  });
+
+  it.each([
+    { tournamentCode: 'external-code', drawCode: 'draw-code', visible: true },
+    { tournamentCode: '', drawCode: 'draw-code', visible: false },
+    { tournamentCode: 'external-code', drawCode: undefined, visible: false },
+    { tournamentCode: '', drawCode: undefined, visible: false },
+  ])('requires both external codes: tournament=$tournamentCode draw=$drawCode', async ({ tournamentCode, drawCode, visible }) => {
+    await renderTournament({
+      ...createTournament(),
+      visualCode: tournamentCode,
+      tournamentSubEvents: [
+        {
+          id: 'men',
+          name: 'Men singles',
+          eventType: 'M1',
+          gameType: 'S',
+          drawTournaments: [{ id: 'draw-one', name: 'First draw', visualCode: drawCode }],
+        },
+      ],
+    });
+    const row = element.querySelector('section[aria-labelledby="tournament-events-title"] li');
+    expect(row?.querySelector('a')?.getAttribute('href')).toBe('/tournament/test-tournament/sub-events/men/draws/draw-one');
+    const external = row?.querySelector('a[target="_blank"]');
+    if (!visible) {
+      expect(external).toBeNull();
+      return;
+    }
+    expect(external?.getAttribute('href')).toBe('https://www.toernooi.nl/tournament/external-code/draw/draw-code');
+    expect(external?.getAttribute('aria-label')).toBe('First draw (toernooi.nl)');
+    expect(external?.getAttribute('rel')).toBe('noopener noreferrer');
+    expect(external?.classList.contains('p-button-secondary')).toBe(true);
+    expect(external?.classList.contains('p-button-text')).toBe(true);
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('names the external action for an unnamed draw using actual %s copy', async (locale) => {
+    const assetPath = join(__dirname, '..', '..', '..', '..', '..', '..', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
+    const asset: { tournament: { drawFallbackName: string } } = JSON.parse(readFileSync(assetPath, 'utf8'));
+    const translations = TestBed.inject(TranslateService);
+    translations.setTranslation(locale, { all: asset });
+    translations.use(locale);
+    await renderTournament({
+      ...createTournament(),
+      tournamentSubEvents: [
+        {
+          id: 'men',
+          name: 'Men singles',
+          eventType: 'M1',
+          gameType: 'S',
+          drawTournaments: [{ id: 'draw-one', name: '', visualCode: 'draw-code' }],
+        },
+      ],
+    });
+    const row = element.querySelector('section[aria-labelledby="tournament-events-title"] li');
+    const name = asset.tournament.drawFallbackName.replace('{{number}}', '1');
+    expect(row?.querySelector('[pButtonLabel] > span')?.textContent?.trim()).toBe(name);
+    expect(row?.querySelector('a[target="_blank"]')?.getAttribute('aria-label')).toBe(`${name} (toernooi.nl)`);
   });
 
   it.each(['en', 'nl_BE', 'fr_BE'])('uses actual tournament fallback/empty copy and native empty Message in %s', async (locale) => {

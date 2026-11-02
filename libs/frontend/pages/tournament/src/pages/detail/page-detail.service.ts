@@ -57,6 +57,7 @@ export class DetailService {
                       name
                       type
                       size
+                      visualCode
                     }
                   }
                 }

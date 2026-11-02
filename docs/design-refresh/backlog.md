@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-042 is Done with explicit user approval: tournament detail requests draw `visualCode`, restoring 95 external actions.
+The exact-path executed-query regression fails before the repair and passes after; all 53 tournament tests,
+focused lint, production library build and ten prerequisites pass.
+Anonymous before/after API comparison confirms all other response data unchanged.
+Eight light/dark 360/390/768/1440px cases pass all three tabs (33/33/29 external links), fit and settled keyboard focus.
+Minimum settled focus-ring contrast is 3.65:1 light / 10.22:1 dark; hover icon contrast is 4.66:1 / 6.28:1.
+Loaded Dutch SSR/client heading, all 95 internal routes and all 95 external link contracts match.
+No styling, shared component extraction, backend, translation or destination-page changes; no exceptions.
+See the [repair brief](work-items/DR-042-draw-external-link-repair.md).
+Actual screen-reader, authenticated workflows, mounted English/French and exhaustive hydration remain unverified.
+Missing-code/fallback states are fixture-covered, not mounted-data passes. No external site was opened.
+The user selected "Approve DR-042 and commit with disclosed verification limits" on 2026-11-02.
+Only the repair, regression tests and repository handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors. Unchecked criteria remain unchecked; approval is not a performed check.
+Exact next action in a fresh invocation: confirm a real DR-020 creation/editing consumer, split the broad
+form area into children and scope one mounted route/tab. Do not start it here. DR-019 remains Done.
+
+### Previous completed focus: draw external-link query investigation
+
 DR-019g is Done with explicit user approval: the tournament-detail draw external-link query mismatch is reproduced.
 The mounted supplied route contains 95 internal draw links, 30 external sub-event links and zero external draw links.
 The actual detail query omits draw `visualCode`; adding only that selection in a read-only comparison returns codes
@@ -1258,7 +1278,7 @@ and linked from their registry rows.
 | DR-039                                                        | Assembly filter/service selection synchronization         | Backlog |
 | DR-040                                                        | Investigate competition detail resource error rendering   | Backlog |
 | DR-041                                                        | Club tournament repairs; withdrawn with page retirement   | Done    |
-| DR-042                                                        | Restore tournament detail draw external-link query field  | Backlog |
+| [DR-042](work-items/DR-042-draw-external-link-repair.md)      | Restore tournament detail draw external-link query field  | Done    |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -1270,7 +1290,7 @@ and linked from their registry rows.
 
 The [DR-019g investigation](work-items/DR-019g-draw-external-link-contract.md) reproduces the missing draw
 `visualCode` selection against the actual anonymous local API and mounted tournament detail route.
-DR-019g is approved complete. In the next invocation, create one repair brief: add the existing field only under detail's
+DR-019g is approved complete. The [repair brief](work-items/DR-042-draw-external-link-repair.md) records the field only under detail's
 `tournamentSubEvents.drawTournaments`, and assert that exact nested selection in the executed query.
 Retain native link styling, accessible names, `target`/`rel`, missing-code gates and all internal draw routes.
 Check both missing tournament code and missing draw code, including localized unnamed-draw labels.

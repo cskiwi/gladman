@@ -18,10 +18,21 @@ description: 'Bounded child slices for the mounted tournament creation and editi
   preserve DR-020a's completed native actions.
 - [DR-020c](DR-020c-editing-chrome.md): editing heading, tabs, feedback and actions; user-approved with disclosed limits.
 - [DR-020d](DR-020d-editing-information.md): editing information tab; user-approved with disclosed limits.
-- DR-020e: editing settings tab; confirm mounted consumer before promotion.
+- [DR-020e](DR-020e-editing-settings.md): editing settings tab; user-approved with disclosed limits.
 
-The parent remains open until all required children are complete. DR-020e remains a proposed scope,
-not evidence of completed implementation.
+All five children are complete with explicit user approval and their disclosed limits retained.
+The parent is reconciled as Done on 2026-11-02 after approval of DR-020e.
+This closes the bounded presentation refresh, not the unverified real mutation workflows or shared audits.
+
+## Closure and next action
+
+- Creation chrome/fields and editing chrome/information/settings are approved; see each child's evidence.
+- DR-032/033/034/043/044 retain shared contrast and DatePicker locale audits. No global styling is changed here.
+- Actual screen-reader use, exhaustive control contrast/hydration, mounted English/French,
+  null-data responses and real authenticated creation/save/outage workflows remain unverified.
+- Acceptance does not mark unperformed or failed checks as passed. Unchecked criteria remain in child briefs.
+- Next invocation: confirm a real DR-021 enrollment consumer, split the parent into bounded children,
+  then select only one. No enrollment implementation is included in DR-020.
 
 ## Consumer evidence
 

@@ -5,6 +5,34 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-020d is Done with explicit user approval: editing information-tab presentation on the confirmed
+`/tournament/8658b541-702a-408e-8114-2858a9428069/edit` route.
+Scope: native fluid fields, semantic section headings, date labels, required-name feedback and named saving indicator.
+Preserve permissions, six controls, save payloads and feedback. Exclude settings, chrome, backend and shared theme.
+See the [active brief](work-items/DR-020d-editing-information.md).
+Native fluid fields, three semantic sections, five date-label associations, required-name feedback and named saving
+ProgressBar are implemented. The existing smart child is retained; no styling-only wrapper extraction.
+Template class tokens drop 65 to 63; palette-paired headings, red validation utility and inline progress height are removed.
+Six new mock-only regressions pass; focused lint, all 81 tests and production library build plus ten prerequisites pass.
+Eight light/dark 360/390/768/1440px cases pass fit, labels, disabled controls and local feedback fixtures.
+Four light/dark 390/1440px keyboard cases pass all five date selections/overlays, Escape focus return and Tab movement.
+Monitored matrices/reload/tab-switch checks have zero page errors or mutations; Dutch SSR/client content matches.
+Scoped description/heading/label/name/validation/saving text contrast passes. Native error Message fails
+at 4.44:1 light / 4.40:1 dark (DR-034); native English DatePicker names on Dutch remain DR-043.
+Actual screen-reader, exhaustive control/overlay/focus contrast and hydration, mounted English/French,
+null-data responses and real authenticated save/outage/retry workflows remain unverified. No styling exceptions.
+Port 3000 serves stale source; isolated port 3001 verifies final source without touching that process.
+The temporary server is stopped after verification.
+The user selected "Approve DR-020d and commit with disclosed limits" on 2026-11-02.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Unchecked contrast/workflow criteria remain unchecked; acceptance is not evidence that they passed.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: confirm and scope DR-020e editing settings-tab presentation.
+Do not begin DR-020e here. DR-020 stays open; settings is the next candidate, not an implementation started here.
+
+### Previous completed focus: editing chrome
+
 DR-020c is Done with explicit user approval: compact editing heading/real context, native Card, Messages,
 tabs and native button labels.
 The supplied editing route mounts anonymously with permission-disabled child controls.
@@ -1348,7 +1376,7 @@ and linked from their registry rows.
 | [DR-020a](work-items/DR-020a-creation-chrome.md)              | Creation chrome and native form Card                      | Done        |
 | [DR-020b](work-items/DR-020b-creation-fields.md)              | Creation fields and mutation feedback                     | Done        |
 | [DR-020c](work-items/DR-020c-editing-chrome.md)               | Editing chrome and actions                                | Done        |
-| DR-020d                                                       | Editing information tab                                   | Backlog     |
+| [DR-020d](work-items/DR-020d-editing-information.md)          | Editing information tab                                   | Done        |
 | DR-020e                                                       | Editing settings tab                                      | Backlog     |
 | DR-021                                                        | Tournament enrollment workflows                           | Backlog     |
 | DR-022                                                        | Tournament draw detail                                    | Backlog     |
@@ -1442,6 +1470,11 @@ No shared or scoped palette override is introduced. See the [brief](work-items/D
 
 ### DR-034 additional evidence: creation read-error Message
 
+DR-020d adds mounted editing-information evidence: native mutation-error Message text measures 4.44:1 light
+and 4.40:1 dark over the actual Card, failing normal text. Native simple name validation passes at 4.83:1 / 5.08:1.
+See the [information-tab brief](work-items/DR-020d-editing-information.md); retain the contrast criterion unchecked.
+No shared token or page-specific override is added.
+
 DR-020b adds creation mutation-error feedback evidence: native error Message text measures 4.44:1 light
 and 4.40:1 dark, failing the 4.5:1 normal-text threshold over composited ancestor backgrounds.
 Native simple validation text passes at 4.83:1 / 5.08:1. No page-specific or shared theme override is added.
@@ -1493,6 +1526,9 @@ Audit existing PrimeNG locale configuration and real consumers before scoping a 
 Do not add page-specific overrides or translation assets as a hidden side effect of a surface refresh.
 
 ### DR-043: native DatePicker accessibility-label localization
+
+DR-020d confirms the same English native button/dialog/full-date names on the mounted Dutch editing-information tab.
+All five visible date labels now correctly associate with native inputs; the shared native locale audit stays open.
 
 DR-020b confirms translated field labels on the mounted Dutch club tournament-creation route,
 but native dialog/icon buttons still say `Choose Date` and date cells have English full-date names.

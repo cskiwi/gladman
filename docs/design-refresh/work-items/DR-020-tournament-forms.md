@@ -17,10 +17,10 @@ description: 'Bounded child slices for the mounted tournament creation and editi
 - [DR-020b](DR-020b-creation-fields.md): creation fields, validation and mutation feedback;
   preserve DR-020a's completed native actions.
 - [DR-020c](DR-020c-editing-chrome.md): editing heading, tabs, feedback and actions; user-approved with disclosed limits.
-- DR-020d: editing information tab; confirm mounted consumer before promotion.
+- [DR-020d](DR-020d-editing-information.md): editing information tab; user-approved with disclosed limits.
 - DR-020e: editing settings tab; confirm mounted consumer before promotion.
 
-The parent remains open until all required children are complete. Editing children DR-020d/e remain proposed scopes,
+The parent remains open until all required children are complete. DR-020e remains a proposed scope,
 not evidence of completed implementation.
 
 ## Consumer evidence

@@ -1,93 +1,79 @@
 <p-toast />
 
 <!-- Breadcrumb -->
-<app-breadcrumb [items]="tournamentId()
-  ? [
-      { label: ('all.tournament.title' | translate), routerLink: '/tournament' },
-      { label: ('all.tournament.detail.title' | translate), routerLink: ['/tournament', tournamentId()] },
-      { label: ('all.enrollment.title' | translate) },
-    ]
-  : [
-      { label: ('all.tournament.title' | translate), routerLink: '/tournament' },
-    ]" />
+<app-breadcrumb
+  [items]="
+    tournamentId()
+      ? [
+          { label: ('all.tournament.title' | translate), routerLink: '/tournament' },
+          { label: ('all.tournament.detail.title' | translate), routerLink: ['/tournament', tournamentId()] },
+          { label: ('all.enrollment.title' | translate) },
+        ]
+      : [{ label: ('all.tournament.title' | translate), routerLink: '/tournament' }]
+  "
+/>
 
-<!-- Header -->
-<div class="flex items-start justify-between flex-wrap gap-4 mb-6">
- <div class="flex flex-col gap-1 flex-1 min-w-0">
- <span class="t-eyebrow">{{ 'all.enrollment.subtitle' | translate }}</span>
- <h1 class="font-display text-3xl md:text-4xl font-bold text-color leading-tight tracking-tight m-0">
- {{ 'all.enrollment.title' | translate }}
- </h1>
- </div>
- <div class="flex gap-2">
- <p-button icon="pi pi-arrow-left" [label]="'all.button.back' | translate" severity="secondary" [outlined]="true" size="small" (click)="goBack()" />
- </div>
-</div>
+<header class="flex flex-wrap items-start justify-between gap-4 mb-6">
+  <div class="min-w-0">
+    <h1 class="text-2xl font-semibold text-color m-0">{{ 'all.enrollment.title' | translate }}</h1>
+    <p class="text-color mt-2 mb-0">{{ 'all.enrollment.subtitle' | translate }}</p>
+  </div>
+  <button pButton type="button" severity="secondary" [outlined]="true" size="small" (click)="goBack()">
+    <i pButtonIcon class="pi pi-arrow-left" aria-hidden="true"></i>
+    <span pButtonLabel>{{ 'all.button.back' | translate }}</span>
+  </button>
+</header>
 
 <!-- Loading State -->
 @if (loading()) {
- <div class="flex flex-col items-center justify-center py-16 gap-4">
- <p-progressspinner />
- <p class="text-muted-color">{{ 'all.enrollment.loading' | translate }}</p>
- </div>
-}
+  <div class="flex flex-col items-center gap-4 py-12" aria-busy="true">
+    <p-progressspinner [ariaLabel]="'all.enrollment.loading' | translate" />
+    <p class="text-color m-0">{{ 'all.enrollment.loading' | translate }}</p>
+  </div>
+} @else {
+  <div class="flex flex-col gap-6">
+    <p-card>
+      <app-enrollment-filters
+        [filters]="filters()"
+        [userRanking]="userRanking()"
+        [userGender]="userGender()"
+        (filtersChange)="onFiltersChange($event)"
+      />
+    </p-card>
 
-<!-- Main Content -->
-@if (!loading()) {
- <div class="flex flex-col gap-6">
- <!-- Filters Section -->
- <div class="rounded-xl bg-emphasis border border-surface p-5">
- <app-enrollment-filters
- [filters]="filters()"
- [userRanking]="userRanking()"
- [userGender]="userGender()"
- (filtersChange)="onFiltersChange($event)"
- />
- </div>
+    <div class="grid xl:grid-cols-3 gap-6 items-start">
+      <section class="min-w-0 xl:col-span-2" aria-labelledby="available-events-heading">
+        <h2 id="available-events-heading" class="text-xl font-semibold text-color mt-0 mb-4">
+          {{ 'all.enrollment.availableEvents' | translate }}
+          <span class="font-normal">({{ filteredSubEvents().length }})</span>
+        </h2>
 
- <!-- Main Grid -->
- <div class="grid lg:grid-cols-[1fr_380px] gap-6 items-start">
- <!-- Sub-Events Grid -->
- <div>
- <div class="flex items-center justify-between mb-4">
- <div class="flex flex-col gap-1">
- <span class="t-eyebrow">Events</span>
- <h2 class="font-display text-xl font-semibold text-color m-0 flex items-center gap-2">
- <i class="pi pi-calendar text-primary"></i>
- {{ 'all.enrollment.availableEvents' | translate }}
- </h2>
- </div>
- <span class="t-mono text-xs text-muted-color bg-emphasis px-2 py-1 rounded-sm">
- {{ filteredSubEvents().length }}
- </span>
- </div>
+        @if (filteredSubEvents().length === 0) {
+          <p-message severity="info" icon="pi pi-info-circle">
+            <div class="flex flex-col gap-1">
+              <span class="font-medium">{{ 'all.enrollment.noEventsMatch' | translate }}</span>
+              <span>{{ 'all.enrollment.tryAdjustingFilters' | translate }}</span>
+            </div>
+          </p-message>
+        } @else {
+          <app-sub-event-selection-grid
+            [subEvents]="filteredSubEvents()"
+            [selectedIds]="selectedIds()"
+            (subEventSelect)="onSubEventSelect($event)"
+            (subEventRemove)="onSubEventRemove($event)"
+          />
+        }
+      </section>
 
- @if (filteredSubEvents().length === 0) {
- <div class="flex flex-col items-center justify-center py-16 text-muted-color rounded-xl bg-emphasis border border-dashed border-surface">
- <i class="pi pi-calendar-times text-5xl mb-4 opacity-40"></i>
- <p class="text-base font-medium">{{ 'all.enrollment.noEventsMatch' | translate }}</p>
- <p class="text-sm mt-1 opacity-75">{{ 'all.enrollment.tryAdjustingFilters' | translate }}</p>
- </div>
- } @else {
- <app-sub-event-selection-grid
- [subEvents]="filteredSubEvents()"
- [selectedIds]="selectedIds()"
- (subEventSelect)="onSubEventSelect($event)"
- (subEventRemove)="onSubEventRemove($event)"
- />
- }
- </div>
-
- <!-- Cart Section (Sticky Sidebar) -->
- <div class="sticky top-6">
- <app-enrollment-cart
- [items]="cartItems()"
- [isSubmitting]="isSubmitting()"
- (clearCart)="onClearCart()"
- (submitCart)="onSubmitCart()"
- (removeItem)="onSubEventRemove($event)"
- />
- </div>
- </div>
- </div>
+      <div class="min-w-0 xl:sticky xl:top-6">
+        <app-enrollment-cart
+          [items]="cartItems()"
+          [isSubmitting]="isSubmitting()"
+          (clearCart)="onClearCart()"
+          (submitCart)="onSubmitCart()"
+          (removeItem)="onSubEventRemove($event)"
+        />
+      </div>
+    </div>
+  </div>
 }

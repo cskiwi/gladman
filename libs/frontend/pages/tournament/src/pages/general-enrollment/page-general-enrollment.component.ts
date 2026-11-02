@@ -3,6 +3,8 @@ import { Component, OnInit, OnDestroy, computed, signal, inject } from '@angular
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -25,6 +27,8 @@ import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
     RouterModule,
     ProgressSpinnerModule,
     ButtonModule,
+    CardModule,
+    MessageModule,
     ToastModule,
     TranslateModule,
     SubEventSelectionGridComponent,

@@ -28,59 +28,71 @@
       <div class="flex flex-col gap-5">
         <!-- Tournament Name -->
         <div class="flex flex-col gap-2">
-          <label for="name" class="text-sm font-medium text-color">
-            {{ 'all.tournament.create.name' | translate }} <span style="color: var(--g-loss)">*</span>
-          </label>
-          <input pInputText id="name" formControlName="name" class="max-w-md" [placeholder]="'all.tournament.create.namePlaceholder' | translate" />
-          @if (form.get('name')?.invalid && form.get('name')?.touched) {
-            <small style="color: var(--g-loss)">{{ 'all.tournament.create.nameRequired' | translate }}</small>
+          <label for="name" class="font-medium"> {{ 'all.tournament.create.name' | translate }} <span aria-hidden="true">*</span> </label>
+          <input
+            pInputText
+            id="name"
+            formControlName="name"
+            required
+            maxlength="255"
+            fluid
+            [invalid]="form.controls.name.invalid && form.controls.name.touched"
+            [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched"
+            [attr.aria-describedby]="form.controls.name.invalid && form.controls.name.touched ? 'name-error' : null"
+            [placeholder]="'all.tournament.create.namePlaceholder' | translate"
+          />
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <p-message id="name-error" severity="error" size="small" variant="simple">
+              {{ 'all.tournament.create.nameRequired' | translate }}
+            </p-message>
           }
         </div>
 
         <!-- Tournament Days -->
         <div class="flex flex-col gap-2">
-          <label for="tournamentDays" class="text-sm font-medium text-color">
+          <label id="tournamentDays-label" for="tournamentDays" class="font-medium">
             {{ 'all.tournament.create.tournamentDays' | translate }}
           </label>
           @defer {
             <p-datepicker
-              id="tournamentDays"
+              inputId="tournamentDays"
               formControlName="tournamentDays"
               selectionMode="range"
               [showIcon]="true"
               dateFormat="dd/mm/yy"
               [placeholder]="'all.tournament.create.tournamentDaysPlaceholder' | translate"
-              styleClass="w-64"
+              fluid
+              ariaLabelledBy="tournamentDays-label tournamentDays-help"
             />
           }
-          <small class="text-xs text-muted-color">{{ 'all.tournament.create.tournamentDaysHelp' | translate }}</small>
+          <small id="tournamentDays-help" class="text-color">{{ 'all.tournament.create.tournamentDaysHelp' | translate }}</small>
         </div>
 
         <!-- Registration Dates -->
-        <div class="flex flex-row gap-4 flex-wrap">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div class="flex flex-col gap-2">
-            <label for="openDate" class="text-sm font-medium text-color">{{ 'all.tournament.create.openDate' | translate }}</label>
+            <label for="openDate" class="font-medium">{{ 'all.tournament.create.openDate' | translate }}</label>
             @defer {
               <p-datepicker
-                id="openDate"
+                inputId="openDate"
                 formControlName="openDate"
                 [showIcon]="true"
                 dateFormat="dd/mm/yy"
                 [placeholder]="'all.tournament.create.openDatePlaceholder' | translate"
-                styleClass="w-48"
+                fluid
               />
             }
           </div>
           <div class="flex flex-col gap-2">
-            <label for="closeDate" class="text-sm font-medium text-color">{{ 'all.tournament.create.closeDate' | translate }}</label>
+            <label for="closeDate" class="font-medium">{{ 'all.tournament.create.closeDate' | translate }}</label>
             @defer {
               <p-datepicker
-                id="closeDate"
+                inputId="closeDate"
                 formControlName="closeDate"
                 [showIcon]="true"
                 dateFormat="dd/mm/yy"
                 [placeholder]="'all.tournament.create.closeDatePlaceholder' | translate"
-                styleClass="w-48"
+                fluid
               />
             }
           </div>
@@ -89,14 +101,11 @@
         <!-- Official Toggle -->
         <div class="flex items-center gap-2">
           <p-checkbox formControlName="official" [binary]="true" inputId="official" />
-          <label for="official" class="text-sm text-color">{{ 'all.tournament.create.official' | translate }}</label>
+          <label for="official">{{ 'all.tournament.create.official' | translate }}</label>
         </div>
 
         @if (createError()) {
-          <div class="flex items-center gap-2 p-3 rounded-md text-sm" style="background: var(--g-loss-muted); color: var(--g-loss)">
-            <i class="pi pi-exclamation-triangle"></i>
-            <span>{{ createError() }}</span>
-          </div>
+          <p-message severity="error">{{ createError() }}</p-message>
         }
 
         <!-- Actions -->

@@ -5,6 +5,38 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-020b is Done with explicit user approval after feedback: never use `[pt]` or `[dt]`.
+The range control now uses native `ariaLabelledBy` for its label and help, with neither binding present.
+The corrected template passes lint, all 65 tests, production library build and ten prerequisites.
+Eight additional light/dark width cases pass the full accessible name, references, Tab/Arrow/Escape and fit,
+with zero monitored page errors or mutation requests.
+Creation fields use native fluid controls, responsive registration dates,
+associated required/invalid/name feedback and translated date-input labels.
+Mutation errors use native Message; three inline colors and custom banner/icon are removed.
+Whole-template class tokens drop 66 to 46, plus three removed fixed-width DatePicker tokens.
+The real Smash For Fun form is mounted without submitting; completed DR-020a Card/actions remain unchanged.
+Five new regressions preserve pending/error/retry, exact payloads, dates/toggle and navigation with mocks only.
+All 65 tournament tests, focused lint, production library build and ten prerequisites pass.
+Eight light/dark 360/390/768/1440px cases pass fit, native controls, real range selection and local error/busy fixtures.
+Four narrow/wide keyboard cases pass date Tab/Arrow/Escape and checkbox Space, with zero monitored errors/mutations.
+Dutch HTTP SSR returns 200 with matching heading/club context. Label/help/simple validation and settled name focus pass
+contrast; native mutation error fails at 4.44:1 light / 4.40:1 dark and remains DR-034.
+DR-043 records existing English native date dialog/button/day names on the Dutch route.
+Actual screen-reader, exhaustive control/overlay contrast/focus/hydration, mounted English/French,
+authenticated/create/cancel and real server-error/retry workflows remain unverified. No styling exceptions.
+Editing, component/service logic, shared styles, backend and translation assets are unchanged.
+See the [active brief](work-items/DR-020b-creation-fields.md).
+The user selected "Approve corrected DR-020b and commit with disclosed limits" on 2026-11-02.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Unchecked contrast/workflow criteria remain unchecked; acceptance is not evidence that they passed.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: confirm a real mounted editing consumer and scope DR-020c editing chrome.
+DR-020 stays open; DR-020c is the next candidate, not an implementation started here.
+Do not begin another child in this invocation.
+
+### Previous completed focus: creation chrome
+
 DR-020a is Done with explicit user approval after follow-up feedback: the loaded form uses native `p-card`;
 its two actions use modern `button[pButton]`/`pButtonLabel` syntax without changing behavior.
 The user approved completion/commit with disclosed limits, then requested this correction before committing.
@@ -1287,7 +1319,7 @@ and linked from their registry rows.
 | DR-019h                                                       | Club tournament tabs; withdrawn with page retirement      | Done        |
 | [DR-020](work-items/DR-020-tournament-forms.md)               | Tournament creation and editing                           | In progress |
 | [DR-020a](work-items/DR-020a-creation-chrome.md)              | Creation chrome and native form Card                      | Done        |
-| DR-020b                                                       | Creation fields and mutation feedback                     | Backlog     |
+| [DR-020b](work-items/DR-020b-creation-fields.md)              | Creation fields and mutation feedback                     | Done        |
 | DR-020c                                                       | Editing chrome and actions                                | Backlog     |
 | DR-020d                                                       | Editing information tab                                   | Backlog     |
 | DR-020e                                                       | Editing settings tab                                      | Backlog     |
@@ -1313,6 +1345,7 @@ and linked from their registry rows.
 | DR-040                                                        | Investigate competition detail resource error rendering   | Backlog     |
 | DR-041                                                        | Club tournament repairs; withdrawn with page retirement   | Done        |
 | [DR-042](work-items/DR-042-draw-external-link-repair.md)      | Restore tournament detail draw external-link query field  | Done        |
+| DR-043                                                        | Native DatePicker accessibility-label localization audit  | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -1369,6 +1402,11 @@ DR-017q only reflects existing loading/loaded/error gates; it does not claim thi
 
 ### DR-034 additional evidence: creation read-error Message
 
+DR-020b adds creation mutation-error feedback evidence: native error Message text measures 4.44:1 light
+and 4.40:1 dark, failing the 4.5:1 normal-text threshold over composited ancestor backgrounds.
+Native simple validation text passes at 4.83:1 / 5.08:1. No page-specific or shared theme override is added.
+See the [creation-fields brief](work-items/DR-020b-creation-fields.md); retain failed criteria unchecked.
+
 DR-020a's native error Message measures 4.41:1 in light mode (fails AA normal text) and 4.64:1 in dark
 (passes), with alpha background colors composited over ancestors. Info passes at 4.75:1 / 4.59:1.
 Eight settled light/dark 360/390/768/1440px cases use browser-local read fixtures, not real outages.
@@ -1413,6 +1451,14 @@ shows English `No results found` when its browser-local player options are empty
 The native empty feedback remains usable; DR-017m reuses existing defaults and does not change shared configuration.
 Audit existing PrimeNG locale configuration and real consumers before scoping a separate locale fix.
 Do not add page-specific overrides or translation assets as a hidden side effect of a surface refresh.
+
+### DR-043: native DatePicker accessibility-label localization
+
+DR-020b confirms translated field labels on the mounted Dutch club tournament-creation route,
+but native dialog/icon buttons still say `Choose Date` and date cells have English full-date names.
+Investigate the shared PrimeNG locale configuration and affected real DatePicker consumers before a bounded fix.
+Coordinate with DR-037's Select locale audit; do not duplicate or silently change global locale behavior.
+No page-specific override, translation asset or dependency is added during the creation-field refresh.
 
 ### DR-036: mobile assembly rule parity
 

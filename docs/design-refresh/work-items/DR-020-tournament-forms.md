@@ -14,12 +14,13 @@ description: 'Bounded child slices for the mounted tournament creation and editi
 ## Children
 
 - [DR-020a](DR-020a-creation-chrome.md): creation heading, native form Card and read feedback.
-- DR-020b: creation fields, validation, mutation feedback and actions; scope before promotion.
+- [DR-020b](DR-020b-creation-fields.md): creation fields, validation and mutation feedback;
+  preserve DR-020a's completed native actions.
 - DR-020c: editing heading, tabs, feedback and actions; confirm mounted consumer before promotion.
 - DR-020d: editing information tab; confirm mounted consumer before promotion.
 - DR-020e: editing settings tab; confirm mounted consumer before promotion.
 
-The parent remains open until all required children are complete. Child labels beyond DR-020a are proposed scopes,
+The parent remains open until all required children are complete. Editing children DR-020c-e remain proposed scopes,
 not evidence of verified use or completed implementation.
 
 ## Consumer evidence

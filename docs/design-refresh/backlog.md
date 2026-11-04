@@ -5,6 +5,34 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-021d is Done with explicit user approval: general enrollment cart on the confirmed
+`/tournament/8658b541-702a-408e-8114-2858a9428069/enroll` route.
+See the [active brief](work-items/DR-021d-enrollment-cart.md).
+Scope: native cart Card, readable ordered items, localized accessible actions, empty and submitting states.
+Preserve parent-controlled items, partner indication, counts, outputs and parent success/error feedback.
+Exclude filters, rankings, event tiles, dialog, services, shared theme, backend and translations.
+Native bordered Card, semantic heading/list/empty text, wrapping names and localized remove actions are implemented.
+The existing smart-page/presentational-cart split remains. All actions now lock during submission, including remove.
+Static class tokens drop 90 to 42, plus two semantic Card root pass-through classes.
+Focused lint, all 126 tests, production library build and ten prerequisites pass.
+Seventy-two English/French/Dutch light/dark 360/390/768/1440px loaded/submitting/empty fixtures fit.
+Four final keyboard and four pointer cases pass; disabled visible targets emit nothing.
+Dutch empty-cart SSR/client copy matches. Monitored interaction checks have zero page errors or mutation attempts.
+Semantic text passes. Native secondary border/dark focus and light success Submit text/focus fail contrast;
+retain shared DR-032/033, without page overrides.
+New DR-047 records the inherited desktop sticky sidebar under the fixed app header; page chrome stays unchanged.
+Screen-reader, exhaustive hydration/contrast and real authenticated cart/partner/submission/outage operations
+remain unverified. No styling exceptions, services, backend, translations or shared-theme changes.
+On 2026-11-04 the user selected "Approve DR-021d and commit with disclosed limits" and "Nothing else".
+Approval includes submission locking, shared DR-032/033 contrast limits and inherited DR-047 sticky overlap;
+it does not claim failed or unperformed checks passed. Only this slice, its tests and handoff are approved;
+no push. Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors. Failed/unperformed criteria remain unchecked.
+Exact next action in a fresh invocation: confirm and scope DR-021e partner-selection dialog.
+DR-021e is the next candidate, not an implementation started here. DR-021 remains open.
+
+### Previous completed focus: enrollment selection tiles
+
 DR-021c is Done with explicit user approval: general enrollment selection tiles on the confirmed
 `/tournament/8658b541-702a-408e-8114-2858a9428069/enroll` route, with 30 public events.
 See the [active brief](work-items/DR-021c-enrollment-selection.md).
@@ -1505,7 +1533,7 @@ and linked from their registry rows.
 | [DR-021a](work-items/DR-021a-enrollment-chrome.md)            | General enrollment page chrome                             | Done        |
 | [DR-021b](work-items/DR-021b-enrollment-filters.md)           | General enrollment filters and rankings                    | Done        |
 | [DR-021c](work-items/DR-021c-enrollment-selection.md)         | General enrollment selection tiles                         | Done        |
-| DR-021d                                                       | General enrollment cart                                    | Backlog     |
+| [DR-021d](work-items/DR-021d-enrollment-cart.md)              | General enrollment cart                                    | Done        |
 | DR-021e                                                       | Partner-selection dialog                                   | Backlog     |
 | DR-021f                                                       | Sub-event-specific enrollment                              | Backlog     |
 | DR-021g                                                       | My-enrollments route; split further when scoped            | Backlog     |
@@ -1535,12 +1563,32 @@ and linked from their registry rows.
 | DR-044                                                        | Native Tabs selected-text contrast audit                   | Backlog     |
 | DR-045                                                        | Native MultiSelect chip accessibility and locale audit     | Backlog     |
 | DR-046                                                        | Enrollment tile localization gaps                          | Backlog     |
+| DR-047                                                        | Enrollment desktop sticky sidebar/header overlap           | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-047: enrollment desktop sticky sidebar/header overlap
+
+DR-021d confirms the existing general enrollment sidebar uses `xl:sticky xl:top-6`.
+After scrolling at 1440px, its Card pins at 21px under the app banner ending at 57px;
+the heading spans 39.5-64px and is partly obscured. Baseline cart screenshots show the same issue.
+Source: [general enrollment template](../../libs/frontend/pages/tournament/src/pages/general-enrollment/page-general-enrollment.component.html).
+Scope a separate page-chrome repair after DR-021d review; preserve the sidebar's responsive behavior and shared header.
+Verify initial/scrolled positions, keyboard-focused controls and narrow/wide light/dark layouts.
+DR-021d changes only cart internals; it does not claim this inherited visibility failure is fixed.
+
+### DR-032/033 additional evidence: general enrollment cart
+
+DR-021d's native secondary Clear border fails at 1.23:1 light / 1.40:1 dark against the Card;
+dark focus also fails at 1.40:1. Secondary label normal/hover text passes in both themes.
+The existing success-severity Submit Button fails normal/hover light text at 2.28/3.30:1 and light focus at 2.28:1.
+Dark Submit text/focus passes. Native danger remove icon normal/hover/focus passes the non-text threshold.
+Keep DR-032/033 open, with no scoped or shared palette overrides.
+See the [cart brief](work-items/DR-021d-enrollment-cart.md) for semantic copy checks and exact state evidence.
 
 ### DR-042: tournament detail draw external-link repair
 

@@ -159,26 +159,40 @@ describe('General enrollment chrome', () => {
   });
 
   it('preserves submitting state and success/error feedback with a mock-only submission', async () => {
+    service.cartItems.set([{ subEventId: 'singles', subEventName: 'Safe singles', eventType: 'M', gameType: 'S' }]);
     const result = new Subject<{ id: string }[]>();
     service.submitCart.mockReturnValue(result);
-    const { harness, component } = await mount();
+    const { harness, component, element } = await mount();
     const messages = harness.routeDebugElement?.injector.get(MessageService);
     if (!messages) throw new Error('Enrollment MessageService missing');
     const add = jest.spyOn(messages, 'add');
     const cart = harness.fixture.debugElement.query(By.directive(EnrollmentCartComponent)).componentInstance as EnrollmentCartComponent;
-    cart.submitCart.emit();
+    const buttons = element.querySelectorAll<HTMLButtonElement>('app-enrollment-cart button');
+    buttons[2].click();
     harness.detectChanges();
     expect(service.submitCart).toHaveBeenCalledWith('safe-cart');
     expect(cart.isSubmitting()).toBe(true);
+    buttons.forEach((button) => {
+      expect(button.disabled).toBe(true);
+      button.click();
+    });
+    expect(service.submitCart).toHaveBeenCalledTimes(1);
+    expect(service.removeFromCart).not.toHaveBeenCalled();
+    expect(service.clearCart).not.toHaveBeenCalled();
     result.next([{ id: 'safe-enrollment' }]);
+    harness.detectChanges();
     expect(component.isSubmitting()).toBe(false);
+    buttons.forEach((button) => expect(button.disabled).toBe(false));
     expect(add).toHaveBeenLastCalledWith(expect.objectContaining({ severity: 'success' }));
-    component.onSubmitCart();
+    buttons[2].click();
+    harness.detectChanges();
     const error = new Error('Safe submission failure');
     const log = jest.spyOn(console, 'error').mockImplementation(() => undefined);
     try {
       result.error(error);
       expect(component.isSubmitting()).toBe(false);
+      harness.detectChanges();
+      buttons.forEach((button) => expect(button.disabled).toBe(false));
       expect(add).toHaveBeenLastCalledWith(expect.objectContaining({ severity: 'error' }));
       expect(log).toHaveBeenCalledWith('Submit cart error:', error);
     } finally {

@@ -1,94 +1,82 @@
-<div class="rounded-border bg-emphasis border border-surface overflow-hidden">
- <!-- Header -->
- <div class="flex items-center gap-3 p-4 border-b border-surface bg-primary-50 dark:bg-primary-900/20">
- <i class="pi pi-shopping-cart text-2xl text-primary-600 dark:text-primary-400"></i>
- <div class="flex-1">
- <span class="font-semibold text-lg text-color">{{ 'all.enrollment.cart.title' | translate }}</span>
- @if (items().length > 0) {
- <div>
- <span class="text-sm text-muted-color"
- >{{ items().length }}
- {{ (items().length !== 1 ? 'all.enrollment.cart.eventsSelected' : 'all.enrollment.cart.eventSelected') | translate }}</span
- >
- </div>
- }
- </div>
- @if (items().length > 0) {
- <p-badge [value]="items().length.toString()" severity="success" size="large" />
- }
- </div>
+<p-card role="region" aria-labelledby="enrollment-cart-heading" [attr.aria-busy]="isSubmitting()" [pt]="{ root: { class: 'border border-surface' } }">
+  <ng-template #title>
+    <h2 id="enrollment-cart-heading" class="text-xl font-semibold text-color m-0 wrap-anywhere">
+      {{ 'all.enrollment.cart.title' | translate }}
+    </h2>
+  </ng-template>
+  <ng-template #subtitle>
+    @if (items().length > 0) {
+      {{ items().length }}
+      {{ (items().length !== 1 ? 'all.enrollment.cart.eventsSelected' : 'all.enrollment.cart.eventSelected') | translate }}
+    }
+  </ng-template>
 
- <!-- Content -->
- <div class="p-4 min-h-[300px]">
- @if (items().length === 0) {
- <div class="flex flex-col items-center justify-center py-12 text-center">
- <i class="pi pi-shopping-cart text-6xl mb-4 text-muted-color opacity-20"></i>
- <p class="text-lg text-color mb-1">{{ 'all.enrollment.cart.empty' | translate }}</p>
- <p class="text-sm text-muted-color">{{ 'all.enrollment.cart.emptyDescription' | translate }}</p>
- </div>
- } @else {
- <div class="space-y-3">
- @for (item of items(); track item.subEventId) {
- <div
- class="flex items-start gap-3 p-3 rounded-lg bg-emphasis hover:bg-emphasis transition-colors"
- >
- <i [class]="'pi ' + getEventTypeIcon(item.eventType) + ' text-xl text-primary-500'"></i>
- <div class="flex-1 min-w-0">
- <div class="font-medium text-color mb-1">{{ item.subEventName }}</div>
- <div class="flex items-center gap-2 text-sm text-muted-color">
- <span class="capitalize">{{ item.gameType }}</span>
- @if (item.preferredPartnerId) {
- <span class="flex items-center gap-1">
- <i class="pi pi-users text-xs"></i>
- {{ 'all.enrollment.cart.partnerSelected' | translate }}
- </span>
- }
- </div>
- </div>
- <p-button
- icon="pi pi-trash"
- severity="danger"
- [text]="true"
- [rounded]="true"
- size="small"
- (onClick)="onRemoveItem(item.subEventId)"
- [ariaLabel]="'Remove ' + item.subEventName"
- />
- </div>
- }
- </div>
+  @if (items().length === 0) {
+    <p class="text-color m-0">{{ 'all.enrollment.cart.empty' | translate }}</p>
+    <p class="text-muted-color mt-2 mb-0">{{ 'all.enrollment.cart.emptyDescription' | translate }}</p>
+  } @else {
+    <ul class="list-none p-0 m-0">
+      @for (item of items(); track item.subEventId; let last = $last) {
+        <li>
+          <div class="flex items-start gap-3">
+            <div class="flex-1 min-w-0">
+              <h3 class="text-base font-medium text-color m-0 wrap-anywhere">{{ item.subEventName }}</h3>
+              <div class="flex flex-wrap gap-x-3 gap-y-1 text-sm text-muted-color mt-1">
+                <span>{{ item.gameType }}</span>
+                @if (item.preferredPartnerId) {
+                  <span>{{ 'all.enrollment.cart.partnerSelected' | translate }}</span>
+                }
+              </div>
+            </div>
+            <p-button
+              type="button"
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              size="small"
+              [disabled]="isSubmitting()"
+              (onClick)="onRemoveItem(item.subEventId)"
+              [ariaLabel]="('all.enrollment.removeFromCart' | translate) + ' ' + item.subEventName"
+            />
+          </div>
+          @if (!last) {
+            <p-divider />
+          }
+        </li>
+      }
+    </ul>
 
- <!-- Summary -->
- <div class="mt-6 pt-4 border-t border-surface">
- <div class="flex items-center justify-between text-lg">
- <span class="font-medium text-color">{{ 'all.enrollment.cart.totalEvents' | translate }}</span>
- <span class="font-bold text-primary-600 dark:text-primary-400">{{ items().length }}</span>
- </div>
- </div>
- }
- </div>
+    <p-divider />
+    <dl class="flex flex-wrap justify-between gap-2 m-0 text-color">
+      <dt class="font-medium">{{ 'all.enrollment.cart.totalEvents' | translate }}</dt>
+      <dd class="font-semibold m-0">{{ items().length }}</dd>
+    </dl>
+  }
 
- <!-- Footer Actions -->
- @if (items().length > 0) {
- <div class="flex gap-3 p-4 border-t border-surface bg-emphasis">
- <p-button
- [label]="'all.enrollment.cart.clear' | translate"
- icon="pi pi-times"
- severity="secondary"
- [outlined]="true"
- (onClick)="onClearCart()"
- [disabled]="isSubmitting()"
- styleClass="flex-shrink-0"
- />
- <p-button
- [label]="'all.enrollment.cart.enrollNow' | translate"
- icon="pi pi-check-circle"
- severity="success"
- (onClick)="onSubmitCart()"
- [disabled]="isSubmitting()"
- [loading]="isSubmitting()"
- styleClass="flex-1"
- />
- </div>
- }
-</div>
+  <ng-template #footer>
+    @if (items().length > 0) {
+      <div class="flex flex-col gap-3">
+        <p-button
+          type="button"
+          [label]="'all.enrollment.cart.clear' | translate"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          [fluid]="true"
+          (onClick)="onClearCart()"
+          [disabled]="isSubmitting()"
+        />
+        <p-button
+          type="button"
+          [label]="'all.enrollment.cart.enrollNow' | translate"
+          icon="pi pi-check-circle"
+          severity="success"
+          [fluid]="true"
+          (onClick)="onSubmitCart()"
+          [disabled]="isSubmitting()"
+          [loading]="isSubmitting()"
+        />
+      </div>
+    }
+  </ng-template>
+</p-card>

@@ -5,6 +5,37 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-021e is Done with explicit user approval: partner-selection dialog on the confirmed general enrollment route.
+See the [active brief](work-items/DR-021e-partner-dialog.md).
+Scope: native fields, associated labels/descriptions, responsive actions and dialog sizing.
+Preserve search, optional partner/notes and parent-controlled cart integration.
+Exclude filters, tiles, cart internals, services, backend, translations and shared theme.
+Native fluid fields, localized dropdown/empty feedback, associated helpers and wrapping actions are implemented.
+The meaningful page/dialog split remains; native suggestion templates wrap long names without custom CSS.
+Static class tokens drop 30 to 20, plus one layout class on the native overlay pass-through.
+Focused lint, 12 suites / 141 tests, production library build and ten prerequisite tasks pass.
+Forty-eight English/French/Dutch light/dark 360/390/768/1440px loaded/empty fixture cases fit.
+Four final keyboard cases pass selection, field order, focus wrapping/reversal, validation and exact results.
+Four pointer cases pass selection, Cancel and optional Continue; native disabled targets emit nothing.
+Monitored final layout/keyboard checks have zero page errors or GraphQL mutation attempts.
+Public route SSR is HTTP 200 without a dialog before interaction; exhaustive hydration remains unverified.
+Semantic text passes; native field/secondary borders fail DR-032 and light primary Continue text fails
+at 3.65:1 under DR-033. No page overrides. DR-037 retains native English listbox/status feedback.
+New DR-048 retains inherited partner-search failure feedback and request-lifecycle investigation.
+Screen-reader, exhaustive contrast/hydration, live search/outages and authenticated cart operations remain unverified.
+No styling exceptions, dependencies, backend, translation or shared-theme changes.
+On 2026-11-04 the user selected "Approve DR-021e and commit with disclosed limits" and "Nothing else".
+Approval accepts the shared contrast/native accessibility localization and unperformed workflow/hydration limits;
+it does not claim failed or unperformed checks passed. Only this slice, its tests and handoff are approved; no push.
+Unchecked criteria remain unchecked.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: confirm and scope DR-021f's real sub-event-specific enrollment consumer.
+Do not assume use from a route export or add a consumer solely for visual testing. DR-021f is not started here.
+DR-021 remains open.
+
+### Previous completed focus: enrollment cart
+
 DR-021d is Done with explicit user approval: general enrollment cart on the confirmed
 `/tournament/8658b541-702a-408e-8114-2858a9428069/enroll` route.
 See the [active brief](work-items/DR-021d-enrollment-cart.md).
@@ -1534,7 +1565,7 @@ and linked from their registry rows.
 | [DR-021b](work-items/DR-021b-enrollment-filters.md)           | General enrollment filters and rankings                    | Done        |
 | [DR-021c](work-items/DR-021c-enrollment-selection.md)         | General enrollment selection tiles                         | Done        |
 | [DR-021d](work-items/DR-021d-enrollment-cart.md)              | General enrollment cart                                    | Done        |
-| DR-021e                                                       | Partner-selection dialog                                   | Backlog     |
+| [DR-021e](work-items/DR-021e-partner-dialog.md)               | Partner-selection dialog                                   | Done        |
 | DR-021f                                                       | Sub-event-specific enrollment                              | Backlog     |
 | DR-021g                                                       | My-enrollments route; split further when scoped            | Backlog     |
 | [DR-021h](work-items/DR-021h-enrollment-ranking-polish.md)    | Jouw Rankings visual polish; retained after DR-021b review | Backlog     |
@@ -1564,12 +1595,35 @@ and linked from their registry rows.
 | DR-045                                                        | Native MultiSelect chip accessibility and locale audit     | Backlog     |
 | DR-046                                                        | Enrollment tile localization gaps                          | Backlog     |
 | DR-047                                                        | Enrollment desktop sticky sidebar/header overlap           | Backlog     |
+| DR-048                                                        | Partner search failure feedback and request lifecycle      | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-048: partner search failure feedback and request lifecycle
+
+DR-021e preserves the existing dialog-owned GraphQL query and two-character trimmed threshold.
+Its regression confirms that a failed query logs `Partner search error:` and clears suggestions;
+the template has no distinct page-visible error/retry feedback. Empty results must not masquerade as an outage.
+Source: [partner dialog](../../libs/frontend/pages/tournament/src/pages/general-enrollment/components/partner-selection-dialog/partner-selection-dialog.component.ts).
+Scope a separate functional follow-up with localized pending/error/retry feedback and existing observable conventions.
+Investigate stale-response ordering and subscriptions after dialog destruction; these risks are not independently
+reproduced by the design slice. Do not claim a request-lifecycle repair from the mocked layout checks.
+Real search availability, permissions and outage recovery remain unverified; do not mutate enrollment data to test them.
+
+### DR-032/033/037 additional evidence: enrollment partner dialog
+
+DR-021e confirms native unfocused field borders at 1.48:1 light / 1.40:1 dark and secondary Cancel borders
+at 1.23:1 / 1.40:1 against the dialog. Shared DR-032 remains open.
+Native primary Continue text fails light at 3.65:1 and passes dark at 10.63:1; retain DR-033 without page overrides.
+Semantic labels/helpers and settled secondary Cancel text pass in both themes.
+The dropdown has an explicit localized name and visible empty results reuse `all.search.noResults`.
+Native AutoComplete still announces English `Option List` and `1 items selected` in Dutch;
+include its shared PrimeNG locale configuration in DR-037 rather than adding a second page translation system.
+See the [dialog brief](work-items/DR-021e-partner-dialog.md) for verified scope and unperformed checks.
 
 ### DR-047: enrollment desktop sticky sidebar/header overlap
 

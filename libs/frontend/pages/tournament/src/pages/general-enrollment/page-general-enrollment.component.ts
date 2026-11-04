@@ -112,6 +112,7 @@ export class PageGeneralEnrollmentComponent implements OnInit, OnDestroy {
     this.dialogRef = this.dialogService.open(PartnerSelectionDialogComponent, {
       header: this.translate.instant('all.enrollment.partnerSelection.title'),
       width: '500px',
+      breakpoints: { '640px': '90vw' },
       data: { subEvent },
     });
 

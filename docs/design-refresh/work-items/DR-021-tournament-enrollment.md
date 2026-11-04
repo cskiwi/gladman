@@ -19,7 +19,7 @@ description: 'Bounded enrollment presentation slices and preserved workflow cont
 | [DR-021b](DR-021b-enrollment-filters.md)        | General enrollment filters, rankings and accessible field labels     | DR-021a                                   |
 | [DR-021c](DR-021c-enrollment-selection.md)      | General enrollment selectable sub-event tiles                        | DR-021a                                   |
 | [DR-021d](DR-021d-enrollment-cart.md)           | General enrollment cart presentation and feedback                    | DR-021a                                   |
-| DR-021e                                         | Partner-selection dialog                                             | DR-021c                                   |
+| [DR-021e](DR-021e-partner-dialog.md)            | Partner-selection dialog                                             | DR-021c                                   |
 | DR-021f                                         | Sub-event-specific enrollment route                                  | Confirm mounted consumer before selection |
 | DR-021g                                         | My-enrollments route; split further if needed                        | Confirm mounted consumer before selection |
 | [DR-021h](DR-021h-enrollment-ranking-polish.md) | Jouw Rankings visual polish retained at user request                 | DR-021b                                   |
@@ -42,7 +42,7 @@ Consider genuine domain presentation reuse when the sub-event and my-enrollments
   Its keyboard range-output repair preserves pointer-release filtering. See its brief for evidence and pending review.
   Following user feedback, list filtering explicitly retains unknown event bounds; names are not parsed.
   DR-021h remains open for the ranking summary's visual polish, even after DR-021b approval.
-  DR-021c selection Cards and DR-021d cart have user approval with recorded limits; DR-021e is not started.
+  DR-021c selection Cards, DR-021d cart and DR-021e dialog have user approval with recorded limits.
 - The general breadcrumb currently renders the untranslated key `all.tournament.detail.title`.
   Correct its context/localization in a separately scoped follow-up; DR-021a preserves breadcrumb behavior.
 - The general service logs read failures without page-visible error state. Scope explicit read-error handling
@@ -62,5 +62,10 @@ Its shared native Button contrast failures remain DR-032/033; inherited sticky/h
 Actual authenticated cart operations, exhaustive hydration and screen-reader checks remain unverified.
 On 2026-11-04 the user approved DR-021d and its scoped commit with these disclosed limits, including DR-047.
 See its brief for exact results and approval; keep unchecked criteria unchecked.
-DR-021e partner dialog is the next candidate for a fresh invocation, not an implementation started here.
+DR-021e partner dialog has explicit user approval: associated native fields, wrapping suggestions/actions and responsive sizing;
+141 passing tests, focused lint/build, 48 locale/theme/width/state fixtures and four keyboard/four pointer cases.
+Shared DR-032/033 contrast and DR-037 native status localization remain open; DR-048 records inherited search feedback.
+On 2026-11-04 the user approved DR-021e completion and its scoped commit with the disclosed limits.
+Unchecked criteria remain unchecked. Next invocation: confirm the mounted DR-021f sub-event-specific enrollment
+consumer before scoping it. No new consumer is authorized for visual testing; do not start another child here.
 DR-021h ranking visual polish remains open after DR-021b approval.

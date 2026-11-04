@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -33,7 +32,7 @@ const SEARCH_PARTNERS = gql`
 @Component({
   selector: 'app-partner-selection-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextModule, TextareaModule, ButtonModule, AutoCompleteModule, TranslateModule],
+  imports: [ReactiveFormsModule, TextareaModule, ButtonModule, AutoCompleteModule, TranslateModule],
   templateUrl: './partner-selection-dialog.component.html',
 })
 export class PartnerSelectionDialogComponent implements OnInit {

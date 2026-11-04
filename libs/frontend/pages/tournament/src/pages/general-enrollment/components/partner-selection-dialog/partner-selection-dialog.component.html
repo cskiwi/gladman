@@ -1,60 +1,56 @@
-<div class="p-6">
- <form [formGroup]="form" class="space-y-5">
- <!-- Partner Search Field -->
- <div class="flex flex-col gap-2">
- <label for="partner" class="font-medium text-color">
- <i class="pi pi-users text-primary-500 mr-2"></i>
- {{ 'all.enrollment.partnerSelection.title' | translate }}
- </label>
- <p-autocomplete
- formControlName="partner"
- [suggestions]="filteredPartners"
- (completeMethod)="searchPartners($event)"
- field="fullName"
- [dropdown]="true"
- [placeholder]="'all.enrollment.partnerSelection.placeholder' | translate"
- styleClass="w-full"
- inputStyleClass="w-full"
- />
- <small class="text-muted-color">{{ 'all.enrollment.partnerSelection.description' | translate }}</small>
- </div>
+<form [formGroup]="form" class="flex flex-col gap-5">
+  <div class="flex flex-col gap-2">
+    <label for="enrollment-partner" class="font-medium">
+      {{ 'all.enrollment.partnerSelection.title' | translate }}
+    </label>
+    <p-autocomplete
+      inputId="enrollment-partner"
+      formControlName="partner"
+      [suggestions]="filteredPartners"
+      [emptyMessage]="'all.search.noResults' | translate"
+      (completeMethod)="searchPartners($event)"
+      optionLabel="fullName"
+      [dropdown]="true"
+      [dropdownAriaLabel]="'all.enrollment.partnerSelection.title' | translate"
+      [fluid]="true"
+      [pt]="{
+        pcInputText: { root: { 'aria-describedby': 'enrollment-partner-description' } },
+        overlay: { class: 'w-min' },
+      }"
+      [placeholder]="'all.enrollment.partnerSelection.placeholder' | translate"
+    >
+      <ng-template #item let-partner>
+        <span class="whitespace-normal wrap-anywhere">{{ partner.fullName }}</span>
+      </ng-template>
+    </p-autocomplete>
+    <small id="enrollment-partner-description" class="text-muted-color">
+      {{ 'all.enrollment.partnerSelection.description' | translate }}
+    </small>
+  </div>
 
- <!-- Notes Field -->
- <div class="flex flex-col gap-2">
- <label for="notes" class="font-medium text-color">
- <i class="pi pi-pencil text-primary-500 mr-2"></i>
- {{ 'all.enrollment.additionalNotes' | translate }}
- <span class="text-muted-color font-normal">{{ 'all.enrollment.optional' | translate }}</span>
- </label>
- <textarea
- pInputTextarea
- id="notes"
- formControlName="notes"
- rows="4"
- [placeholder]="'all.enrollment.partnerSelection.notes' | translate"
- class="w-full"
- ></textarea>
- <small class="text-muted-color"> {{ form.get('notes')?.value?.length || 0 }} / 500 {{ 'all.enrollment.characters' | translate }} </small>
- </div>
+  <div class="flex flex-col gap-2">
+    <label for="enrollment-notes" class="font-medium">
+      {{ 'all.enrollment.additionalNotes' | translate }}
+      <span class="text-muted-color font-normal">{{ 'all.enrollment.optional' | translate }}</span>
+    </label>
+    <textarea
+      pTextarea
+      id="enrollment-notes"
+      formControlName="notes"
+      rows="4"
+      maxlength="500"
+      [fluid]="true"
+      aria-describedby="enrollment-notes-count"
+      [attr.aria-invalid]="form.controls.notes.invalid"
+      [placeholder]="'all.enrollment.partnerSelection.notes' | translate"
+    ></textarea>
+    <small id="enrollment-notes-count" class="text-muted-color">
+      {{ form.controls.notes.value?.length || 0 }} / 500 {{ 'all.enrollment.characters' | translate }}
+    </small>
+  </div>
 
- <!-- Actions -->
- <div class="flex gap-3 pt-4 border-t border-surface">
- <p-button
- [label]="'all.button.cancel' | translate"
- icon="pi pi-times"
- severity="secondary"
- [outlined]="true"
- (onClick)="onCancel()"
- styleClass="flex-1"
- />
- <p-button
- [label]="'all.enrollment.continue' | translate"
- icon="pi pi-check"
- severity="primary"
- (onClick)="onSubmit()"
- [disabled]="form.invalid"
- styleClass="flex-1"
- />
- </div>
- </form>
-</div>
+  <div class="grid gap-3 sm:grid-cols-2">
+    <p-button type="button" [label]="'all.button.cancel' | translate" severity="secondary" [outlined]="true" [fluid]="true" (onClick)="onCancel()" />
+    <p-button type="button" [label]="'all.enrollment.continue' | translate" [fluid]="true" (onClick)="onSubmit()" [disabled]="form.invalid" />
+  </div>
+</form>

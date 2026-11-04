@@ -7,12 +7,14 @@ import { TournamentSubEvent } from '@app/models';
 import { GameType } from '@app/models-enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { of, Subject } from 'rxjs';
 import { PageGeneralEnrollmentComponent } from './page-general-enrollment.component';
 import { PageGeneralEnrollmentService, CartItem, SubEventWithCalculations } from './page-general-enrollment.service';
 import { EnrollmentFiltersComponent } from './components/enrollment-filters/enrollment-filters.component';
 import { EnrollmentCartComponent } from './components/enrollment-cart/enrollment-cart.component';
 import { SubEventSelectionGridComponent } from './components/sub-event-selection-grid/sub-event-selection-grid.component';
+import { PartnerSelectionDialogComponent } from './components/partner-selection-dialog/partner-selection-dialog.component';
 
 describe('General enrollment chrome', () => {
   const event = Object.assign(new TournamentSubEvent(), {
@@ -156,6 +158,34 @@ describe('General enrollment chrome', () => {
     expect(service.removeFromCart).toHaveBeenCalledWith('singles', 'safe-cart');
     expect(service.clearCart).toHaveBeenCalledWith('safe-cart');
     expect(component.selectedIds()).toEqual(['singles']);
+  });
+
+  it.each([
+    { gameType: GameType.D, result: undefined },
+    { gameType: GameType.MX, result: undefined },
+    { gameType: GameType.D, result: { partnerId: 'safe-partner', notes: 'Safe notes' } },
+    { gameType: GameType.MX, result: { partnerId: 'safe-partner', notes: 'Safe notes' } },
+    { gameType: GameType.D, result: {} },
+  ])('opens the existing partner dialog and delegates only completed results: %j', async ({ gameType, result }) => {
+    const { harness, component } = await mount();
+    const dialogs = harness.routeDebugElement?.injector.get(DialogService);
+    if (!dialogs) throw new Error('DialogService missing');
+    const open = jest.spyOn(dialogs, 'open');
+    const doubles = Object.assign(new TournamentSubEvent(), { id: 'safe-doubles', gameType });
+    component.onSubEventSelect(doubles);
+    expect(open).toHaveBeenCalledWith(
+      PartnerSelectionDialogComponent,
+      expect.objectContaining({ width: '500px', breakpoints: { '640px': '90vw' }, data: { subEvent: doubles } }),
+    );
+    const ref = open.mock.results[0].value;
+    expect(ref).toBeTruthy();
+    ref.close(result);
+    if (result) {
+      expect(service.addToCart).toHaveBeenCalledTimes(1);
+      expect(service.addToCart).toHaveBeenCalledWith(doubles, result.partnerId, result.notes);
+    } else {
+      expect(service.addToCart).not.toHaveBeenCalled();
+    }
   });
 
   it('preserves submitting state and success/error feedback with a mock-only submission', async () => {

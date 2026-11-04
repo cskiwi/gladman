@@ -17,7 +17,7 @@ description: 'Bounded enrollment presentation slices and preserved workflow cont
 | ----------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------- |
 | [DR-021a](DR-021a-enrollment-chrome.md)         | General enrollment heading, outer layout, loading and empty feedback | DR-020                                    |
 | [DR-021b](DR-021b-enrollment-filters.md)        | General enrollment filters, rankings and accessible field labels     | DR-021a                                   |
-| DR-021c                                         | General enrollment selectable sub-event tiles                        | DR-021a                                   |
+| [DR-021c](DR-021c-enrollment-selection.md)      | General enrollment selectable sub-event tiles                        | DR-021a                                   |
 | DR-021d                                         | General enrollment cart presentation and feedback                    | DR-021a                                   |
 | DR-021e                                         | Partner-selection dialog                                             | DR-021c                                   |
 | DR-021f                                         | Sub-event-specific enrollment route                                  | Confirm mounted consumer before selection |
@@ -42,7 +42,7 @@ Consider genuine domain presentation reuse when the sub-event and my-enrollments
   Its keyboard range-output repair preserves pointer-release filtering. See its brief for evidence and pending review.
   Following user feedback, list filtering explicitly retains unknown event bounds; names are not parsed.
   DR-021h remains open for the ranking summary's visual polish, even after DR-021b approval.
-  DR-021c/d/e retain their existing presentation until selected.
+  DR-021c is the selected native selection-Card slice; DR-021d/e retain their existing presentation.
 - The general breadcrumb currently renders the untranslated key `all.tournament.detail.title`.
   Correct its context/localization in a separately scoped follow-up; DR-021a preserves breadcrumb behavior.
 - The general service logs read failures without page-visible error state. Scope explicit read-error handling
@@ -54,4 +54,7 @@ Consider genuine domain presentation reuse when the sub-event and my-enrollments
 Keep the parent open until every required child is complete. Select only one child per invocation.
 DR-021a and DR-021b have user approval with their recorded limits;
 see their briefs for exact checks, shared DR-032/DR-045 discoveries and unperformed verification.
-Next candidate is DR-021c. DR-021h ranking visual polish remains open after DR-021b approval.
+DR-021c has explicit user approval with the disclosed native DR-032 contrast and DR-046 localization limits.
+It preserves the presentational child and parent outputs, using explicit Buttons instead of whole-card clicks.
+Its unchecked criteria remain unchecked. DR-021d cart is the next candidate for a fresh invocation, not started here.
+DR-021h ranking visual polish remains open after DR-021b approval.

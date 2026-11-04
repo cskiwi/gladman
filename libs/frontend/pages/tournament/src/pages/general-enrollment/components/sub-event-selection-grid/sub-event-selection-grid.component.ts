@@ -2,7 +2,6 @@ import { Component, inject, output, input } from '@angular/core';
 
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { TournamentSubEvent } from '@app/models';
@@ -11,7 +10,7 @@ import type { SubEventWithCalculations } from '../../page-general-enrollment.ser
 @Component({
   selector: 'app-sub-event-selection-grid',
   standalone: true,
-  imports: [CardModule, ButtonModule, ChipModule, TagModule, TranslateModule],
+  imports: [CardModule, ButtonModule, TagModule, TranslateModule],
   templateUrl: './sub-event-selection-grid.component.html',
 })
 export class SubEventSelectionGridComponent {
@@ -32,7 +31,7 @@ export class SubEventSelectionGridComponent {
    * Toggle sub-event selection
    */
   toggleSelection(item: SubEventWithCalculations): void {
-    if (!item.id) return;
+    if (!item.id || !item._isEligible) return;
     if (this.isSelected(item.id)) {
       this.subEventRemove.emit(item.id);
     } else {
@@ -44,13 +43,6 @@ export class SubEventSelectionGridComponent {
       delete subEvent['_isEligible'];
       this.subEventSelect.emit(subEvent as unknown as TournamentSubEvent);
     }
-  }
-
-  /**
-   * Get eligibility tag severity
-   */
-  getEligibilitySeverity(eligible: boolean): 'success' | 'danger' {
-    return eligible ? 'success' : 'danger';
   }
 
   /**
@@ -79,22 +71,6 @@ export class SubEventSelectionGridComponent {
       return subEvent.waitingListEnabled ? this.translate.instant('all.tournament.fullWaitingList') : this.translate.instant('all.tournament.full');
     }
     return this.translate.instant('all.tournament.spotsLeft', { count: availableSpots });
-  }
-
-  /**
-   * Get game type icon
-   */
-  getEventTypeIcon(gameType?: string): string {
-    switch (gameType) {
-      case 'M':
-        return 'pi-mars';
-      case 'F':
-        return 'pi-venus';
-      case 'MX':
-        return 'pi-users';
-      default:
-        return 'pi-trophy';
-    }
   }
 
   /**

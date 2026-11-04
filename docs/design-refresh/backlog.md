@@ -5,6 +5,38 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-021c is Done with explicit user approval: general enrollment selection tiles on the confirmed
+`/tournament/8658b541-702a-408e-8114-2858a9428069/enroll` route, with 30 public events.
+See the [active brief](work-items/DR-021c-enrollment-selection.md).
+Scope: native event Cards, semantic metadata/capacity and explicit accessible selection actions.
+Preserve eligibility, selected IDs, waiting-list/capacity states and parent outputs.
+Exclude filters, rankings, cart, dialog, services, shared theme, backend and translations.
+Keep the existing smart-page/presentational-grid split; do not add a styling-only wrapper.
+Native bordered Cards, wrapping headings, semantic capacity Tags and event-named native Buttons are implemented.
+The existing smart-page/presentational-grid split remains. Whole-card pointer selection intentionally becomes
+explicit Button selection; keyboard, pointer, output payloads, eligibility and parent-controlled selection pass.
+Static class attributes drop 91 to 29 tokens, plus three semantic/native root pass-through classes.
+Focused lint, all 118 tests, production library build and ten prerequisites pass.
+Eight light/dark 360/390/768/1440px fixture cases fit; four 390/1440px keyboard/pointer cases pass.
+Four additional cases verify actual visible disabled targets do not emit. Dutch SSR/client titles match
+for 30 public native Cards. Monitored browser checks have zero page errors or GraphQL mutation attempts.
+Scoped normal/hover text passes. Secondary outline contrast fails 1.23:1 light / 1.40:1 dark;
+dark focus outline also fails 1.40:1. Keep the shared DR-032 audit open; no page overrides.
+New DR-046 records the existing missing already-enrolled translation and literal `Any` fallback.
+Screen-reader, exhaustive contrast/hydration, mounted English/French and real authenticated cart/dialog
+operations remain unverified. No styling exceptions, backend, service, translation or shared-theme changes.
+On 2026-11-04 the user selected "Approve DR-021c and commit with disclosed limits" and "Nothing else".
+Approval includes explicit Button-only selection; it does not claim unperformed or failed checks passed.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors.
+Unchecked contrast/localization/workflow/accessibility criteria remain unchecked.
+Exact next action in a fresh invocation: confirm and scope DR-021d general enrollment cart.
+DR-021d is the next candidate, not an implementation started here.
+DR-021 remains open; do not start another child in this invocation.
+
+### Previous completed focus: enrollment filters
+
 DR-021b is Done with explicit user approval after feedback: general enrollment filters/rankings on the confirmed
 `/tournament/8658b541-702a-408e-8114-2858a9428069/enroll` route.
 See the [active brief](work-items/DR-021b-enrollment-filters.md).
@@ -1472,7 +1504,7 @@ and linked from their registry rows.
 | [DR-021](work-items/DR-021-tournament-enrollment.md)          | Tournament enrollment workflows                            | In progress |
 | [DR-021a](work-items/DR-021a-enrollment-chrome.md)            | General enrollment page chrome                             | Done        |
 | [DR-021b](work-items/DR-021b-enrollment-filters.md)           | General enrollment filters and rankings                    | Done        |
-| DR-021c                                                       | General enrollment selection tiles                         | Backlog     |
+| [DR-021c](work-items/DR-021c-enrollment-selection.md)         | General enrollment selection tiles                         | Done        |
 | DR-021d                                                       | General enrollment cart                                    | Backlog     |
 | DR-021e                                                       | Partner-selection dialog                                   | Backlog     |
 | DR-021f                                                       | Sub-event-specific enrollment                              | Backlog     |
@@ -1502,6 +1534,7 @@ and linked from their registry rows.
 | DR-043                                                        | Native DatePicker accessibility-label localization audit   | Backlog     |
 | DR-044                                                        | Native Tabs selected-text contrast audit                   | Backlog     |
 | DR-045                                                        | Native MultiSelect chip accessibility and locale audit     | Backlog     |
+| DR-046                                                        | Enrollment tile localization gaps                          | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md

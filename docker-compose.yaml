@@ -28,16 +28,16 @@ services:
       - api
     restart: unless-stopped
 
-  # typesense:
-  #   image: typesense/typesense:30.2
-  #   restart: on-failure
-  #   ports:
-  #     - "8108:8108"
-  #   networks:
-  #     - api
-  #   volumes:
-  #     - ./typesense-data:/data
-  #   command: '--data-dir /data --api-key=xyz --enable-cors'
+  typesense:
+    image: typesense/typesense:31.0.rc24
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    networks:
+      - api
+    volumes:
+      - ./typesense-data:/data
+    command: '--data-dir /data --api-key=xxs9ngri7w0yjvqh --enable-cors'
 
   # Tools
   pgadmin:

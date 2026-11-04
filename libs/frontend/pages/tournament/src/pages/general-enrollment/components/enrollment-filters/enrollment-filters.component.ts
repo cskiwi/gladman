@@ -6,6 +6,7 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SliderModule } from 'primeng/slider';
+import type { SliderChangeEvent } from 'primeng/types/slider';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { RankingLastPlace } from '@app/models';
 
@@ -235,6 +236,15 @@ export class EnrollmentFiltersComponent implements OnInit {
   hasRanking(): boolean {
     const userRanking = this.userRanking();
     return !!(userRanking && (userRanking.single || userRanking.double || userRanking.mix));
+  }
+
+  /**
+   * Apply keyboard/native-input changes while pointer drags still wait for release.
+   */
+  onLevelChange({ event }: SliderChangeEvent): void {
+    if (event?.type === 'keydown' || event?.type === 'change') {
+      this.emitFilters();
+    }
   }
 
   /**

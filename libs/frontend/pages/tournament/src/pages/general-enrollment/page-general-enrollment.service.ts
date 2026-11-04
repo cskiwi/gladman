@@ -335,11 +335,10 @@ export class PageGeneralEnrollmentService {
         return false;
       }
 
-      // Level filter
-      if (filters.level.length > 0) {
-        const subEventMinLevel = subEvent.minLevel || 0;
-        const subEventMaxLevel = subEvent.maxLevel || 12;
-        const hasOverlap = filters.level.some((level) => level >= subEventMinLevel && level <= subEventMaxLevel);
+      // Unknown event bounds remain visible; names are not level requirements.
+      if (filters.level.length > 0 && subEvent.minLevel != null && subEvent.maxLevel != null) {
+        const { minLevel, maxLevel } = subEvent;
+        const hasOverlap = filters.level.some((level) => level >= minLevel && level <= maxLevel);
         if (!hasOverlap) {
           return false;
         }

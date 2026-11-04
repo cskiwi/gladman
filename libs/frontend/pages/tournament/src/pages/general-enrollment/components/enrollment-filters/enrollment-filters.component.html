@@ -1,104 +1,118 @@
-<div class="space-y-4">
- <!-- User Ranking Info -->
- @if (hasRanking()) {
- <div class="flex items-center gap-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg border border-primary-200 dark:border-primary-700">
- <i class="pi pi-user text-2xl text-primary-600 dark:text-primary-400"></i>
- <div class="flex-1">
- <div class="font-semibold text-primary-900 dark:text-primary-100 mb-1">{{ 'all.enrollment.filters.yourRankings' | translate }}</div>
- <div class="flex flex-wrap gap-4 text-sm">
- @if (userRanking()?.single) {
- <span class="flex items-center gap-1 text-primary-700 dark:text-primary-300">
- <strong>{{ 'all.enrollment.filters.single' | translate }}</strong> Level {{ userRanking()?.single }}
- </span>
- }
- @if (userRanking()?.double) {
- <span class="flex items-center gap-1 text-primary-700 dark:text-primary-300">
- <strong>{{ 'all.enrollment.filters.double' | translate }}</strong> Level {{ userRanking()?.double }}
- </span>
- }
- @if (userRanking()?.mix) {
- <span class="flex items-center gap-1 text-primary-700 dark:text-primary-300">
- <strong>{{ 'all.enrollment.filters.mixed' | translate }}</strong> Level {{ userRanking()?.mix }}
- </span>
- }
- </div>
- </div>
- <div class="flex items-center gap-2 px-3 py-2 bg-emphasis rounded-lg">
- <p-checkbox [formControl]="showOnlyMyLevelControl" [binary]="true" inputId="showOnlyMyLevel" />
- <label for="showOnlyMyLevel" class="cursor-pointer text-sm font-medium text-color select-none">
- {{ 'all.enrollment.filters.showOnlyMyLevel' | translate }}
- </label>
- </div>
- </div>
- }
+<div class="flex flex-col gap-6 text-color">
+  @if (hasRanking()) {
+    <section aria-labelledby="enrollment-rankings-heading" class="flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <h2 id="enrollment-rankings-heading" class="text-lg font-semibold mt-0 mb-2">
+          {{ 'all.enrollment.filters.yourRankings' | translate }}
+        </h2>
+        <dl class="flex flex-wrap gap-4 m-0">
+          @if (userRanking()?.single) {
+            <div>
+              <dt class="font-medium">{{ 'all.enrollment.filters.single' | translate }}</dt>
+              <dd class="m-0">{{ 'all.enrollment.filters.level' | translate }} {{ userRanking()?.single }}</dd>
+            </div>
+          }
+          @if (userRanking()?.double) {
+            <div>
+              <dt class="font-medium">{{ 'all.enrollment.filters.double' | translate }}</dt>
+              <dd class="m-0">{{ 'all.enrollment.filters.level' | translate }} {{ userRanking()?.double }}</dd>
+            </div>
+          }
+          @if (userRanking()?.mix) {
+            <div>
+              <dt class="font-medium">{{ 'all.enrollment.filters.mixed' | translate }}</dt>
+              <dd class="m-0">{{ 'all.enrollment.filters.level' | translate }} {{ userRanking()?.mix }}</dd>
+            </div>
+          }
+        </dl>
+      </div>
+      <div class="flex items-center gap-2">
+        <p-checkbox [formControl]="showOnlyMyLevelControl" [binary]="true" inputId="showOnlyMyLevel" />
+        <label for="showOnlyMyLevel">{{ 'all.enrollment.filters.showOnlyMyLevel' | translate }}</label>
+      </div>
+    </section>
+  }
 
- <!-- Filters Row -->
- <div class="flex flex-wrap gap-4 items-end">
- <!-- Event Type -->
- <div class="flex-1 min-w-[200px]">
- <p-multiselect
- [formControl]="eventTypeControl"
- [options]="eventTypeOptions"
- optionLabel="label"
- optionValue="value"
- [placeholder]="'all.enrollment.filters.eventType' | translate"
- display="chip"
- [style]="{ width: '100%' }"
- />
- </div>
+  <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 items-end">
+    <div class="flex flex-col gap-2 min-w-0">
+      <label id="enrollment-event-type-label" for="enrollment-event-type">
+        {{ 'all.enrollment.filters.eventType' | translate }}
+      </label>
+      <p-multiselect
+        inputId="enrollment-event-type"
+        ariaLabelledBy="enrollment-event-type-label"
+        [formControl]="eventTypeControl"
+        [options]="eventTypeOptions"
+        optionLabel="label"
+        optionValue="value"
+        [placeholder]="'all.enrollment.filters.eventType' | translate"
+        display="chip"
+        fluid
+      />
+    </div>
 
- <!-- Game Type -->
- <div class="flex-1 min-w-[200px]">
- <p-multiselect
- [formControl]="gameTypeControl"
- [options]="gameTypeOptions"
- optionLabel="label"
- optionValue="value"
- [placeholder]="'all.enrollment.filters.category' | translate"
- display="chip"
- [style]="{ width: '100%' }"
- />
- </div>
+    <div class="flex flex-col gap-2 min-w-0">
+      <label id="enrollment-game-type-label" for="enrollment-game-type">
+        {{ 'all.enrollment.filters.category' | translate }}
+      </label>
+      <p-multiselect
+        inputId="enrollment-game-type"
+        ariaLabelledBy="enrollment-game-type-label"
+        [formControl]="gameTypeControl"
+        [options]="gameTypeOptions"
+        optionLabel="label"
+        optionValue="value"
+        [placeholder]="'all.enrollment.filters.category' | translate"
+        display="chip"
+        fluid
+      />
+    </div>
 
- <!-- Level Range -->
- <div class="flex-1 min-w-[200px]">
- <label class="block text-sm font-medium text-color mb-2">
- {{ 'all.enrollment.filters.level' | translate }}: {{ levelRangeControl.value?.[0] || 1 }} - {{ levelRangeControl.value?.[1] || 12 }}
- </label>
- <div class="py-3">
- <p-slider
- [formControl]="levelRangeControl"
- [range]="true"
- [min]="1"
- [max]="12"
- [step]="1"
- styleClass="w-full"
- (onSlideEnd)="onLevelSlideEnd()"
- />
- </div>
- </div>
+    <div class="flex flex-col gap-2 min-w-0">
+      <span id="enrollment-level-label">
+        {{ 'all.enrollment.filters.level' | translate }}: {{ levelRangeControl.value?.[0] || 1 }} -
+        {{ levelRangeControl.value?.[1] || 12 }}
+      </span>
+      <div class="px-2 py-3">
+        <p-slider
+          ariaLabelledBy="enrollment-level-label"
+          [formControl]="levelRangeControl"
+          [range]="true"
+          [min]="1"
+          [max]="12"
+          [step]="1"
+          (onChange)="onLevelChange($event)"
+          (onSlideEnd)="onLevelSlideEnd()"
+        />
+      </div>
+    </div>
 
- <!-- Enrollment Status -->
- <div class="flex-1 min-w-[200px]">
- <p-select
- [formControl]="enrollmentStatusControl"
- [options]="enrollmentStatusOptions"
- optionLabel="label"
- optionValue="value"
- [placeholder]="'all.enrollment.filters.status' | translate"
- [style]="{ width: '100%' }"
- />
- </div>
+    <div class="flex flex-col gap-2 min-w-0">
+      <label id="enrollment-status-label" for="enrollment-status">
+        {{ 'all.enrollment.filters.status' | translate }}
+      </label>
+      <p-select
+        inputId="enrollment-status"
+        ariaLabelledBy="enrollment-status-label"
+        [formControl]="enrollmentStatusControl"
+        [options]="enrollmentStatusOptions"
+        optionLabel="label"
+        optionValue="value"
+        [placeholder]="'all.enrollment.filters.status' | translate"
+        fluid
+      />
+    </div>
+  </div>
 
- <!-- Clear Filters -->
- @if (hasActiveFilters()) {
- <p-button
- [label]="'all.enrollment.filters.clear' | translate"
- icon="pi pi-times"
- severity="secondary"
- [outlined]="true"
- (onClick)="clearFilters()"
- />
- }
- </div>
+  @if (hasActiveFilters()) {
+    <div>
+      <p-button
+        [label]="'all.enrollment.filters.clear' | translate"
+        icon="pi pi-times"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="clearFilters()"
+      />
+    </div>
+  }
 </div>

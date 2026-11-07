@@ -5,6 +5,35 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-022b is Done with explicit user approval: draw switching and page loading/error/empty feedback.
+See the [draw feedback brief](work-items/DR-022b-draw-feedback.md).
+Native pressed buttons, localized section/loading labels, Card/Skeleton loading and severity-based Messages
+replace scoped custom presentation. Guarded resource selectors let actual failed requests render without exceptions.
+Approved identity/actions, games, standings/bracket internals, requests, routes and translation assets are unchanged.
+Static authored switcher/empty/loading/error class tokens change 9/32/20/7 to 15/12/19/5.
+Final `npx nx run-many --projects=frontend-pages-tournament --targets=lint,test,build --output-style=static` passes:
+13 suites / 160 tests, production library build and ten prerequisites; nine added page regressions include
+pending loading, actual failure/recovery, missing-response error, both empty states, switching and three locale assets.
+Twenty synthetic light/dark 390/1440px state cases fit, including human-readable and unbroken long switch labels.
+Pointer/Enter/Space fixtures navigate correctly and update pressed state; no records are changed.
+An intercepted real client query failure shows one alert, no hero or page exception; recovery restores
+14 standings, 15 games and mounted bracket/games. Monitored failure and interaction cases attempt zero mutations.
+Empty/error text contrast passes. Native light selected/secondary button text fails at 3.65/4.46:1,
+retained under existing DR-033/032; dark button text passes. Native 1px keyboard focus is visible.
+Screen-reader, exhaustive accessibility/focus contrast/hydration and live multi-draw/permission/sync workflows
+remain unverified. Public populated SSR is HTTP 200 with hero/games/bracket and no single-draw switcher.
+No new styles, exception, dependency, backend, translation-asset or shared/theme changes; no push.
+On 2026-11-07 the user selected "Approve DR-022b and commit with disclosed limits" and "Nothing else".
+Approval accepts the DR-032/033 Button contrast failures and unperformed screen-reader, exhaustive accessibility,
+focus/hover contrast, hydration and live multi-draw/permission/sync checks; it does not claim they passed.
+Unchecked criteria remain unchecked. Only this slice, tests and repository handoff are approved for commit.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects
+with existing warnings and zero errors. No application code changed after the final focused lint/test/build run.
+Exact next action in a fresh invocation: scope DR-022c mounted games from the confirmed public draw,
+inspect its source/consumer and choose only one reviewable games slice. DR-022 remains open. Do not begin it here.
+
+### Previous completed focus: draw identity
+
 DR-022a is Done with explicit user approval: draw identity and actions on the mounted public knockout draw.
 See the [draw identity brief](work-items/DR-022a-draw-identity.md).
 Reuse approved shared hero primitives and native PrimeNG Tags/buttons; preserve breadcrumb, external URL and sync.
@@ -1656,7 +1685,7 @@ and linked from their registry rows.
 | DR-021i                                                       | Future my-enrollments overview; separately scope later      | Backlog     |
 | DR-022                                                        | Tournament draw detail                                      | In progress |
 | [DR-022a](work-items/DR-022a-draw-identity.md)                | Draw identity and actions                                   | Done        |
-| DR-022b                                                       | Draw switching and page loading/error/empty feedback        | Backlog     |
+| [DR-022b](work-items/DR-022b-draw-feedback.md)                | Draw switching and page loading/error/empty feedback        | Done        |
 | DR-022c                                                       | Mounted draw games                                          | Backlog     |
 | DR-022d                                                       | Draw standings (confirm mounted round-robin consumer first) | Backlog     |
 | DR-023                                                        | Tournament admin: enrollments and check-in                  | Backlog     |
@@ -2132,6 +2161,11 @@ Parent: DR-022. Project: `frontend-pages-tournament`.
   DR-006j subsequently corrected the mounted bracket's bounded scroll sizing; preserve that completed work.
 - DR-022a scopes identity/actions only. DR-022b retains page switching and loading/error/empty feedback;
   DR-022c retains games, and DR-022d requires a confirmed mounted round-robin standings consumer before selection.
+- DR-022b implements native page feedback and switching; approved completion retains native light selected Button text
+  at 3.65:1 (DR-033) and outlined secondary Button text at 4.46:1 (DR-032). Dark text is 10.63/6.91:1.
+  Four keyboard cases expose native 1px focus; exhaustive focus-ring contrast remains unverified.
+  Empty Message text is 7.74:1 light / 9.51:1 dark; semantic error text is 18.29:1 / 14.63:1.
+  No page-level palette overrides are added. Keep the shared audits open.
 
 ### Tournament administration
 

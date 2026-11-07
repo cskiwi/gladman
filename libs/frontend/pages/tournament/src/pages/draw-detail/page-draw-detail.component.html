@@ -56,17 +56,24 @@
 
         <!-- Draw Switcher -->
         @if (hasMultipleDraws()) {
-          <section class="mb-6 flex items-center gap-3 flex-wrap">
-            <span class="t-eyebrow">Switch draw</span>
+          <section aria-labelledby="draw-switcher-title" class="mb-6 flex flex-col gap-3">
+            <h2 id="draw-switcher-title" class="m-0 text-lg font-semibold text-color">
+              {{ 'all.tournament.draws' | translate }}
+            </h2>
             <div class="flex gap-2 flex-wrap">
               @for (option of drawOptions(); track option.value) {
-                <p-button
-                  [label]="option.label"
+                <button
+                  pButton
+                  type="button"
                   [severity]="option.value === drawId() ? 'primary' : 'secondary'"
                   [outlined]="option.value !== drawId()"
+                  [attr.aria-pressed]="option.value === drawId()"
                   size="small"
-                  (onClick)="onDrawChange(option.value)"
-                />
+                  class="max-w-full"
+                  (click)="onDrawChange(option.value)"
+                >
+                  <span pButtonLabel class="whitespace-normal break-words min-w-0">{{ option.label }}</span>
+                </button>
               }
             </div>
           </section>
@@ -80,17 +87,20 @@
             <app-draw-standings-table [standings]="standings()" />
           }
         } @else {
-          <div class="rounded-xl border border-dashed border-surface p-10 text-center text-muted-color mb-6">
-            @if (draw?.type === 'KO') {
-              <i class="pi pi-sitemap text-4xl mb-3 block opacity-40"></i>
-              <h3 class="font-display text-lg font-medium mb-1">No Tournament Tree</h3>
-              <p class="text-sm m-0">This knockout draw doesn't have any tournament data yet.</p>
-            } @else {
-              <i class="pi pi-chart-bar text-4xl mb-3 block opacity-40"></i>
-              <h3 class="font-display text-lg font-medium mb-1">No Standings</h3>
-              <p class="text-sm m-0">This draw doesn't have any standings data yet.</p>
-            }
-          </div>
+          <p-message severity="secondary" class="mb-6 w-full">
+            <ng-template #icon>
+              <i [class]="draw.type === 'KO' ? 'pi pi-sitemap' : 'pi pi-chart-bar'" aria-hidden="true"></i>
+            </ng-template>
+            <div>
+              @if (draw?.type === 'KO') {
+                <h2 class="m-0 text-lg font-semibold">No Tournament Tree</h2>
+                <p class="text-sm m-0">This knockout draw doesn't have any tournament data yet.</p>
+              } @else {
+                <h2 class="m-0 text-lg font-semibold">No Standings</h2>
+                <p class="text-sm m-0">This draw doesn't have any standings data yet.</p>
+              }
+            </div>
+          </p-message>
         }
 
         <!-- Games Section -->
@@ -99,30 +109,34 @@
     }
   }
 } @else {
-  <!-- Loading Skeletons - Arena style -->
-  <div class="flex flex-col gap-6">
-    <p-skeleton width="20rem" height="1rem" />
-    <div class="bg-emphasis border border-surface rounded-border p-6">
-      <p-skeleton width="18rem" height="2rem" styleClass="mb-2" />
-      <p-skeleton width="12rem" height="1rem" />
-    </div>
-    <div class="bg-emphasis border border-surface rounded-border overflow-hidden">
-      @for (i of [1, 2, 3, 4, 5]; track i) {
-        <div class="p-3 border-b border-surface flex gap-4 items-center">
-          <p-skeleton width="2rem" height="1rem" />
-          <p-skeleton width="10rem" height="1rem" />
-          <p-skeleton width="3rem" height="1rem" />
-          <p-skeleton width="3rem" height="1rem" />
-          <p-skeleton width="3rem" height="1rem" />
-        </div>
-      }
-    </div>
+  <div class="flex flex-col gap-6" aria-busy="true">
+    <span role="status" class="sr-only">{{ 'all.tournament.edit.messages.loading' | translate }}</span>
+    <p-skeleton width="60%" height="1rem" />
+    <p-card class="block border border-surface">
+      <div class="flex flex-col gap-2">
+        <p-skeleton width="60%" height="2rem" />
+        <p-skeleton width="40%" height="1rem" />
+      </div>
+    </p-card>
+    <p-card class="block border border-surface">
+      <div class="flex flex-col gap-4">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <div class="grid grid-cols-5 gap-4">
+            <p-skeleton height="1rem" />
+            <p-skeleton height="1rem" />
+            <p-skeleton height="1rem" />
+            <p-skeleton height="1rem" />
+            <p-skeleton height="1rem" />
+          </div>
+        }
+      </div>
+    </p-card>
   </div>
 }
 
 @if (error()) {
-  <div class="flex items-center gap-2 p-4 rounded-lg" style="background: var(--g-loss-muted); color: var(--g-loss)">
-    <i class="pi pi-exclamation-triangle"></i>
-    {{ error() }}
-  </div>
+  <p-message severity="error" class="mt-4 w-full">
+    <ng-template #icon><i class="pi pi-exclamation-triangle" aria-hidden="true"></i></ng-template>
+    <span class="text-color">{{ error() }}</span>
+  </p-message>
 }

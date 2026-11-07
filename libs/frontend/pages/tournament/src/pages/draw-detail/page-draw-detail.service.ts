@@ -179,12 +179,13 @@ export class DrawDetailService {
   });
 
   // Public selectors
-  tournament = computed(() => this.dataResource.value()?.tournament);
-  subEvent = computed(() => this.dataResource.value()?.subEvent);
-  draw = computed(() => this.dataResource.value()?.draw);
-  draws = computed(() => this.dataResource.value()?.draws ?? []);
-  standings = computed(() => this.dataResource.value()?.standings ?? []);
-  games = computed(() => this.dataResource.value()?.games ?? []);
+  private readonly data = computed(() => (this.dataResource.hasValue() ? this.dataResource.value() : undefined));
+  tournament = computed(() => this.data()?.tournament);
+  subEvent = computed(() => this.data()?.subEvent);
+  draw = computed(() => this.data()?.draw);
+  draws = computed(() => this.data()?.draws ?? []);
+  standings = computed(() => this.data()?.standings ?? []);
+  games = computed(() => this.data()?.games ?? []);
   error = computed(() => this.dataResource.error()?.message || null);
   loading = computed(() => this.dataResource.isLoading());
 

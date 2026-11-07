@@ -9,6 +9,8 @@ import { SeoService } from '@app/frontend-modules-seo/service';
 import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 import { DrawDetailService } from './page-draw-detail.service';
@@ -24,6 +26,8 @@ import { DrawKoTreeComponent } from './components/draw-ko-tree.component';
     RouterModule,
     TranslateModule,
     ButtonModule,
+    CardModule,
+    MessageModule,
     SkeletonModule,
     TagModule,
     HeroComponent,

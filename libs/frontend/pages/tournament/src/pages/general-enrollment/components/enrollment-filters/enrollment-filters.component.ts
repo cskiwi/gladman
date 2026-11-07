@@ -6,6 +6,7 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SliderModule } from 'primeng/slider';
+import { TagModule } from 'primeng/tag';
 import type { SliderChangeEvent } from 'primeng/types/slider';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { RankingLastPlace } from '@app/models';
@@ -13,7 +14,7 @@ import type { RankingLastPlace } from '@app/models';
 @Component({
   selector: 'app-enrollment-filters',
   standalone: true,
-  imports: [ReactiveFormsModule, MultiSelectModule, SelectModule, ButtonModule, CheckboxModule, SliderModule, TranslateModule],
+  imports: [ReactiveFormsModule, MultiSelectModule, SelectModule, ButtonModule, CheckboxModule, SliderModule, TagModule, TranslateModule],
   templateUrl: './enrollment-filters.component.html',
 })
 export class EnrollmentFiltersComponent implements OnInit {

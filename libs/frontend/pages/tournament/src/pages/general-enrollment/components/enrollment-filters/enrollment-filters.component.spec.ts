@@ -91,12 +91,40 @@ describe('Enrollment filters and rankings', () => {
     expect(element.querySelector('h2')?.textContent).toContain('Your rankings');
     expect(Array.from(element.querySelectorAll('dt'), (item) => item.textContent?.trim())).toEqual(['Singles', 'Mixed']);
     expect(Array.from(element.querySelectorAll('dd'), (item) => item.textContent?.trim())).toEqual(['Level 4', 'Level 5']);
+    expect(element.querySelectorAll('dd .p-tag-secondary')).toHaveLength(2);
     element.querySelector<HTMLLabelElement>('label[for="showOnlyMyLevel"]')?.click();
     expect(emit).toHaveBeenLastCalledWith({
       ...allFilters,
       level: Array.from({ length: 12 }, (_, i) => i + 1),
       showOnlyMyLevel: true,
     });
+  });
+
+  it('updates the native neutral ranking Tags without changing supplied filters', async () => {
+    const { fixture, element, emit } = await mount({ ranking, filters: allFilters });
+    expect(Array.from(element.querySelectorAll('dd .p-tag-secondary'), (item) => item.textContent?.trim())).toEqual([
+      'Level 4',
+      'Level 6',
+      'Level 5',
+    ]);
+    expect(element.querySelector('section')?.querySelectorAll('p-card, button, [tabindex]')).toHaveLength(0);
+    const partial = Object.assign(new RankingLastPlace(), { double: 12 });
+    fixture.componentRef.setInput('userRanking', partial);
+    fixture.detectChanges();
+    expect(Array.from(element.querySelectorAll('dt'), (item) => item.textContent?.trim())).toEqual(['Doubles']);
+    expect(element.querySelector('dd .p-tag-secondary')?.textContent?.trim()).toBe('Level 12');
+    fixture.componentRef.setInput('userRanking', null);
+    fixture.detectChanges();
+    expect(element.querySelector('section')).toBeNull();
+    expect(element.querySelector('#showOnlyMyLevel')).toBeNull();
+    expect(emit).not.toHaveBeenCalled();
+  });
+
+  it('hides the summary for a ranking object without discipline values', async () => {
+    const { element, emit } = await mount({ ranking: new RankingLastPlace(), filters: allFilters });
+    expect(element.querySelector('section')).toBeNull();
+    expect(element.querySelectorAll('dd .p-tag')).toHaveLength(0);
+    expect(emit).not.toHaveBeenCalled();
   });
 
   it.each([

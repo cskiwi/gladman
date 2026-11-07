@@ -1,33 +1,37 @@
 <div class="flex flex-col gap-6 text-color">
   @if (hasRanking()) {
-    <section aria-labelledby="enrollment-rankings-heading" class="flex flex-wrap items-center justify-between gap-4">
-      <div>
-        <h2 id="enrollment-rankings-heading" class="text-lg font-semibold mt-0 mb-2">
-          {{ 'all.enrollment.filters.yourRankings' | translate }}
-        </h2>
-        <dl class="flex flex-wrap gap-4 m-0">
-          @if (userRanking()?.single) {
-            <div>
-              <dt class="font-medium">{{ 'all.enrollment.filters.single' | translate }}</dt>
-              <dd class="m-0">{{ 'all.enrollment.filters.level' | translate }} {{ userRanking()?.single }}</dd>
-            </div>
-          }
-          @if (userRanking()?.double) {
-            <div>
-              <dt class="font-medium">{{ 'all.enrollment.filters.double' | translate }}</dt>
-              <dd class="m-0">{{ 'all.enrollment.filters.level' | translate }} {{ userRanking()?.double }}</dd>
-            </div>
-          }
-          @if (userRanking()?.mix) {
-            <div>
-              <dt class="font-medium">{{ 'all.enrollment.filters.mixed' | translate }}</dt>
-              <dd class="m-0">{{ 'all.enrollment.filters.level' | translate }} {{ userRanking()?.mix }}</dd>
-            </div>
-          }
-        </dl>
-      </div>
-      <div class="flex items-center gap-2">
-        <p-checkbox [formControl]="showOnlyMyLevelControl" [binary]="true" inputId="showOnlyMyLevel" />
+    <section aria-labelledby="enrollment-rankings-heading" class="flex flex-col gap-4 border-b border-surface pb-6">
+      <h2 id="enrollment-rankings-heading" class="text-lg font-semibold m-0">
+        {{ 'all.enrollment.filters.yourRankings' | translate }}
+      </h2>
+      <dl class="grid sm:grid-cols-3 gap-4 m-0">
+        @if (userRanking()?.single) {
+          <div class="flex items-center justify-between sm:justify-start gap-3">
+            <dt class="font-medium">{{ 'all.enrollment.filters.single' | translate }}</dt>
+            <dd class="m-0">
+              <p-tag severity="secondary" [value]="('all.enrollment.filters.level' | translate) + ' ' + userRanking()?.single" />
+            </dd>
+          </div>
+        }
+        @if (userRanking()?.double) {
+          <div class="flex items-center justify-between sm:justify-start gap-3">
+            <dt class="font-medium">{{ 'all.enrollment.filters.double' | translate }}</dt>
+            <dd class="m-0">
+              <p-tag severity="secondary" [value]="('all.enrollment.filters.level' | translate) + ' ' + userRanking()?.double" />
+            </dd>
+          </div>
+        }
+        @if (userRanking()?.mix) {
+          <div class="flex items-center justify-between sm:justify-start gap-3">
+            <dt class="font-medium">{{ 'all.enrollment.filters.mixed' | translate }}</dt>
+            <dd class="m-0">
+              <p-tag severity="secondary" [value]="('all.enrollment.filters.level' | translate) + ' ' + userRanking()?.mix" />
+            </dd>
+          </div>
+        }
+      </dl>
+      <div class="flex items-start gap-2">
+        <p-checkbox class="shrink-0" [formControl]="showOnlyMyLevelControl" [binary]="true" inputId="showOnlyMyLevel" />
         <label for="showOnlyMyLevel">{{ 'all.enrollment.filters.showOnlyMyLevel' | translate }}</label>
       </div>
     </section>

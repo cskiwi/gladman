@@ -43,9 +43,9 @@ Competition-style compact headings and native content Cards are the reference, n
 Only extract genuine shared presentation for current consumers; do not restore retired pages to justify reuse.
 
 - DR-021b implements native fluid filters, persistent labels and a semantic ranking summary.
-  Its keyboard range-output repair preserves pointer-release filtering. See its brief for evidence and pending review.
+  Its keyboard range-output repair preserves pointer-release filtering. See its brief for evidence and accepted limits.
   Following user feedback, list filtering explicitly retains unknown event bounds; names are not parsed.
-  DR-021h remains open for the ranking summary's visual polish, even after DR-021b approval.
+  DR-021h was kept open after DR-021b approval and is now separately approved with its recorded limits.
   DR-021c selection Cards, DR-021d cart and DR-021e dialog have user approval with recorded limits.
 - The general breadcrumb currently renders the untranslated key `all.tournament.detail.title`.
   Correct its context/localization in a separately scoped follow-up; DR-021a preserves breadcrumb behavior.
@@ -78,5 +78,12 @@ four pointer cases preserve general detail-to-enrollment navigation with 30 publ
 On 2026-11-07 the user approved retirement completion and its scoped commit with disclosed limits.
 Shared audits stay open for surviving consumers; unperformed checks remain unperformed.
 See the retirement brief for approval, limits and the exact next action.
-DR-021h ranking visual polish remains open after DR-021b approval.
+DR-021h ranking visual polish was kept open after DR-021b approval and is now separately approved.
+Its compact neutral native Tag grid, associated Checkbox below and semantic separation are now implemented.
+Focused lint/build, 147 tests, 72 actual locale/theme/width/ranking-state fixtures and four keyboard/pointer cases pass.
+On 2026-11-07 the user approved DR-021h completion and its scoped commit with disclosed limits; its row is Done.
+Native unchecked Checkbox border remains DR-032.
+Keep its screen-reader, exhaustive accessibility/hydration and authenticated workflow limits unchecked.
+Next candidate is DR-022 draw detail: confirm a mounted consumer, scope one view and check DR-006 if applicable.
+No next implementation is started in this invocation. The parent remains open for deferred scope.
 DR-021i retains a future my-enrollments overview; no replacement is started here.

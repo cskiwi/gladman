@@ -5,6 +5,35 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-021h is Done with explicit user approval: bounded `Jouw Rankings` visual polish on general enrollment.
+See the [ranking polish brief](work-items/DR-021h-enrollment-ranking-polish.md).
+DR-021b is Done; the mounted page has 30 public events and the existing filter child.
+The user selected a compact discipline/level grid with neutral native Tags, checkbox below and a semantic divider.
+Preserve the existing smart-page/filter-child split, ranking semantics, translations and filter payloads.
+Exclude other filter fields, tiles, cart, services, theme, backend, translations and enrollment mutations.
+Implementation and two new component regressions are complete. Ranking-only class tokens change 22 to 38 for
+responsive discipline/value alignment, checkbox shrink protection and separation; excluded field markup is unchanged.
+`npx nx run-many --projects=frontend-pages-tournament --targets=lint,test,build --output-style=static` passes:
+12 suites / 147 tests, production library build and ten prerequisite tasks.
+Seventy-two real en/fr_BE/nl_BE light/dark 360/390/768/1440px ranked/partial/absent cases fit and retain labels.
+Four keyboard/pointer cases preserve checkbox outputs, adjacent focus order and all 30 unknown-bound public events.
+Four disabled native-checkbox pointer cases emit no change. Monitored layout/interaction cases record zero page errors
+or GraphQL mutation attempts. Text/Tag/focus contrast passes; native unchecked border fails under existing DR-032.
+Public Dutch SSR is HTTP 200 with enrollment fields and no ranking section; exhaustive hydration is not verified.
+Screen-reader, exhaustive accessibility/hydration and authenticated registration/outage checks remain unverified.
+No new styling exception, dependency, backend, translation, service or shared-theme changes.
+On 2026-11-07 the user selected "Approve DR-021h and commit with disclosed limits" and "Nothing else".
+Approval accepts DR-032 and the unperformed screen-reader/accessibility/hydration/authenticated-workflow limits;
+it does not claim failed or unperformed checks passed. Unchecked criteria remain unchecked.
+Only this slice, its tests and repository handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: scope DR-022 tournament draw detail from its recorded route and discoveries,
+confirm a real mounted consumer and choose one child view. Check bracket-sizing dependency with DR-006 if applicable.
+DR-021 remains open; DR-021i remains deferred. Do not restore retired pages or begin another slice.
+
+### Previous completed focus: obsolete enrollment retirement
+
 DR-021f is Done with explicit user approval: retirement of obsolete enrollment pages.
 See the [active retirement brief](work-items/DR-021f-sub-event-enrollment.md).
 On 2026-11-07 the user clarified that `/tournament/:tournamentId/enroll` is the only enrollment page;
@@ -1597,7 +1626,7 @@ and linked from their registry rows.
 | DR-021f3                                                      | Sub-event lists; withdrawn with page retirement            | Done        |
 | DR-021f4                                                      | Guest dialog; withdrawn with page retirement               | Done        |
 | DR-021g                                                       | Incomplete my-enrollments page; withdrawn with retirement  | Done        |
-| [DR-021h](work-items/DR-021h-enrollment-ranking-polish.md)    | Jouw Rankings visual polish; retained after DR-021b review | Backlog     |
+| [DR-021h](work-items/DR-021h-enrollment-ranking-polish.md)    | Jouw Rankings visual polish; retained after DR-021b review | Done        |
 | DR-021i                                                       | Future my-enrollments overview; separately scope later     | Backlog     |
 | DR-022                                                        | Tournament draw detail                                     | Backlog     |
 | DR-023                                                        | Tournament admin: enrollments and check-in                 | Backlog     |

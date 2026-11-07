@@ -8,35 +8,39 @@ description: 'Bounded enrollment presentation slices and preserved workflow cont
 - Parent: DR-021. Authoritative statuses: [backlog](../backlog.md).
 - Project: `frontend-pages-tournament`. Design rules: [plan](../README.md).
 - Prerequisite: DR-020 is Done with its disclosed verification limits.
-- Preserve eligibility, filters, cart state, partner selection, permissions, submissions and cancellations.
+- Preserve general enrollment eligibility, filters, cart state, partner selection, permissions and submissions.
+- User-directed retirement removes the obsolete single-event/cancellation and incomplete overview UI;
+  backend operations/data stay unchanged. A new overview is separately deferred.
 - No shared-theme, backend, translation or operational changes as hidden side effects.
 
 ## Child slices
 
-| ID                                              | Bounded scope                                                        | Dependency                                |
-| ----------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------- |
-| [DR-021a](DR-021a-enrollment-chrome.md)         | General enrollment heading, outer layout, loading and empty feedback | DR-020                                    |
-| [DR-021b](DR-021b-enrollment-filters.md)        | General enrollment filters, rankings and accessible field labels     | DR-021a                                   |
-| [DR-021c](DR-021c-enrollment-selection.md)      | General enrollment selectable sub-event tiles                        | DR-021a                                   |
-| [DR-021d](DR-021d-enrollment-cart.md)           | General enrollment cart presentation and feedback                    | DR-021a                                   |
-| [DR-021e](DR-021e-partner-dialog.md)            | Partner-selection dialog                                             | DR-021c                                   |
-| DR-021f                                         | Sub-event-specific enrollment route                                  | Confirm mounted consumer before selection |
-| DR-021g                                         | My-enrollments route; split further if needed                        | Confirm mounted consumer before selection |
-| [DR-021h](DR-021h-enrollment-ranking-polish.md) | Jouw Rankings visual polish retained at user request                 | DR-021b                                   |
+| ID                                              | Bounded scope                                                        | Dependency                             |
+| ----------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------- |
+| [DR-021a](DR-021a-enrollment-chrome.md)         | General enrollment heading, outer layout, loading and empty feedback | DR-020                                 |
+| [DR-021b](DR-021b-enrollment-filters.md)        | General enrollment filters, rankings and accessible field labels     | DR-021a                                |
+| [DR-021c](DR-021c-enrollment-selection.md)      | General enrollment selectable sub-event tiles                        | DR-021a                                |
+| [DR-021d](DR-021d-enrollment-cart.md)           | General enrollment cart presentation and feedback                    | DR-021a                                |
+| [DR-021e](DR-021e-partner-dialog.md)            | Partner-selection dialog                                             | DR-021c                                |
+| [DR-021f](DR-021f-sub-event-enrollment.md)      | Retire obsolete sub-event enrollment and incomplete overview         | DR-021e                                |
+| DR-021g                                         | Incomplete my-enrollments page; withdrawn with retirement            | None                                   |
+| [DR-021h](DR-021h-enrollment-ranking-polish.md) | Jouw Rankings visual polish retained at user request                 | DR-021b                                |
+| DR-021i                                         | Future my-enrollments overview; separately scope later               | Confirm requirements and real consumer |
 
 General enrollment mounts at `/tournament/8658b541-702a-408e-8114-2858a9428069/enroll`.
-The detail page links to it when enrollment is open, and links to `my-enrollments` independently.
-The supplied historical tournament currently exposes the latter action; direct enrollment navigation mounts 30 events.
+The detail page links to it when enrollment is open. Direct navigation mounts 30 public events.
+On 2026-11-07 the user confirmed this is the only enrollment page and authorized removal of the other pages.
+The incomplete my-enrollments and sub-event routes/implementations/exports are retired under DR-021f.
 Source: [routes](../../../libs/frontend/pages/tournament/src/lib.routes.ts) and
 [detail template](../../../libs/frontend/pages/tournament/src/pages/detail/page-detail.component.html).
-No consumer was added for visual testing. Other child routes must be checked when selected.
+No consumer was added for visual testing. A future overview is retained as DR-021i, not implemented here.
 
 ## Reuse decisions and discoveries
 
 The general page already composes separate filters, selection grid, cart and partner-dialog components.
 Keep that meaningful split rather than extracting a styling-only page wrapper.
 Competition-style compact headings and native content Cards are the reference, not a new tournament-specific theme.
-Consider genuine domain presentation reuse when the sub-event and my-enrollments children are scoped.
+Only extract genuine shared presentation for current consumers; do not restore retired pages to justify reuse.
 
 - DR-021b implements native fluid filters, persistent labels and a semantic ranking summary.
   Its keyboard range-output repair preserves pointer-release filtering. See its brief for evidence and pending review.
@@ -66,6 +70,13 @@ DR-021e partner dialog has explicit user approval: associated native fields, wra
 141 passing tests, focused lint/build, 48 locale/theme/width/state fixtures and four keyboard/four pointer cases.
 Shared DR-032/033 contrast and DR-037 native status localization remain open; DR-048 records inherited search feedback.
 On 2026-11-04 the user approved DR-021e completion and its scoped commit with the disclosed limits.
-Unchecked criteria remain unchecked. Next invocation: confirm the mounted DR-021f sub-event-specific enrollment
-consumer before scoping it. No new consumer is authorized for visual testing; do not start another child here.
+Unchecked criteria remain unchecked. On 2026-11-07 the user replaced unapproved DR-021f1 styling with retirement
+of the obsolete sub-event and incomplete my-enrollments pages. None of the chrome implementation/new tests remain.
+DR-021f1-f4 and DR-021g are withdrawn, not design migrations; DR-049 is withdrawn for the removed consumer.
+DR-021f retirement has passing focused lint/build and 145 tests, including direct unmatched-route regressions;
+four pointer cases preserve general detail-to-enrollment navigation with 30 public events.
+On 2026-11-07 the user approved retirement completion and its scoped commit with disclosed limits.
+Shared audits stay open for surviving consumers; unperformed checks remain unperformed.
+See the retirement brief for approval, limits and the exact next action.
 DR-021h ranking visual polish remains open after DR-021b approval.
+DR-021i retains a future my-enrollments overview; no replacement is started here.

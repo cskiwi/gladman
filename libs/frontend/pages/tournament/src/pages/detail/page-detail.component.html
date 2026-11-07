@@ -58,13 +58,6 @@
             size="small"
           />
         }
-        <p-button
-          [routerLink]="['/', 'tournament', tournament.id, 'my-enrollments']"
-          icon="pi pi-list"
-          [label]="'all.enrollment.myEnrollments' | translate"
-          [outlined]="true"
-          size="small"
-        />
         @if (tournament.phase === 'ENROLLMENT_OPEN') {
           <p-button
             [routerLink]="['/', 'tournament', tournament.id, 'enroll']"

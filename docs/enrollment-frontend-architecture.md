@@ -1,10 +1,26 @@
-# General Multi-Discipline Enrollment Page - Frontend Architecture
+---
+title: 'General Multi-Discipline Enrollment Page - Frontend Architecture'
+description: 'Historical enrollment proposal with the verified current route boundary.'
+---
+
+## Current implementation boundary
+
+As of 2026-11-07, `/tournament/:tournamentId/enroll` is the only enrollment page.
+The [general enrollment page](../libs/frontend/pages/tournament/src/pages/general-enrollment/page-general-enrollment.component.ts)
+retains its filters, selection grid, cart and partner dialog.
+The sub-event enrollment and incomplete my-enrollments pages, routes, exports and navigation are retired
+at the user's request. No replacement overview, redirect, backend or registration-data changes are included.
+A future my-enrollments overview is tracked separately as DR-021i in the
+[design-refresh backlog](design-refresh/backlog.md).
+
+The remaining document is a **historical design proposal**, not an AS-IS route or feature inventory.
+Its single-event/my-enrollments examples and draft routing/snippets must not be treated as mounted pages.
 
 ## Executive Summary
 
 This document outlines the comprehensive Angular frontend architecture for a new general enrollment page that allows users to enroll in multiple tournament sub-events simultaneously, replacing the current single-event enrollment flow.
 
-**Status**: Design Phase
+**Status**: Historical design proposal; implementation boundary above is authoritative
 **Target Route**: `/tournament/:id/enroll`
 **Current Location**: `/libs/frontend/pages/tournament/src/pages/`
 
@@ -12,7 +28,7 @@ This document outlines the comprehensive Angular frontend architecture for a new
 
 ## Table of Contents
 
-1. [Current State Analysis](#current-state-analysis)
+1. [Historical State Analysis](#historical-state-analysis)
 2. [Component Architecture](#component-architecture)
 3. [State Management Strategy](#state-management-strategy)
 4. [Routing Configuration](#routing-configuration)
@@ -22,9 +38,9 @@ This document outlines the comprehensive Angular frontend architecture for a new
 
 ---
 
-## Current State Analysis
+## Historical State Analysis
 
-### Existing Pages
+### Former pages and proposal context
 
 #### 1. `page-enrollment` (Single Event Enrollment)
 

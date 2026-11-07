@@ -25,16 +25,8 @@ export const routes: Route[] = [
             loadComponent: () => import('./pages/admin/page-admin.component').then((m) => m.PageAdminComponent),
           },
           {
-            path: 'my-enrollments',
-            loadComponent: () => import('./pages/my-enrollments/page-my-enrollments.component').then((m) => m.PageMyEnrollmentsComponent),
-          },
-          {
             path: 'enroll',
             loadComponent: () => import('./pages/general-enrollment/page-general-enrollment.component').then((m) => m.PageGeneralEnrollmentComponent),
-          },
-          {
-            path: 'sub-events/:subEventId/enroll',
-            loadComponent: () => import('./pages/enrollment/page-enrollment.component').then((m) => m.PageEnrollmentComponent),
           },
         ],
       },

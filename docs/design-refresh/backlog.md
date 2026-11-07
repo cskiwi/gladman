@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-021f is Done with explicit user approval: retirement of obsolete enrollment pages.
+See the [active retirement brief](work-items/DR-021f-sub-event-enrollment.md).
+On 2026-11-07 the user clarified that `/tournament/:tournamentId/enroll` is the only enrollment page;
+the incomplete sub-event and my-enrollments pages can be removed. A new overview will be made later.
+Both obsolete pages, page-only services/styles, exports, route entries and detail overview action are removed.
+General enrollment and its children/services, admin enrollment, backend/data, translations and theme remain unchanged.
+Unapproved DR-021f1 chrome work is discarded; DR-021f1-f4 and DR-021g are withdrawn with retirement,
+not approved styling migrations. New DR-021i retains a future my-enrollments overview without implementing it.
+Final retirement lint/build and 12 suites / 145 tests pass, including direct Router rejection of both old URLs.
+Four light/dark 390/1440px detail pointer cases navigate to general enrollment with 30 events/three children.
+No retired detail button/link, no monitored page errors or mutation attempts. HTTP dev fallback is 200 shells,
+not a promised 404; no redirect is added.
+General enrollment's existing screen-reader/contrast/hydration and live workflow limits remain unchanged.
+On 2026-11-07 the user selected "Approve retirement and commit with disclosed limits" and "Nothing else".
+Approval accepts unchanged general-enrollment verification limits and dev-server SPA-shell behavior;
+it does not claim unperformed live registration/accessibility/hydration checks passed.
+Only this retirement, its tests and handoff are approved for commit; no push.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
+with existing warnings and zero errors.
+Exact next action in a fresh invocation: scope DR-021h ranking polish using its brief and real general-page consumer.
+DR-021i overview remains deferred until separately requested/scoped; do not restore retired pages.
+DR-021 remains open; do not start the future overview or another design slice here.
+
+### Previous completed focus: partner dialog
+
 DR-021e is Done with explicit user approval: partner-selection dialog on the confirmed general enrollment route.
 See the [active brief](work-items/DR-021e-partner-dialog.md).
 Scope: native fields, associated labels/descriptions, responsive actions and dialog sizing.
@@ -1566,9 +1591,14 @@ and linked from their registry rows.
 | [DR-021c](work-items/DR-021c-enrollment-selection.md)         | General enrollment selection tiles                         | Done        |
 | [DR-021d](work-items/DR-021d-enrollment-cart.md)              | General enrollment cart                                    | Done        |
 | [DR-021e](work-items/DR-021e-partner-dialog.md)               | Partner-selection dialog                                   | Done        |
-| DR-021f                                                       | Sub-event-specific enrollment                              | Backlog     |
-| DR-021g                                                       | My-enrollments route; split further when scoped            | Backlog     |
+| [DR-021f](work-items/DR-021f-sub-event-enrollment.md)         | Retire obsolete sub-event and my-enrollments pages         | Done        |
+| [DR-021f1](work-items/DR-021f1-enrollment-chrome.md)          | Sub-event chrome; withdrawn with page retirement           | Done        |
+| DR-021f2                                                      | Sub-event forms/info; withdrawn with page retirement       | Done        |
+| DR-021f3                                                      | Sub-event lists; withdrawn with page retirement            | Done        |
+| DR-021f4                                                      | Guest dialog; withdrawn with page retirement               | Done        |
+| DR-021g                                                       | Incomplete my-enrollments page; withdrawn with retirement  | Done        |
 | [DR-021h](work-items/DR-021h-enrollment-ranking-polish.md)    | Jouw Rankings visual polish; retained after DR-021b review | Backlog     |
+| DR-021i                                                       | Future my-enrollments overview; separately scope later     | Backlog     |
 | DR-022                                                        | Tournament draw detail                                     | Backlog     |
 | DR-023                                                        | Tournament admin: enrollments and check-in                 | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                     | Backlog     |
@@ -1596,12 +1626,40 @@ and linked from their registry rows.
 | DR-046                                                        | Enrollment tile localization gaps                          | Backlog     |
 | DR-047                                                        | Enrollment desktop sticky sidebar/header overlap           | Backlog     |
 | DR-048                                                        | Partner search failure feedback and request lifecycle      | Backlog     |
+| DR-049                                                        | Sub-event localization; withdrawn with page retirement     | Done        |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-049: sub-event enrollment localization gaps
+
+Withdrawn on 2026-11-07 with user-directed page retirement. No dictionary changes are made for a removed consumer.
+The following records historical evidence, not a current application issue:
+
+DR-021f1 confirms the real sub-event enrollment consumer. Existing `all.enrollment.fullWithWaitingList`
+is absent from English/French/Dutch dictionaries and now appears as a raw key in the native full Message.
+Existing Card/list labels such as `info`, `type`, `confirmedEntries`, `noConfirmed` and `waitingList`
+also render raw keys; service errors and literal Singles/Doubles/Guest copy need a separately scoped audit.
+Historical source: removed sub-event template and the
+[translation dictionaries](../../libs/backend/translate/assets/i18n).
+Preserve semantics and supported languages; do not hide missing labels with success-shaped English fallbacks.
+Scope translation/error-copy work separately; DR-021f1 adds no dictionary or service changes.
+
+### DR-032/034 historical evidence: withdrawn sub-event enrollment chrome
+
+The sub-event consumer is removed on 2026-11-07. These measurements do not require page fixes or restarting
+DR-021f1; shared audits remain open for other surviving consumers.
+
+DR-021f1 native Back text measures 4.46:1 light / 6.91:1 dark; light fails 4.5:1 (DR-032).
+Native closed warning text measures 2.83:1 light / 7.98:1 dark; error text 4.41:1 light / 4.63:1 dark.
+Light warning/error text fails 4.5:1; retain the shared native Message audit (DR-034).
+Info text passes sampled 4.75:1 light / 4.57:1 dark but lacks localization (DR-049).
+Semantic heading/subtitle passes 18.20:1 light / 16.64:1 dark.
+No page overrides; exhaustive focus and screen-reader contrast remains unverified.
+See the [DR-021f1 brief](work-items/DR-021f1-enrollment-chrome.md) for exact fixture and verification limits.
 
 ### DR-048: partner search failure feedback and request lifecycle
 
@@ -1985,14 +2043,23 @@ Project: `frontend-pages-tournament`. Source: [tournament feature][tournaments];
 
 Parent: DR-021. Project: `frontend-pages-tournament`. Child scopes:
 
-The parent is now split into DR-021a-g; see the [parent brief](work-items/DR-021-tournament-enrollment.md).
-DR-021a has user approval with disclosed limits. Confirm real consumers before selecting remaining children.
+See the [parent brief](work-items/DR-021-tournament-enrollment.md).
+DR-021a-e have user approval with disclosed limits. General enrollment is the only enrollment page.
+DR-021f retires the obsolete sub-event and incomplete my-enrollments pages at the user's request.
+DR-021f1-f4 and DR-021g are withdrawn, not design migrations; DR-021i retains the future overview.
 
 - `/tournament/:tournamentId/enroll`: filters, sub-event selection, cart, and partner-selection dialog.
-- `/tournament/:tournamentId/sub-events/:subEventId/enroll`: sub-event-specific enrollment.
-- `/tournament/:tournamentId/my-enrollments`: existing registrations and available actions.
-- Preserve eligibility, validation, selections/cart state, partner handling, and submission/cancellation behavior.
+- Former sub-event/my-enrollments routes are removed; do not restore consumers solely for redesign verification.
+- Preserve general eligibility, validation, selections/cart state, partner handling and submission behavior.
+- New my-enrollments overview (DR-021i) needs separate scope; no replacement or cancellation UI is added here.
 - Existing [enrollment documentation][enrollment-docs] is context, not a reason to change the workflow during styling.
+
+### DR-021i: future my-enrollments overview
+
+On 2026-11-07 the user said a new overview will be made later, replacing the incomplete retired page.
+Keep this Backlog until its real consumer, route, data, permissions, interactions and acceptance checks are scoped.
+Do not restore the old implementation or assume its route/cancellation workflow is the requirement.
+This invocation only retires obsolete UI under DR-021f; no overview is implemented.
 
 ### Tournament draws
 

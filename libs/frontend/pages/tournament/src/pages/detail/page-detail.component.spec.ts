@@ -300,14 +300,22 @@ describe('Tournament detail hero', () => {
     expect(text).not.toContain(',');
   });
 
-  it('preserves anonymous action gates, enrollment target and adjacent summaries', () => {
+  it('preserves anonymous action gates and adjacent summaries without retired enrollment links', () => {
     expect(element.querySelector('app-sync-button, app-sync-status-indicator')).toBeNull();
     expect(hasAnyPermission).not.toHaveBeenCalled();
-    const enrollmentLink = harness.routeDebugElement?.query(By.css('[actions] p-button')).injector.get(RouterLink);
-    expect(enrollmentLink?.urlTree?.toString()).toBe('/tournament/tournament/my-enrollments');
+    expect(element.querySelector('[actions] p-button')).toBeNull();
     expect(element.querySelector('[actions] a')?.getAttribute('href')).toBe('https://www.toernooi.nl/tournament/external-code');
     expect(element.querySelector('[stats]')?.textContent).toContain('Draft');
     expect(element.querySelectorAll('nav[aria-labelledby="tournament-live-title"] a')).toHaveLength(4);
+  });
+
+  it('offers only general enrollment to anonymous visitors when enrollment is open', async () => {
+    await renderTournament({ ...createTournament(), phase: TournamentPhase.ENROLLMENT_OPEN });
+    const targets = harness.routeDebugElement
+      ?.queryAll(By.css('[actions] p-button'))
+      .map((button) => button.injector.get(RouterLink).urlTree?.toString());
+    expect(targets).toEqual(['/tournament/tournament/enroll']);
+    expect(element.querySelector('[actions] .pi-list')).toBeNull();
   });
 
   it('preserves permitted admin/enrollment-open and logged-in sync gates', async () => {

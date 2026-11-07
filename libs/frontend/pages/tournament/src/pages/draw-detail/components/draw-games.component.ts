@@ -6,6 +6,9 @@ import { Game, GamePlayerMembership } from '@app/models';
 import { GameStatus, GameType } from '@app/models-enum';
 import { TierBadgeComponent } from '@app/frontend-components/tier-badge';
 import { DayjsFormatPipe } from '@app/frontend-utils/dayjs/fmt';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
+import { TagModule } from 'primeng/tag';
 import {
   getSetScores as _getSetScores,
   isBye as _isBye,
@@ -16,7 +19,7 @@ import {
 
 @Component({
   selector: 'app-draw-games',
-  imports: [DatePipe, TranslateModule, RouterModule, TierBadgeComponent, DayjsFormatPipe],
+  imports: [DatePipe, TranslateModule, RouterModule, TierBadgeComponent, DayjsFormatPipe, CardModule, MessageModule, TagModule],
   templateUrl: './draw-games.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -84,6 +87,18 @@ export class DrawGamesComponent {
 
   getSetScores(game: Game): { team1Sets: number[]; team2Sets: number[] } {
     return _getSetScores(game);
+  }
+
+  /** Retains original set numbers when an earlier set is absent or unplayed. */
+  getPlayedSets(game: Game): { number: number; team1: number; team2: number }[] {
+    const sets = [
+      [game.set1Team1, game.set1Team2],
+      [game.set2Team1, game.set2Team2],
+      [game.set3Team1, game.set3Team2],
+    ];
+    return sets.flatMap(([team1, team2], index) =>
+      team1 != null && team2 != null && this.isSetPlayed(team1, team2) ? [{ number: index + 1, team1, team2 }] : [],
+    );
   }
 
   isSetPlayed(team1Score: number | undefined | null, team2Score: number | undefined | null): boolean {

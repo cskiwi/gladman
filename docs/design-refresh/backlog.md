@@ -5,6 +5,35 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-022c is Done with explicit user approval: mounted draw games aligned with the player profile.
+See the [draw games brief](work-items/DR-022c-draw-games.md).
+User requested game results consistent with the mounted player profile; the initial table presentation is superseded.
+Use native Cards with a date rail, desktop paired teams/stacked score columns and mobile team-aligned score rows.
+Reuse native success Tags for winning sets, matching the actual player-profile presentation without its legacy overrides.
+Both teams share one template; keep the existing smart-page/presentation-child split and shared tier badge unchanged.
+The revised template drops 244 to 117 static class tokens and 264 to 121 lines.
+Final focused Nx lint/test/build passes: 14 suites / 174 tests, production library build and ten prerequisites.
+Four real light/dark 390/1440px cases preserve 15 games, 28 links and 66 scores without document overflow.
+Measured desktop team/score pairs share a row; mobile scores align with each team's row.
+Twenty-eight safe synthetic doubles/mixed/long-name/bye/pending/partial/empty/undated cases fit.
+Four keyboard cases expose visible native 1px link focus; real pointer/Enter destinations pass.
+Monitored revised fixture/interaction cases record zero page errors or GraphQL mutation attempts.
+Sampled player/date/score/metadata/winner/bye text contrast passes in both themes.
+Public SSR is HTTP 200 with 15 Cards, 66 named scores, player content and unchanged bracket.
+Screen-reader, exhaustive accessibility/contrast/focus-ring contrast/hydration and browser alternative locales remain unverified.
+No new styles, exception, dependency, backend, translation-asset, service or shared/theme changes; no push.
+On 2026-11-07 the user requested removal of player-link underlines and explicitly approved completion/commit.
+Links now use `no-underline`; accepted screen-reader, exhaustive accessibility/contrast/focus/hydration,
+browser alternative-locale and authenticated-workflow limits remain unchecked, not claimed as passed.
+Bye Tags fit their content on both team positions in eight light/dark 390/1440px cases:
+36.5625px matches label plus native padding; no stretched tag or document overflow.
+Post-approval focused lint/test/build passes with 174 tests; all 34 repository lint projects pass.
+Only this slice/tests/handoff are approved for commit. Final post-approval checks and approval are recorded in the brief.
+Exact next action in a fresh invocation: confirm a real mounted round-robin standings consumer before scoping DR-022d.
+DR-022 stays open; do not begin another implementation slice in this invocation.
+
+### Previous completed focus: draw feedback
+
 DR-022b is Done with explicit user approval: draw switching and page loading/error/empty feedback.
 See the [draw feedback brief](work-items/DR-022b-draw-feedback.md).
 Native pressed buttons, localized section/loading labels, Card/Skeleton loading and severity-based Messages
@@ -1686,7 +1715,7 @@ and linked from their registry rows.
 | DR-022                                                        | Tournament draw detail                                      | In progress |
 | [DR-022a](work-items/DR-022a-draw-identity.md)                | Draw identity and actions                                   | Done        |
 | [DR-022b](work-items/DR-022b-draw-feedback.md)                | Draw switching and page loading/error/empty feedback        | Done        |
-| DR-022c                                                       | Mounted draw games                                          | Backlog     |
+| [DR-022c](work-items/DR-022c-draw-games.md)                   | Mounted draw games                                          | Done        |
 | DR-022d                                                       | Draw standings (confirm mounted round-robin consumer first) | Backlog     |
 | DR-023                                                        | Tournament admin: enrollments and check-in                  | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                      | Backlog     |

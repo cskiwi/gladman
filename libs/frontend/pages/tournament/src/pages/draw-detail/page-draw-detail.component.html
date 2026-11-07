@@ -3,30 +3,30 @@
     @if (this.subEvent(); as subEvent) {
       @if (this.draw(); as draw) {
         <!-- Breadcrumb -->
-        <app-breadcrumb [items]="[
-          { label: tournament.name, routerLink: ['/', 'tournament', tournament.slug] },
-          { label: subEvent.name },
-          { label: draw.name || 'Draw ' + (draw.id | slice: 0 : 8) },
-        ]" />
+        <app-breadcrumb
+          [items]="[
+            { label: tournament.name, routerLink: ['/', 'tournament', tournament.slug] },
+            { label: subEvent.name },
+            { label: draw.name || 'Draw ' + (draw.id | slice: 0 : 8) },
+          ]"
+        />
 
         <!-- Hero -->
         <app-hero>
-          <div avatar class="draw-crest">
-            <span>{{ drawCrestText() }}</span>
-          </div>
+          <app-hero-avatar avatar>{{ drawCrestText() }}</app-hero-avatar>
 
           <div identity>
-            <h1 class="draw-name">{{ draw.name || 'Draw ' + (draw.id | slice: 0 : 8) }}</h1>
-            <div class="flex items-center gap-3 flex-wrap mt-1">
-              <span class="flex items-center gap-2 text-muted-color">
-                <i class="pi pi-sitemap text-primary"></i>
-                <strong class="text-color font-semibold">{{ subEvent.name }}</strong>
+            <app-hero-title>{{ draw.name || 'Draw ' + (draw.id | slice: 0 : 8) }}</app-hero-title>
+            <div class="flex items-center gap-3 flex-wrap text-sm text-muted-color">
+              <span class="inline-flex items-center gap-1.5">
+                <i class="pi pi-sitemap text-primary" aria-hidden="true"></i>
+                <span>{{ subEvent.name }}</span>
               </span>
               @if (draw.type) {
-                <span class="t-mono text-xs text-primary bg-emphasis px-2 py-0.5 rounded-sm tracking-wider uppercase">{{ draw.type }}</span>
+                <p-tag severity="secondary" [value]="draw.type" />
               }
               @if (draw.size) {
-                <span class="t-mono text-xs text-muted-color bg-emphasis px-2 py-0.5 rounded-sm tracking-wider">Size {{ draw.size }}</span>
+                <p-tag severity="secondary" [value]="'Size ' + draw.size" />
               }
             </div>
           </div>
@@ -34,14 +34,18 @@
           <div actions class="flex items-center gap-2 flex-wrap justify-end">
             @if (tournament.visualCode && draw.visualCode) {
               <a
+                pButton
+                severity="secondary"
+                variant="text"
+                size="small"
                 [href]="'https://www.toernooi.nl/tournament/' + tournament.visualCode + '/draw/' + draw.visualCode"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1 px-2 py-1 rounded-sm text-muted-color hover:text-primary hover:bg-emphasis transition-colors text-xs no-underline"
-                title="View on toernooi.nl"
+                class="no-underline focus-visible:outline-none! focus-visible:ring-2! focus-visible:ring-primary"
+                [attr.aria-label]="(draw.name || 'Draw ' + (draw.id | slice: 0 : 8)) + ' (toernooi.nl)'"
               >
-                <i class="pi pi-external-link text-xs"></i>
-                <span>toernooi.nl</span>
+                <i pButtonIcon class="pi pi-external-link" aria-hidden="true"></i>
+                <span pButtonLabel>toernooi.nl</span>
               </a>
             }
             @if (syncConfig(); as config) {

@@ -2,7 +2,7 @@ import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { HeroComponent } from '@app/frontend-components/hero';
+import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { SyncButtonComponent, SyncButtonConfig } from '@app/frontend-components/sync';
 import { SeoService } from '@app/frontend-modules-seo/service';
@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TagModule } from 'primeng/tag';
 import { DrawDetailService } from './page-draw-detail.service';
 import { DrawGamesComponent } from './components/draw-games.component';
 import { DrawStandingsTableComponent } from './components/draw-standings-table.component';
@@ -24,14 +25,17 @@ import { DrawKoTreeComponent } from './components/draw-ko-tree.component';
     TranslateModule,
     ButtonModule,
     SkeletonModule,
+    TagModule,
     HeroComponent,
+    HeroAvatarComponent,
+    HeroTitleComponent,
     SyncButtonComponent,
     DrawGamesComponent,
     DrawStandingsTableComponent,
     DrawKoTreeComponent,
   ],
   templateUrl: './page-draw-detail.component.html',
-  styleUrl: './page-draw-detail.component.scss',
+  host: { class: 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageDrawDetailComponent {
@@ -65,7 +69,6 @@ export class PageDrawDetailComponent {
 
   hasMultipleDraws = computed(() => this.draws().length > 1);
 
-  // Arena hero helpers
   drawCrestText = computed(() => {
     const d = this.draw();
     if (!d) return '?';

@@ -65,6 +65,9 @@ composition for subsequent slices rather than reopening the decorative dashboard
   canvas separate from content surfaces so boundaries remain visible; no ambient page gradients.
 - Define canvas colors in the PrimeNG preset, using existing surface tokens. Reserve primary color for meaningful
   emphasis and interactive states, not page backgrounds.
+- Native PrimeNG table body rows use a transparent default from the shared preset, so the surrounding Card or
+  page supplies their surface. Do not override ordinary row backgrounds per page.
+  Preserve native opaque sticky headers, opt-in stripes and interactive hover/selection feedback.
 
 The layout direction and final corrected canvas/table presentation were approved on 2026-10-16. Functional
 verification and the remaining feature migrations are tracked separately and must not be checked off as styling work.

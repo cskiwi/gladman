@@ -1,5 +1,9 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SectionHeaderComponent } from '@app/frontend-components/section-header';
+import { TranslateModule } from '@ngx-translate/core';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
 
 export type DrawStandingRow = {
   id?: string | number;
@@ -26,7 +30,7 @@ export type DrawStandingRow = {
 @Component({
   selector: 'app-draw-standings-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule, CardModule, TableModule, SectionHeaderComponent],
   templateUrl: './draw-standings-table.component.html',
 })
 export class DrawStandingsTableComponent {

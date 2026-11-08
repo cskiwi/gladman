@@ -1,76 +1,75 @@
-<section class="mb-6">
-  <div class="flex items-center gap-3 mb-4">
-    <span class="t-eyebrow">Standings</span>
-    <div class="flex-1 h-px bg-emphasis"></div>
-    <span class="t-mono text-xs text-muted-color">{{ standings().length }}</span>
-  </div>
+<section aria-labelledby="draw-standings-title" class="mb-6">
+  <p-card class="border border-surface">
+    <app-section-header id="draw-standings-title" [title]="'all.competition.standings' | translate">
+      <span action class="text-sm text-muted-color">{{ standings().length }}</span>
+    </app-section-header>
 
-  <div class="bg-emphasis border border-surface rounded-border overflow-hidden">
-    <div class="overflow-x-auto">
-      <table class="w-full border-collapse">
-        <thead class="bg-emphasis">
+    <div class="overflow-x-auto" tabindex="0" role="region" [attr.aria-label]="'all.competition.standings' | translate">
+      <p-table [value]="standings()" [scrollable]="true" class="block min-w-max tabular-nums">
+        <ng-template #header>
           <tr>
-            <th class="p-3 text-left font-semibold text-xs uppercase tracking-wider text-muted-color">Position</th>
-            <th class="p-3 text-left font-semibold text-xs uppercase tracking-wider text-muted-color">Player/Team</th>
-            <th class="p-3 text-center font-semibold text-xs uppercase tracking-wider text-muted-color">Played</th>
-            <th class="p-3 text-center font-semibold text-xs uppercase tracking-wider text-muted-color">Won</th>
-            <th class="p-3 text-center font-semibold text-xs uppercase tracking-wider text-muted-color">Lost</th>
-            <th class="p-3 text-center font-semibold text-xs uppercase tracking-wider text-muted-color">Games</th>
-            <th class="p-3 text-center font-semibold text-xs uppercase tracking-wider text-muted-color">Sets</th>
-            <th class="p-3 text-center font-semibold text-xs uppercase tracking-wider text-muted-color">Points</th>
+            <th scope="col">{{ 'all.competition.position' | translate }}</th>
+            <th scope="col">{{ 'all.competition.player_team' | translate }}</th>
+            <th scope="col">{{ 'all.competition.played' | translate }}</th>
+            <th scope="col">{{ 'all.competition.won' | translate }}</th>
+            <th scope="col">{{ 'all.competition.lost' | translate }}</th>
+            <th scope="col">{{ 'all.competition.games' | translate }}</th>
+            <th scope="col">{{ 'all.competition.sets' | translate }}</th>
+            <th scope="col">{{ 'all.competition.points' | translate }}</th>
           </tr>
-        </thead>
-        <tbody>
-          @for (standing of standings(); track standing.id) {
-            <tr class="border-b border-surface last:border-b-0 hover:bg-emphasis transition-colors">
-              <td class="p-3 t-mono font-semibold text-color">{{ standing.position }}</td>
-              <td class="p-3">
+        </ng-template>
+        <ng-template #body let-standing>
+          <tr>
+            <td>{{ standing.position ?? '-' }}</td>
+            <td>
+              <div class="flex flex-col gap-1 w-48 break-words">
                 @if (standing.teamId) {
-                  <span class="font-medium text-color">Team {{ standing.teamId | slice: 0 : 8 }}</span>
+                  <span>{{ 'all.competition.team' | translate }} {{ standing.teamId | slice: 0 : 8 }}</span>
                 } @else if (standing.player1 || standing.player2) {
-                  <div class="flex flex-col gap-0.5">
-                    @if (standing.player1) {
-                      <span class="font-medium text-color">{{ standing.player1.fullName }}</span>
-                    }
-                    @if (standing.player2) {
-                      <span class="font-medium text-color">{{ standing.player2.fullName }}</span>
-                    }
-                  </div>
+                  @if (standing.player1) {
+                    <span>{{ standing.player1.fullName }}</span>
+                  }
+                  @if (standing.player2) {
+                    <span>{{ standing.player2.fullName }}</span>
+                  }
                 } @else if (standing.player1Id || standing.player2Id) {
-                  <div class="flex flex-col gap-0.5">
-                    @if (standing.player1Id) {
-                      <span class="text-xs text-muted-color">Player 1: {{ standing.player1Id | slice: 0 : 8 }}</span>
-                    }
-                    @if (standing.player2Id) {
-                      <span class="text-xs text-muted-color">Player 2: {{ standing.player2Id | slice: 0 : 8 }}</span>
-                    }
-                  </div>
+                  @if (standing.player1Id) {
+                    <span>{{ 'all.competition.player' | translate }} 1: {{ standing.player1Id | slice: 0 : 8 }}</span>
+                  }
+                  @if (standing.player2Id) {
+                    <span>{{ 'all.competition.player' | translate }} 2: {{ standing.player2Id | slice: 0 : 8 }}</span>
+                  }
                 } @else {
-                  <span class="text-muted-color">-</span>
+                  <span>-</span>
                 }
-              </td>
-              <td class="p-3 text-center t-mono text-sm text-color">{{ standing.played || '-' }}</td>
-              <td class="p-3 text-center t-mono text-sm font-medium" style="color: var(--g-win)">{{ standing.won || '-' }}</td>
-              <td class="p-3 text-center t-mono text-sm font-medium" style="color: var(--g-loss)">{{ standing.lost || '-' }}</td>
-              <td class="p-3 text-center t-mono text-sm text-color">
-                @if (standing.gamesWon !== null && standing.gamesLost !== null) {
-                  <span>{{ standing.gamesWon }} - {{ standing.gamesLost }}</span>
-                } @else {
-                  <span class="text-muted-color">-</span>
-                }
-              </td>
-              <td class="p-3 text-center t-mono text-sm text-color">
-                @if (standing.setsWon !== null && standing.setsLost !== null) {
-                  <span>{{ standing.setsWon }} - {{ standing.setsLost }}</span>
-                } @else {
-                  <span class="text-muted-color">-</span>
-                }
-              </td>
-              <td class="p-3 text-center t-mono text-sm font-semibold text-color">{{ standing.points || '-' }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
+              </div>
+            </td>
+            <td>{{ standing.played ?? '-' }}</td>
+            <td>{{ standing.won ?? '-' }}</td>
+            <td>{{ standing.lost ?? '-' }}</td>
+            <td>
+              @if ((standing.gamesWon ?? null) !== null && (standing.gamesLost ?? null) !== null) {
+                {{ standing.gamesWon }} - {{ standing.gamesLost }}
+              } @else {
+                -
+              }
+            </td>
+            <td>
+              @if ((standing.setsWon ?? null) !== null && (standing.setsLost ?? null) !== null) {
+                {{ standing.setsWon }} - {{ standing.setsLost }}
+              } @else {
+                -
+              }
+            </td>
+            <td>{{ standing.points ?? '-' }}</td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8" class="text-muted-color">{{ 'all.competition.no_standings' | translate }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
-  </div>
+  </p-card>
 </section>

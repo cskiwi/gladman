@@ -232,6 +232,11 @@ export const BadmanPreset = definePreset(Aura, {
     // text on them illegible. Remap to a subtle dark tint.
     datatable: {
       colorScheme: {
+        light: {
+          row: {
+            background: 'transparent',
+          },
+        },
         dark: {
           header: {
             background: '{surface.50}',
@@ -248,7 +253,7 @@ export const BadmanPreset = definePreset(Aura, {
             selectedColor: '{highlight.color}',
           },
           row: {
-            background: '{surface.0}',
+            background: 'transparent',
             hoverBackground: '{surface.100}',
             selectedBackground: '{highlight.background}',
             color: '{text.color}',

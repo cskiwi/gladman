@@ -27,9 +27,7 @@ describe('PageHomeComponent', () => {
   beforeEach(async () => {
     user.set(null);
     systemId.set('test-system');
-    query = jest.fn(() =>
-      of({ data: { rankingSystem, player: { rankingLastPlaces: [] } } }),
-    );
+    query = jest.fn(() => of({ data: { rankingSystem, player: { rankingLastPlaces: [] } } }));
 
     await TestBed.configureTestingModule({
       imports: [PageHomeComponent, TranslateModule.forRoot()],
@@ -67,11 +65,7 @@ describe('PageHomeComponent', () => {
     const rows = Array.from(element.querySelectorAll('tbody tr'));
 
     expect(rows).toHaveLength(3);
-    expect(
-      rows.map((row) =>
-        Array.from(row.querySelectorAll('td')).map((cell) => cell.textContent?.trim()),
-      ),
-    ).toEqual([
+    expect(rows.map((row) => Array.from(row.querySelectorAll('td')).map((cell) => cell.textContent?.trim()))).toEqual([
       ['1', '—', '0', '30'],
       ['2', '50', '25', '20'],
       ['3', '100', '—', '10'],
@@ -85,34 +79,35 @@ describe('PageHomeComponent', () => {
   });
 
   it('updates displayed data using the selected declared GraphQL variable', async () => {
-    expect(query).toHaveBeenCalledWith(
-      expect.objectContaining({ variables: { rankingSystemId: 'test-system' } }),
+    expect(query).toHaveBeenCalledWith(expect.objectContaining({ variables: { rankingSystemId: 'test-system' } }));
+    query.mockImplementation(({ variables }: { variables: { rankingSystemId?: string } }) =>
+      of({
+        data: {
+          rankingSystem:
+            variables.rankingSystemId === 'alternate-system'
+              ? {
+                  ...rankingSystem,
+                  name: 'Alternate fixture ranking system',
+                  amountOfLevels: 2,
+                  pointsToGoUp: [200, 0],
+                  pointsToGoDown: [30],
+                  pointsWhenWinningAgainst: [15, 5],
+                }
+              : rankingSystem,
+        },
+      }),
     );
-    query.mockImplementation(({ variables }: { variables: { rankingSystemId?: string } }) => of({
-      data: {
-        rankingSystem: variables.rankingSystemId === 'alternate-system' ? {
-          ...rankingSystem,
-          name: 'Alternate fixture ranking system',
-          amountOfLevels: 2,
-          pointsToGoUp: [200, 0],
-          pointsToGoDown: [30],
-          pointsWhenWinningAgainst: [15, 5],
-        } : rankingSystem,
-      },
-    }));
     systemId.set('alternate-system');
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
 
-    expect(query).toHaveBeenLastCalledWith(
-      expect.objectContaining({ variables: { rankingSystemId: 'alternate-system' } }),
-    );
+    expect(query).toHaveBeenLastCalledWith(expect.objectContaining({ variables: { rankingSystemId: 'alternate-system' } }));
     expect(element.querySelector('h1')?.textContent?.trim()).toBe('Alternate fixture ranking system');
-    expect(Array.from(element.querySelectorAll('tbody tr')).map((row) =>
-      Array.from(row.querySelectorAll('td')).map((cell) => cell.textContent?.trim()),
-    )).toEqual([
+    expect(
+      Array.from(element.querySelectorAll('tbody tr')).map((row) => Array.from(row.querySelectorAll('td')).map((cell) => cell.textContent?.trim())),
+    ).toEqual([
       ['1', '—', '30', '5'],
       ['2', '200', '—', '15'],
     ]);
@@ -125,8 +120,7 @@ describe('PageHomeComponent', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
 
-    expect(element.querySelector('[role="status"]')?.getAttribute('aria-label'))
-      .toBe('all.points.table.loading-ranking-system');
+    expect(element.querySelector('[role="status"]')?.getAttribute('aria-label')).toBe('all.points.table.loading-ranking-system');
     expect(element.querySelectorAll('p-skeleton')).toHaveLength(3);
     expect(element.querySelector('p-message')).toBeNull();
     expect(element.querySelector('p-table')).toBeNull();
@@ -149,16 +143,17 @@ describe('PageHomeComponent', () => {
     const element = fixture.nativeElement as HTMLElement;
 
     expect(query).not.toHaveBeenCalled();
-    expect(element.querySelector('.p-message-info')?.textContent)
-      .toContain('all.points.table.no-ranking-system');
+    expect(element.querySelector('.p-message-info')?.textContent).toContain('all.points.table.no-ranking-system');
     expect(element.querySelector('p-table')).toBeNull();
     expect(element.querySelector('[role="status"]')).toBeNull();
   });
 
   it('renders an explicit empty table when the system has no levels', async () => {
-    query.mockReturnValueOnce(of({
-      data: { rankingSystem: { ...rankingSystem, amountOfLevels: 0, pointsWhenWinningAgainst: [] } },
-    }));
+    query.mockReturnValueOnce(
+      of({
+        data: { rankingSystem: { ...rankingSystem, amountOfLevels: 0, pointsWhenWinningAgainst: [] } },
+      }),
+    );
     systemId.set('empty-system');
     fixture.detectChanges();
     await fixture.whenStable();
@@ -172,10 +167,15 @@ describe('PageHomeComponent', () => {
   });
 
   it.each(['initial', 'subsequent'] as const)('renders and recovers from an %s request failure', async (request) => {
-    query.mockReturnValueOnce(throwError(() => new HttpErrorResponse({
-      status: 503,
-      statusText: 'Fixture ranking service unavailable',
-    })));
+    query.mockReturnValueOnce(
+      throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 503,
+            statusText: 'Fixture ranking service unavailable',
+          }),
+      ),
+    );
     if (request === 'initial') {
       fixture.destroy();
       fixture = TestBed.createComponent(PageHomeComponent);
@@ -187,8 +187,7 @@ describe('PageHomeComponent', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
 
-    expect(element.querySelector('.p-message-error')?.textContent)
-      .toContain('Fixture ranking service unavailable');
+    expect(element.querySelector('.p-message-error')?.textContent).toContain('Fixture ranking service unavailable');
     expect(element.querySelector('.p-message-info')).toBeNull();
     expect(element.querySelector('[role="status"]')).toBeNull();
     expect(element.querySelector('p-table')).toBeNull();
@@ -214,8 +213,7 @@ describe('PageHomeComponent', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('app-hero .p-card')).not.toBeNull();
     expect(element.querySelectorAll('h1')).toHaveLength(1);
-    expect(element.querySelector('h1')?.textContent?.trim())
-      .toBe('Test ranking system');
+    expect(element.querySelector('h1')?.textContent?.trim()).toBe('Test ranking system');
     expect(element.querySelectorAll('h2')).toHaveLength(1);
     expect(element.querySelector('app-section-header h2')).not.toBeNull();
   });
@@ -225,9 +223,7 @@ describe('PageHomeComponent', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(table).not.toBeNull();
     expect(table.componentInstance.scrollable()).toBe(true);
-    expect(table.componentInstance.dt()).toEqual({
-      row: { background: '{content.background}' },
-    });
+    expect(table.componentInstance.dt()).toBeUndefined();
     expect(element.querySelector('section .p-card p-table')).not.toBeNull();
     expect(element.querySelectorAll('thead th')).toHaveLength(4);
   });
@@ -238,8 +234,7 @@ describe('PageHomeComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelectorAll('app-hero [stats] app-player-ranking-progress'))
-      .toHaveLength(1);
+    expect(element.querySelectorAll('app-hero [stats] app-player-ranking-progress')).toHaveLength(1);
     user.set(null);
     fixture.detectChanges();
     expect(element.querySelector('app-player-ranking-progress')).toBeNull();

@@ -1,87 +1,77 @@
 @if (rankingSystem(); as system) {
-<app-hero>
-  <app-hero-avatar avatar aria-hidden="true">
-    <i class="pi pi-chart-bar"></i>
-  </app-hero-avatar>
-  <div identity>
-    <p class="m-0 mb-2 text-sm text-muted-color">{{ 'all.points.table.ranking-system' | translate }}</p>
-    <app-hero-title>{{ system.name }}</app-hero-title>
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-sm text-muted-color">
-      @if (system.calculationLastUpdate) {
-      <span>{{ system.calculationLastUpdate | date: 'mediumDate' }}</span>
-      }
-      <span>{{ system.amountOfLevels }} {{ 'all.points.table.levels' | translate }}</span>
-    </div>
-  </div>
-
-  @if (user()?.id; as playerId) {
-  <div stats class="mt-6 pt-6 border-t border-surface">
-    <app-player-ranking-progress [playerId]="playerId" />
-  </div>
-  }
-</app-hero>
-
-<section aria-labelledby="level-reference-title">
-  <p-card class="border border-surface">
-  <app-section-header id="level-reference-title" [title]="'all.points.table.reference' | translate" />
-  <p-table
-    [value]="dataSource()"
-    [scrollable]="true"
-    [dt]="{ row: { background: '{content.background}' } }"
-    [tableStyle]="{ 'min-width': '48rem' }"
-    class="tabular-nums"
-  >
-    <ng-template #header>
-      <tr>
-        @for (col of columns; track col.field) {
-        <th scope="col" [class.text-right]="col.field !== 'level'">
-          {{ col.header | async }}
-        </th>
+  <app-hero>
+    <app-hero-avatar avatar aria-hidden="true">
+      <i class="pi pi-chart-bar"></i>
+    </app-hero-avatar>
+    <div identity>
+      <p class="m-0 mb-2 text-sm text-muted-color">{{ 'all.points.table.ranking-system' | translate }}</p>
+      <app-hero-title>{{ system.name }}</app-hero-title>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-sm text-muted-color">
+        @if (system.calculationLastUpdate) {
+          <span>{{ system.calculationLastUpdate | date: 'mediumDate' }}</span>
         }
-      </tr>
-    </ng-template>
-    <ng-template #body let-row>
-      <tr>
-        <td>{{ row.level }}</td>
-        <td class="text-right">
-          @if (row.pointsToGoUp !== null) {
-          {{ row.pointsToGoUp }}
-          } @else {
-          <span class="text-muted-color">—</span>
-          }
-        </td>
-        <td class="text-right">
-          @if (row.pointsToGoDown !== null) {
-          {{ row.pointsToGoDown }}
-          } @else {
-          <span class="text-muted-color">—</span>
-          }
-        </td>
-        <td class="text-right">{{ row.pointsWhenWinningAgainst }}</td>
-      </tr>
-    </ng-template>
-    <ng-template #emptymessage>
-      <tr>
-        <td colspan="4" class="text-muted-color">{{ 'all.points.table.no-level-data' | translate }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-  </p-card>
-</section>
+        <span>{{ system.amountOfLevels }} {{ 'all.points.table.levels' | translate }}</span>
+      </div>
+    </div>
+
+    @if (user()?.id; as playerId) {
+      <div stats class="mt-6 pt-6 border-t border-surface">
+        <app-player-ranking-progress [playerId]="playerId" />
+      </div>
+    }
+  </app-hero>
+
+  <section aria-labelledby="level-reference-title">
+    <p-card class="border border-surface">
+      <app-section-header id="level-reference-title" [title]="'all.points.table.reference' | translate" />
+      <p-table [value]="dataSource()" [scrollable]="true" [tableStyle]="{ 'min-width': '48rem' }" class="tabular-nums">
+        <ng-template #header>
+          <tr>
+            @for (col of columns; track col.field) {
+              <th scope="col" [class.text-right]="col.field !== 'level'">
+                {{ col.header | async }}
+              </th>
+            }
+          </tr>
+        </ng-template>
+        <ng-template #body let-row>
+          <tr>
+            <td>{{ row.level }}</td>
+            <td class="text-right">
+              @if (row.pointsToGoUp !== null) {
+                {{ row.pointsToGoUp }}
+              } @else {
+                <span class="text-muted-color">—</span>
+              }
+            </td>
+            <td class="text-right">
+              @if (row.pointsToGoDown !== null) {
+                {{ row.pointsToGoDown }}
+              } @else {
+                <span class="text-muted-color">—</span>
+              }
+            </td>
+            <td class="text-right">{{ row.pointsWhenWinningAgainst }}</td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="4" class="text-muted-color">{{ 'all.points.table.no-level-data' | translate }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </section>
 } @else if (loading()) {
-<div
-  role="status"
-  [attr.aria-label]="'all.points.table.loading-ranking-system' | translate"
-  class="space-y-4"
->
-  <p-skeleton height="2.5rem" />
-  <p-skeleton height="1rem" width="12rem" />
-  <p-skeleton height="12rem" />
-</div>
+  <div role="status" [attr.aria-label]="'all.points.table.loading-ranking-system' | translate" class="space-y-4">
+    <p-skeleton height="2.5rem" />
+    <p-skeleton height="1rem" width="12rem" />
+    <p-skeleton height="12rem" />
+  </div>
 } @else if (!error()) {
-<p-message severity="info">{{ 'all.points.table.no-ranking-system' | translate }}</p-message>
+  <p-message severity="info">{{ 'all.points.table.no-ranking-system' | translate }}</p-message>
 }
 
 @if (error(); as errorMessage) {
-<p-message severity="error">{{ errorMessage }}</p-message>
+  <p-message severity="error">{{ errorMessage }}</p-message>
 }

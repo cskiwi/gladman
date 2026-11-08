@@ -6,7 +6,7 @@ import { Apollo } from 'apollo-angular';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
-import { TournamentEnrollment } from '@app/models';
+import { Player, TournamentEnrollment } from '@app/models';
 import { DocumentNode, print } from 'graphql';
 import { EnrollmentsTabComponent } from './enrollments-tab.component';
 
@@ -185,7 +185,7 @@ describe('Manual enrollment dialog and creation', () => {
 
   it.each([
     ['network failure', () => throwError(() => new Error('Safe creation failure')), 'Safe creation failure'],
-    ['missing response', () => of({ data: {} }), 'Enrollment creation returned no enrollment'],
+    ['missing response', () => of({ data: {} }), 'all.tournament.admin.enrollments.creationNoData'],
   ])('retains inputs and dialog on %s and allows retry', async (_name, response, error) => {
     mutate.mockImplementationOnce(response);
     fixture.componentInstance.manualEnrollmentForm.controls.player.setValue(player);
@@ -257,7 +257,7 @@ describe('Manual enrollment dialog and creation', () => {
     expect(fixture.componentInstance.searchErrors().player).toBe('Safe search failure');
     query.mockReturnValueOnce(of({ data: {} }));
     await fixture.componentInstance.searchManualPlayers('player', 'Safe');
-    expect(fixture.componentInstance.searchErrors().player).toBe('Player search returned no player data');
+    expect(fixture.componentInstance.searchErrors().player).toBe('all.tournament.admin.enrollments.playerSearchNoData');
     await fixture.componentInstance.searchManualPlayers('player', 'Safe');
     expect(fixture.componentInstance.searchErrors().player).toBeNull();
     expect(mutate).not.toHaveBeenCalled();
@@ -426,8 +426,8 @@ describe('Enrollment-management filters', () => {
 
   it.each([
     ['network failure', () => throwError(() => new Error('Safe enrollment query failure')), 'Safe enrollment query failure'],
-    ['missing response data', () => of({ data: {} }), 'Enrollment query returned no enrollment data'],
-    ['null list', () => of({ data: { subEventEnrollments: null } }), 'Enrollment query returned no enrollment data'],
+    ['missing response data', () => of({ data: {} }), 'all.tournament.admin.enrollments.queryNoData'],
+    ['null list', () => of({ data: { subEventEnrollments: null } }), 'all.tournament.admin.enrollments.queryNoData'],
   ])('shows explicit %s feedback with safe selectors and recovers using refresh', async (_name, response, message) => {
     query.mockImplementationOnce(response);
     fixture.componentInstance.refetch();
@@ -489,7 +489,7 @@ describe('Enrollment-management filters', () => {
     const table: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"] table');
     expect(table.textContent).toContain('SAFE-123');
     expect(table.textContent).toContain('guest@example.invalid');
-    expect(table.textContent).toContain('Safe Preferred (Preferred)');
+    expect(table.textContent).toContain('Safe Preferred (all.tournament.admin.enrollments.preferred)');
     expect(table.textContent).toContain('Safe Partner');
     expect(table.querySelector('td.whitespace-pre-wrap')?.textContent).toContain('Safe multiline\nnotes');
     expect(table.querySelectorAll('tbody tr')[0].querySelectorAll('p-tag')[1]?.textContent?.trim()).toBe('2');
@@ -556,8 +556,7 @@ describe('Enrollment-management filters', () => {
     expect(filters.querySelectorAll('p-select')[1]?.textContent).toContain(asset.tournament.admin.enrollments.allStatuses);
     expect(fixture.componentInstance.statusOptions()).toHaveLength(6);
     expect(fixture.componentInstance.statusOptions().map((option) => option.label)).toEqual([
-      ...['allStatuses', 'confirmed', 'pending', 'waitingList', 'cancelled'].map((key) => asset.tournament.admin.enrollments[key]),
-      'Withdrawn',
+      ...['allStatuses', 'confirmed', 'pending', 'waitingList', 'cancelled', 'withdrawn'].map((key) => asset.tournament.admin.enrollments[key]),
     ]);
     expect(filters.querySelector('[style]:not(.p-panel-content-container)')).toBeNull();
     const panel: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"]');
@@ -565,6 +564,166 @@ describe('Enrollment-management filters', () => {
     expect(panel.querySelector('thead')?.textContent).not.toContain('all.');
     expect(panel.querySelector('thead th:nth-child(3)')?.textContent?.trim()).not.toBe('');
     expect(panel.querySelector('p-tag')?.textContent?.trim()).toBe(asset.tournament.admin.enrollments.confirmed);
+  });
+});
+
+describe('Enrollment-management locale completeness', () => {
+  let fixture: ComponentFixture<EnrollmentsTabComponent>;
+  let query: jest.Mock;
+  let mutate: jest.Mock;
+
+  beforeEach(async () => {
+    query = jest.fn(() => of({ data: { subEventEnrollments: [] } }));
+    mutate = jest.fn(() => of({ data: { cancelEnrollment: { id: 'safe-entry' }, promoteFromWaitingList: { id: 'safe-entry' } } }));
+    await TestBed.configureTestingModule({
+      imports: [EnrollmentsTabComponent, TranslateModule.forRoot()],
+      providers: [{ provide: Apollo, useValue: { query, mutate } }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(EnrollmentsTabComponent);
+    fixture.componentRef.setInput('tournament', {
+      id: 'safe-event',
+      tournamentSubEvents: [{ id: 'safe-double', name: 'Safe doubles', gameType: 'D' }],
+    });
+    await settle();
+  });
+
+  afterEach(() => jest.restoreAllMocks());
+
+  async function settle() {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  async function useLocale(locale: string) {
+    const asset: { common: { unknown: string }; tournament: { admin: { enrollments: Record<string, string> } } } = JSON.parse(
+      readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'),
+    );
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: asset });
+    translate.use(locale);
+    await settle();
+    return asset;
+  }
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('covers every mounted enrollment key in %s without blank values', async (locale) => {
+    const asset = await useLocale(locale);
+    const labels = asset.tournament.admin.enrollments;
+    const sourceRoot = join(process.cwd(), 'libs', 'frontend', 'pages', 'tournament', 'src', 'pages', 'admin', 'tabs', 'enrollments');
+    const keys = ['component.ts', 'component.html', 'service.ts'].flatMap((suffix) =>
+      Array.from(
+        readFileSync(join(sourceRoot, `enrollments-tab.${suffix}`), 'utf8').matchAll(/all\.tournament\.admin\.enrollments\.([a-zA-Z]+)/g),
+        (match) => match[1],
+      ),
+    );
+    const dynamicKeys = [
+      'totalDescription',
+      'confirmedDescription',
+      'pendingDescription',
+      'waitingListDescription',
+      'cancelledDescription',
+      'playerSearch',
+      'partnerSearch',
+      'playerSearchPlaceholder',
+      'partnerSearchPlaceholder',
+    ];
+    for (const key of new Set([...keys, ...dynamicKeys])) {
+      expect({ key, meaningful: typeof labels[key] === 'string' && labels[key].trim().length > 0 }).toEqual({ key, meaningful: true });
+    }
+    expect(Array.from(fixture.nativeElement.querySelectorAll('dl dd:last-of-type'), (cell: Element) => cell.textContent?.trim())).toEqual(
+      dynamicKeys.slice(0, 5).map((key) => labels[key]),
+    );
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('localizes %s statuses, identities and both confirmation decisions without changing payloads', async (locale) => {
+    const asset = await useLocale(locale);
+    const labels = asset.tournament.admin.enrollments;
+    const component = fixture.componentInstance;
+    const requestCount = query.mock.calls.length;
+    expect(component.statusOptions().map((option) => option.value)).toEqual([
+      null,
+      EnrollmentStatus.CONFIRMED,
+      EnrollmentStatus.PENDING,
+      EnrollmentStatus.WAITING_LIST,
+      EnrollmentStatus.CANCELLED,
+      EnrollmentStatus.WITHDRAWN,
+    ]);
+    expect(component.getStatusLabel(EnrollmentStatus.WITHDRAWN)).toBe(labels.withdrawn);
+    const row = Object.assign(new TournamentEnrollment(), {
+      id: 'safe-entry',
+      status: EnrollmentStatus.WAITING_LIST,
+      isGuest: true,
+      guestName: 'Safe Guest',
+      preferredPartner: { fullName: 'Safe Preferred' },
+    });
+    expect(component.getPlayerName(row)).toBe(`Safe Guest (${labels.guest})`);
+    expect(component.getPartnerName(row)).toBe(`Safe Preferred (${labels.preferred})`);
+    expect(component.getPlayerName(new TournamentEnrollment())).toBe(asset.common.unknown);
+    row.confirmedPartner = Object.defineProperty(new Player(), 'fullName', { value: undefined });
+    expect(component.getPartnerName(row)).toBe(asset.common.unknown);
+    const prompt = jest.spyOn(globalThis, 'confirm').mockReturnValue(false);
+    await component.cancelEnrollment(row);
+    await component.promoteFromWaitingList(row);
+    const playerName = component.getPlayerName(row);
+    expect(prompt.mock.calls.map(([message]) => message)).toEqual(
+      ['confirmCancelPlayer', 'confirmPromotePlayer'].map((key) => labels[key].replace('{{playerName}}', playerName)),
+    );
+    expect(mutate).not.toHaveBeenCalled();
+    expect(query).toHaveBeenCalledTimes(requestCount);
+    prompt.mockReturnValue(true);
+    await component.cancelEnrollment(row);
+    await component.promoteFromWaitingList(row);
+    await settle();
+    expect(mutate.mock.calls.map(([options]) => options.variables)).toEqual([{ enrollmentId: row.id }, { enrollmentId: row.id }]);
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('shows explicit localized %s local failures and preserves server diagnostics', async (locale) => {
+    const labels = (await useLocale(locale)).tournament.admin.enrollments;
+    const component = fixture.componentInstance;
+    query.mockReturnValueOnce(of({ data: {} }));
+    component.refetch();
+    await settle();
+    expect(component.error()).toBe(labels.queryNoData);
+    component.openManualEnrollmentDialog();
+    await settle();
+    query.mockReturnValueOnce(of({ data: {} }));
+    await component.searchManualPlayers('player', 'Safe');
+    expect(component.searchErrors().player).toBe(labels.playerSearchNoData);
+    component.manualEnrollmentForm.controls.player.setValue({ id: 'safe-player', fullName: 'Safe Player' });
+    mutate.mockReturnValueOnce(of({ data: {} }));
+    await component.createManualEnrollment();
+    expect(component.creationError()).toBe(labels.creationNoData);
+    expect(component.showManualEnrollmentDialog()).toBe(true);
+    mutate.mockReturnValueOnce(throwError(() => 'safe non-Error failure'));
+    await component.createManualEnrollment();
+    expect(component.creationError()).toBe(labels.creationFailed);
+    mutate.mockReturnValueOnce(throwError(() => new Error('Safe server detail')));
+    await component.createManualEnrollment();
+    expect(component.creationError()).toBe('Safe server detail');
+    const prompt = jest.spyOn(globalThis, 'confirm').mockReturnValue(true);
+    const row = Object.assign(new TournamentEnrollment(), { id: 'safe-entry', player: { fullName: 'Safe Player' } });
+    mutate.mockReturnValueOnce(throwError(() => 'safe non-Error failure'));
+    await component.cancelEnrollment(row);
+    expect(component.updateError()).toBe(labels.cancelFailed);
+    mutate.mockReturnValueOnce(throwError(() => 'safe non-Error failure'));
+    await component.promoteFromWaitingList(row);
+    expect(component.updateError()).toBe(labels.promoteFailed);
+    expect(prompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('reacts to all three locales while retaining a selected Withdrawn filter without refetching', async () => {
+    const component = fixture.componentInstance;
+    component.statusFilter.setValue(EnrollmentStatus.WITHDRAWN);
+    await settle();
+    const requestCount = query.mock.calls.length;
+    for (const locale of ['en', 'nl_BE', 'fr_BE', 'nl_BE']) {
+      const labels = (await useLocale(locale)).tournament.admin.enrollments;
+      expect(component.statusFilter.value).toBe(EnrollmentStatus.WITHDRAWN);
+      expect(component.getStatusLabel(EnrollmentStatus.WITHDRAWN)).toBe(labels.withdrawn);
+      expect(fixture.nativeElement.querySelector('#admin-enrollment-status')?.textContent).toContain(labels.withdrawn);
+    }
+    expect(query).toHaveBeenCalledTimes(requestCount);
+    expect(mutate).not.toHaveBeenCalled();
   });
 });
 
@@ -633,6 +792,6 @@ describe('Enrollment-management summary presentation', () => {
     expect(Array.from(element.querySelectorAll('dl dd:last-of-type')).map((cell) => cell.textContent?.trim())).toEqual(
       ['totalDescription', 'confirmedDescription', 'pendingDescription', 'waitingListDescription', 'cancelledDescription'].map((key) => labels[key]),
     );
-    expect(element.querySelector('dt')?.textContent?.trim()).not.toBe('');
+    expect(Array.from(element.querySelectorAll('dl dt, dl dd:last-of-type')).every((cell) => !!cell.textContent?.trim())).toBe(true);
   });
 });

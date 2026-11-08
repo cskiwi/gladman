@@ -102,7 +102,7 @@ export class EnrollmentsTabComponent {
     { label: 'all.tournament.admin.enrollments.pending', value: EnrollmentStatus.PENDING },
     { label: 'all.tournament.admin.enrollments.waitingList', value: EnrollmentStatus.WAITING_LIST },
     { label: 'all.tournament.admin.enrollments.cancelled', value: EnrollmentStatus.CANCELLED },
-    { label: 'Withdrawn', value: EnrollmentStatus.WITHDRAWN },
+    { label: 'all.tournament.admin.enrollments.withdrawn', value: EnrollmentStatus.WITHDRAWN },
   ];
   readonly statusOptions = toSignal(
     this.translate.stream(this.statusOptionDefinitions.map((option) => option.label)).pipe(
@@ -208,17 +208,18 @@ export class EnrollmentsTabComponent {
 
   getPlayerName(enrollment: TournamentEnrollment): string {
     if (enrollment.isGuest) {
-      return `${enrollment.guestName} (Guest)`;
+      return `${enrollment.guestName} (${this.translate.instant('all.tournament.admin.enrollments.guest')})`;
     }
-    return enrollment.player?.fullName ?? 'Unknown';
+    return enrollment.player?.fullName ?? this.translate.instant('all.common.unknown');
   }
 
   getPartnerName(enrollment: TournamentEnrollment): string {
     if (enrollment.confirmedPartner) {
-      return enrollment.confirmedPartner.fullName ?? 'Unknown';
+      return enrollment.confirmedPartner.fullName ?? this.translate.instant('all.common.unknown');
     }
     if (enrollment.preferredPartner) {
-      return `${enrollment.preferredPartner.fullName ?? 'Unknown'} (Preferred)`;
+      const name = enrollment.preferredPartner.fullName ?? this.translate.instant('all.common.unknown');
+      return `${name} (${this.translate.instant('all.tournament.admin.enrollments.preferred')})`;
     }
     return '-';
   }
@@ -230,14 +231,14 @@ export class EnrollmentsTabComponent {
 
   async cancelEnrollment(enrollment: TournamentEnrollment): Promise<void> {
     const playerName = this.getPlayerName(enrollment);
-    if (confirm(`Are you sure you want to cancel the enrollment for ${playerName}?`)) {
+    if (confirm(this.translate.instant('all.tournament.admin.enrollments.confirmCancelPlayer', { playerName }))) {
       await this.dataService.cancelEnrollment(enrollment.id);
     }
   }
 
   async promoteFromWaitingList(enrollment: TournamentEnrollment): Promise<void> {
     const playerName = this.getPlayerName(enrollment);
-    if (confirm(`Are you sure you want to promote ${playerName} from the waiting list?`)) {
+    if (confirm(this.translate.instant('all.tournament.admin.enrollments.confirmPromotePlayer', { playerName }))) {
       await this.dataService.promoteFromWaitingList(enrollment.id);
     }
   }

@@ -5,6 +5,7 @@ import { Player, TournamentEnrollment } from '@app/models';
 import { EnrollmentStatus } from '@app/models-enum';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 export type ManualEnrollmentPlayer = Pick<Player, 'id' | 'fullName' | 'memberId'>;
 export type ManualEnrollmentInput = {
@@ -15,6 +16,7 @@ export type ManualEnrollmentInput = {
 
 export class EnrollmentsTabService {
   private readonly apollo = inject(Apollo);
+  private readonly translate = inject(TranslateService);
 
   filter = new FormGroup({
     subEventId: new FormControl<string | null>(null),
@@ -50,7 +52,7 @@ export class EnrollmentsTabService {
       }),
     );
     if (!Array.isArray(result.data?.manualEnrollmentPlayers)) {
-      throw new Error('Player search returned no player data');
+      throw new Error(this.translate.instant('all.tournament.admin.enrollments.playerSearchNoData'));
     }
     return result.data.manualEnrollmentPlayers;
   }
@@ -86,12 +88,12 @@ export class EnrollmentsTabService {
       );
       const enrollment = isMember ? result.data?.adminEnrollPlayer : result.data?.enrollGuest;
       if (!enrollment?.id) {
-        throw new Error('Enrollment creation returned no enrollment');
+        throw new Error(this.translate.instant('all.tournament.admin.enrollments.creationNoData'));
       }
       this.refetch();
       return true;
     } catch (error) {
-      this.creationError.set(error instanceof Error ? error.message : 'Failed to create enrollment');
+      this.creationError.set(error instanceof Error ? error.message : this.translate.instant('all.tournament.admin.enrollments.creationFailed'));
       return false;
     } finally {
       this.creating.set(false);
@@ -151,7 +153,7 @@ export class EnrollmentsTabService {
       );
 
       if (!Array.isArray(result.data?.subEventEnrollments)) {
-        throw new Error('Enrollment query returned no enrollment data');
+        throw new Error(this.translate.instant('all.tournament.admin.enrollments.queryNoData'));
       }
       return result.data.subEventEnrollments;
     },
@@ -220,7 +222,7 @@ export class EnrollmentsTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to cancel enrollment');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.enrollments.cancelFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -253,7 +255,7 @@ export class EnrollmentsTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to promote from waiting list');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.enrollments.promoteFailed'));
       return false;
     } finally {
       this.updating.set(false);

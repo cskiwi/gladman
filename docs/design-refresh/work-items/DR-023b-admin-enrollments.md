@@ -87,7 +87,17 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
   Reuse existing `totalEntries` for a meaningful total label; do not alter translation assets in the summary slice.
 - Children: [DR-023b1 summary](DR-023b1-enrollment-summary.md);
   [DR-023b2 filters/selection](DR-023b2-enrollment-filters.md), DR-023b3 table/feedback,
-  DR-023b4 manual dialog and DR-023b5 locale completeness.
+  DR-023b4 manual dialog and [DR-023b5 locale completeness](DR-023b5-enrollment-locales.md).
+- Current child handoff on 2026-11-08: DR-023b1/b2/b3/b4/b5 are approved Done with disclosed limits.
+  Mounted descriptions, status/identity copy, prompts and local diagnostics now have three-locale coverage.
+  Focused 54-test suite, scoped lint/build and app/API development builds pass.
+  Twelve actual locale/theme/width cases and safe table/prompt/error fixtures pass without live writes.
+  API restart blocker is resolved. DR-023b5 retains exhaustive accessibility/contrast,
+  live-operation, full-suite and SSR/hydration limits; native DR-034 error contrast is unchanged.
+  User approved DR-023b5 completion/commit with disclosed limits and selected "Nothing else".
+  Parent remains open for aggregate acceptance reconciliation; child approvals do not fabricate parent checks.
+  Exact next action in a fresh invocation: reconcile this parent before confirming a real DR-023c consumer.
+  The following earlier handoffs are preserved as chronological history, not the current action.
 - Source discoveries for later children: FormControl values are read inside effects without reactive bridging;
   query failures are swallowed as empty arrays; manual creation remains a console-only TODO.
   These are pre-existing excluded behavior concerns, not summary implementation work.

@@ -1,10 +1,17 @@
 import { computed, inject, resource, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TournamentEnrollment } from '@app/models';
+import { Player, TournamentEnrollment } from '@app/models';
 import { EnrollmentStatus } from '@app/models-enum';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
+
+export type ManualEnrollmentPlayer = Pick<Player, 'id' | 'fullName' | 'memberId'>;
+export type ManualEnrollmentInput = {
+  tournamentSubEventId: string;
+  preferredPartnerId?: string;
+  notes?: string;
+} & ({ playerId: string } | { guestName: string; guestEmail: string });
 
 export class EnrollmentsTabService {
   private readonly apollo = inject(Apollo);
@@ -22,6 +29,74 @@ export class EnrollmentsTabService {
 
   readonly updating = signal(false);
   readonly updateError = signal<string | null>(null);
+  readonly creating = signal(false);
+  readonly creationError = signal<string | null>(null);
+
+  /** Search the mounted application's player API, returning selectable identities. */
+  async searchPlayers(search: string): Promise<ManualEnrollmentPlayer[]> {
+    const result = await lastValueFrom(
+      this.apollo.query<{ manualEnrollmentPlayers: ManualEnrollmentPlayer[] }>({
+        query: gql`
+          query ManualEnrollmentPlayers($search: String!) {
+            manualEnrollmentPlayers(search: $search) {
+              id
+              fullName
+              memberId
+            }
+          }
+        `,
+        variables: { search: search.trim() },
+        fetchPolicy: 'network-only',
+      }),
+    );
+    if (!Array.isArray(result.data?.manualEnrollmentPlayers)) {
+      throw new Error('Player search returned no player data');
+    }
+    return result.data.manualEnrollmentPlayers;
+  }
+
+  /** Create an enrollment, reporting failures rather than closing the dialog as success. */
+  async createManualEnrollment(input: ManualEnrollmentInput): Promise<boolean> {
+    if (this.creating()) return false;
+    this.creating.set(true);
+    this.creationError.set(null);
+    const isMember = 'playerId' in input;
+    try {
+      const result = await lastValueFrom(
+        this.apollo.mutate<{ adminEnrollPlayer?: TournamentEnrollment; enrollGuest?: TournamentEnrollment }>({
+          mutation: isMember
+            ? gql`
+                mutation AdminEnrollPlayer($input: AdminEnrollPlayerInput!) {
+                  adminEnrollPlayer(input: $input) {
+                    id
+                    status
+                  }
+                }
+              `
+            : gql`
+                mutation AdminEnrollGuest($input: EnrollGuestInput!) {
+                  enrollGuest(input: $input) {
+                    id
+                    status
+                  }
+                }
+              `,
+          variables: { input },
+        }),
+      );
+      const enrollment = isMember ? result.data?.adminEnrollPlayer : result.data?.enrollGuest;
+      if (!enrollment?.id) {
+        throw new Error('Enrollment creation returned no enrollment');
+      }
+      this.refetch();
+      return true;
+    } catch (error) {
+      this.creationError.set(error instanceof Error ? error.message : 'Failed to create enrollment');
+      return false;
+    } finally {
+      this.creating.set(false);
+    }
+  }
 
   private enrollmentsResource = resource({
     params: () => (this.queryFilter().subEventId ? this.queryFilter() : undefined),

@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023b4 is Done with explicit user approval: [manual enrollment dialog and creation](work-items/DR-023b4-manual-enrollment.md).
+Authorized enrollment consumer and actual Add dialog confirmed on the recorded non-DRAFT route.
+User chose functional manual enrollment with the refresh on 2026-11-08.
+Native member/partner selection, guest validation, authorized creation and explicit feedback are implemented.
+Scoped search matches every name/member-ID word in either order; all supplied live examples pass.
+Preserve enrollment safeguards; exclude other tabs, shared styling and operational visual-test mutations.
+Dialog utility tokens fall 83 to 32; zero authored palettes, inline styles or new stylesheets.
+Four guest/doubles dialog and fresh-overlay theme/width checks fit; keyboard selection and return focus pass.
+Guest browser branch uses a temporary query-response fixture, not a server policy change.
+Heading/label/description/Cancel text contrast passes; native error Message fails DR-034 at 4.44/4.40:1.
+Final scoped Nx lint/build/test passes: tournament 17 suites/245 tests, backend 1 suite/25 tests.
+Translation target has no tests; all three asset-backed dialog-label tests pass.
+App browser/SSR and API development builds pass. Existing warnings/other-tab query errors remain.
+Live operational writes, exhaustive screen-reader/accessibility/contrast and SSR/hydration stay unverified.
+Shared nested-filter converter defect is DR-050; it is not changed as a hidden side effect.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-08.
+Approval covers this implementation/tests, dialog locale/generated types and repository handoff only.
+Accepted contrast/live-operation/accessibility/hydration limits remain unchecked.
+Post-approval all 34 workspace lint targets pass with existing warnings.
+Parents remain open. Commit only this approved slice/handoff; no push.
+Exact next action: scope DR-023b5 remaining enrollment locale completeness on the confirmed consumer.
+Dialog copy is already completed; do not start another slice in this invocation.
+
+### Previous completed focus: enrollment table
+
 DR-023b3 is Done with explicit user approval: [enrollment table and feedback](work-items/DR-023b3-enrollment-table.md).
 Fresh authorized browser confirms the actual enrollment tab on the recorded non-DRAFT consumer.
 Refresh table/heading/rows/pagination and loading/empty/error/no-selection feedback only.
@@ -1904,7 +1929,7 @@ and linked from their registry rows.
 | [DR-023b1](work-items/DR-023b1-enrollment-summary.md)         | Enrollment-management five-count summary                                      | Done        |
 | [DR-023b2](work-items/DR-023b2-enrollment-filters.md)         | Enrollment filters/selection; shared Card border and nested Panels            | Done        |
 | [DR-023b3](work-items/DR-023b3-enrollment-table.md)           | Enrollment table and feedback; explicit query errors                          | Done        |
-| DR-023b4                                                      | Manual enrollment dialog; incomplete creation workflow and locale labels      | Backlog     |
+| [DR-023b4](work-items/DR-023b4-manual-enrollment.md)          | Manual enrollment dialog and functional authorized creation                   | Done        |
 | DR-023b5                                                      | Enrollment locale completeness; missing Withdrawn and blank table/dialog copy | Backlog     |
 | DR-023c                                                       | Check-in tab; confirm phase-enabled consumer                                  | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                                        | Backlog     |
@@ -1933,12 +1958,23 @@ and linked from their registry rows.
 | DR-047                                                        | Enrollment desktop sticky sidebar/header overlap                              | Backlog     |
 | DR-048                                                        | Partner search failure feedback and request lifecycle                         | Backlog     |
 | DR-049                                                        | Sub-event localization; withdrawn with page retirement                        | Done        |
+| DR-050                                                        | Shared GraphQL nested AND/OR conversion loses predicates                      | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-050: nested GraphQL filter conversion
+
+Discovered during DR-023b4 live manual-player search on 2026-11-08.
+[GraphQLWhereConverter](../../libs/backend/graphql/src/utils/queryFixer.ts) converts each AND child's OR to
+only its first member, then Object.assign overwrites earlier matching-field conditions.
+The generic players query for a surname/first-name pair consequently returned unrelated first-name matches.
+DR-023b4 uses a bounded enrollment-specific parameterized search; shared converter behavior is unchanged.
+Separately inventory confirmed consumers and test logical predicates before repairing shared query semantics.
+Do not broaden the dialog slice into a global filtering rewrite.
 
 ### DR-049: sub-event enrollment localization gaps
 

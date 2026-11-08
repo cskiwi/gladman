@@ -92,7 +92,13 @@
     <section class="min-w-0" data-testid="enrollment-table" aria-labelledby="admin-enrollment-table-title" [attr.aria-busy]="loading()">
       <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
         <h3 id="admin-enrollment-table-title" class="text-lg font-semibold wrap-anywhere m-0">{{ selectedSubEvent()!.name }}</h3>
-        <p-button icon="pi pi-user-plus" [label]="'all.button.add' | translate" size="small" (onClick)="openManualEnrollmentDialog()" />
+        <p-button
+          #manualEnrollmentTrigger
+          icon="pi pi-user-plus"
+          [label]="'all.button.add' | translate"
+          size="small"
+          (onClick)="openManualEnrollmentDialog()"
+        />
       </div>
 
       @if (!loading() && error()) {
@@ -216,109 +222,129 @@
     [header]="'all.tournament.admin.enrollments.addManualEnrollment' | translate"
     [(visible)]="showManualEnrollmentDialog"
     [modal]="true"
-    [style]="{ width: '500px' }"
+    styleClass="w-full sm:w-lg"
     [draggable]="false"
     [resizable]="false"
+    [closable]="!creating()"
+    [closeOnEscape]="!creating()"
+    [closeAriaLabel]="'all.button.close' | translate"
+    (onHide)="restoreManualEnrollmentFocus()"
   >
-    <form [formGroup]="manualEnrollmentForm" class="flex flex-col gap-5">
-      <p class="text-sm text-muted-color m-0">
+    <form id="manual-enrollment-form" [formGroup]="manualEnrollmentForm" (ngSubmit)="createManualEnrollment()" class="flex flex-col gap-4">
+      <p class="text-muted-color m-0">
         {{ 'all.tournament.admin.enrollments.manualEnrollmentDescription' | translate }}
       </p>
-
-      <!-- Player Search -->
-      <div class="flex flex-col gap-2">
-        <label for="playerSearch" class="text-sm font-medium text-color">
-          {{ 'all.tournament.admin.enrollments.playerSearch' | translate }}
-          <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-muted-color text-sm"></i>
-          <input
-            pInputText
-            id="playerSearch"
-            formControlName="playerSearch"
-            [placeholder]="'all.tournament.admin.enrollments.playerSearchPlaceholder' | translate"
-            class="w-full pl-9"
-          />
+      <p class="m-0">{{ selectedSubEvent()?.name }}</p>
+      @if (creationError()) {
+        <p-message severity="error">{{ creationError() }}</p-message>
+      }
+      @if (tournament().allowGuestEnrollments) {
+        <div class="flex items-center gap-2">
+          <p-checkbox formControlName="isGuest" [binary]="true" inputId="manual-is-guest" />
+          <label for="manual-is-guest">{{ 'all.tournament.admin.enrollments.enrollAsGuest' | translate }}</label>
         </div>
-        <small class="text-muted-color text-xs">
-          {{ 'all.tournament.admin.enrollments.playerSearchHelp' | translate }}
-        </small>
-      </div>
-
-      @if (isDoublesEvent()) {
-        <!-- Partner Search (for doubles) -->
-        <div class="flex flex-col gap-2">
-          <label for="partnerSearch" class="text-sm font-medium text-color">
-            {{ 'all.tournament.admin.enrollments.partnerSearch' | translate }}
-          </label>
-          <div class="relative">
-            <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-muted-color text-sm"></i>
+      }
+      @for (field of manualFields; track field) {
+        @if ((field === 'player' && !isGuest()) || (field === 'partner' && isDoublesEvent())) {
+          <div class="flex flex-col gap-2">
+            <label [for]="'manual-' + field" [id]="'manual-' + field + '-label'">
+              {{ 'all.tournament.admin.enrollments.' + field + 'Search' | translate }}
+              @if (field === 'player') {
+                ({{ 'all.tournament.admin.enrollments.manualRequired' | translate }})
+              }
+            </label>
+            <p-autocomplete
+              [inputId]="'manual-' + field"
+              [ariaLabelledBy]="'manual-' + field + '-label'"
+              [formControlName]="field"
+              [suggestions]="suggestions()[field]"
+              (completeMethod)="searchManualPlayers(field, $event.query)"
+              optionLabel="fullName"
+              [forceSelection]="true"
+              [showClear]="true"
+              [fluid]="true"
+              [emptyMessage]="'all.search.noResults' | translate"
+              [placeholder]="'all.tournament.admin.enrollments.' + field + 'SearchPlaceholder' | translate"
+            >
+              <ng-template #item let-player>
+                <span class="wrap-anywhere"
+                  >{{ player.fullName }}
+                  @if (player.memberId) {
+                    ({{ player.memberId }})
+                  }
+                </span>
+              </ng-template>
+            </p-autocomplete>
+            <small class="text-muted-color">{{ 'all.tournament.admin.enrollments.playerSearchHelp' | translate }}</small>
+            @if (searchErrors()[field]) {
+              <p-message severity="error">{{ searchErrors()[field] }}</p-message>
+            }
+          </div>
+        }
+      }
+      @if (isGuest()) {
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="manual-guest-name">
+              {{ 'all.tournament.admin.enrollments.guestName' | translate }}
+              ({{ 'all.tournament.admin.enrollments.manualRequired' | translate }})
+            </label>
+            <input pInputText id="manual-guest-name" formControlName="guestName" required maxlength="255" fluid [readonly]="creating()" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="manual-guest-email">
+              {{ 'all.tournament.admin.enrollments.guestEmail' | translate }}
+              ({{ 'all.tournament.admin.enrollments.manualRequired' | translate }})
+            </label>
             <input
               pInputText
-              id="partnerSearch"
-              formControlName="partnerSearch"
-              [placeholder]="'all.tournament.admin.enrollments.partnerSearchPlaceholder' | translate"
-              class="w-full pl-9"
+              id="manual-guest-email"
+              formControlName="guestEmail"
+              type="email"
+              required
+              maxlength="255"
+              fluid
+              [readonly]="creating()"
             />
           </div>
         </div>
       }
-
-      <!-- Guest Enrollment Option -->
-      <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emphasis border border-surface">
-        <p-checkbox formControlName="isGuest" [binary]="true" inputId="isGuest" />
-        <label for="isGuest" class="text-sm text-color cursor-pointer">
-          {{ 'all.tournament.admin.enrollments.enrollAsGuest' | translate }}
-        </label>
-      </div>
-
-      @if (manualEnrollmentForm.get('isGuest')?.value) {
-        <!-- Guest Details -->
-        <div class="grid grid-cols-2 gap-4">
-          <div class="flex flex-col gap-2">
-            <label for="guestName" class="text-sm font-medium text-color">
-              {{ 'all.tournament.admin.enrollments.guestName' | translate }}
-              <span class="text-red-500">*</span>
-            </label>
-            <input pInputText id="guestName" formControlName="guestName" class="w-full" />
-          </div>
-          <div class="flex flex-col gap-2">
-            <label for="guestEmail" class="text-sm font-medium text-color">
-              {{ 'all.tournament.admin.enrollments.guestEmail' | translate }}
-            </label>
-            <input pInputText id="guestEmail" formControlName="guestEmail" type="email" class="w-full" />
-          </div>
-        </div>
-      }
-
-      <!-- Notes -->
       <div class="flex flex-col gap-2">
-        <label for="notes" class="text-sm font-medium text-color">
+        <label for="manual-notes">
           {{ 'all.tournament.admin.enrollments.notes' | translate }}
         </label>
         <textarea
-          pInputTextarea
-          id="notes"
+          pTextarea
+          id="manual-notes"
           formControlName="notes"
-          [rows]="3"
-          class="w-full"
+          rows="3"
+          maxlength="1000"
+          fluid
+          [readonly]="creating()"
           [placeholder]="'all.tournament.admin.enrollments.notesPlaceholder' | translate"
         ></textarea>
       </div>
-    </form>
-
-    <ng-template pTemplate="footer">
-      <div class="flex gap-3 justify-end">
-        <p-button [label]="'all.button.cancel' | translate" severity="secondary" [outlined]="true" (click)="showManualEnrollmentDialog.set(false)" />
+      @if (manualEnrollmentForm.invalid && manualEnrollmentForm.touched) {
+        <p-message severity="error">{{ 'all.tournament.admin.enrollments.manualInvalid' | translate }}</p-message>
+      }
+      <div class="grid sm:grid-cols-2 gap-3 w-full">
         <p-button
+          [label]="'all.button.cancel' | translate"
+          severity="secondary"
+          [outlined]="true"
+          [fluid]="true"
+          [disabled]="creating()"
+          (onClick)="closeManualEnrollmentDialog()"
+        />
+        <p-button
+          type="submit"
           [label]="'all.tournament.admin.enrollments.addEnrollment' | translate"
           icon="pi pi-user-plus"
-          (click)="createManualEnrollment()"
-          [loading]="updating()"
-          [disabled]="manualEnrollmentForm.invalid || updating()"
+          [fluid]="true"
+          [loading]="creating()"
+          [disabled]="manualEnrollmentForm.invalid || creating() || !selectedSubEvent()"
         />
       </div>
-    </ng-template>
+    </form>
   </p-dialog>
 </div>

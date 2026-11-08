@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TournamentEnrollment, TournamentEvent, TournamentSubEvent } from '@app/models';
@@ -6,6 +6,7 @@ import { EnrollmentStatus } from '@app/models-enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PanelModule } from 'primeng/panel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
@@ -22,7 +23,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TextareaModule } from 'primeng/textarea';
 import { ConfirmationService } from 'primeng/api';
-import { EnrollmentsTabService } from './enrollments-tab.service';
+import { EnrollmentsTabService, ManualEnrollmentPlayer } from './enrollments-tab.service';
+
+function isSelectedPlayer(value: ManualEnrollmentPlayer | string | null): value is ManualEnrollmentPlayer {
+  return typeof value === 'object' && value !== null && typeof value.id === 'string' && value.id.length > 0;
+}
 
 @Component({
   selector: 'app-enrollments-tab',
@@ -32,6 +37,7 @@ import { EnrollmentsTabService } from './enrollments-tab.service';
     TranslateModule,
     PanelModule,
     ButtonModule,
+    AutoCompleteModule,
     TableModule,
     TagModule,
     SelectModule,
@@ -65,14 +71,29 @@ export class EnrollmentsTabComponent {
 
   // Manual enrollment dialog
   showManualEnrollmentDialog = signal(false);
+  private readonly manualEnrollmentTrigger = viewChild<unknown, ElementRef<HTMLElement>>('manualEnrollmentTrigger', { read: ElementRef });
+  readonly creating = this.dataService.creating;
+  readonly creationError = this.dataService.creationError;
+  readonly manualFields = ['player', 'partner'] as const;
+  readonly suggestions = signal<Record<'player' | 'partner', ManualEnrollmentPlayer[]>>({ player: [], partner: [] });
+  readonly searchErrors = signal<Record<'player' | 'partner', string | null>>({ player: null, partner: null });
+  private readonly searchRequests = { player: 0, partner: 0 };
   manualEnrollmentForm = new FormGroup({
-    playerSearch: new FormControl<string>('', Validators.required),
-    partnerSearch: new FormControl<string>(''),
-    isGuest: new FormControl<boolean>(false),
-    guestName: new FormControl<string>(''),
-    guestEmail: new FormControl<string>(''),
-    notes: new FormControl<string>(''),
+    player: new FormControl<ManualEnrollmentPlayer | string | null>(null, (control) =>
+      isSelectedPlayer(control.value) ? null : { selection: true },
+    ),
+    partner: new FormControl<ManualEnrollmentPlayer | string | null>(null, (control) =>
+      control.value === null || isSelectedPlayer(control.value) ? null : { selection: true },
+    ),
+    isGuest: new FormControl(false, { nonNullable: true }),
+    guestName: new FormControl('', {
+      nonNullable: true,
+      validators: [(control) => (control.value.trim() ? null : { required: true }), Validators.maxLength(255)],
+    }),
+    guestEmail: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email, Validators.maxLength(255)] }),
+    notes: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(1000)] }),
   });
+  readonly isGuest = toSignal(this.manualEnrollmentForm.controls.isGuest.valueChanges, { initialValue: false });
 
   // Status options
   private readonly statusOptionDefinitions = [
@@ -120,6 +141,32 @@ export class EnrollmentsTabComponent {
   subEvents = computed(() => this.tournament()?.tournamentSubEvents ?? []);
 
   constructor() {
+    effect(() => {
+      const guest = this.isGuest() && this.tournament().allowGuestEnrollments;
+      const doubles = this.isDoublesEvent();
+      const allowed = this.tournament().allowGuestEnrollments;
+      if (this.creating()) {
+        this.manualEnrollmentForm.disable({ emitEvent: false });
+        return;
+      }
+      if (this.isGuest() && !allowed) {
+        this.manualEnrollmentForm.controls.isGuest.setValue(false);
+      }
+      const controls = this.manualEnrollmentForm.controls;
+      controls.isGuest.enable({ emitEvent: false });
+      controls.notes.enable({ emitEvent: false });
+      for (const [control, enabled] of [
+        [controls.player, !guest],
+        [controls.guestName, guest],
+        [controls.guestEmail, guest],
+        [controls.partner, doubles],
+      ] as const) {
+        if (enabled) control.enable({ emitEvent: false });
+        else control.disable({ emitEvent: false });
+      }
+      if (!doubles) controls.partner.reset(null);
+    });
+
     effect(() => {
       this.dataService.filter.patchValue({
         subEventId: this.selectedSubEvent()?.id ?? null,
@@ -200,30 +247,68 @@ export class EnrollmentsTabComponent {
   }
 
   openManualEnrollmentDialog(): void {
-    this.manualEnrollmentForm.reset({ isGuest: false });
+    this.manualEnrollmentForm.reset();
+    this.dataService.creationError.set(null);
+    this.suggestions.set({ player: [], partner: [] });
+    this.searchErrors.set({ player: null, partner: null });
     this.showManualEnrollmentDialog.set(true);
   }
 
-  async createManualEnrollment(): Promise<void> {
-    if (!this.manualEnrollmentForm.valid) return;
+  /** Ignore obsolete search responses after typing, closing or reopening the dialog. */
+  async searchManualPlayers(field: 'player' | 'partner', search: string): Promise<void> {
+    const request = ++this.searchRequests[field];
+    this.suggestions.update((value) => ({ ...value, [field]: [] }));
+    this.searchErrors.update((value) => ({ ...value, [field]: null }));
+    if (search.trim().length < 2) return;
+    try {
+      const players = await this.dataService.searchPlayers(search);
+      if (request !== this.searchRequests[field] || !this.showManualEnrollmentDialog()) return;
+      this.suggestions.update((value) => ({ ...value, [field]: players }));
+    } catch (error) {
+      if (request !== this.searchRequests[field] || !this.showManualEnrollmentDialog()) return;
+      this.searchErrors.update((value) => ({
+        ...value,
+        [field]: error instanceof Error ? error.message : this.translate.instant('all.tournament.admin.enrollments.manualSearchError'),
+      }));
+    }
+  }
 
-    const subEvent = this.selectedSubEvent();
-    if (!subEvent) return;
-
-    const formValue = this.manualEnrollmentForm.value;
-
-    // TODO: Implement the actual enrollment creation logic
-    // This would call the data service to create a manual enrollment
-    // await this.dataService.createManualEnrollment(subEvent.id, {
-    //   playerSearch: formValue.playerSearch,
-    //   partnerSearch: formValue.partnerSearch,
-    //   isGuest: formValue.isGuest,
-    //   guestName: formValue.guestName,
-    //   guestEmail: formValue.guestEmail,
-    //   notes: formValue.notes,
-    // });
-
-    console.log('Creating manual enrollment:', formValue);
+  closeManualEnrollmentDialog(): void {
+    if (this.creating()) return;
+    this.searchRequests.player++;
+    this.searchRequests.partner++;
     this.showManualEnrollmentDialog.set(false);
+  }
+
+  restoreManualEnrollmentFocus(): void {
+    this.closeManualEnrollmentDialog();
+    this.manualEnrollmentTrigger()?.nativeElement.querySelector('button')?.focus();
+  }
+
+  async createManualEnrollment(): Promise<void> {
+    if (this.creating()) return;
+    this.manualEnrollmentForm.markAllAsTouched();
+    const subEvent = this.selectedSubEvent();
+    const value = this.manualEnrollmentForm.getRawValue();
+    const partner = this.isDoublesEvent() && isSelectedPlayer(value.partner) ? value.partner : null;
+    const identity = value.isGuest
+      ? { guestName: value.guestName.trim(), guestEmail: value.guestEmail.trim() }
+      : isSelectedPlayer(value.player)
+        ? { playerId: value.player.id }
+        : null;
+    if (
+      this.manualEnrollmentForm.invalid ||
+      !subEvent ||
+      (value.isGuest && !this.tournament().allowGuestEnrollments) ||
+      !identity ||
+      (isSelectedPlayer(value.player) && !value.isGuest && partner?.id === value.player.id)
+    ) {
+      this.dataService.creationError.set(this.translate.instant('all.tournament.admin.enrollments.manualInvalid'));
+      return;
+    }
+    const common = { tournamentSubEventId: subEvent.id, preferredPartnerId: partner?.id, notes: value.notes.trim() || undefined };
+    if (await this.dataService.createManualEnrollment({ ...common, ...identity })) {
+      this.closeManualEnrollmentDialog();
+    }
   }
 }

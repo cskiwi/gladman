@@ -19,6 +19,13 @@ export class EnrollPlayerInput {
   notes?: string;
 }
 
+@InputType('AdminEnrollPlayerInput', { description: 'Enroll a selected player as a tournament administrator' })
+export class AdminEnrollPlayerInput extends EnrollPlayerInput {
+  @Field(() => ID, { description: 'Player to enroll, not the acting administrator' })
+  @IsUUID()
+  playerId!: string;
+}
+
 @InputType('EnrollGuestInput', { description: 'Input for enrolling a guest (non-registered player) in a tournament sub-event' })
 export class EnrollGuestInput {
   @Field(() => ID, { description: 'Tournament sub-event ID to enroll in' })

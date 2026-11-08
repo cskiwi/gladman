@@ -110,3 +110,12 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
   User approval covers its implementation/tests and repository handoff; parents remain open.
   Exact next action: scope DR-023b4 manual dialog/creation in a fresh invocation.
   Do not start another implementation slice in this invocation.
+- Superseded by [DR-023b4 manual enrollment](DR-023b4-manual-enrollment.md), now in Review.
+  User requested functional creation alongside the native dialog refresh.
+  Member/guest creation is wired and mock-tested; scoped authenticated search supports either name order.
+  Dialog-specific locale blanks are filled; DR-023b5 retains other locale completeness.
+  Review retains native error-contrast, live-operation and exhaustive accessibility/hydration limits.
+  Parent stays open; exact next action is DR-023b4 review/approval before DR-023b5.
+- User subsequently approved DR-023b4 completion/commit with disclosed limits and selected "Nothing else".
+  Its failed/unperformed acceptance checks remain unchecked; parent remains open.
+  Exact next action: scope DR-023b5 remaining enrollment locale completeness, excluding completed dialog copy.

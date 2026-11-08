@@ -1496,6 +1496,9 @@ export type I18nTranslations = {
                     "guestName": string;
                     "lookingForPartner": string;
                     "manualEnrollmentDescription": string;
+                    "manualInvalid": string;
+                    "manualRequired": string;
+                    "manualSearchError": string;
                     "noEnrollments": string;
                     "noEnrollmentsHint": string;
                     "notes": string;

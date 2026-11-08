@@ -7,7 +7,291 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
 import { TournamentEnrollment } from '@app/models';
+import { DocumentNode, print } from 'graphql';
 import { EnrollmentsTabComponent } from './enrollments-tab.component';
+
+describe('Manual enrollment dialog and creation', () => {
+  let fixture: ComponentFixture<EnrollmentsTabComponent>;
+  let query: jest.Mock;
+  let mutate: jest.Mock;
+  const player = { id: 'safe-player', fullName: 'Safe Player', memberId: 'SAFE-1' };
+  const partner = { id: 'safe-partner', fullName: 'Safe Partner', memberId: 'SAFE-2' };
+
+  beforeEach(async () => {
+    query = jest.fn(({ query }: { query: DocumentNode }) =>
+      of({ data: print(query).includes('ManualEnrollmentPlayers') ? { manualEnrollmentPlayers: [player, partner] } : { subEventEnrollments: [] } }),
+    );
+    mutate = jest.fn(() =>
+      of({
+        data: {
+          adminEnrollPlayer: { id: 'safe-enrollment', status: EnrollmentStatus.CONFIRMED },
+          enrollGuest: { id: 'safe-enrollment', status: EnrollmentStatus.CONFIRMED },
+        },
+      }),
+    );
+    await TestBed.configureTestingModule({
+      imports: [EnrollmentsTabComponent, TranslateModule.forRoot()],
+      providers: [{ provide: Apollo, useValue: { query, mutate } }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(EnrollmentsTabComponent);
+    fixture.componentRef.setInput('tournament', {
+      id: 'safe-event',
+      allowGuestEnrollments: true,
+      tournamentSubEvents: [
+        { id: 'safe-single', name: 'Safe singles', gameType: 'S' },
+        { id: 'safe-double', name: 'Safe doubles', gameType: 'D' },
+      ],
+    });
+    await settle();
+    fixture.componentInstance.openManualEnrollmentDialog();
+    await settle();
+  });
+
+  async function settle() {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  it('mounts a named native form with two visible actions and a disabled submit until a player is selected', () => {
+    const form: HTMLFormElement = fixture.nativeElement.querySelector('#manual-enrollment-form');
+    expect(form.querySelectorAll('p-button')).toHaveLength(2);
+    expect(form.querySelector('p-button:last-child button')?.getAttribute('type')).toBe('submit');
+    expect(form.querySelector('p-button:last-child button')?.hasAttribute('disabled')).toBe(true);
+    expect(form.querySelector('p-autocomplete input')?.id).toBe('manual-player');
+    expect(form.querySelector('p-autocomplete input')?.getAttribute('aria-labelledby')).toBe('manual-player-label');
+    expect(form.querySelector('textarea')?.classList.contains('p-textarea')).toBe(true);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('restores focus to the mounted Add action after hiding the dialog', async () => {
+    fixture.componentInstance.restoreManualEnrollmentFocus();
+    await settle();
+    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('[data-testid="enrollment-table"] p-button button'));
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('submits a selected member identity and refreshes without logging personal form data', async () => {
+    const log = jest.spyOn(console, 'log').mockImplementation(() => undefined);
+    fixture.componentInstance.manualEnrollmentForm.controls.player.setValue(player);
+    fixture.componentInstance.manualEnrollmentForm.controls.notes.setValue(' Safe notes ');
+    await settle();
+    const form: HTMLFormElement = fixture.nativeElement.querySelector('#manual-enrollment-form');
+    (form.querySelector('p-button:last-child button') as HTMLButtonElement).click();
+    await settle();
+    expect(print(mutate.mock.lastCall[0].mutation)).toContain('adminEnrollPlayer');
+    expect(mutate.mock.lastCall[0].variables.input).toEqual({
+      playerId: 'safe-player',
+      tournamentSubEventId: 'safe-single',
+      preferredPartnerId: undefined,
+      notes: 'Safe notes',
+    });
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(fixture.componentInstance.showManualEnrollmentDialog()).toBe(false);
+    expect(log).not.toHaveBeenCalled();
+    log.mockRestore();
+  });
+
+  it('validates guest name and email instead of requiring the hidden player', async () => {
+    const controls = fixture.componentInstance.manualEnrollmentForm.controls;
+    controls.isGuest.setValue(true);
+    await settle();
+    expect(controls.player.disabled).toBe(true);
+    expect(fixture.nativeElement.querySelector('#manual-player')).toBeNull();
+    expect(fixture.componentInstance.manualEnrollmentForm.invalid).toBe(true);
+    controls.guestName.setValue('   ');
+    controls.guestEmail.setValue('invalid');
+    await fixture.componentInstance.createManualEnrollment();
+    expect(mutate).not.toHaveBeenCalled();
+    controls.guestName.setValue(' Safe Guest ');
+    controls.guestEmail.setValue('safe@example.invalid');
+    await fixture.componentInstance.createManualEnrollment();
+    await settle();
+    expect(print(mutate.mock.lastCall[0].mutation)).toContain('enrollGuest');
+    expect(mutate.mock.lastCall[0].variables.input).toEqual({
+      guestName: 'Safe Guest',
+      guestEmail: 'safe@example.invalid',
+      tournamentSubEventId: 'safe-single',
+      notes: undefined,
+      preferredPartnerId: undefined,
+    });
+  });
+
+  it('includes a selected doubles partner but never submits a hidden singles partner', async () => {
+    const component = fixture.componentInstance;
+    component.subEventControl.setValue(component.subEvents()[1]);
+    await settle();
+    component.manualEnrollmentForm.controls.player.setValue(player);
+    component.manualEnrollmentForm.controls.partner.setValue(partner);
+    await component.createManualEnrollment();
+    expect(mutate.mock.lastCall[0].variables.input.preferredPartnerId).toBe(partner.id);
+    component.openManualEnrollmentDialog();
+    component.subEventControl.setValue(component.subEvents()[0]);
+    await settle();
+    component.manualEnrollmentForm.controls.player.setValue(player);
+    component.manualEnrollmentForm.controls.partner.setValue(partner);
+    await component.createManualEnrollment();
+    expect(mutate.mock.lastCall[0].variables.input.preferredPartnerId).toBeUndefined();
+  });
+
+  it('rejects typed player text, typed partner text and self-partnering', async () => {
+    const component = fixture.componentInstance;
+    component.manualEnrollmentForm.controls.player.setValue('Safe Player');
+    await component.createManualEnrollment();
+    component.subEventControl.setValue(component.subEvents()[1]);
+    await settle();
+    component.manualEnrollmentForm.controls.player.setValue(player);
+    component.manualEnrollmentForm.controls.partner.setValue('Safe Partner');
+    await component.createManualEnrollment();
+    component.manualEnrollmentForm.controls.partner.setValue(player);
+    await component.createManualEnrollment();
+    expect(mutate).not.toHaveBeenCalled();
+    expect(component.creationError()).toBeTruthy();
+  });
+
+  it('does not submit without a sub-event or when guest enrollment is disallowed', async () => {
+    const component = fixture.componentInstance;
+    component.manualEnrollmentForm.controls.player.setValue(player);
+    component.subEventControl.setValue(null);
+    await settle();
+    await component.createManualEnrollment();
+    fixture.componentRef.setInput('tournament', {
+      id: 'safe-event',
+      allowGuestEnrollments: false,
+      tournamentSubEvents: [{ id: 'safe-single', name: 'Safe singles', gameType: 'S' }],
+    });
+    await settle();
+    component.manualEnrollmentForm.controls.isGuest.setValue(true);
+    component.manualEnrollmentForm.controls.guestName.setValue('Safe Guest');
+    component.manualEnrollmentForm.controls.guestEmail.setValue('safe@example.invalid');
+    await component.createManualEnrollment();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('enforces name/email/notes lengths', async () => {
+    const controls = fixture.componentInstance.manualEnrollmentForm.controls;
+    controls.player.setValue(player);
+    controls.notes.setValue('x'.repeat(1001));
+    expect(controls.notes.invalid).toBe(true);
+    controls.isGuest.setValue(true);
+    await settle();
+    controls.guestName.setValue('x'.repeat(256));
+    controls.guestEmail.setValue(`${'x'.repeat(250)}@example.invalid`);
+    expect(controls.guestName.invalid).toBe(true);
+    expect(controls.guestEmail.invalid).toBe(true);
+    await fixture.componentInstance.createManualEnrollment();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['network failure', () => throwError(() => new Error('Safe creation failure')), 'Safe creation failure'],
+    ['missing response', () => of({ data: {} }), 'Enrollment creation returned no enrollment'],
+  ])('retains inputs and dialog on %s and allows retry', async (_name, response, error) => {
+    mutate.mockImplementationOnce(response);
+    fixture.componentInstance.manualEnrollmentForm.controls.player.setValue(player);
+    await fixture.componentInstance.createManualEnrollment();
+    await settle();
+    expect(fixture.componentInstance.showManualEnrollmentDialog()).toBe(true);
+    expect(fixture.componentInstance.manualEnrollmentForm.controls.player.value).toEqual(player);
+    expect(fixture.componentInstance.creationError()).toBe(error);
+    expect(fixture.nativeElement.querySelector('#manual-enrollment-form p-message')?.textContent).toContain(error);
+    expect(query).toHaveBeenCalledTimes(1);
+    await fixture.componentInstance.createManualEnrollment();
+    await settle();
+    expect(fixture.componentInstance.showManualEnrollmentDialog()).toBe(false);
+  });
+
+  it('locks dismiss and duplicate submission while creation is pending', async () => {
+    const pending = new Subject<{ data: { adminEnrollPlayer: { id: string } } }>();
+    mutate.mockReturnValueOnce(pending);
+    fixture.componentInstance.manualEnrollmentForm.controls.player.setValue(player);
+    const first = fixture.componentInstance.createManualEnrollment();
+    fixture.componentInstance.closeManualEnrollmentDialog();
+    await fixture.componentInstance.createManualEnrollment();
+    expect(fixture.componentInstance.creating()).toBe(true);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.manualEnrollmentForm.disabled).toBe(true);
+    expect(fixture.componentInstance.showManualEnrollmentDialog()).toBe(true);
+    expect(mutate).toHaveBeenCalledTimes(1);
+    pending.next({ data: { adminEnrollPlayer: { id: 'safe-enrollment' } } });
+    pending.complete();
+    await first;
+    await settle();
+    expect(fixture.componentInstance.creating()).toBe(false);
+    expect(fixture.componentInstance.showManualEnrollmentDialog()).toBe(false);
+  });
+
+  it('searches names/member IDs through the actual bounded players query', async () => {
+    await fixture.componentInstance.searchManualPlayers('player', 'Safe 100%');
+    expect(fixture.componentInstance.suggestions().player).toEqual([player, partner]);
+    expect(query.mock.lastCall[0].variables).toEqual({ search: 'Safe 100%' });
+    query.mockClear();
+    await fixture.componentInstance.searchManualPlayers('player', 'a');
+    expect(query).not.toHaveBeenCalled();
+    expect(fixture.componentInstance.suggestions().player).toEqual([]);
+  });
+
+  it('ignores older search responses and responses after closing/reopening', async () => {
+    const pending = new Subject<{ data: { manualEnrollmentPlayers: (typeof player)[] } }>();
+    query.mockReturnValueOnce(pending);
+    const first = fixture.componentInstance.searchManualPlayers('player', 'Old');
+    await fixture.componentInstance.searchManualPlayers('player', 'New');
+    pending.next({ data: { manualEnrollmentPlayers: [] } });
+    pending.complete();
+    await first;
+    expect(fixture.componentInstance.suggestions().player).toHaveLength(2);
+    const closed = new Subject<{ data: { manualEnrollmentPlayers: (typeof player)[] } }>();
+    query.mockReturnValueOnce(closed);
+    const second = fixture.componentInstance.searchManualPlayers('partner', 'Partner');
+    fixture.componentInstance.closeManualEnrollmentDialog();
+    fixture.componentInstance.openManualEnrollmentDialog();
+    closed.next({ data: { manualEnrollmentPlayers: [partner] } });
+    closed.complete();
+    await second;
+    expect(fixture.componentInstance.suggestions().partner).toEqual([]);
+  });
+
+  it('shows search errors explicitly and resets the error for retry', async () => {
+    query.mockReturnValueOnce(throwError(() => new Error('Safe search failure')));
+    await fixture.componentInstance.searchManualPlayers('player', 'Safe');
+    expect(fixture.componentInstance.searchErrors().player).toBe('Safe search failure');
+    query.mockReturnValueOnce(of({ data: {} }));
+    await fixture.componentInstance.searchManualPlayers('player', 'Safe');
+    expect(fixture.componentInstance.searchErrors().player).toBe('Player search returned no player data');
+    await fixture.componentInstance.searchManualPlayers('player', 'Safe');
+    expect(fixture.componentInstance.searchErrors().player).toBeNull();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('renders meaningful %s dialog labels and actions', async (locale) => {
+    const asset = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: asset });
+    translate.use(locale);
+    await settle();
+    const labels = asset.tournament.admin.enrollments;
+    for (const key of [
+      'addEnrollment',
+      'addManualEnrollment',
+      'enrollAsGuest',
+      'guestEmail',
+      'guestName',
+      'manualEnrollmentDescription',
+      'manualInvalid',
+      'manualRequired',
+      'playerSearch',
+      'playerSearchHelp',
+      'partnerSearch',
+    ]) {
+      expect(labels[key]?.trim()).toBeTruthy();
+    }
+    const dialog: HTMLElement = fixture.nativeElement.querySelector('p-dialog');
+    expect(dialog.textContent).toContain(labels.addManualEnrollment);
+    expect(dialog.textContent).toContain(labels.addEnrollment);
+    expect(dialog.textContent).toContain(labels.playerSearchHelp);
+    expect(dialog.textContent).not.toContain('all.');
+  });
+});
 
 describe('Enrollment-management filters', () => {
   let fixture: ComponentFixture<EnrollmentsTabComponent>;

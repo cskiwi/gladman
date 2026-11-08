@@ -3,8 +3,8 @@ import { Player, TournamentEnrollment, TournamentSubEvent, TournamentEvent } fro
 import { EnrollmentStatus, TournamentPhase, GameType } from '@app/models-enum';
 import { BadRequestException, ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver, registerEnumType } from '@nestjs/graphql';
-import { IsNull, Not } from 'typeorm';
-import { EnrollPlayerInput, EnrollGuestInput, UpdateEnrollmentInput } from '../../../inputs';
+import { Brackets, IsNull, Not } from 'typeorm';
+import { AdminEnrollPlayerInput, EnrollPlayerInput, EnrollGuestInput, UpdateEnrollmentInput } from '../../../inputs';
 import { TournamentEnrollmentArgs } from '../../../args';
 
 // Register enums for GraphQL
@@ -16,6 +16,31 @@ registerEnumType(EnrollmentStatus, {
 @Resolver(() => TournamentEnrollment)
 export class TournamentEnrollmentResolver {
   // ============ QUERIES ============
+
+  /** Match every name/member-number word regardless of first/last-name order. */
+  @Query(() => [Player], { description: 'Find members for manual tournament enrollment' })
+  @UseGuards(PermGuard)
+  async manualEnrollmentPlayers(@Args('search') search: string): Promise<Player[]> {
+    const query = search.trim();
+    if (query.length > 100) {
+      throw new BadRequestException('Player search must not exceed 100 characters');
+    }
+    if (query.length < 2) return [];
+    const players = Player.createQueryBuilder('player');
+    query.split(/\s+/).forEach((word, index) => {
+      players.andWhere(
+        new Brackets((where) => {
+          const parameter = `word${index}`;
+          const pattern = `%${word.replace(/[%_\\]/g, '\\$&')}%`;
+          where
+            .where(`player.firstName ILIKE :${parameter}`, { [parameter]: pattern })
+            .orWhere(`player.lastName ILIKE :${parameter}`, { [parameter]: pattern })
+            .orWhere(`player.memberId ILIKE :${parameter}`, { [parameter]: pattern });
+        }),
+      );
+    });
+    return players.orderBy('player.lastName', 'ASC').addOrderBy('player.firstName', 'ASC').addOrderBy('player.id', 'ASC').take(20).getMany();
+  }
 
   @Query(() => TournamentEnrollment)
   @AllowAnonymous()
@@ -122,6 +147,32 @@ export class TournamentEnrollmentResolver {
   }
 
   // ============ MUTATIONS ============
+
+  /** Enroll a selected member without bypassing the public enrollment safeguards. */
+  @Mutation(() => TournamentEnrollment, { description: 'Enroll a selected player as a tournament administrator' })
+  @UseGuards(PermGuard)
+  async adminEnrollPlayer(@User() user: Player, @Args('input') input: AdminEnrollPlayerInput): Promise<TournamentEnrollment> {
+    const subEvent = await TournamentSubEvent.findOne({
+      where: { id: input.tournamentSubEventId },
+      relations: ['tournamentEvent'],
+    });
+    if (!subEvent?.tournamentEvent) {
+      throw new NotFoundException('Tournament sub-event not found');
+    }
+    const clubId = subEvent.tournamentEvent.clubId;
+    const permissions = ['edit-any:tournament', 'edit-any:club'];
+    if (clubId) {
+      permissions.push(`${clubId}_edit:club`, `${clubId}_edit:tournament`);
+    }
+    if (!user.hasAnyPermission(permissions)) {
+      throw new ForbiddenException('You do not have permission to manage this tournament');
+    }
+    const player = await Player.findOne({ where: { id: input.playerId } });
+    if (!player) {
+      throw new NotFoundException('Selected player not found');
+    }
+    return this.enrollInTournament(player, input);
+  }
 
   @Mutation(() => TournamentEnrollment, { description: 'Enroll the current player in a tournament sub-event' })
   @UseGuards(PermGuard)

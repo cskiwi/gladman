@@ -1,6 +1,6 @@
 ---
-title: 'DR-023b: Administration enrollment consumer confirmation'
-description: 'Recorded blocker before selecting a mounted tournament enrollment-management refresh slice.'
+title: 'DR-023b: Administration enrollment acceptance'
+description: 'Aggregate acceptance and remaining limits for the five approved administration enrollment slices.'
 ---
 
 ## Identity
@@ -8,8 +8,8 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
 - ID: DR-023b; parent DR-023 remains open. Authoritative status: [backlog](../backlog.md).
 - Dependency: approved DR-023a shared administration chrome.
 - Design rules: [rollout](../README.md).
-- Initial blocker resolved by user-supplied safe route; children remain open.
-- This is a consumer investigation and handoff, not an implementation approval or a completed refresh.
+- Initial blocker resolved by user-supplied safe route; all five children are approved Done.
+- Current slice reconciles aggregate acceptance only; parent completion is explicitly approved with disclosed limits.
 
 ## Scope
 
@@ -20,17 +20,23 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
 - Conditional mount: [admin template](../../../libs/frontend/pages/tournament/src/pages/admin/page-admin.component.html).
 - Preserve phase gates, authorization, query navigation and all operational data.
 - Exclude Settings, check-in, draws, scheduling, shared chrome/theme, backend and translations.
-- The actual enrollment tab mounts; summary and filters/selection are approved Done with disclosed limits.
-- After confirmation, inspect the tab and split broad tables/dialogs/actions into one reviewable child.
-  Retain the existing smart page/tab separation; extract presentation only for genuinely repeated structure.
+- Earlier and fresh authorized evidence confirm the actual enrollment tab after user login.
+- Summary, filters, table/feedback, manual enrollment and locale children are approved Done with disclosed limits.
+- Retain the existing smart page/tab/service separation and shared metric/member-field loops.
+  No repeated consumer structure justifies another presentation component in this reconciliation.
+- Current changes are this parent, the backlog, the table child's paging evidence and the manual child's
+  approval-checkbox correction only.
 
-## Baseline and proposed approach
+## Baseline and reconciliation approach
 
-- The supplied tournament is `DRAFT`; enrollment access requires a truthy phase other than `DRAFT`.
+- The original candidate was `DRAFT`; the confirmed route previously returned `ENROLLMENT_OPEN`.
+  Enrollment access requires a truthy phase other than `DRAFT`.
 - Authorization independently gates the entire tab shell.
 - Do not force a query-param tab selection to bypass the conditional child mount.
 - Do not change phase, grant permissions, fabricate a consumer or execute mutations for visual testing.
-- Styling baseline and native PrimeNG choices await a real mounted consumer.
+- Current source uses named native summary/filter Panels inside the administration Card, a small scrollable
+  Table with explicit feedback, and the native manual Dialog. Three-locale copy is implemented.
+- Reconcile the children's recorded checks without treating historical passes as new browser verification.
 
 ## Implementation checklist
 
@@ -39,17 +45,97 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
 - [x] Obtain a safe non-DRAFT tournament and an authorized browser session.
 - [x] Confirm the actual mounted enrollment-management consumer.
 - [x] Scope one small child with concrete exclusions and acceptance checks before implementation.
+- [x] Reconcile all five approved children, current source, commits and remaining aggregate acceptance.
+- [x] Correct superseded planning statements and persist the exact next action.
 
 ## Acceptance and verification
 
 - [x] Read-only supplied-tournament phase check completed.
 - [x] Actual available browser permission state and absent child mount checked.
-- [ ] Light/dark, narrow/wide and interaction baseline for the actual enrollment tab.
-- [ ] Presentation, keyboard/focus, labels, contrast and feedback acceptance checks.
-- [ ] Relevant Nx lint/build/test, localization and SSR/hydration verification.
-- [ ] User visual review or explicit approval with disclosed limits.
+- [x] Authorized light/dark, narrow/wide and interaction evidence is recorded in the child briefs.
+- [x] Current source matches the approved Panels, reactive filters, table/feedback and manual creation.
+- [x] Three-locale mounted copy and focused Nx lint/build/test results are recorded in DR-023b5.
+- [x] Each required child has explicit user approval with its own disclosed limits.
+- [x] 25/50-row browser selection and pagination verified in both themes at 390/1440px.
+- [ ] Exhaustive screen-reader/accessibility/contrast acceptance.
+- [ ] Native error Message contrast meets 4.5:1; DR-034 records failed 4.44/4.40:1 samples.
+- [ ] Live nonzero operational enrollment workflows and dedicated SSR/hydration verification.
+- [x] Full tournament suite passes on the final locale implementation: 17 suites / 255 tests.
+- [x] Parent aggregate review or explicit parent approval with the remaining limits disclosed.
+
+## Aggregate reconciliation
+
+- Date: 2026-11-08; worktree clean before this documentation-only slice.
+- Approved child commits are present; no pending locale commit remains.
+  `git --no-pager log -4 --oneline` confirms b2/b3/b4/b5 commits below.
+- Source inspection confirms the actual phase/permission conditional mount in the administration page.
+  Current enrollment template/service/component retain native presentation, reactive query/search separation,
+  explicit query errors, functional manual member/guest creation and translated statuses/identities/prompts.
+  No application code or shared theme behavior is changed here.
+
+| Child                                                  | Current outcome                                                              | Recorded verification and limits                                                                        |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [DR-023b1](DR-023b1-enrollment-summary.md)             | Five-count metric loop; later b2 changes Card to Panel                       | Four theme/width cases and safe count regressions; exhaustive accessibility/hydration unverified        |
+| [DR-023b2](DR-023b2-enrollment-filters.md), `fd333c79` | Reactive native filters, named Panels and explicit shared preset Card border | Final 221 tournament tests, affected Card spot checks; six unchanged shared bracket failures remain     |
+| [DR-023b3](DR-023b3-enrollment-table.md), `dd993161`   | Small scrollable Table and explicit loading/empty/error/recovery             | Final serial 228-test suite passes; exhaustive 25/50 browser options remain unverified                  |
+| [DR-023b4](DR-023b4-manual-enrollment.md), `29dd2ef1`  | Native member/guest Dialog, authorized creation, bounded player search       | 245 tournament and 25 backend tests; creation mocked, not live; DR-034 contrast fails                   |
+| [DR-023b5](DR-023b5-enrollment-locales.md), `57c1fc65` | Mounted three-locale copy and generated types                                | Final 54 focused tests, scoped lint/build and 12 locale/theme/width checks; final full suite unverified |
+
+- The matrix preserves recorded child results; fresh aggregate results below supersede its paging/full-suite limits.
+  Later children resolve the earlier blank descriptions, untranslated Withdrawn, swallowed queries,
+  nonreactive filters and console-only manual creation. Earlier discovery notes below are historical.
+- Final child also records all 34 workspace lint targets passing and app/API development builds.
+  Compilation does not verify hydration or live writes; do not promote these to aggregate passes.
+- Existing DR-034 native error-message contrast and DR-050 shared filter-converter work stay separate.
+  No new styling exception, component extraction, dependency, operational mutation or backend change.
+- Fresh integrated browser opened the confirmed enrollment route and rendered the tournament context,
+  login action and `Je hebt geen toestemming om dit toernooi te beheren` alert.
+  Read-only DOM measurement returns zero `app-enrollments-tab` and zero `app-checkin-tab` elements.
+  This verifies the denied consumer gate only; no new authorized layout/interaction or phase check is claimed.
+- User subsequently logged in. Actual enrollment selection mounts the visible native tab, two named Panels,
+  five meaningful Dutch descriptions, associated filter labels and the named HE 1 Table with empty feedback.
+  Initial unauthorized observations above are superseded for consumer availability, not erased.
+- Four settled light/dark 390/1440px actual empty-tab checks show two Panels, five descriptions, one Table,
+  zero nested Cards and no document overflow. Add opens a fitting native Dialog; Cancel returns focus
+  to the actual Add action in all four cases. These interactions send zero mutations.
+- Four additional light/dark 390/1440px paging checks use a temporary read-only `SubEventEnrollments` response
+  containing 56 safe guest rows, not real operational data. Home/ArrowDown/Enter selects 25; next-page Enter
+  shows SAFE-25. End/Enter selects 50; first-page Enter shows 50 rows and next-page Enter shows SAFE-50
+  with the correct six-row remainder. All four cases fit the document and send zero mutations.
+  Apollo emits cache-replacement warnings when fixtures replace the empty list; no server writes occur.
+  Each interceptor is removed in `finally`; refresh restores the real zero-count/empty Table.
+  Original theme/viewport are restored and no live creation/cancel/promotion is performed.
+- Fresh Check-in selection also confirms one visible `app-checkin-tab` on the same authorized admin route.
+  Initial content has zero metrics, `INGECHECKT`, `IN AFWACHTING`, `NIET VERSCHENEN`, `All` and `0 players`.
+  This is consumer confirmation only, not check-in layout/behavior/query correctness acceptance.
+  Enrollment tab is restored afterward. No check-in implementation is started.
+- DR-023c remains Backlog until a scoped brief exists. Its source phase gate requires `SCHEDULED`,
+  `IN_PROGRESS` or `COMPLETED`; the earlier `ENROLLMENT_OPEN` query is historical, not today's phase claim.
+- Fresh full final-source check:
+
+  ```powershell
+  $env:NX_DAEMON='false'
+  npx nx run frontend-pages-tournament:test --runInBand --output-style=static
+  ```
+
+  Passed: 17 suites / 255 tests, 70.567 seconds, default timeouts and no cache replay.
+  Existing Nx Jest-executor deprecation warning remains. This resolves the final full-suite limit.
+  Lint/build are not rerun for this documentation-only reconciliation; child results remain recorded above.
+  Repository Prettier write/check and scoped whitespace checks validate the handoff documents.
+
+- Remaining parent limits are exhaustive screen-reader/accessibility/contrast, the known DR-034 failed
+  error-message contrast, live nonzero operational workflows and dedicated SSR/hydration verification.
+  These remain unchecked after explicit approval; no unperformed or failed check becomes a pass.
+- User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-08.
+  Approval covers the parent/backlog reconciliation, resolved table-paging evidence and manual-child
+  approval-checkbox correction only. It authorizes this documentation commit, not a push or another slice.
+  Authoritative parent status is Done with the accessibility/contrast/live-operation/hydration limits above.
+- Exact next action: scope one DR-023c child on the freshly confirmed authorized Check-in consumer
+  before selecting implementation. DR-023 stays open for check-in.
 
 ## Evidence and handoff
+
+The following entries preserve the chronological consumer/child history, not the current acceptance action above.
 
 - Date: 2026-11-08. Worktree clean at start.
 - Integrated browser opened the supplied `/admin` route and rendered the real tournament context,

@@ -5,6 +5,28 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023b aggregate acceptance is Done with explicit approval: [reconciled parent](work-items/DR-023b-admin-enrollments.md).
+All five approved children are committed; DR-023b5 is `57c1fc65`, not a pending commit.
+Current source matches the approved native Panels/filters/Table/Dialog and three-locale copy.
+The parent's evidence matrix distinguishes child passes from remaining aggregate acceptance.
+Corrected DR-023b4's stale review checkbox and verified DR-023b3's outstanding 25/50-row paging.
+No application, shared styling, dependencies or operational data change in this documentation-only slice.
+Initial browser was unauthenticated; user subsequently logged in and resolved that verification blocker.
+Fresh actual enrollment tab and Add/Cancel dialog fit in light/dark at 390/1440px; return focus passes.
+Safe 56-row read-only fixtures verify 25/50-row keyboard selection/paging in all four cases, zero mutations.
+Final full tournament Nx tests pass: 17 suites / 255 tests. Interceptors removed; real empty data restored.
+Remaining limits: screen-reader/exhaustive accessibility/contrast, live nonzero operational workflows
+and dedicated SSR/hydration verification.
+DR-034 native error contrast remains failed at 4.44/4.40:1; shared bracket failures and DR-050 remain separate.
+Only the outstanding full-suite check was rerun; existing child lint/build evidence remains historical.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-08.
+Approval covers this aggregate documentation handoff only; the remaining criteria stay unchecked.
+Exact next action: scope one DR-023c child on the freshly confirmed visible Check-in tab at the same admin route.
+Check-in has a real authorized consumer; its initial mixed-locale zero summary is recorded, not redesigned.
+DR-023c stays Backlog pending scope/brief; DR-023 remains open. Do not start another implementation slice or push.
+
+### Previous completed focus: enrollment locale completeness
+
 DR-023b5 is Done with explicit user approval: [enrollment locale completeness](work-items/DR-023b5-enrollment-locales.md).
 Fresh authorized non-DRAFT enrollment consumer is confirmed; approved DR-023b4 is committed as `29dd2ef1`.
 Completed mounted summary descriptions, Withdrawn, identity annotations, confirmation prompts and local errors
@@ -1948,13 +1970,13 @@ and linked from their registry rows.
 | [DR-022d](work-items/DR-022d-draw-standings.md)               | Mounted round-robin draw standings                                          | Done        |
 | DR-023                                                        | Tournament admin: enrollments and check-in                                  | In progress |
 | [DR-023a](work-items/DR-023a-admin-chrome.md)                 | Shared tournament administration chrome and feedback                        | Done        |
-| [DR-023b](work-items/DR-023b-admin-enrollments.md)            | Enrollment management; confirmed consumer, children open                    | In progress |
+| [DR-023b](work-items/DR-023b-admin-enrollments.md)            | Enrollment management; aggregate approved with disclosed limits             | Done        |
 | [DR-023b1](work-items/DR-023b1-enrollment-summary.md)         | Enrollment-management five-count summary                                    | Done        |
 | [DR-023b2](work-items/DR-023b2-enrollment-filters.md)         | Enrollment filters/selection; shared Card border and nested Panels          | Done        |
 | [DR-023b3](work-items/DR-023b3-enrollment-table.md)           | Enrollment table and feedback; explicit query errors                        | Done        |
 | [DR-023b4](work-items/DR-023b4-manual-enrollment.md)          | Manual enrollment dialog and functional authorized creation                 | Done        |
 | [DR-023b5](work-items/DR-023b5-enrollment-locales.md)         | Mounted enrollment locale completeness; descriptions, statuses and feedback | Done        |
-| DR-023c                                                       | Check-in tab; confirm phase-enabled consumer                                | Backlog     |
+| DR-023c                                                       | Check-in tab; authorized mounted consumer confirmed, scope next             | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                                      | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                          | Backlog     |

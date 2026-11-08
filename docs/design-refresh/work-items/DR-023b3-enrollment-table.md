@@ -51,7 +51,7 @@ description: 'Native enrollment table and explicit query feedback on the mounted
 
 - [x] One native table handles populated and empty states, with correct singles/doubles colspan.
 - [x] Pagination retains 10/25/50 options; ten-row paging verified by test and keyboard browser check.
-- [ ] Exhaustive browser interaction with 25/50 row-size options passes; later check was interrupted.
+- [x] Browser interaction with 25/50 row-size options passes; later DR-023b aggregate checks resolve the interruption.
 - [x] Failed/missing-data queries are errors, not empty success; selectors remain safe and refresh recovers.
 - [x] Loading has named native progress; empty and no-selection messages remain meaningful.
 - [x] Status severity, waiting position, notes and accessible action names preserve information.
@@ -64,6 +64,12 @@ description: 'Native enrollment table and explicit query feedback on the mounted
 - [x] User visual review or explicit approval with disclosed limits.
 
 ## Evidence and handoff
+
+- Subsequent [DR-023b aggregate reconciliation](DR-023b-admin-enrollments.md) on 2026-11-08 verifies 25/50
+  keyboard selection and pagination with a safe 56-row read-only query fixture in light/dark at 390/1440px.
+  Counts are exactly 25/50, next pages start at SAFE-25/SAFE-50 and the final remainder is six rows.
+  No document overflow or mutations; interceptor removal and refresh restore real empty data.
+  This supersedes only the interrupted 25/50 check below, not remaining exhaustive accessibility/live-operation limits.
 
 - Implementation: native small scrollable table always renders after successful loading, including empty data.
   Correct five/six columns and colspan; named section and native HTML caption provide accessible context.

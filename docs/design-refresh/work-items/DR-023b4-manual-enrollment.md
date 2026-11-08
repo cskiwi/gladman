@@ -56,7 +56,7 @@ description: 'Native administration dialog with functional member and guest enro
 - [x] No new SCSS, inline styles, palettes, dependencies or shared styling.
 - [x] Focused Nx lint/build/test pass.
 - [ ] Live operational creation, screen-reader, exhaustive accessibility and SSR/hydration verified.
-- [ ] User review or explicit approval with disclosed limits.
+- [x] User review or explicit approval with disclosed limits.
 
 ## Evidence and handoff
 

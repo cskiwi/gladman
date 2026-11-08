@@ -85,6 +85,14 @@ export class EnrollmentsTabComponent {
   updateError = this.dataService.updateError;
   stats = this.dataService.stats;
 
+  readonly summaryItems = [
+    { key: 'total', label: 'totalEntries', description: 'totalDescription' },
+    { key: 'confirmed', label: 'confirmed', description: 'confirmedDescription' },
+    { key: 'pending', label: 'pending', description: 'pendingDescription' },
+    { key: 'waitingList', label: 'waitingList', description: 'waitingListDescription' },
+    { key: 'cancelled', label: 'cancelled', description: 'cancelledDescription' },
+  ] as const;
+
   // Selected sub-event
   selectedSubEvent = signal<TournamentSubEvent | null>(null);
 

@@ -5,6 +5,33 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023b3 is Done with explicit user approval: [enrollment table and feedback](work-items/DR-023b3-enrollment-table.md).
+Fresh authorized browser confirms the actual enrollment tab on the recorded non-DRAFT consumer.
+Refresh table/heading/rows/pagination and loading/empty/error/no-selection feedback only.
+Correct swallowed query errors and guard resource selectors; preserve filters, data and operational handlers.
+Exclude manual dialog/creation, other tabs, locale assets and shared theme/components.
+One named semantic section on the existing Card contains a native small scrollable Table and feedback.
+Query errors/missing response data are explicit; safe selectors and refresh recovery replace swallowed failures.
+Visible notes, translated status Tags, named gated actions and meaningful existing labels preserve information.
+Scoped utilities fall 173 to 35; zero authored inline styles, palettes, new stylesheets or shared changes.
+Four populated/empty/error light/dark 390/1440px checks fit; narrow scrolling is local to the table.
+Enter paginates ten rows; doubles columns/partner, named loading, error recovery and zero mutations verified.
+Final empty secondary Message contrast passes 7.74/9.51:1; heading/count/header samples pass.
+Nx lint/build passes; prior full Nx 17 suites/228 tests passes before final feedback-only changes.
+Final full run has four unchanged-suite timeouts; serial Nx retries stall before execution.
+Final configured Jest fallback passes all 27 enrollment tests with explicit 30-second timeout allowance.
+After approval, execution recovered: final serial default-timeout Nx tests pass all 17 suites/228 tests.
+All 34 workspace lint targets pass with existing warnings.
+Exhaustive 25/50 browser interactions, screen-reader/accessibility/contrast,
+SSR/hydration and live nonzero operational workflows remain unverified. No push.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-08.
+Approval covers this table/feedback implementation/tests and repository handoff only; accepted limits stay unchecked.
+Both parents remain open. Commit this approved slice/handoff only; no push.
+Exact next action in a fresh invocation: scope DR-023b4 manual dialog/creation on this confirmed consumer.
+Do not begin that implementation in this invocation.
+
+### Previous completed focus: enrollment filters
+
 DR-023b2 is Done with explicit user approval: [enrollment filters and selection](work-items/DR-023b2-enrollment-filters.md).
 Native Card/grid/fluid Select/IconField controls replace the custom filter surface; utility tokens fall 40 to 21.
 Reactive FormControl bridges now synchronize default/changed/cleared sub-event, status and local search.
@@ -36,7 +63,7 @@ Final app development browser/SSR build and all 34 workspace lint targets pass w
 User again approved completion/commit with disclosed limits and selected "Nothing else" after the final corrections.
 Approval covers filters, Panels, shared Card border/template cleanup, tests and repository handoff only.
 Unchecked shared-suite, screen-reader, exhaustive accessibility/hydration and nonzero workflow limits remain.
-Both parents stay open. Commit the approved slice/handoff only.
+Both parents stay open. Approved slice/handoff committed as `fd333c79`; no push.
 Exact next action in a fresh invocation: scope DR-023b3 table/feedback on this confirmed consumer,
 including swallowed-query error handling. Do not begin it in this invocation.
 
@@ -1876,7 +1903,7 @@ and linked from their registry rows.
 | [DR-023b](work-items/DR-023b-admin-enrollments.md)            | Enrollment management; confirmed consumer, children open                      | In progress |
 | [DR-023b1](work-items/DR-023b1-enrollment-summary.md)         | Enrollment-management five-count summary                                      | Done        |
 | [DR-023b2](work-items/DR-023b2-enrollment-filters.md)         | Enrollment filters/selection; shared Card border and nested Panels            | Done        |
-| DR-023b3                                                      | Enrollment table and feedback; inspect swallowed query errors                 | Backlog     |
+| [DR-023b3](work-items/DR-023b3-enrollment-table.md)           | Enrollment table and feedback; explicit query errors                          | Done        |
 | DR-023b4                                                      | Manual enrollment dialog; incomplete creation workflow and locale labels      | Backlog     |
 | DR-023b5                                                      | Enrollment locale completeness; missing Withdrawn and blank table/dialog copy | Backlog     |
 | DR-023c                                                       | Check-in tab; confirm phase-enabled consumer                                  | Backlog     |

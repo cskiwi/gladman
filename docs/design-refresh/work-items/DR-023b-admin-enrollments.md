@@ -105,3 +105,8 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
   nested summary/filter Cards with named Panels. DR-023b2 records final validation and remaining review.
 - Final corrected DR-023b2 is approved Done with disclosed limits. Parent stays open for DR-023b3/b4/b5.
   Exact next action: scope DR-023b3 table/feedback on this confirmed consumer, including swallowed-query handling.
+- Superseded by [DR-023b3 table/feedback](DR-023b3-enrollment-table.md), now approved Done with disclosed limits.
+  Native table/feedback and query-error recovery are implemented with scoped tests and browser evidence.
+  User approval covers its implementation/tests and repository handoff; parents remain open.
+  Exact next action: scope DR-023b4 manual dialog/creation in a fresh invocation.
+  Do not start another implementation slice in this invocation.

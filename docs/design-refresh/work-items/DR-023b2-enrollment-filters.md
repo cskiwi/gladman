@@ -212,7 +212,8 @@ description: 'Native enrollment controls and reactive filtering on the mounted t
   confirming the final Panel/preset correction. Approval covers the filters, Panels, shared Card border/template
   cleanup, tests and repository handoff; no push. Accepted limits stay unchecked, not claimed as passed.
 - Authoritative child status is Done; both parents remain open.
-- Commit the approved slice/handoff only. Exact next action in a fresh invocation: scope DR-023b3
+- Approved slice/handoff is committed as `fd333c79`; no push.
+  Exact next action in a fresh invocation: scope DR-023b3
   enrollment table/feedback on the same confirmed consumer, including swallowed-query error handling.
   Do not start that implementation in this invocation.
 

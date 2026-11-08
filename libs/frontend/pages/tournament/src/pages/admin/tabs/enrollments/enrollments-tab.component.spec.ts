@@ -5,7 +5,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { of } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
+import { TournamentEnrollment } from '@app/models';
 import { EnrollmentsTabComponent } from './enrollments-tab.component';
 
 describe('Enrollment-management filters', () => {
@@ -124,11 +125,131 @@ describe('Enrollment-management filters', () => {
     expect(ids()).toEqual([]);
   });
 
+  it('renders one empty native table with the appropriate singles/doubles column span', async () => {
+    fixture.componentInstance.searchControl.setValue('not present');
+    await settle();
+    let table: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"] table');
+    expect(table.querySelector('caption')?.textContent?.trim()).toBe('Safe singles');
+    expect(table.querySelectorAll('thead th[scope="col"]')).toHaveLength(5);
+    expect(table.querySelector('tbody td')?.getAttribute('colspan')).toBe('5');
+    expect(table.querySelectorAll('p-message')).toHaveLength(1);
+    fixture.componentInstance.subEventControl.setValue(fixture.componentInstance.subEvents()[1]);
+    await settle();
+    table = fixture.nativeElement.querySelector('[data-testid="enrollment-table"] table');
+    expect(table.querySelectorAll('thead th[scope="col"]')).toHaveLength(6);
+    expect(table.querySelector('tbody td')?.getAttribute('colspan')).toBe('6');
+  });
+
+  it.each([
+    ['network failure', () => throwError(() => new Error('Safe enrollment query failure')), 'Safe enrollment query failure'],
+    ['missing response data', () => of({ data: {} }), 'Enrollment query returned no enrollment data'],
+    ['null list', () => of({ data: { subEventEnrollments: null } }), 'Enrollment query returned no enrollment data'],
+  ])('shows explicit %s feedback with safe selectors and recovers using refresh', async (_name, response, message) => {
+    query.mockImplementationOnce(response);
+    fixture.componentInstance.refetch();
+    await settle();
+    expect(fixture.componentInstance.error()).toBe(message);
+    expect(fixture.componentInstance.enrollments()).toEqual([]);
+    expect(fixture.componentInstance.stats().total).toBe(0);
+    const panel: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"]');
+    expect(panel.querySelector('p-message')?.textContent).toContain(message);
+    expect(panel.querySelector('p-table')).toBeNull();
+    expect(panel.textContent).not.toContain('all.tournament.admin.enrollments.noEnrollments');
+    fixture.nativeElement.querySelector('[data-testid="enrollment-filters"] p-button button').click();
+    await settle();
+    expect(fixture.componentInstance.error()).toBeNull();
+    expect(ids()).toEqual(['player', 'guest', 'partner']);
+    expect(panel.querySelector('p-table')).not.toBeNull();
+  });
+
+  it('names native loading progress and avoids empty-success feedback while loading', async () => {
+    const response = new Subject<{ data: { subEventEnrollments: TournamentEnrollment[] } }>();
+    query.mockReturnValueOnce(response);
+    fixture.componentInstance.refetch();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.loading()).toBe(true);
+    expect(fixture.nativeElement.querySelector('p-progressbar')?.getAttribute('aria-label')).toBe('all.loading.players');
+    expect(fixture.nativeElement.querySelector('[data-testid="enrollment-table"]')?.getAttribute('aria-busy')).toBe('true');
+    expect(fixture.nativeElement.querySelector('[data-testid="enrollment-table"] p-table')).toBeNull();
+    response.next({ data: { subEventEnrollments: [] } });
+    response.complete();
+    await settle();
+    expect(fixture.nativeElement.querySelector('p-progressbar')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="enrollment-table"] p-table p-message')).not.toBeNull();
+  });
+
+  it('preserves safe row identity, status, position, visible notes and named gated actions', async () => {
+    const rows = [
+      {
+        id: 'waiting',
+        status: EnrollmentStatus.WAITING_LIST,
+        waitingListPosition: 2,
+        notes: 'Safe multiline\nnotes',
+        player: { fullName: 'Safe Player', memberId: 'SAFE-123' },
+      },
+      {
+        id: 'guest',
+        status: EnrollmentStatus.PENDING,
+        isGuest: true,
+        guestName: 'Safe Guest',
+        guestEmail: 'guest@example.invalid',
+        preferredPartner: { fullName: 'Safe Preferred' },
+      },
+      { id: 'confirmed', status: EnrollmentStatus.CONFIRMED, confirmedPartner: { fullName: 'Safe Partner' } },
+      { id: 'cancelled', status: EnrollmentStatus.CANCELLED },
+      { id: 'withdrawn', status: EnrollmentStatus.WITHDRAWN },
+    ];
+    query.mockReturnValueOnce(of({ data: { subEventEnrollments: rows } }));
+    fixture.componentInstance.subEventControl.setValue(fixture.componentInstance.subEvents()[1]);
+    await settle();
+    const table: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"] table');
+    expect(table.textContent).toContain('SAFE-123');
+    expect(table.textContent).toContain('guest@example.invalid');
+    expect(table.textContent).toContain('Safe Preferred (Preferred)');
+    expect(table.textContent).toContain('Safe Partner');
+    expect(table.querySelector('td.whitespace-pre-wrap')?.textContent).toContain('Safe multiline\nnotes');
+    expect(table.querySelectorAll('tbody tr')[0].querySelectorAll('p-tag')[1]?.textContent?.trim()).toBe('2');
+    expect(table.querySelectorAll('tbody tr')[0].querySelectorAll('button')).toHaveLength(2);
+    expect(table.querySelectorAll('tbody tr')[3].querySelectorAll('button')).toHaveLength(0);
+    expect(table.querySelectorAll('tbody tr')[4].querySelectorAll('button')).toHaveLength(0);
+    const names = Array.from(table.querySelectorAll('button')).map((button) => button.getAttribute('aria-label'));
+    expect(names).toContain('all.tournament.admin.enrollments.promoteFromWaitingList: Safe Player');
+    expect(names).toContain('all.tournament.admin.enrollments.cancel: Safe Player');
+    fixture.componentInstance.updating.set(true);
+    await settle();
+    expect(Array.from(table.querySelectorAll('button')).every((button) => button.disabled)).toBe(true);
+  });
+
+  it('paginates locally with ten rows and retains the native 10/25/50 options', async () => {
+    query.mockReturnValueOnce(
+      of({
+        data: {
+          subEventEnrollments: Array.from({ length: 26 }, (_, index) => ({
+            id: `safe-${index}`,
+            status: EnrollmentStatus.CONFIRMED,
+            player: { fullName: `Safe Player ${index}` },
+          })),
+        },
+      }),
+    );
+    fixture.componentInstance.refetch();
+    await settle();
+    const panel: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"]');
+    expect(panel.querySelectorAll('tbody tr')).toHaveLength(10);
+    expect(panel.querySelector('tbody')?.textContent).toContain('Safe Player 0');
+    (panel.querySelector('.p-paginator-next') as HTMLButtonElement).click();
+    await settle();
+    expect(panel.querySelector('tbody')?.textContent).toContain('Safe Player 10');
+    expect(panel.querySelector('tbody')?.textContent).not.toContain('Safe Player 0');
+    expect(panel.querySelector('p-paginator p-select')).not.toBeNull();
+    expect(query).toHaveBeenCalledTimes(2);
+  });
+
   it.each(['en', 'nl_BE', 'fr_BE'])('associates native controls with meaningful %s labels', async (locale) => {
     const assetPath = join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json');
     const asset: {
       common: { search: string };
-      button: { refresh: string };
+      button: { refresh: string; add: string };
       tournament: { admin: { enrollments: Record<string, string> } };
     } = JSON.parse(readFileSync(assetPath, 'utf8'));
     const translate = TestBed.inject(TranslateService);
@@ -155,6 +276,11 @@ describe('Enrollment-management filters', () => {
       'Withdrawn',
     ]);
     expect(filters.querySelector('[style]:not(.p-panel-content-container)')).toBeNull();
+    const panel: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"]');
+    expect(panel.querySelector('p-button button')?.textContent?.trim()).toBe(asset.button.add);
+    expect(panel.querySelector('thead')?.textContent).not.toContain('all.');
+    expect(panel.querySelector('thead th:nth-child(3)')?.textContent?.trim()).not.toBe('');
+    expect(panel.querySelector('p-tag')?.textContent?.trim()).toBe(asset.tournament.admin.enrollments.confirmed);
   });
 });
 

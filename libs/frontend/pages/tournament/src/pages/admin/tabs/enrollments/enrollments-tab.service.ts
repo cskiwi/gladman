@@ -30,62 +30,63 @@ export class EnrollmentsTabService {
         return [];
       }
 
-      try {
-        const result = await lastValueFrom(
-          this.apollo.query<{ subEventEnrollments: TournamentEnrollment[] }>({
-            query: gql`
-              query SubEventEnrollments($subEventId: ID!, $status: EnrollmentStatus) {
-                subEventEnrollments(subEventId: $subEventId, status: $status) {
+      const result = await lastValueFrom(
+        this.apollo.query<{ subEventEnrollments: TournamentEnrollment[] }>({
+          query: gql`
+            query SubEventEnrollments($subEventId: ID!, $status: EnrollmentStatus) {
+              subEventEnrollments(subEventId: $subEventId, status: $status) {
+                id
+                status
+                waitingListPosition
+                notes
+                isGuest
+                guestName
+                guestEmail
+                guestPhone
+                createdAt
+                player {
                   id
-                  status
-                  waitingListPosition
-                  notes
-                  isGuest
-                  guestName
-                  guestEmail
-                  guestPhone
-                  createdAt
-                  player {
-                    id
-                    firstName
-                    lastName
-                    fullName
-                    memberId
-                  }
-                  preferredPartner {
-                    id
-                    firstName
-                    lastName
-                    fullName
-                  }
-                  confirmedPartner {
-                    id
-                    firstName
-                    lastName
-                    fullName
-                  }
+                  firstName
+                  lastName
+                  fullName
+                  memberId
+                }
+                preferredPartner {
+                  id
+                  firstName
+                  lastName
+                  fullName
+                }
+                confirmedPartner {
+                  id
+                  firstName
+                  lastName
+                  fullName
                 }
               }
-            `,
-            variables: {
-              subEventId: params.subEventId,
-              status: params.status || undefined,
-            },
-            context: { signal: abortSignal },
-            fetchPolicy: 'network-only',
-          }),
-        );
+            }
+          `,
+          variables: {
+            subEventId: params.subEventId,
+            status: params.status || undefined,
+          },
+          context: { signal: abortSignal },
+          fetchPolicy: 'network-only',
+        }),
+      );
 
-        return result.data?.subEventEnrollments ?? [];
-      } catch {
-        return [];
+      if (!Array.isArray(result.data?.subEventEnrollments)) {
+        throw new Error('Enrollment query returned no enrollment data');
       }
+      return result.data.subEventEnrollments;
     },
   });
 
   // Public selectors
+  private readonly enrollmentData = computed(() => (this.enrollmentsResource.hasValue() ? this.enrollmentsResource.value() : []));
+
   enrollments = computed(() => {
-    const enrollments = this.enrollmentsResource.value() ?? [];
+    const enrollments = this.enrollmentData();
     const search = this.filterSignal().search?.toLowerCase() ?? '';
 
     if (!search) {
@@ -105,7 +106,7 @@ export class EnrollmentsTabService {
 
   // Stats
   stats = computed(() => {
-    const all = this.enrollmentsResource.value() ?? [];
+    const all = this.enrollmentData();
     return {
       total: all.length,
       confirmed: all.filter((e) => e.status === EnrollmentStatus.CONFIRMED).length,

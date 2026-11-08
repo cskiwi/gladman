@@ -155,6 +155,10 @@ export class EnrollmentsTabComponent {
     }
   }
 
+  getStatusLabel(status: EnrollmentStatus): string {
+    return this.statusOptions().find((option) => option.value === status)?.label ?? status;
+  }
+
   getPlayerName(enrollment: TournamentEnrollment): string {
     if (enrollment.isGuest) {
       return `${enrollment.guestName} (Guest)`;

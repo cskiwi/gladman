@@ -80,176 +80,135 @@
   </p-panel>
 
   @if (updateError()) {
-    <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>
+    <p-message severity="error" class="w-full wrap-anywhere">{{ updateError()! }}</p-message>
   }
 
   @if (loading()) {
-    <div class="h-1 w-full overflow-hidden rounded-full bg-emphasis">
-      <div class="h-full bg-primary animate-pulse" style="width: 100%"></div>
-    </div>
+    <p-progressbar mode="indeterminate" [attr.aria-label]="'all.loading.players' | translate" />
   }
 
   <!-- Enrollments Table -->
   @if (selectedSubEvent()) {
-    <div class="bg-emphasis rounded-border border border-surface overflow-hidden">
-      <!-- Header -->
-      <div class="px-6 py-4 border-b border-surface bg-emphasis">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <i class="pi pi-users text-primary text-lg"></i>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold text-color m-0">{{ selectedSubEvent()!.name }}</h3>
-              <p class="text-sm text-muted-color m-0">
-                {{ enrollments().length }} {{ 'all.tournament.admin.enrollments.enrollmentsCount' | translate }}
-              </p>
-            </div>
-          </div>
-          <p-button
-            icon="pi pi-user-plus"
-            [label]="'all.tournament.admin.enrollments.addManualEnrollment' | translate"
-            size="small"
-            (click)="openManualEnrollmentDialog()"
-          />
-        </div>
+    <section class="min-w-0" data-testid="enrollment-table" aria-labelledby="admin-enrollment-table-title" [attr.aria-busy]="loading()">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <h3 id="admin-enrollment-table-title" class="text-lg font-semibold wrap-anywhere m-0">{{ selectedSubEvent()!.name }}</h3>
+        <p-button icon="pi pi-user-plus" [label]="'all.button.add' | translate" size="small" (onClick)="openManualEnrollmentDialog()" />
       </div>
 
-      <!-- Table Content -->
-      <div class="p-0">
-        @if (enrollments().length > 0) {
-          <p-table
-            [value]="enrollments()"
-            [tableStyle]="{ 'min-width': '60rem' }"
-            [paginator]="enrollments().length > 10"
-            [rows]="10"
-            [rowsPerPageOptions]="[10, 25, 50]"
-            styleClass="p-datatable-sm"
-          >
-            <ng-template #header>
-              <tr class="text-sm">
-                <th class="font-semibold">{{ 'all.tournament.admin.enrollments.player' | translate }}</th>
-                @if (isDoublesEvent()) {
-                  <th class="font-semibold">{{ 'all.tournament.admin.enrollments.partner' | translate }}</th>
-                }
-                <th class="font-semibold">{{ 'all.tournament.admin.enrollments.status' | translate }}</th>
-                <th class="font-semibold text-center">{{ 'all.tournament.admin.enrollments.position' | translate }}</th>
-                <th class="font-semibold text-center">{{ 'all.tournament.admin.enrollments.notes' | translate }}</th>
-                <th class="font-semibold text-center" style="width: 8rem">{{ 'all.tournament.admin.enrollments.actions' | translate }}</th>
-              </tr>
-            </ng-template>
-            <ng-template #body let-enrollment>
-              <tr class="hover:bg-emphasis transition-colors">
+      @if (!loading() && error()) {
+        <p-message severity="error" class="w-full wrap-anywhere">{{ 'all.common.error' | translate }}: {{ error() }}</p-message>
+      } @else if (!loading()) {
+        <p class="text-sm text-muted-color m-0 mb-3">{{ 'all.tournament.admin.enrollments.totalEntries' | translate }}: {{ enrollments().length }}</p>
+        <p-table
+          [value]="enrollments()"
+          [scrollable]="true"
+          [paginator]="enrollments().length > 10"
+          [rows]="10"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          size="small"
+        >
+          <ng-template #colgroup>
+            <caption class="sr-only">
+              {{
+                selectedSubEvent()!.name
+              }}
+            </caption>
+          </ng-template>
+          <ng-template #header>
+            <tr>
+              <th scope="col">{{ 'all.tournament.admin.enrollments.player' | translate }}</th>
+              @if (isDoublesEvent()) {
+                <th scope="col">{{ 'all.tournament.admin.enrollments.partner' | translate }}</th>
+              }
+              <th scope="col">{{ 'all.tournament.admin.enrollments.status' | translate }}</th>
+              <th scope="col">{{ 'all.competition.position' | translate }}</th>
+              <th scope="col">{{ 'all.tournament.admin.enrollments.notes' | translate }}</th>
+              <th scope="col">{{ 'all.tournament.admin.enrollments.actions' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-enrollment>
+            <tr>
+              <td>
+                <div class="flex flex-col gap-1">
+                  <span class="font-medium">{{ getPlayerName(enrollment) }}</span>
+                  @if (enrollment.isGuest && enrollment.guestEmail) {
+                    <small class="text-muted-color">{{ enrollment.guestEmail }}</small>
+                  }
+                  @if (enrollment.player?.memberId) {
+                    <small class="text-muted-color">{{ enrollment.player.memberId }}</small>
+                  }
+                </div>
+              </td>
+              @if (isDoublesEvent()) {
                 <td>
-                  <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-emphasis flex items-center justify-center flex-shrink-0">
-                      <i class="pi pi-user text-muted-color text-sm"></i>
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-medium text-color">{{ getPlayerName(enrollment) }}</span>
-                      @if (enrollment.isGuest && enrollment.guestEmail) {
-                        <small class="text-muted-color text-xs">{{ enrollment.guestEmail }}</small>
-                      }
-                      @if (enrollment.player?.memberId) {
-                        <small class="text-muted-color text-xs font-mono">{{ enrollment.player.memberId }}</small>
-                      }
-                    </div>
-                  </div>
+                  <span class="text-color">{{ getPartnerName(enrollment) }}</span>
                 </td>
-                @if (isDoublesEvent()) {
-                  <td>
-                    <span class="text-color">{{ getPartnerName(enrollment) }}</span>
-                  </td>
+              }
+              <td>
+                <p-tag [value]="getStatusLabel(enrollment.status)" [severity]="getStatusSeverity(enrollment.status)" />
+              </td>
+              <td>
+                @if (enrollment.status === 'WAITING_LIST') {
+                  <p-tag severity="warn" [value]="enrollment.waitingListPosition ?? '—'" />
+                } @else {
+                  <span class="text-muted-color">—</span>
                 }
-                <td>
-                  <p-tag [value]="enrollment.status" [severity]="getStatusSeverity(enrollment.status)" [rounded]="true" />
-                </td>
-                <td class="text-center">
+              </td>
+              <td class="whitespace-pre-wrap">
+                @if (enrollment.notes) {
+                  {{ enrollment.notes }}
+                } @else {
+                  <span class="text-muted-color">—</span>
+                }
+              </td>
+              <td>
+                <div class="flex gap-1 justify-center">
                   @if (enrollment.status === 'WAITING_LIST') {
-                    <span
-                      class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-sm font-bold"
-                    >
-                      {{ enrollment.waitingListPosition }}
-                    </span>
-                  } @else {
-                    <span class="text-muted-color">—</span>
-                  }
-                </td>
-                <td class="text-center">
-                  @if (enrollment.notes) {
-                    <span
-                      class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emphasis cursor-pointer hover:bg-emphasis transition-colors"
-                      [pTooltip]="enrollment.notes"
+                    <p-button
+                      icon="pi pi-arrow-up"
+                      severity="success"
+                      [text]="true"
+                      [rounded]="true"
+                      size="small"
+                      [ariaLabel]="('all.tournament.admin.enrollments.promoteFromWaitingList' | translate) + ': ' + getPlayerName(enrollment)"
+                      [pTooltip]="'all.tournament.admin.enrollments.promoteFromWaitingList' | translate"
                       tooltipPosition="top"
-                    >
-                      <i class="pi pi-comment text-muted-color text-sm"></i>
-                    </span>
-                  } @else {
-                    <span class="text-muted-color">—</span>
+                      (onClick)="promoteFromWaitingList(enrollment)"
+                      [loading]="updating()"
+                      [disabled]="updating()"
+                    />
                   }
-                </td>
-                <td>
-                  <div class="flex gap-1 justify-center">
-                    @if (enrollment.status === 'WAITING_LIST') {
-                      <p-button
-                        icon="pi pi-arrow-up"
-                        severity="success"
-                        [text]="true"
-                        [rounded]="true"
-                        size="small"
-                        pTooltip="Promote from waiting list"
-                        tooltipPosition="top"
-                        (click)="promoteFromWaitingList(enrollment)"
-                        [loading]="updating()"
-                      />
-                    }
-                    @if (enrollment.status !== 'CANCELLED' && enrollment.status !== 'WITHDRAWN') {
-                      <p-button
-                        icon="pi pi-times"
-                        severity="danger"
-                        [text]="true"
-                        [rounded]="true"
-                        size="small"
-                        pTooltip="Cancel enrollment"
-                        tooltipPosition="top"
-                        (click)="cancelEnrollment(enrollment)"
-                        [loading]="updating()"
-                      />
-                    }
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template #emptymessage>
-              <tr>
-                <td [attr.colspan]="isDoublesEvent() ? 6 : 5" class="text-center py-12">
-                  <div class="flex flex-col items-center">
-                    <div class="w-16 h-16 rounded-full bg-emphasis flex items-center justify-center mb-4">
-                      <i class="pi pi-inbox text-2xl text-muted-color"></i>
-                    </div>
-                    <p class="text-muted-color">{{ 'all.tournament.admin.enrollments.noEnrollments' | translate }}</p>
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        } @else {
-          <div class="flex flex-col items-center justify-center py-16 text-center">
-            <div class="w-16 h-16 rounded-full bg-emphasis flex items-center justify-center mb-4">
-              <i class="pi pi-inbox text-2xl text-muted-color"></i>
-            </div>
-            <p class="text-muted-color">{{ 'all.tournament.admin.enrollments.noEnrollments' | translate }}</p>
-          </div>
-        }
-      </div>
-    </div>
+                  @if (enrollment.status !== 'CANCELLED' && enrollment.status !== 'WITHDRAWN') {
+                    <p-button
+                      icon="pi pi-times"
+                      severity="danger"
+                      [text]="true"
+                      [rounded]="true"
+                      size="small"
+                      [ariaLabel]="('all.tournament.admin.enrollments.cancel' | translate) + ': ' + getPlayerName(enrollment)"
+                      [pTooltip]="'all.tournament.admin.enrollments.cancel' | translate"
+                      tooltipPosition="top"
+                      (onClick)="cancelEnrollment(enrollment)"
+                      [loading]="updating()"
+                      [disabled]="updating()"
+                    />
+                  }
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #emptymessage>
+            <tr>
+              <td [attr.colspan]="isDoublesEvent() ? 6 : 5">
+                <p-message severity="secondary">{{ 'all.tournament.admin.enrollments.noEnrollments' | translate }}</p-message>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </section>
   } @else {
-    <div class="bg-emphasis rounded-border border border-surface p-12 text-center">
-      <div class="w-16 h-16 rounded-full bg-emphasis flex items-center justify-center mb-4 mx-auto">
-        <i class="pi pi-arrow-up text-2xl text-muted-color"></i>
-      </div>
-      <p class="text-muted-color text-lg">{{ 'all.tournament.admin.enrollments.selectSubEventFirst' | translate }}</p>
-    </div>
+    <p-message severity="secondary" class="w-full wrap-anywhere">{{ 'all.tournament.admin.draws.selectSubEventFirst' | translate }}</p-message>
   }
 
   <!-- Manual Enrollment Dialog -->

@@ -5,6 +5,36 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023a is Done with explicit user approval: mounted tournament administration chrome and page feedback only.
+See the [administration chrome brief](work-items/DR-023a-admin-chrome.md).
+The supplied tournament mounts the admin shell and Settings; enrollment/draw/schedule/check-in tabs are disabled.
+Do not change phase, permissions or operational data to enable a redesign consumer.
+Preserve the existing smart page and tab children; this explicitly shared shell affects DR-023/DR-024/DR-025.
+Refresh heading/back action, native Card/Tabs and loading/error/permission feedback; exclude all tab contents.
+DR-022 is reconciled as Done: all four children are approved Done, and DR-006j already covers the mounted bracket.
+Inherited disclosed verification limits remain in the child briefs; reconciliation adds no new verification claims.
+Compact localized header/native Back, bordered Card/scrollable Tabs and native loading/error/permission feedback
+replace custom chrome and inline styles. The page stylesheet is removed; static utilities drop from 59 to 43.
+An error-state regression exposed unsafe resource reads; the existing `hasValue()` guard now permits explicit feedback.
+Final focused tournament Nx lint/test/build passes: 16 suites / 201 tests, production library build and ten prerequisites.
+Four mounted authenticated light/dark 390/1440px cases preserve all five tabs, disabled gates and Settings contents.
+No document overflow; native tab scroll buttons work by pointer and Enter, with visible 1px keyboard focus.
+Sixteen isolated safe feedback/long-name/loading/error fixtures pass without page errors or mutation attempts.
+Public admin SSR is HTTP 200 with heading/context/permission feedback; actual Back destination and restoration pass.
+Native light Back text 4.46:1, selected tab 3.65:1, warning 2.83:1 and error 4.41:1 remain shared
+DR-032/DR-044/DR-034 failures; dark text passes. No page-specific palette fixes.
+Screen-reader, exhaustive accessibility/contrast/hydration, alternative browser locales and phase-enabled
+operational tab workflows remain unverified. DR-023 stays open for DR-023b/c.
+On 2026-11-08 user selected "Approve completion and commit with disclosed limits" and "Nothing else".
+Approval covers the shell, guarded error selector, tests and repository handoff/DR-022 reconciliation only; no push.
+Shared contrast failures and unperformed checks remain unchecked, not claimed as passed.
+Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects with existing warnings.
+Exact next action: confirm a real phase-enabled enrollment consumer before scoping DR-023b.
+If none is available, record the blocker and request an appropriate safe tournament; do not mutate phase for testing.
+Do not begin another implementation slice in this invocation.
+
+### Previous completed focus: draw standings
+
 DR-022d is Done with explicit user approval: standings match rankings through shared transparent table row defaults.
 See the [draw standings brief](work-items/DR-022d-draw-standings.md).
 Mounted `MD 1-2 - Poule A` has three standings; its tournament overview provides the real draw link.
@@ -52,10 +82,8 @@ Accepted limits include unverified screen-reader/exhaustive accessibility/contra
 browser alternative locales, all authenticated/admin/sync/modal/player/tier workflows and app production build.
 Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects
 with existing warnings and zero errors. Only the approved scope is authorized for commit; no push.
-Exact next action in a fresh invocation: reconcile DR-022 parent against all four completed children
-and remaining mounted scope before selecting another item. If parent scope is complete, scope the next
-mounted DR-023 administration child; do not start another implementation in this invocation.
-DR-022 remains open; do not begin another implementation slice in this invocation.
+Original next action was parent reconciliation before selecting another item.
+That reconciliation is completed by DR-023a on 2026-11-08; DR-022 is Done with the previously approved limits retained.
 
 ### Previous completed focus: draw games
 
@@ -1766,12 +1794,15 @@ and linked from their registry rows.
 | DR-021g                                                       | Incomplete my-enrollments page; withdrawn with retirement  | Done        |
 | [DR-021h](work-items/DR-021h-enrollment-ranking-polish.md)    | Jouw Rankings visual polish; retained after DR-021b review | Done        |
 | DR-021i                                                       | Future my-enrollments overview; separately scope later     | Backlog     |
-| DR-022                                                        | Tournament draw detail                                     | In progress |
+| DR-022                                                        | Tournament draw detail                                     | Done        |
 | [DR-022a](work-items/DR-022a-draw-identity.md)                | Draw identity and actions                                  | Done        |
 | [DR-022b](work-items/DR-022b-draw-feedback.md)                | Draw switching and page loading/error/empty feedback       | Done        |
 | [DR-022c](work-items/DR-022c-draw-games.md)                   | Mounted draw games                                         | Done        |
 | [DR-022d](work-items/DR-022d-draw-standings.md)               | Mounted round-robin draw standings                         | Done        |
-| DR-023                                                        | Tournament admin: enrollments and check-in                 | Backlog     |
+| DR-023                                                        | Tournament admin: enrollments and check-in                 | In progress |
+| [DR-023a](work-items/DR-023a-admin-chrome.md)                 | Shared tournament administration chrome and feedback       | Done        |
+| DR-023b                                                       | Enrollment management tab; confirm phase-enabled consumer  | Backlog     |
+| DR-023c                                                       | Check-in tab; confirm phase-enabled consumer               | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                     | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls              | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                         | Backlog     |
@@ -1931,6 +1962,12 @@ New DR-044 must audit selected Tabs text across confirmed consumers before any s
 Use the 4.5:1 normal-text threshold, not the 3:1 large-text/non-text threshold, for these small tab labels.
 Heading/context/subtitle use semantic text and pass at 18.20:1 / 16.64:1.
 No shared or scoped palette override is introduced. See the [brief](work-items/DR-020c-editing-chrome.md).
+
+DR-023a confirms the same native administration-shell limits on 2026-11-08:
+Back text 4.46:1 / 6.91:1 (DR-032), selected Tabs text 3.65:1 / 10.22:1 (DR-044),
+permission warning 2.83:1 / 7.98:1 and read error 4.41:1 / 4.63:1 (DR-034).
+Heading/context pass at 18.20:1 / 16.64:1. Disabled tab text is not claimed to meet normal-text contrast.
+Keep shared audits open; no new palette workaround or shared preset change is hidden in this shell slice.
 
 ### DR-032/034 additional evidence: editing settings
 
@@ -2249,6 +2286,9 @@ Parent: DR-022. Project: `frontend-pages-tournament`.
   Four keyboard cases expose native 1px focus; exhaustive focus-ring contrast remains unverified.
   Empty Message text is 7.74:1 light / 9.51:1 dark; semantic error text is 18.29:1 / 14.63:1.
   No page-level palette overrides are added. Keep the shared audits open.
+- On 2026-11-08 parent reconciliation confirms completed DR-022a/b/c/d cover identity, feedback, games and standings.
+  The mounted KO child still delegates to shared BracketTree; DR-006j already completed its responsive scope.
+  Parent is Done with the children's previously approved limits retained; no completed implementation is restarted.
 
 ### Tournament administration
 
@@ -2256,6 +2296,9 @@ Projects: `frontend-pages-tournament`, with shared controls where already used. 
 `/tournament/:tournamentId/admin`.
 
 - DR-023: enrollment management and check-in tabs, one child task per tab.
+- DR-023a: shared administration chrome/feedback prerequisite for DR-023b/c and DR-024/DR-025 tab work.
+  Actual supplied tournament mounts the shell but disables all four operational tabs; no phase mutation for testing.
+  Confirm a real phase-enabled consumer before scoping DR-023b enrollment management or DR-023c check-in.
 - DR-024: draw management and scheduling tabs, one child task per tab.
 - DR-025: settings, general settings, sub-events, and phase controls.
 - Treat any shared admin tab shell change as an explicit cross-tab dependency.

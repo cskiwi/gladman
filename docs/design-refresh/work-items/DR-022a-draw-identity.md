@@ -5,7 +5,7 @@ description: 'Bounded public draw hero refresh using approved shared identity pr
 
 ## Identity
 
-- ID: DR-022a; parent DR-022 remains open. Authoritative status: [backlog](../backlog.md).
+- ID: DR-022a; parent DR-022 reconciled on 2026-11-08. Authoritative status: [backlog](../backlog.md).
 - Dependencies: approved shared hero primitives; DR-006j bracket sizing is already Done.
 - Design rules: [rollout](../README.md). No new shared-component or theme changes.
 
@@ -91,8 +91,8 @@ description: 'Bounded public draw hero refresh using approved shared identity pr
 - Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects with existing warnings
   and zero errors. No application code changed after the passing project lint/test/build run.
 - Exceptions: none proposed. Existing excluded inline error styling remains for DR-022b.
-- Next action in a fresh invocation: scope DR-022b switching and loading/error/empty feedback on the mounted draw.
-  DR-022 remains open; no second implementation slice is started here.
+- Original next action was DR-022b switching and loading/error/empty feedback; it is now completed.
+  DR-022 parent reconciliation on 2026-11-08 preserves all previously approved limits; see backlog current focus.
 
 [template]: ../../../libs/frontend/pages/tournament/src/pages/draw-detail/page-draw-detail.component.html
 [component]: ../../../libs/frontend/pages/tournament/src/pages/draw-detail/page-draw-detail.component.ts

@@ -5,7 +5,7 @@ description: 'Native PrimeNG standings presentation on the public tournament pou
 
 ## Identity
 
-- ID: DR-022d; parent DR-022 remains open. Authoritative status: [backlog](../backlog.md).
+- ID: DR-022d; parent DR-022 reconciled on 2026-11-08. Authoritative status: [backlog](../backlog.md).
 - Dependencies: completed DR-022a/b/c. Design rules: [rollout](../README.md).
 
 ## Scope
@@ -275,7 +275,7 @@ These results predate the explicitly requested shared transparent default below.
 
 - On 2026-11-08 the user selected "Approve DR-022d and shared table defaults; commit with disclosed limits"
   and "Nothing else". This explicitly approves completion and the scoped commit, not a push.
-- Authoritative child status is Done. DR-022 parent remains open pending its mounted-scope reconciliation.
+- Authoritative child status is Done. Parent mounted-scope reconciliation was completed on 2026-11-08.
 - Approval accepts unperformed screen-reader/exhaustive accessibility/contrast/focus-ring contrast/hydration,
   browser alternative locales, all authenticated/admin/sync/import-modal/player/tier workflows and app
   production build. Existing passing checks do not imply those unperformed checks passed.
@@ -286,8 +286,8 @@ These results predate the explicitly requested shared transparent default below.
 - No application code changed after passing app/home/tournament focused validation and final browser checks.
 - Post-approval `npx nx run-many --target=lint --output-style=static` passes all 34 projects,
   with existing warnings and zero errors. No application code changed after the final focused build/tests.
-- Exact next action in a fresh invocation: reconcile DR-022 against its four completed children and
-  remaining mounted scope. If complete, scope the next mounted DR-023 administration child.
+- Original next action was reconciling DR-022 against its four completed children and mounted bracket.
+  This is now completed with previously approved limits retained; see backlog current focus for DR-023a.
   Do not begin another implementation here.
 
 [component]: ../../../libs/frontend/pages/tournament/src/pages/draw-detail/components/draw-standings-table.component.ts

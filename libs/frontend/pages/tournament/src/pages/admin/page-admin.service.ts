@@ -90,7 +90,7 @@ export class AdminService {
   });
 
   // Public selectors
-  tournament = computed(() => this.tournamentResource.value());
+  tournament = computed(() => (this.tournamentResource.hasValue() ? this.tournamentResource.value() : undefined));
   error = computed(() => this.tournamentResource.error()?.message || null);
   loading = computed(() => this.tournamentResource.isLoading());
 

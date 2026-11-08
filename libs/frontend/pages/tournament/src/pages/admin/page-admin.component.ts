@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TabsModule } from 'primeng/tabs';
@@ -28,6 +29,7 @@ import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
     SkeletonModule,
     TabsModule,
     ButtonModule,
+    CardModule,
     MessageModule,
     SettingsTabComponent,
     EnrollmentsTabComponent,
@@ -36,7 +38,7 @@ import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
     CheckinTabComponent,
   ],
   templateUrl: './page-admin.component.html',
-  styleUrl: './page-admin.component.scss',
+  host: { class: 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageAdminComponent {

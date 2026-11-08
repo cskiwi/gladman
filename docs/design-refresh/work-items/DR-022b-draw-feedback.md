@@ -5,7 +5,7 @@ description: 'Bounded native PrimeNG switching, loading, error and empty present
 
 ## Identity
 
-- ID: DR-022b; parent DR-022 stays open. Authoritative status: [backlog](../backlog.md).
+- ID: DR-022b; parent DR-022 reconciled on 2026-11-08. Authoritative status: [backlog](../backlog.md).
 - Dependencies: completed DR-022a identity and DR-006j bracket sizing.
 - Design rules: [rollout](../README.md).
 
@@ -122,9 +122,8 @@ description: 'Bounded native PrimeNG switching, loading, error and empty present
 - `git diff --check` passes. Git reports its existing LF-to-CRLF checkout warnings; changed files retain LF
   formatter output. No Git configuration or attributes are changed.
 - Exceptions: none.
-- Exact next action in a fresh invocation: scope DR-022c mounted games from the confirmed public draw,
-  inspect its source/consumer and choose only one reviewable games slice. Parent DR-022 remains open;
-  no second implementation slice is started here.
+- Original next action was DR-022c mounted games; it is now completed.
+  DR-022 parent reconciliation on 2026-11-08 preserves all previously approved limits; see backlog current focus.
 
 [template]: ../../../libs/frontend/pages/tournament/src/pages/draw-detail/page-draw-detail.component.html
 [component]: ../../../libs/frontend/pages/tournament/src/pages/draw-detail/page-draw-detail.component.ts

@@ -1,68 +1,70 @@
 <!-- Breadcrumb -->
-<app-breadcrumb [items]="tournament()
-  ? [
-      { label: ('all.tournament.title' | translate), routerLink: '/tournament' },
-      { label: tournament()!.name, routerLink: ['/tournament', tournament()!.id] },
-      { label: ('all.tournament.admin.title' | translate) },
-    ]
-  : [
-      { label: ('all.tournament.title' | translate), routerLink: '/tournament' },
-    ]" />
+<app-breadcrumb
+  [items]="
+    tournament()
+      ? [
+          { label: ('all.tournament.title' | translate), routerLink: '/tournament' },
+          { label: tournament()!.name, routerLink: ['/tournament', tournament()!.id] },
+          { label: ('all.tournament.admin.title' | translate) },
+        ]
+      : [{ label: ('all.tournament.title' | translate), routerLink: '/tournament' }]
+  "
+/>
 
 <!-- Header -->
-<div class="flex items-start justify-between flex-wrap gap-4 mb-6">
-  <div class="flex flex-col gap-1">
-    <span class="t-eyebrow">Admin</span>
+<header class="flex flex-wrap items-start justify-between gap-4 mb-6">
+  <div class="min-w-0">
+    <h1 class="text-2xl font-semibold text-color m-0">{{ 'all.tournament.admin.title' | translate }}</h1>
     @if (loading()) {
-      <p-skeleton width="18rem" height="2rem" />
+      <p-skeleton height="1rem" class="block mt-2" />
     } @else if (tournament(); as t) {
-      <h1 class="font-display text-3xl md:text-4xl font-bold text-color leading-tight tracking-tight m-0">
-        {{ 'all.tournament.admin.title' | translate }}: {{ t.name }}
-      </h1>
+      <p class="text-color break-words mt-2 mb-0">{{ t.name }}</p>
     }
   </div>
-  <div class="flex gap-2">
-    <p-button icon="pi pi-arrow-left" [label]="'all.button.back' | translate" severity="secondary" [outlined]="true" size="small" (click)="goBack()" />
-  </div>
-</div>
+  <button pButton type="button" severity="secondary" [outlined]="true" size="small" (click)="goBack()">
+    <i pButtonIcon class="pi pi-arrow-left" aria-hidden="true"></i>
+    <span pButtonLabel>{{ 'all.button.back' | translate }}</span>
+  </button>
+</header>
 
 @if (error(); as err) {
-  <div class="flex items-center gap-2 p-4 rounded-lg" style="background: var(--g-loss-muted); color: var(--g-loss)">
-    <i class="pi pi-exclamation-triangle"></i>
+  <p-message severity="error">
     <span>{{ err }}</span>
-  </div>
+  </p-message>
 } @else if (loading()) {
-  <div class="bg-emphasis border border-surface rounded-border p-5">
-    <p-skeleton height="3rem" styleClass="mb-3" />
-    <p-skeleton height="20rem" />
+  <div aria-busy="true">
+    <span role="status" class="sr-only">{{ 'all.tournament.edit.messages.loading' | translate }}</span>
+    <p-card class="block border border-surface">
+      <p-skeleton height="3rem" class="block mb-3" />
+      <p-skeleton height="20rem" />
+    </p-card>
   </div>
 } @else if (!canEdit()) {
-  <div class="flex items-center gap-2 p-4 rounded-lg" style="background: var(--g-pending-muted); color: var(--g-pending)">
-    <i class="pi pi-info-circle"></i>
+  <p-message severity="warn">
     <span>{{ 'all.tournament.admin.noPermission' | translate }}</span>
-  </div>
+  </p-message>
 } @else if (tournament(); as tournament) {
-  <div class="bg-emphasis border border-surface rounded-border p-5">
-    <p-tabs [value]="activeTabIndex()" (valueChange)="onTabChange($event)">
+  <p-card class="block border border-surface">
+    <p-tabs [value]="activeTabIndex()" (valueChange)="onTabChange($event)" scrollable>
       <p-tablist>
         <p-tab [value]="0">
-          <i class="pi pi-cog mr-2"></i>
+          <i class="pi pi-cog mr-2" aria-hidden="true"></i>
           {{ 'all.tournament.admin.tabs.settings' | translate }}
         </p-tab>
         <p-tab [value]="1" [disabled]="!canAccessEnrollments()">
-          <i class="pi pi-users mr-2"></i>
+          <i class="pi pi-users mr-2" aria-hidden="true"></i>
           {{ 'all.tournament.admin.tabs.enrollments' | translate }}
         </p-tab>
         <p-tab [value]="2" [disabled]="!canAccessDraws()">
-          <i class="pi pi-sitemap mr-2"></i>
+          <i class="pi pi-sitemap mr-2" aria-hidden="true"></i>
           {{ 'all.tournament.admin.tabs.draws' | translate }}
         </p-tab>
         <p-tab [value]="3" [disabled]="!canAccessSchedule()">
-          <i class="pi pi-calendar mr-2"></i>
+          <i class="pi pi-calendar mr-2" aria-hidden="true"></i>
           {{ 'all.tournament.admin.tabs.schedule' | translate }}
         </p-tab>
         <p-tab [value]="4" [disabled]="!canAccessCheckin()">
-          <i class="pi pi-check-circle mr-2"></i>
+          <i class="pi pi-check-circle mr-2" aria-hidden="true"></i>
           {{ 'all.tournament.admin.tabs.checkin' | translate }}
         </p-tab>
       </p-tablist>
@@ -93,5 +95,5 @@
         </p-tabpanel>
       </p-tabpanels>
     </p-tabs>
-  </div>
+  </p-card>
 }

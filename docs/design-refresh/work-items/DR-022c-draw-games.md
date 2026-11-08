@@ -5,7 +5,7 @@ description: 'Native match cards with player-profile-aligned teams and set resul
 
 ## Identity
 
-- ID: DR-022c; parent DR-022 stays open. Authoritative status: [backlog](../backlog.md).
+- ID: DR-022c; parent DR-022 reconciled on 2026-11-08. Authoritative status: [backlog](../backlog.md).
 - Dependencies: completed DR-022a/b and DR-006j bracket sizing.
 - Design rules: [rollout](../README.md).
 
@@ -130,8 +130,8 @@ description: 'Native match cards with player-profile-aligned teams and set resul
   actual Tag width 36.5625px exactly equals label width plus native padding/borders.
   Parent widths are approximately 299.5px mobile and 626.2px desktop; no Tag stretches or document overflow.
   Browser-only fixtures are restored afterward; no records change.
-- Exact next action in a fresh invocation: confirm a real mounted round-robin consumer before scoping DR-022d.
-  Parent DR-022 stays open; no second implementation slice is started here.
+- Original next action was confirming the mounted DR-022d round-robin consumer; that slice is now completed.
+  DR-022 parent reconciliation on 2026-11-08 preserves all previously approved limits; see backlog current focus.
 - Exceptions: none proposed.
 - Commit only the approved slice/tests/handoff; no push is authorized.
 

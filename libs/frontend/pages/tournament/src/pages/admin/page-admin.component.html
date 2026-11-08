@@ -34,7 +34,7 @@
 } @else if (loading()) {
   <div aria-busy="true">
     <span role="status" class="sr-only">{{ 'all.tournament.edit.messages.loading' | translate }}</span>
-    <p-card class="block border border-surface">
+    <p-card class="block">
       <p-skeleton height="3rem" class="block mb-3" />
       <p-skeleton height="20rem" />
     </p-card>
@@ -44,7 +44,7 @@
     <span>{{ 'all.tournament.admin.noPermission' | translate }}</span>
   </p-message>
 } @else if (tournament(); as tournament) {
-  <p-card class="block border border-surface">
+  <p-card class="block">
     <p-tabs [value]="activeTabIndex()" (valueChange)="onTabChange($event)" scrollable>
       <p-tablist>
         <p-tab [value]="0">

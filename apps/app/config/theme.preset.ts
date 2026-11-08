@@ -201,6 +201,15 @@ export const BadmanPreset = definePreset(Aura, {
   // background/border, which in our inverted dark.surface scale is
   // the LIGHTEST color. Remap it to the dark end of the scale.
   components: {
+    card: {
+      css: ({ dt }) => `
+        @layer theme {
+          .p-card {
+            border: 1px solid ${dt('content.border.color')};
+          }
+        }
+      `,
+    },
     // Aura's dark Button outlined/text "secondary" variant defaults to
     // `{surface.400}` for the foreground, which in our inverted dark
     // surface scale is a mid-dark gray — producing dark-on-dark text.

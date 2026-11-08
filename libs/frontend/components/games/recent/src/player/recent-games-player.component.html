@@ -5,21 +5,21 @@
 
   <!-- Filter: All / Singles / Doubles / Mixed -->
   @if (!loading() && games().length > 0) {
-      <p-selectbutton
-        class="mb-4 flex-wrap"
-        size="small"
-        [ariaLabelledBy]="recentGamesTitle.id"
-        [options]="filterOptions()"
-        [ngModel]="selectedGameType()"
-        (ngModelChange)="selectGameType($event)"
-        optionLabel="label"
-        optionValue="value"
-        [allowEmpty]="false"
-      >
-        <ng-template #item let-option>
-          <span class="text-color">{{ option.label }}</span>
-        </ng-template>
-      </p-selectbutton>
+    <p-selectbutton
+      class="mb-4 flex-wrap"
+      size="small"
+      [ariaLabelledBy]="recentGamesTitle.id"
+      [options]="filterOptions()"
+      [ngModel]="selectedGameType()"
+      (ngModelChange)="selectGameType($event)"
+      optionLabel="label"
+      optionValue="value"
+      [allowEmpty]="false"
+    >
+      <ng-template #item let-option>
+        <span class="text-color">{{ option.label }}</span>
+      </ng-template>
+    </p-selectbutton>
   }
 
   @if (!loading()) {
@@ -30,161 +30,189 @@
       @let myCol = ownTeam === 2 ? 2 : 1;
       @let oppCol = ownTeam === 2 ? 1 : 2;
 
-      <p-card class="block mt-3 border border-surface overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
-      <article class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
-        <time class="col-start-1 row-start-1 flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:row-span-2 sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r" [attr.datetime]="game?.playedAt | dayjsFormat: 'YYYY-MM-DD'">
-          <span class="text-[0.6875rem] font-bold uppercase tracking-widest text-muted-color">{{ game?.playedAt | dayjsFormat: 'ddd' }}</span>
-          <span class="font-bold text-2xl leading-none text-color">{{ game?.playedAt | dayjsFormat: 'DD' }}</span>
-          <span class="font-mono text-[0.8125rem] text-muted-color">{{ game?.playedAt | dayjsFormat: 'MMM' }}</span>
-        </time>
+      <p-card class="block mt-3 overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+        <article class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
+          <time
+            class="col-start-1 row-start-1 flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:row-span-2 sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r"
+            [attr.datetime]="game?.playedAt | dayjsFormat: 'YYYY-MM-DD'"
+          >
+            <span class="text-[0.6875rem] font-bold uppercase tracking-widest text-muted-color">{{ game?.playedAt | dayjsFormat: 'ddd' }}</span>
+            <span class="font-bold text-2xl leading-none text-color">{{ game?.playedAt | dayjsFormat: 'DD' }}</span>
+            <span class="font-mono text-[0.8125rem] text-muted-color">{{ game?.playedAt | dayjsFormat: 'MMM' }}</span>
+          </time>
 
-        <!-- Top row: meta + teams (right-aligned) -->
-        <div class="col-span-2 col-start-1 row-start-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-2 min-w-0 px-4 sm:px-5 py-3 sm:pb-0 border-b sm:border-b-0 border-surface">
-          <!-- Meta: tag + competition/tournament name -->
-          <div class="flex items-center gap-2 text-xs text-muted-color min-w-0">
-            @if (game?.tournamentDraw?.name) {
-              <a
-                class="no-underline shrink-0"
-                [routerLink]="[
-                  '/tournament',
-                  game.tournamentDraw.tournamentSubEvent?.tournamentEvent?.id,
-                  'sub-events',
-                  game.tournamentDraw.tournamentSubEvent?.id,
-                  'draws',
-                  game?.tournamentDraw.id,
-                ]"
-              >
-                <p-tag [value]="game?.tournamentDraw.name" severity="info" />
-              </a>
-              @if (game?.tournamentDraw.tournamentSubEvent?.tournamentEvent?.name) {
-                <span class="min-w-0 flex-1 sm:flex-initial break-words sm:truncate">{{ game?.tournamentDraw.tournamentSubEvent.tournamentEvent.name }}</span>
-              }
-            } @else if (isComp) {
-              <a
-                class="no-underline shrink-0"
-                [routerLink]="[
-                  '/competition',
-                  game?.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.id,
-                  'sub-events',
-                  game?.competitionEncounter?.drawCompetition?.competitionSubEvent?.id,
-                  'draws',
-                  game?.competitionEncounter?.drawCompetition?.id,
-                ]"
-              >
-                <p-tag [value]="game?.competitionEncounter?.drawCompetition?.name ?? ''" severity="info" />
-              </a>
-              @if (game?.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.name) {
-                <span class="min-w-0 flex-1 sm:flex-initial break-words sm:truncate">{{ game?.competitionEncounter.drawCompetition.competitionSubEvent.competitionEvent.name }}</span>
-              }
-            } @else {
-              <p-tag [value]="game?.gameType ?? ''" severity="secondary" />
-            }
-          </div>
-
-          <!-- Teams (competitions only) -->
-          @if (isComp) {
-            <div class="font-semibold text-[0.8125rem] text-color sm:text-right leading-relaxed sm:leading-tight sm:max-w-[220px]">
-              @if (game?.competitionEncounter?.homeTeam?.club?.slug) {
+          <!-- Top row: meta + teams (right-aligned) -->
+          <div
+            class="col-span-2 col-start-1 row-start-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-2 min-w-0 px-4 sm:px-5 py-3 sm:pb-0 border-b sm:border-b-0 border-surface"
+          >
+            <!-- Meta: tag + competition/tournament name -->
+            <div class="flex items-center gap-2 text-xs text-muted-color min-w-0">
+              @if (game?.tournamentDraw?.name) {
                 <a
-                  class="text-color no-underline hover:text-primary"
-                  [routerLink]="['/clubs', game.competitionEncounter!.homeTeam!.club!.slug!, 'teams', game.competitionEncounter!.homeTeam!.id!]"
-                  >{{ getHomeTeamName(game) }}</a
+                  class="no-underline shrink-0"
+                  [routerLink]="[
+                    '/tournament',
+                    game.tournamentDraw.tournamentSubEvent?.tournamentEvent?.id,
+                    'sub-events',
+                    game.tournamentDraw.tournamentSubEvent?.id,
+                    'draws',
+                    game?.tournamentDraw.id,
+                  ]"
                 >
-              } @else {
-                {{ getHomeTeamName(game) }}
-              }
-              <span class="text-muted-color font-medium mx-1">vs</span>
-              @if (game?.competitionEncounter?.awayTeam?.club?.slug) {
+                  <p-tag [value]="game?.tournamentDraw.name" severity="info" />
+                </a>
+                @if (game?.tournamentDraw.tournamentSubEvent?.tournamentEvent?.name) {
+                  <span class="min-w-0 flex-1 sm:flex-initial break-words sm:truncate">{{
+                    game?.tournamentDraw.tournamentSubEvent.tournamentEvent.name
+                  }}</span>
+                }
+              } @else if (isComp) {
                 <a
-                  class="text-color no-underline hover:text-primary"
-                  [routerLink]="['/clubs', game.competitionEncounter!.awayTeam!.club!.slug!, 'teams', game.competitionEncounter!.awayTeam!.id!]"
-                  >{{ getAwayTeamName(game) }}</a
+                  class="no-underline shrink-0"
+                  [routerLink]="[
+                    '/competition',
+                    game?.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.id,
+                    'sub-events',
+                    game?.competitionEncounter?.drawCompetition?.competitionSubEvent?.id,
+                    'draws',
+                    game?.competitionEncounter?.drawCompetition?.id,
+                  ]"
                 >
+                  <p-tag [value]="game?.competitionEncounter?.drawCompetition?.name ?? ''" severity="info" />
+                </a>
+                @if (game?.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.name) {
+                  <span class="min-w-0 flex-1 sm:flex-initial break-words sm:truncate">{{
+                    game?.competitionEncounter.drawCompetition.competitionSubEvent.competitionEvent.name
+                  }}</span>
+                }
               } @else {
-                {{ getAwayTeamName(game) }}
+                <p-tag [value]="game?.gameType ?? ''" severity="secondary" />
               }
             </div>
-          }
-        </div>
 
-        <!-- Pairs row -->
-        <div class="contents sm:col-start-2 sm:row-start-2 sm:min-w-0 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2.5 sm:items-center sm:px-5 sm:pb-4 sm:pt-2">
-          <div [attr.data-game-side]="myCol" class="col-start-1 row-start-3 sm:col-auto sm:row-auto flex flex-col justify-center gap-1.5 sm:gap-0.5 min-w-0 pl-4 pr-2 py-3 sm:p-0">
-            @for (m of getTeamMembers(game, myCol); track m?.id) {
-              <span
-                class="inline-flex items-center gap-1.5 text-sm max-w-full"
-                [class.text-color]="isCurrentPlayer(m?.gamePlayer.id || '')"
-                [class.font-semibold]="isCurrentPlayer(m?.gamePlayer.id || '')"
-                [class.text-muted-color]="!isCurrentPlayer(m?.gamePlayer.id || '')"
-              >
-                @if (isCurrentPlayer(m?.gamePlayer.id || '')) {
-                  <span class="min-w-0 break-words sm:truncate">{{ m?.gamePlayer.fullName }}</span>
+            <!-- Teams (competitions only) -->
+            @if (isComp) {
+              <div class="font-semibold text-[0.8125rem] text-color sm:text-right leading-relaxed sm:leading-tight sm:max-w-[220px]">
+                @if (game?.competitionEncounter?.homeTeam?.club?.slug) {
+                  <a
+                    class="text-color no-underline hover:text-primary"
+                    [routerLink]="['/clubs', game.competitionEncounter!.homeTeam!.club!.slug!, 'teams', game.competitionEncounter!.homeTeam!.id!]"
+                    >{{ getHomeTeamName(game) }}</a
+                  >
                 } @else {
-                  <a class="min-w-0 text-inherit no-underline hover:text-primary break-words sm:truncate" [routerLink]="['/players', m?.gamePlayer.id]">
-                    {{ m?.gamePlayer.fullName }}
-                  </a>
+                  {{ getHomeTeamName(game) }}
                 }
-                @if (getPlayerLevel(game, m?.gamePlayer.id || ''); as lvl) {
-                  <app-tier-badge [level]="lvl" size="sm" />
-                }
-              </span>
-            }
-          </div>
-          <span class="hidden sm:block font-mono text-[0.6875rem] text-muted-color uppercase tracking-[0.14em]">vs</span>
-          <div [attr.data-game-side]="oppCol" class="col-start-1 row-start-5 sm:col-auto sm:row-auto flex flex-col justify-center gap-1.5 sm:gap-0.5 min-w-0 pl-4 pr-2 py-3 sm:p-0 sm:items-end sm:text-right">
-            @for (m of getTeamMembers(game, oppCol); track m?.id) {
-              <span class="inline-flex items-center gap-1.5 text-sm text-muted-color max-w-full">
-                <a class="min-w-0 text-inherit no-underline hover:text-primary break-words sm:truncate" [routerLink]="['/players', m?.gamePlayer.id]">
-                  {{ m?.gamePlayer.fullName }}
-                </a>
-                @if (getPlayerLevel(game, m?.gamePlayer.id || ''); as lvl) {
-                  <app-tier-badge [level]="lvl" size="sm" />
-                }
-              </span>
-            }
-          </div>
-        </div>
-
-        <!-- Right top: points -->
-        <div class="col-start-2 row-start-1 sm:col-start-3 flex items-center justify-end sm:justify-center px-4 sm:px-5 py-3 sm:pb-0 border-b sm:border-b-0 sm:border-l border-surface">
-          @if (ownPoints !== 0) {
-            <p-tag
-              [value]="formatPoints(ownPoints)"
-              [severity]="ownPoints > 0 ? 'success' : 'danger'"
-            />
-          }
-        </div>
-
-        <!-- Right row: scores -->
-        <div class="contents sm:col-start-3 sm:row-start-2 sm:flex sm:items-center sm:justify-center sm:px-5 sm:pb-4 sm:pt-2 sm:border-l border-surface">
-          <div class="contents sm:flex sm:gap-2 tabular-nums">
-            @for (side of [myCol, oppCol]; track side) {
-              <div
-                [attr.data-score-side]="side"
-                [class.row-start-3]="side === myCol"
-                [class.row-start-5]="side === oppCol"
-                class="col-start-2 sm:col-auto sm:row-auto flex items-center justify-end gap-1 px-4 py-3 sm:flex-col sm:items-end sm:justify-start sm:p-0"
-              >
-                @for (set of [[game?.set1Team1, game?.set1Team2], [game?.set2Team1, game?.set2Team2], [game?.set3Team1, game?.set3Team2]]; track $index) {
-                  @if (isSetPlayed(set[0], set[1])) {
-                    @let setWon = getSetWinner(set[0], set[1]) === side;
-                    <span data-set-score class="inline-flex min-h-6 items-center justify-end">
-                      @if (setWon) {
-                        <p-tag
-                          [value]="(side === 2 ? set[1] : set[0])?.toString()"
-                          severity="success"
-                        />
-                      } @else {
-                        <span class="px-2 text-sm text-muted-color">{{ side === 2 ? set[1] : set[0] }}</span>
-                      }
-                    </span>
-                  }
+                <span class="text-muted-color font-medium mx-1">vs</span>
+                @if (game?.competitionEncounter?.awayTeam?.club?.slug) {
+                  <a
+                    class="text-color no-underline hover:text-primary"
+                    [routerLink]="['/clubs', game.competitionEncounter!.awayTeam!.club!.slug!, 'teams', game.competitionEncounter!.awayTeam!.id!]"
+                    >{{ getAwayTeamName(game) }}</a
+                  >
+                } @else {
+                  {{ getAwayTeamName(game) }}
                 }
               </div>
             }
           </div>
-        </div>
-      </article>
+
+          <!-- Pairs row -->
+          <div
+            class="contents sm:col-start-2 sm:row-start-2 sm:min-w-0 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2.5 sm:items-center sm:px-5 sm:pb-4 sm:pt-2"
+          >
+            <div
+              [attr.data-game-side]="myCol"
+              class="col-start-1 row-start-3 sm:col-auto sm:row-auto flex flex-col justify-center gap-1.5 sm:gap-0.5 min-w-0 pl-4 pr-2 py-3 sm:p-0"
+            >
+              @for (m of getTeamMembers(game, myCol); track m?.id) {
+                <span
+                  class="inline-flex items-center gap-1.5 text-sm max-w-full"
+                  [class.text-color]="isCurrentPlayer(m?.gamePlayer.id || '')"
+                  [class.font-semibold]="isCurrentPlayer(m?.gamePlayer.id || '')"
+                  [class.text-muted-color]="!isCurrentPlayer(m?.gamePlayer.id || '')"
+                >
+                  @if (isCurrentPlayer(m?.gamePlayer.id || '')) {
+                    <span class="min-w-0 break-words sm:truncate">{{ m?.gamePlayer.fullName }}</span>
+                  } @else {
+                    <a
+                      class="min-w-0 text-inherit no-underline hover:text-primary break-words sm:truncate"
+                      [routerLink]="['/players', m?.gamePlayer.id]"
+                    >
+                      {{ m?.gamePlayer.fullName }}
+                    </a>
+                  }
+                  @if (getPlayerLevel(game, m?.gamePlayer.id || ''); as lvl) {
+                    <app-tier-badge [level]="lvl" size="sm" />
+                  }
+                </span>
+              }
+            </div>
+            <span class="hidden sm:block font-mono text-[0.6875rem] text-muted-color uppercase tracking-[0.14em]">vs</span>
+            <div
+              [attr.data-game-side]="oppCol"
+              class="col-start-1 row-start-5 sm:col-auto sm:row-auto flex flex-col justify-center gap-1.5 sm:gap-0.5 min-w-0 pl-4 pr-2 py-3 sm:p-0 sm:items-end sm:text-right"
+            >
+              @for (m of getTeamMembers(game, oppCol); track m?.id) {
+                <span class="inline-flex items-center gap-1.5 text-sm text-muted-color max-w-full">
+                  <a
+                    class="min-w-0 text-inherit no-underline hover:text-primary break-words sm:truncate"
+                    [routerLink]="['/players', m?.gamePlayer.id]"
+                  >
+                    {{ m?.gamePlayer.fullName }}
+                  </a>
+                  @if (getPlayerLevel(game, m?.gamePlayer.id || ''); as lvl) {
+                    <app-tier-badge [level]="lvl" size="sm" />
+                  }
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Right top: points -->
+          <div
+            class="col-start-2 row-start-1 sm:col-start-3 flex items-center justify-end sm:justify-center px-4 sm:px-5 py-3 sm:pb-0 border-b sm:border-b-0 sm:border-l border-surface"
+          >
+            @if (ownPoints !== 0) {
+              <p-tag [value]="formatPoints(ownPoints)" [severity]="ownPoints > 0 ? 'success' : 'danger'" />
+            }
+          </div>
+
+          <!-- Right row: scores -->
+          <div
+            class="contents sm:col-start-3 sm:row-start-2 sm:flex sm:items-center sm:justify-center sm:px-5 sm:pb-4 sm:pt-2 sm:border-l border-surface"
+          >
+            <div class="contents sm:flex sm:gap-2 tabular-nums">
+              @for (side of [myCol, oppCol]; track side) {
+                <div
+                  [attr.data-score-side]="side"
+                  [class.row-start-3]="side === myCol"
+                  [class.row-start-5]="side === oppCol"
+                  class="col-start-2 sm:col-auto sm:row-auto flex items-center justify-end gap-1 px-4 py-3 sm:flex-col sm:items-end sm:justify-start sm:p-0"
+                >
+                  @for (
+                    set of [
+                      [game?.set1Team1, game?.set1Team2],
+                      [game?.set2Team1, game?.set2Team2],
+                      [game?.set3Team1, game?.set3Team2],
+                    ];
+                    track $index
+                  ) {
+                    @if (isSetPlayed(set[0], set[1])) {
+                      @let setWon = getSetWinner(set[0], set[1]) === side;
+                      <span data-set-score class="inline-flex min-h-6 items-center justify-end">
+                        @if (setWon) {
+                          <p-tag [value]="(side === 2 ? set[1] : set[0])?.toString()" severity="success" />
+                        } @else {
+                          <span class="px-2 text-sm text-muted-color">{{ side === 2 ? set[1] : set[0] }}</span>
+                        }
+                      </span>
+                    }
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </article>
       </p-card>
     } @empty {
       <div class="p-8 text-center">
@@ -231,9 +259,11 @@
   <ng-template #loadingGames let-placeholders>
     <section aria-busy="true" [attr.aria-labelledby]="recentGamesTitle.id" class="flex flex-col gap-3 mt-3">
       @for (placeholder of placeholders; track placeholder) {
-        <p-card class="block border border-surface overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+        <p-card class="block overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
           <div class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
-            <div class="col-span-2 flex items-center px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:justify-center sm:border-b-0 sm:border-r">
+            <div
+              class="col-span-2 flex items-center px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:justify-center sm:border-b-0 sm:border-r"
+            >
               <p-skeleton aria-hidden="true" width="2rem" height="3rem" />
             </div>
             <div class="col-start-1 row-start-2 sm:col-start-2 sm:row-start-1 min-w-0 px-4 sm:px-5 pt-3">
@@ -242,7 +272,9 @@
             <div class="col-start-1 row-start-3 sm:col-start-2 sm:row-start-2 min-w-0 px-4 sm:px-5 pt-2 pb-4">
               <p-skeleton aria-hidden="true" width="100%" height="1rem" />
             </div>
-            <div class="col-start-2 row-start-2 row-span-2 sm:col-start-3 sm:row-start-1 flex items-center gap-2 px-3 sm:px-5 py-4 border-l border-surface">
+            <div
+              class="col-start-2 row-start-2 row-span-2 sm:col-start-3 sm:row-start-1 flex items-center gap-2 px-3 sm:px-5 py-4 border-l border-surface"
+            >
               <p-skeleton aria-hidden="true" width="1.5rem" height="2rem" />
               <p-skeleton aria-hidden="true" width="1.5rem" height="2rem" />
             </div>

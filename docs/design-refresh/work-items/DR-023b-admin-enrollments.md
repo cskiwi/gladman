@@ -20,7 +20,7 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
 - Conditional mount: [admin template](../../../libs/frontend/pages/tournament/src/pages/admin/page-admin.component.html).
 - Preserve phase gates, authorization, query navigation and all operational data.
 - Exclude Settings, check-in, draws, scheduling, shared chrome/theme, backend and translations.
-- The actual enrollment tab now mounts; only the summary child is selected for refresh.
+- The actual enrollment tab mounts; summary and filters/selection are approved Done with disclosed limits.
 - After confirmation, inspect the tab and split broad tables/dialogs/actions into one reviewable child.
   Retain the existing smart page/tab separation; extract presentation only for genuinely repeated structure.
 
@@ -85,8 +85,9 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
   No permissions or operational data were changed by this task.
 - The five summary counts render zero; the total/description labels have existing blank Dutch/French translations.
   Reuse existing `totalEntries` for a meaningful total label; do not alter translation assets in the summary slice.
-- Children: [DR-023b1 summary](DR-023b1-enrollment-summary.md); DR-023b2 filters/selection,
-  DR-023b3 table/feedback, DR-023b4 manual dialog. Only DR-023b1 is selected.
+- Children: [DR-023b1 summary](DR-023b1-enrollment-summary.md);
+  [DR-023b2 filters/selection](DR-023b2-enrollment-filters.md), DR-023b3 table/feedback,
+  DR-023b4 manual dialog and DR-023b5 locale completeness.
 - Source discoveries for later children: FormControl values are read inside effects without reactive bridging;
   query failures are swallowed as empty arrays; manual creation remains a console-only TODO.
   These are pre-existing excluded behavior concerns, not summary implementation work.
@@ -95,3 +96,12 @@ description: 'Recorded blocker before selecting a mounted tournament enrollment-
 - User approval on 2026-11-08 covers the summary implementation/tests and this consumer/child handoff only.
   Parent remains open for the remaining children; its unchecked overall acceptance is not a summary failure.
 - Exact next action in a fresh invocation: scope DR-023b2 filters/selection on the confirmed safe consumer.
+- That handoff is superseded by DR-023b2 implementation and Review.
+  Its reactive selection/search concerns are corrected; swallowed queries, incomplete manual creation and
+  missing locale copy remain assigned to DR-023b3/b4/b5.
+  User explicitly extended DR-023b2 to native Card border cleanup across existing templates.
+  Exact next action: obtain DR-023b2 review with disclosed limits; do not implement DR-023b3 before approval.
+- Subsequent user corrections centralize the necessary Card border in the preset and replace this tab's
+  nested summary/filter Cards with named Panels. DR-023b2 records final validation and remaining review.
+- Final corrected DR-023b2 is approved Done with disclosed limits. Parent stays open for DR-023b3/b4/b5.
+  Exact next action: scope DR-023b3 table/feedback on this confirmed consumer, including swallowed-query handling.

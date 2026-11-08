@@ -18,13 +18,16 @@ describe('UpcomingGamesPlayerComponent cards', () => {
   const loading = signal(false);
   const teamIds = signal<string[]>([]);
   const encounter = {
-    id: 'encounter', date: '2026-10-17T19:00:00',
+    id: 'encounter',
+    date: '2026-10-17T19:00:00',
     homeTeam: { id: 'home', name: 'Home team', club: { id: 'club-home', slug: 'home-club' } },
     awayTeam: { id: 'away', name: 'Away team', club: { id: 'club-away', slug: 'away-club' } },
     drawCompetition: {
-      id: 'draw', name: 'Division A',
+      id: 'draw',
+      name: 'Division A',
       competitionSubEvent: {
-        id: 'sub', competitionEvent: { id: 'event', name: 'Competition season', season: 2026 },
+        id: 'sub',
+        competitionEvent: { id: 'event', name: 'Competition season', season: 2026 },
       },
     },
   } as CompetitionEncounter;
@@ -34,7 +37,10 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     loading.set(false);
     teamIds.set([]);
     (PlayerUpcommingGamesService as jest.Mock).mockImplementation(() => ({
-      games, loading, teamIds, filter: { patchValue: jest.fn() },
+      games,
+      loading,
+      teamIds,
+      filter: { patchValue: jest.fn() },
     }));
     await TestBed.configureTestingModule({
       imports: [UpcomingGamesPlayerComponent, TranslateModule.forRoot()],
@@ -51,7 +57,7 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     expect(fixture.nativeElement.querySelector('.upcoming')).toBeNull();
     expect(fixture.nativeElement.querySelector('[style]')).toBeNull();
     const text = fixture.nativeElement.textContent;
-    ['Home team', 'Away team', 'Division A', 'Competition season', '17', 'Oct', '19:00'].forEach(value => {
+    ['Home team', 'Away team', 'Division A', 'Competition season', '17', 'Oct', '19:00'].forEach((value) => {
       expect(text).toContain(value);
     });
     const dateAndTime = fixture.nativeElement.querySelectorAll('p-card time');
@@ -59,9 +65,10 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     expect(dateAndTime[0].textContent).toContain('Oct');
     expect(dateAndTime[1].textContent.trim()).toBe('19:00');
     const links = fixture.debugElement.queryAll(By.directive(RouterLink));
-    expect(links.map(link => link.injector.get(RouterLink).urlTree?.toString())).toEqual([
+    expect(links.map((link) => link.injector.get(RouterLink).urlTree?.toString())).toEqual([
       '/competition/event/sub-events/sub/draws/draw',
-      '/clubs/home-club/teams/home', '/clubs/away-club/teams/away',
+      '/clubs/home-club/teams/home',
+      '/clubs/away-club/teams/away',
       '/competition/assembly?encounter=encounter&season=2026',
     ]);
     expect(fixture.nativeElement.querySelector('.upcoming-games__expand')).toBeNull();
@@ -76,7 +83,7 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     fixture.detectChanges();
 
     const card = fixture.nativeElement.querySelector('p-card');
-    expect(card.classList.contains('border-surface')).toBe(true);
+    expect(card.classList.contains('border-surface')).toBe(false);
     expect(card.querySelector('.p-card-body').classList.contains('p-0!')).toBe(true);
     expect(card.querySelector('article').classList.contains('sm:grid-cols-[72px_minmax(0,1fr)_auto]')).toBe(true);
     expect(card.querySelector('time').getAttribute('datetime')).toBe('2026-10-17');
@@ -84,15 +91,16 @@ describe('UpcomingGamesPlayerComponent cards', () => {
   });
 
   it('shows three games initially and reveals all games when requested', () => {
-    games.set(Array.from({ length: 5 }, (_, index) => ({
-      ...encounter, id: `encounter-${index}`,
-    })));
+    games.set(
+      Array.from({ length: 5 }, (_, index) => ({
+        ...encounter,
+        id: `encounter-${index}`,
+      })),
+    );
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(3);
-    const expandButton = fixture.nativeElement.querySelector(
-      '.upcoming-games__expand button',
-    ) as HTMLButtonElement;
+    const expandButton = fixture.nativeElement.querySelector('.upcoming-games__expand button') as HTMLButtonElement;
     expect(expandButton).not.toBeNull();
     expect(expandButton.textContent).toContain('all.common.viewAll');
 
@@ -100,46 +108,48 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(5);
-    expect(fixture.nativeElement.querySelector('.upcoming-games__expand')?.textContent)
-      .toContain('all.common.viewLess');
+    expect(fixture.nativeElement.querySelector('.upcoming-games__expand')?.textContent).toContain('all.common.viewLess');
 
-    const collapseButton = fixture.nativeElement.querySelector(
-      '.upcoming-games__expand button',
-    ) as HTMLButtonElement;
+    const collapseButton = fixture.nativeElement.querySelector('.upcoming-games__expand button') as HTMLButtonElement;
     collapseButton?.click();
     fixture.detectChanges();
     expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(3);
 
-    const reexpandButton = fixture.nativeElement.querySelector(
-      '.upcoming-games__expand button',
-    ) as HTMLButtonElement;
+    const reexpandButton = fixture.nativeElement.querySelector('.upcoming-games__expand button') as HTMLButtonElement;
     reexpandButton?.click();
     fixture.detectChanges();
 
     fixture.componentRef.setInput('for', 'another-player');
     fixture.detectChanges();
     expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(3);
-    expect(fixture.nativeElement.querySelector('.upcoming-games__expand')?.textContent)
-      .toContain('all.common.viewAll');
+    expect(fixture.nativeElement.querySelector('.upcoming-games__expand')?.textContent).toContain('all.common.viewAll');
   });
 
   it.each([
-    ['home', 'club-home', 'home'], ['away', 'club-away', 'away'],
+    ['home', 'club-home', 'home'],
+    ['away', 'club-away', 'away'],
   ])('preserves %s assembly parameters and location', (team, club, location) => {
     teamIds.set([team]);
     games.set([encounter]);
     fixture.detectChanges();
     expect(fixture.componentInstance.getAssemblyParams(encounter)).toEqual({
-      encounter: 'encounter', team, club, season: '2026',
+      encounter: 'encounter',
+      team,
+      club,
+      season: '2026',
     });
     expect(fixture.nativeElement.textContent).toContain(`all.game.location.${location}`);
   });
 
   it('keeps team abbreviations and an unlinked draw when route metadata is absent', () => {
-    games.set([{
-      id: 'fallback', homeTeam: { abbreviation: 'HOME' },
-      awayTeam: { abbreviation: 'AWAY' }, drawCompetition: { name: 'Division' },
-    } as CompetitionEncounter]);
+    games.set([
+      {
+        id: 'fallback',
+        homeTeam: { abbreviation: 'HOME' },
+        awayTeam: { abbreviation: 'AWAY' },
+        drawCompetition: { name: 'Division' },
+      } as CompetitionEncounter,
+    ]);
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('HOME');
     expect(fixture.nativeElement.textContent).toContain('AWAY');
@@ -176,11 +186,8 @@ describe('UpcomingGamesPlayerComponent cards', () => {
     expect(fixture.nativeElement.querySelector('[aria-busy]')).toBeNull();
     expect(fixture.nativeElement.querySelector('p-skeleton')).toBeNull();
     expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(1);
-    expect(fixture.nativeElement.querySelector('h3')?.textContent.trim())
-      .toBe('all.game.upcoming.noGamesFound');
-    expect(fixture.nativeElement.querySelector('p')?.textContent.trim())
-      .toBe('all.game.upcoming.noGamesDescription');
-    expect(fixture.nativeElement.querySelector('.pi-calendar')?.getAttribute('aria-hidden'))
-      .toBe('true');
+    expect(fixture.nativeElement.querySelector('h3')?.textContent.trim()).toBe('all.game.upcoming.noGamesFound');
+    expect(fixture.nativeElement.querySelector('p')?.textContent.trim()).toBe('all.game.upcoming.noGamesDescription');
+    expect(fixture.nativeElement.querySelector('.pi-calendar')?.getAttribute('aria-hidden')).toBe('true');
   });
 });

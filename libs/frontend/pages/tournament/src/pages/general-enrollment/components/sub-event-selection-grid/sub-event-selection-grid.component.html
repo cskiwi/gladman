@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
   @for (item of subEvents(); track item.id) {
-    <p-card class="min-w-0" [pt]="{ root: { class: 'h-full border border-surface' } }">
+    <p-card class="min-w-0" styleClass="h-full">
       <ng-template #title>
         <h3 [id]="'enrollment-event-' + item.id" class="text-lg font-semibold text-color m-0 break-words">
           {{ item.name }}

@@ -1,21 +1,19 @@
-<p-card class="block min-w-0" styleClass="border border-surface">
-	<ng-template #subtitle>
-		<span class="wrap-anywhere">{{ label() }}</span>
-	</ng-template>
-	<div class="flex flex-wrap items-center gap-2">
-		<span class="min-w-0 wrap-anywhere text-2xl font-semibold">
-			{{ value() }}
-		</span>
-		@if (delta()) {
-			<p-tag
-				class="min-w-0 wrap-anywhere"
-				[value]="delta()"
-				[severity]="deltaDirection() === 'up' ? 'success'
-					: deltaDirection() === 'down' ? 'danger' : 'secondary'"
-				[icon]="deltaDirection() === 'up' ? 'pi pi-arrow-up'
-					: deltaDirection() === 'down' ? 'pi pi-arrow-down' : undefined"
-			/>
-		}
-	</div>
-	<ng-content />
+<p-card class="block min-w-0">
+  <ng-template #subtitle>
+    <span class="wrap-anywhere">{{ label() }}</span>
+  </ng-template>
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="min-w-0 wrap-anywhere text-2xl font-semibold">
+      {{ value() }}
+    </span>
+    @if (delta()) {
+      <p-tag
+        class="min-w-0 wrap-anywhere"
+        [value]="delta()"
+        [severity]="deltaDirection() === 'up' ? 'success' : deltaDirection() === 'down' ? 'danger' : 'secondary'"
+        [icon]="deltaDirection() === 'up' ? 'pi pi-arrow-up' : deltaDirection() === 'down' ? 'pi pi-arrow-down' : undefined"
+      />
+    }
+  </div>
+  <ng-content />
 </p-card>

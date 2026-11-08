@@ -57,7 +57,10 @@ and the exact next action in the repository documents before stopping.
 On 2026-10-16 the user approved the combined shared hero, headings, and shell as the new layout direction. Use this
 composition for subsequent slices rather than reopening the decorative dashboard design:
 
-- Native styled PrimeNG cards for meaningful grouped content, with rounded corners and a semantic surface border.
+- Native styled PrimeNG cards for meaningful grouped content, using their native appearance and rounded corners.
+  On 2026-11-08 the user requested moving the shared semantic Card border into the PrimeNG preset.
+  Do not repeat `border border-surface` in templates; preserve intentional selection/status accents.
+  Card has no native border token, so its preset component CSS adds one semantic content border in both themes.
 - Responsive identity rows, compact circular avatars, readable headings, and actions that wrap below on narrow screens.
 - Native PrimeNG tables inside the same content surface when a heading and dataset form one group; keep native table
   spacing, row separators, and horizontal scrolling rather than building a custom table.
@@ -79,6 +82,7 @@ verification and the remaining feature migrations are tracked separately and mus
 - Use native semantic HTML for headings, text, lists, and simple structure. Not every section needs a component.
 - Prefer a PrimeNG table, message, tag, button, menu, or drawer over a hand-built visual equivalent.
 - Keep cards and panels purposeful. Do not wrap every section or statistic in another card.
+- Do not nest Cards inside Cards. Use a native Panel for a meaningful group within an existing Card.
 - Do not switch to headless or unstyled mode just to recreate a custom component appearance.
 - Verify APIs against the installed PrimeNG version before implementing; do not copy outdated examples blindly.
 
@@ -225,7 +229,9 @@ An exception is a last resort, not a second styling system. Record it in the wor
 - The smallest necessary styling or color change and any alternative considered.
 - Light/dark and accessibility evidence, affected consumers, and conditions for later removal.
 
-No styling exceptions have been approved by this plan.
+The shared Card-border component CSS in [DR-023b2](work-items/DR-023b2-enrollment-filters.md) is explicitly
+requested by the user: the installed Card has no native border token. Its semantic border lives in the preset,
+not in page styles or repeated template classes.
 
 ## Existing constraints to preserve
 

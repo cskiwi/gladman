@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-6">
-  <p-card class="block min-w-0 border border-surface">
+  <p-panel class="block min-w-0" [header]="'all.tournament.admin.enrollments.title' | translate">
     <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 m-0">
       @for (item of summaryItems; track item.key) {
         <div class="min-w-0">
@@ -15,59 +15,69 @@
         </div>
       }
     </dl>
-  </p-card>
+  </p-panel>
 
   <!-- Filters Section -->
-  <div class="bg-emphasis rounded-border border border-surface p-5">
-    <div class="flex flex-wrap gap-5 items-end">
-      <div class="flex flex-col gap-2 flex-1 min-w-56">
-        <label for="subEvent" class="text-sm font-medium text-color">
+  <p-panel class="block min-w-0" data-testid="enrollment-filters" [header]="'all.games.filters' | translate">
+    <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 items-end">
+      <div class="flex flex-col gap-2 min-w-0">
+        <label id="admin-enrollment-sub-event-label" for="admin-enrollment-sub-event">
           {{ 'all.tournament.admin.enrollments.subEvent' | translate }}
         </label>
         <p-select
-          id="subEvent"
+          inputId="admin-enrollment-sub-event"
+          ariaLabelledBy="admin-enrollment-sub-event-label"
           [formControl]="subEventControl"
           [options]="subEvents()"
           optionLabel="name"
-          [placeholder]="'all.tournament.admin.enrollments.selectSubEvent' | translate"
-          styleClass="w-full"
+          dataKey="id"
+          [placeholder]="'all.tournament.admin.enrollments.subEvent' | translate"
+          fluid
         />
       </div>
 
-      <div class="flex flex-col gap-2">
-        <label for="status" class="text-sm font-medium text-color">
+      <div class="flex flex-col gap-2 min-w-0">
+        <label id="admin-enrollment-status-label" for="admin-enrollment-status">
           {{ 'all.tournament.admin.enrollments.status' | translate }}
         </label>
-        <p-select id="status" [formControl]="statusFilter" [options]="statusOptions" optionLabel="label" optionValue="value" styleClass="w-44" />
+        <p-select
+          inputId="admin-enrollment-status"
+          ariaLabelledBy="admin-enrollment-status-label"
+          [formControl]="statusFilter"
+          [options]="statusOptions()"
+          optionLabel="label"
+          optionValue="value"
+          fluid
+        />
       </div>
 
-      <div class="flex flex-col gap-2 flex-1 min-w-56">
-        <label for="search" class="text-sm font-medium text-color">
-          {{ 'all.tournament.admin.enrollments.search' | translate }}
+      <div class="flex flex-col gap-2 min-w-0">
+        <label for="admin-enrollment-search">
+          {{ 'all.common.search' | translate }}
         </label>
-        <span class="p-input-icon-left w-full">
-          <i class="pi pi-search text-muted-color"></i>
+        <p-iconfield>
+          <p-inputicon class="pi pi-search" aria-hidden="true" />
           <input
             pInputText
-            id="search"
+            id="admin-enrollment-search"
             [formControl]="searchControl"
-            [placeholder]="'all.tournament.admin.enrollments.searchPlaceholder' | translate"
-            class="w-full pl-10"
+            [placeholder]="'all.tournament.admin.enrollments.searchPlayers' | translate"
+            fluid
           />
-        </span>
+        </p-iconfield>
       </div>
 
       <p-button
         icon="pi pi-refresh"
+        [label]="'all.button.refresh' | translate"
         severity="secondary"
         [outlined]="true"
-        pTooltip="Refresh"
-        tooltipPosition="top"
-        (click)="refetch()"
+        (onClick)="refetch()"
         [loading]="loading()"
+        [disabled]="!selectedSubEvent()"
       />
     </div>
-  </div>
+  </p-panel>
 
   @if (updateError()) {
     <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>

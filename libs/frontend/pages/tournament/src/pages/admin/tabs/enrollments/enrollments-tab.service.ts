@@ -15,13 +15,16 @@ export class EnrollmentsTabService {
     search: new FormControl<string>(''),
   });
 
-  private filterSignal = toSignal(this.filter.valueChanges);
+  private readonly filterSignal = toSignal(this.filter.valueChanges, { initialValue: this.filter.getRawValue() });
+  private readonly queryFilter = computed(() => ({ subEventId: this.filterSignal().subEventId, status: this.filterSignal().status }), {
+    equal: (previous, next) => previous.subEventId === next.subEventId && previous.status === next.status,
+  });
 
   readonly updating = signal(false);
   readonly updateError = signal<string | null>(null);
 
   private enrollmentsResource = resource({
-    params: this.filterSignal,
+    params: () => (this.queryFilter().subEventId ? this.queryFilter() : undefined),
     loader: async ({ params, abortSignal }) => {
       if (!params.subEventId) {
         return [];
@@ -83,7 +86,7 @@ export class EnrollmentsTabService {
   // Public selectors
   enrollments = computed(() => {
     const enrollments = this.enrollmentsResource.value() ?? [];
-    const search = this.filter.get('search')?.value?.toLowerCase() ?? '';
+    const search = this.filterSignal().search?.toLowerCase() ?? '';
 
     if (!search) {
       return enrollments;

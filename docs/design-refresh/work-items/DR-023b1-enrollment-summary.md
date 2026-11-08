@@ -102,6 +102,12 @@ description: 'Bounded five-count summary refresh on a confirmed phase-enabled ad
   with existing warnings and zero blocking errors. Subsequent changes are documentation-only.
 - Commit the approved slice/handoff only. Exact next action in a fresh invocation: scope DR-023b2
   filters/selection on the confirmed safe consumer; inspect reactive-control behavior before acceptance.
+- Subsequent DR-023b2 user feedback explicitly removes redundant border classes from all native Cards,
+  including this summary. Its historical bordered-Card evidence above is not the current Card direction.
+  Counts, labels and summary grouping remain unchanged; DR-023b2 records the fresh consumer checks.
+- User then requested Panels instead of Cards inside Cards. DR-023b2 now hosts these same counts in a
+  named native Panel; the outer administration Card obtains its semantic border from the shared preset.
+  This is an explicit later presentation correction, not a restart of the approved summary implementation.
 
 [component]: ../../../libs/frontend/pages/tournament/src/pages/admin/tabs/enrollments/enrollments-tab.component.ts
 [template]: ../../../libs/frontend/pages/tournament/src/pages/admin/tabs/enrollments/enrollments-tab.component.html

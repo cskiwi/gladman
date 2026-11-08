@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TournamentEnrollment, TournamentEvent, TournamentSubEvent } from '@app/models';
 import { EnrollmentStatus } from '@app/models-enum';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { map } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { MessageModule } from 'primeng/message';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
@@ -26,12 +30,14 @@ import { EnrollmentsTabService } from './enrollments-tab.service';
   imports: [
     ReactiveFormsModule,
     TranslateModule,
-    CardModule,
+    PanelModule,
     ButtonModule,
     TableModule,
     TagModule,
     SelectModule,
     InputTextModule,
+    IconFieldModule,
+    InputIconModule,
     MessageModule,
     ProgressBarModule,
     DialogModule,
@@ -50,6 +56,7 @@ export class EnrollmentsTabComponent {
 
   private readonly dataService = new EnrollmentsTabService();
   private readonly confirmationService = new ConfirmationService();
+  private readonly translate = inject(TranslateService);
 
   // Form controls
   subEventControl = new FormControl<TournamentSubEvent | null>(null);
@@ -68,14 +75,25 @@ export class EnrollmentsTabComponent {
   });
 
   // Status options
-  readonly statusOptions = [
-    { label: 'All', value: null },
-    { label: 'Confirmed', value: EnrollmentStatus.CONFIRMED },
-    { label: 'Pending', value: EnrollmentStatus.PENDING },
-    { label: 'Waiting List', value: EnrollmentStatus.WAITING_LIST },
-    { label: 'Cancelled', value: EnrollmentStatus.CANCELLED },
+  private readonly statusOptionDefinitions = [
+    { label: 'all.tournament.admin.enrollments.allStatuses', value: null },
+    { label: 'all.tournament.admin.enrollments.confirmed', value: EnrollmentStatus.CONFIRMED },
+    { label: 'all.tournament.admin.enrollments.pending', value: EnrollmentStatus.PENDING },
+    { label: 'all.tournament.admin.enrollments.waitingList', value: EnrollmentStatus.WAITING_LIST },
+    { label: 'all.tournament.admin.enrollments.cancelled', value: EnrollmentStatus.CANCELLED },
     { label: 'Withdrawn', value: EnrollmentStatus.WITHDRAWN },
   ];
+  readonly statusOptions = toSignal(
+    this.translate.stream(this.statusOptionDefinitions.map((option) => option.label)).pipe(
+      map(() =>
+        this.statusOptionDefinitions.map((option) => ({
+          ...option,
+          label: this.translate.instant(option.label),
+        })),
+      ),
+    ),
+    { initialValue: this.statusOptionDefinitions },
+  );
 
   // Data
   enrollments = this.dataService.enrollments;
@@ -94,44 +112,29 @@ export class EnrollmentsTabComponent {
   ] as const;
 
   // Selected sub-event
-  selectedSubEvent = signal<TournamentSubEvent | null>(null);
+  readonly selectedSubEvent = toSignal(this.subEventControl.valueChanges, { initialValue: this.subEventControl.value });
+  private readonly selectedStatus = toSignal(this.statusFilter.valueChanges, { initialValue: this.statusFilter.value });
+  private readonly search = toSignal(this.searchControl.valueChanges, { initialValue: this.searchControl.value });
 
   // Sub-events list
   subEvents = computed(() => this.tournament()?.tournamentSubEvents ?? []);
 
   constructor() {
-    // Watch sub-event selection
     effect(() => {
-      const subEvent = this.subEventControl.value;
-      if (subEvent) {
-        this.selectedSubEvent.set(subEvent);
-        this.dataService.filter.patchValue({
-          subEventId: subEvent.id,
-        });
-      }
-    });
-
-    // Watch status filter
-    effect(() => {
-      const status = this.statusFilter.value;
       this.dataService.filter.patchValue({
-        status: status,
+        subEventId: this.selectedSubEvent()?.id ?? null,
+        status: this.selectedStatus(),
+        search: this.search() ?? '',
       });
     });
 
-    // Watch search
-    effect(() => {
-      const search = this.searchControl.value;
-      this.dataService.filter.patchValue({
-        search: search ?? '',
-      });
-    });
-
-    // Auto-select first sub-event
+    // Reconcile changed tournament options, without undoing an explicit cleared selection.
     effect(() => {
       const subEvents = this.subEvents();
-      if (subEvents.length > 0 && !this.selectedSubEvent()) {
-        this.subEventControl.setValue(subEvents[0]);
+      const selected = this.subEventControl.value;
+      const next = subEvents.find((subEvent) => subEvent.id === selected?.id) ?? subEvents[0] ?? null;
+      if (selected !== next) {
+        this.subEventControl.setValue(next);
       }
     });
   }

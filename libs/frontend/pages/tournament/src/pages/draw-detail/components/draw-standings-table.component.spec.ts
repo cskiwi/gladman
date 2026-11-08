@@ -33,7 +33,7 @@ describe('Draw standings presentation', () => {
     expect(element.querySelector('[role="region"]')?.getAttribute('aria-label')).toBe('all.competition.standings');
     expect(element.querySelector('[role="region"]')?.getAttribute('tabindex')).toBe('0');
     expect(element.querySelectorAll('th[scope="col"]')).toHaveLength(8);
-    expect(element.querySelector('p-card')?.classList.contains('border-surface')).toBe(true);
+    expect(element.querySelector('p-card')?.classList.contains('border-surface')).toBe(false);
     expect(element.querySelector('p-table')?.classList.contains('tabular-nums')).toBe(true);
     expect(element.querySelector('table')?.classList.contains('p-datatable-scrollable-table')).toBe(true);
     expect(element.querySelectorAll('.text-right')).toHaveLength(0);

@@ -37,10 +37,7 @@ describe('RecentGamesPlayerComponent indicators', () => {
 
     await TestBed.configureTestingModule({
       imports: [RecentGamesPlayerComponent, TranslateModule.forRoot()],
-      providers: [
-        provideRouter([]),
-        { provide: IS_MOBILE, useValue: signal(true) },
-      ],
+      providers: [provideRouter([]), { provide: IS_MOBILE, useValue: signal(true) }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RecentGamesPlayerComponent);
@@ -87,13 +84,17 @@ describe('RecentGamesPlayerComponent indicators', () => {
   });
 
   it('uses the same compact card, visible date rail and content grid as upcoming games', () => {
-    games.set([{
-      id: 'single', gameType: 'S', playedAt: '2026-10-17T19:00:00',
-    } as Game]);
+    games.set([
+      {
+        id: 'single',
+        gameType: 'S',
+        playedAt: '2026-10-17T19:00:00',
+      } as Game,
+    ]);
     fixture.detectChanges();
 
     const card = fixture.nativeElement.querySelector('p-card');
-    expect(card.classList.contains('border-surface')).toBe(true);
+    expect(card.classList.contains('border-surface')).toBe(false);
     expect(card.querySelector('.p-card-body').classList.contains('p-0!')).toBe(true);
     expect(card.querySelector('article').classList.contains('sm:grid-cols-[72px_minmax(0,1fr)_auto]')).toBe(true);
     const date = card.querySelector('time');
@@ -113,24 +114,32 @@ describe('RecentGamesPlayerComponent indicators', () => {
     expect(filter.componentInstance.size()).toBe('small');
     expect(filter.componentInstance.allowEmpty()).toBe(false);
     expect(filter.componentInstance.options().map((option: { label: string }) => option.label)).toEqual([
-      'all.game.filter.all · 1', 'all.game.filter.singles · 1',
-      'all.game.filter.doubles · 0', 'all.game.filter.mixed · 0',
+      'all.game.filter.all · 1',
+      'all.game.filter.singles · 1',
+      'all.game.filter.doubles · 0',
+      'all.game.filter.mixed · 0',
     ]);
   });
 
   it.each([1, 2])('pairs mobile player rows with scores for current-player team %s', (team) => {
     const opponent = team === 1 ? 2 : 1;
-    games.set([{
-      id: 'doubles', gameType: 'D',
-      gamePlayerMemberships: [
-        { id: 'current', team, gamePlayer: { id: 'current-player', fullName: 'Current player' } },
-        { id: 'partner', team, gamePlayer: { id: 'partner', fullName: 'Current partner' } },
-        { id: 'opponent', team: opponent, gamePlayer: { id: 'opponent', fullName: 'Opponent player' } },
-      ],
-      set1Team1: 21, set1Team2: 19,
-      set2Team1: 10, set2Team2: 21,
-      set3Team1: 22, set3Team2: 20,
-    } as Game]);
+    games.set([
+      {
+        id: 'doubles',
+        gameType: 'D',
+        gamePlayerMemberships: [
+          { id: 'current', team, gamePlayer: { id: 'current-player', fullName: 'Current player' } },
+          { id: 'partner', team, gamePlayer: { id: 'partner', fullName: 'Current partner' } },
+          { id: 'opponent', team: opponent, gamePlayer: { id: 'opponent', fullName: 'Opponent player' } },
+        ],
+        set1Team1: 21,
+        set1Team2: 19,
+        set2Team1: 10,
+        set2Team2: 21,
+        set3Team1: 22,
+        set3Team2: 20,
+      } as Game,
+    ]);
     fixture.detectChanges();
 
     const card = fixture.nativeElement.querySelector('article') as HTMLElement;
@@ -145,9 +154,9 @@ describe('RecentGamesPlayerComponent indicators', () => {
     expect(ownScores?.classList.contains('row-start-3')).toBe(true);
     expect(otherPlayers?.classList.contains('row-start-5')).toBe(true);
     expect(otherScores?.classList.contains('row-start-5')).toBe(true);
-    expect(Array.from(ownScores?.querySelectorAll('[data-set-score]') ?? [])
-      .map(score => score.textContent?.trim())).toEqual(
-      team === 1 ? ['21', '10', '22'] : ['19', '21', '20']);
+    expect(Array.from(ownScores?.querySelectorAll('[data-set-score]') ?? []).map((score) => score.textContent?.trim())).toEqual(
+      team === 1 ? ['21', '10', '22'] : ['19', '21', '20'],
+    );
     expect(card.querySelectorAll('[data-game-side]')).toHaveLength(2);
     expect(card.querySelectorAll('[data-set-score]')).toHaveLength(6);
     const versus = card.querySelector('[data-game-side] + span');
@@ -156,7 +165,7 @@ describe('RecentGamesPlayerComponent indicators', () => {
   });
 
   it.each(['all', 'S', 'D', 'MX'])('preserves native %s selection and local filtering', async (type) => {
-    games.set(['S', 'D', 'MX'].map(gameType => ({ id: gameType, gameType }) as Game));
+    games.set(['S', 'D', 'MX'].map((gameType) => ({ id: gameType, gameType }) as Game));
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -205,34 +214,38 @@ describe('RecentGamesPlayerComponent indicators', () => {
   it.each([
     [452, '+452', 'success'],
     [-25, '-25', 'danger'],
-  ])('renders %s points as %s with native %s severity',
-    (points, label, severity) => {
-      games.set([{
-        id: 'game', gameType: 'S',
+  ])('renders %s points as %s with native %s severity', (points, label, severity) => {
+    games.set([
+      {
+        id: 'game',
+        gameType: 'S',
         rankingPoints: [{ playerId: 'current-player', points }],
-      } as Game]);
-      fixture.detectChanges();
+      } as Game,
+    ]);
+    fixture.detectChanges();
 
-      const tags = fixture.debugElement.queryAll(By.directive(Tag));
-      const pointTag = tags.find(tag =>
-        tag.componentInstance.value() === label);
-      expect(pointTag?.componentInstance.severity()).toBe(severity);
-      expect(pointTag?.nativeElement.textContent).toContain(label);
-      expect(pointTag?.nativeElement.hasAttribute('tabindex')).toBe(false);
-    });
+    const tags = fixture.debugElement.queryAll(By.directive(Tag));
+    const pointTag = tags.find((tag) => tag.componentInstance.value() === label);
+    expect(pointTag?.componentInstance.severity()).toBe(severity);
+    expect(pointTag?.nativeElement.textContent).toContain(label);
+    expect(pointTag?.nativeElement.hasAttribute('tabindex')).toBe(false);
+  });
 
   it('omits zero current-player points regardless of opponent points', () => {
-      games.set([{
-        id: 'game', gameType: 'S',
+    games.set([
+      {
+        id: 'game',
+        gameType: 'S',
         rankingPoints: [
           { playerId: 'opponent', points: 999 },
           { playerId: 'current-player', points: 0 },
         ],
-      } as Game]);
-      fixture.detectChanges();
+      } as Game,
+    ]);
+    fixture.detectChanges();
 
-      const tags = fixture.debugElement.queryAll(By.directive(Tag));
-      expect(tags.map(tag => tag.componentInstance.value())).toEqual(['S']);
+    const tags = fixture.debugElement.queryAll(By.directive(Tag));
+    expect(tags.map((tag) => tag.componentInstance.value())).toEqual(['S']);
   });
 
   it('omits points when ranking data is missing', () => {
@@ -240,22 +253,29 @@ describe('RecentGamesPlayerComponent indicators', () => {
     fixture.detectChanges();
 
     const tags = fixture.debugElement.queryAll(By.directive(Tag));
-    expect(tags.map(tag => tag.componentInstance.value())).toEqual(['S']);
+    expect(tags.map((tag) => tag.componentInstance.value())).toEqual(['S']);
   });
 
   it.each([1, 2])('preserves three-set ordering for current-player team %s', (team) => {
-    games.set([{
-      id: 'game', gameType: 'S',
-      gamePlayerMemberships: [{ team, gamePlayer: { id: 'current-player', fullName: 'Current player' } }],
-      set1Team1: 21, set1Team2: 19,
-      set2Team1: 10, set2Team2: 21,
-      set3Team1: 22, set3Team2: 20,
-    } as Game]);
+    games.set([
+      {
+        id: 'game',
+        gameType: 'S',
+        gamePlayerMemberships: [{ team, gamePlayer: { id: 'current-player', fullName: 'Current player' } }],
+        set1Team1: 21,
+        set1Team2: 19,
+        set2Team1: 10,
+        set2Team2: 21,
+        set3Team1: 22,
+        set3Team2: 20,
+      } as Game,
+    ]);
     fixture.detectChanges();
 
     const scores = fixture.debugElement.queryAll(By.css('[data-set-score]'));
-    expect(scores.map(score => score.nativeElement.textContent.trim())).toEqual(
-      team === 1 ? ['21', '10', '22', '19', '21', '20'] : ['19', '21', '20', '21', '10', '22']);
+    expect(scores.map((score) => score.nativeElement.textContent.trim())).toEqual(
+      team === 1 ? ['21', '10', '22', '19', '21', '20'] : ['19', '21', '20', '21', '10', '22'],
+    );
     const expectedWinners = team === 1 ? [true, false, true, false, true, false] : [false, true, false, true, false, true];
     scores.forEach((score, index) => {
       const tag = score.query(By.directive(Tag));
@@ -269,12 +289,21 @@ describe('RecentGamesPlayerComponent indicators', () => {
   });
 
   it.each([
-    [1, 1], [2, 2], [1, 2], [2, 1], [1, undefined], [undefined, 1],
+    [1, 1],
+    [2, 2],
+    [1, 2],
+    [2, 1],
+    [1, undefined],
+    [undefined, 1],
   ])('omits result icons for team %s and winner %s', (team, winner) => {
-    games.set([{
-      id: 'game', gameType: 'S', winner,
-      gamePlayerMemberships: team ? [{ team, gamePlayer: { id: 'current-player' } }] : [],
-    } as Game]);
+    games.set([
+      {
+        id: 'game',
+        gameType: 'S',
+        winner,
+        gamePlayerMemberships: team ? [{ team, gamePlayer: { id: 'current-player' } }] : [],
+      } as Game,
+    ]);
     fixture.detectChanges();
 
     const result = fixture.debugElement.query(By.css('article [data-game-result]'));
@@ -293,8 +322,8 @@ describe('RecentGamesPlayerComponent indicators', () => {
     fixture.detectChanges();
 
     const scores = fixture.debugElement.queryAll(By.css('[data-set-score]'));
-    expect(scores.map(score => score.nativeElement.textContent.trim())).toEqual(values);
+    expect(scores.map((score) => score.nativeElement.textContent.trim())).toEqual(values);
     const tags = fixture.debugElement.queryAll(By.css('[data-set-score] p-tag'));
-    expect(tags.map(tag => tag.componentInstance.severity())).toEqual(severities);
+    expect(tags.map((tag) => tag.componentInstance.severity())).toEqual(severities);
   });
 });

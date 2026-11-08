@@ -11,7 +11,7 @@
       @for (game of games(); track game.id) {
         @let bye = isBye(game);
         @let sets = getPlayedSets(game);
-        <p-card class="block min-w-0 border border-surface">
+        <p-card class="block min-w-0">
           <article
             class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[auto_minmax(0,1fr)_auto] gap-3"
             [attr.aria-label]="getPlayers(game).join(' vs ')"

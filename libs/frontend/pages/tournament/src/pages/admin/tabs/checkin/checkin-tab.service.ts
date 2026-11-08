@@ -34,7 +34,7 @@ export class CheckinTabService {
     search: new FormControl<string>(''),
   });
 
-  private filterSignal = toSignal(this.filter.valueChanges);
+  private filterSignal = toSignal(this.filter.valueChanges, { initialValue: this.filter.getRawValue() });
 
   // Loading and error states
   readonly updating = signal(false);
@@ -48,69 +48,68 @@ export class CheckinTabService {
         return { checkIns: [], stats: null };
       }
 
-      try {
-        const result = await lastValueFrom(
-          this.apollo.query<{
-            tournamentCheckInList: CheckInWithDetails[];
-            checkInStats: CheckInStats;
-          }>({
-            query: gql`
-              query TournamentCheckInData($tournamentEventId: ID!, $status: CheckInStatus) {
-                tournamentCheckInList(tournamentEventId: $tournamentEventId, status: $status) {
+      const result = await lastValueFrom(
+        this.apollo.query<{
+          tournamentCheckInList: CheckInWithDetails[];
+          checkInStats: CheckInStats;
+        }>({
+          query: gql`
+            query TournamentCheckInData($tournamentEventId: ID!, $status: CheckInStatus) {
+              tournamentCheckInList(tournamentEventId: $tournamentEventId, status: $status) {
+                id
+                status
+                checkedInAt
+                notes
+                player {
                   id
-                  status
-                  checkedInAt
-                  notes
-                  player {
-                    id
-                    firstName
-                    lastName
-                    fullName
-                    memberId
-                  }
-                  enrollment {
-                    id
-                    isGuest
-                    guestName
-                    guestEmail
-                    tournamentSubEvent {
-                      id
-                      name
-                      gameType
-                    }
-                  }
+                  firstName
+                  lastName
+                  fullName
+                  memberId
                 }
-                checkInStats(tournamentEventId: $tournamentEventId) {
-                  total
-                  checkedIn
-                  pending
-                  noShow
-                  checkInRate
+                enrollment {
+                  id
+                  isGuest
+                  guestName
+                  guestEmail
+                  tournamentSubEvent {
+                    id
+                    name
+                    gameType
+                  }
                 }
               }
-            `,
-            variables: {
-              tournamentEventId: params.tournamentEventId,
-              status: params.status ?? undefined,
-            },
-            context: { signal: abortSignal },
-            fetchPolicy: 'network-only',
-          }),
-        );
+              checkInStats(tournamentEventId: $tournamentEventId) {
+                total
+                checkedIn
+                pending
+                noShow
+                checkInRate
+              }
+            }
+          `,
+          variables: {
+            tournamentEventId: params.tournamentEventId,
+            status: params.status ?? undefined,
+          },
+          context: { signal: abortSignal },
+          fetchPolicy: 'network-only',
+        }),
+      );
 
-        return {
-          checkIns: result.data?.tournamentCheckInList ?? [],
-          stats: result.data?.checkInStats ?? null,
-        };
-      } catch {
-        return { checkIns: [], stats: null };
+      if (!result.data?.tournamentCheckInList || !result.data.checkInStats) {
+        throw new Error('Check-in response is missing records or statistics');
       }
+      return {
+        checkIns: result.data.tournamentCheckInList,
+        stats: result.data.checkInStats,
+      };
     },
   });
 
   // Public selectors
   checkIns = computed(() => {
-    const allCheckIns = this.checkInsResource.value()?.checkIns ?? [];
+    const allCheckIns = this.checkInsResource.hasValue() ? this.checkInsResource.value().checkIns : [];
     const search = this.filter.get('search')?.value?.toLowerCase() ?? '';
 
     if (!search) {
@@ -127,7 +126,7 @@ export class CheckinTabService {
 
   stats = computed(() => {
     return (
-      this.checkInsResource.value()?.stats ?? {
+      (this.checkInsResource.hasValue() ? this.checkInsResource.value().stats : null) ?? {
         total: 0,
         checkedIn: 0,
         pending: 0,

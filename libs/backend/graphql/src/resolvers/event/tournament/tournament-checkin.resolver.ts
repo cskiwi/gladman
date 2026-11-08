@@ -5,7 +5,7 @@ import { BadRequestException, ForbiddenException, NotFoundException, UseGuards }
 import { Args, ID, Int, Mutation, ObjectType, Field, Parent, Query, ResolveField, Resolver, registerEnumType } from '@nestjs/graphql';
 import { TournamentCheckInArgs } from '../../../args';
 import { CheckInPlayerInput, MarkNoShowInput, BulkCheckInInput } from '../../../inputs';
-import { In } from 'typeorm';
+import { FindOptionsWhere, In } from 'typeorm';
 
 // Register the CheckInStatus enum for GraphQL
 registerEnumType(CheckInStatus, {
@@ -78,7 +78,7 @@ export class TournamentCheckInResolver {
     @Args('tournamentEventId', { type: () => ID }) tournamentEventId: string,
     @Args('status', { type: () => CheckInStatus, nullable: true }) status?: CheckInStatus,
   ): Promise<TournamentCheckIn[]> {
-    const where: any = { tournamentEventId };
+    const where: FindOptionsWhere<TournamentCheckIn> = { tournamentEventId };
 
     if (status) {
       where.status = status;
@@ -191,7 +191,7 @@ export class TournamentCheckInResolver {
 
   // ============ MUTATIONS ============
 
-  @Mutation(() => TournamentCheckIn, { description: 'Initialize check-in records for a tournament' })
+  @Mutation(() => [TournamentCheckIn], { description: 'Initialize check-in records for a tournament' })
   @UseGuards(PermGuard)
   async initializeCheckIns(
     @User() user: Player,

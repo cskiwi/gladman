@@ -5,16 +5,17 @@ import { TournamentEvent } from '@app/models';
 import { CheckInStatus } from '@app/models-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
-import { CheckInWithDetails, CheckinTabService } from './checkin-tab.service';
+import { CheckInStats, CheckInWithDetails, CheckinTabService } from './checkin-tab.service';
 
 @Component({
   selector: 'app-checkin-tab',
@@ -23,7 +24,8 @@ import { CheckInWithDetails, CheckinTabService } from './checkin-tab.service';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    CardModule,
+    PanelModule,
+    SkeletonModule,
     ButtonModule,
     TableModule,
     TagModule,
@@ -58,6 +60,14 @@ export class CheckinTabComponent {
 
   // Selection
   selectedCheckIns = signal<CheckInWithDetails[]>([]);
+
+  readonly summaryItems = [
+    { key: 'total', label: 'totalPlayers', description: 'totalDescription' },
+    { key: 'checkedIn', label: 'checkedIn', description: 'checkedInDescription' },
+    { key: 'pending', label: 'pending', description: 'pendingDescription' },
+    { key: 'noShow', label: 'noShow', description: 'noShowDescription' },
+    { key: 'checkInRate', label: 'checkinRate', description: 'rateDescription' },
+  ] as const satisfies ReadonlyArray<{ key: keyof CheckInStats; label: string; description: string }>;
 
   // Status filter options
   readonly statusOptions = [

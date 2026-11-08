@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023c1 check-in summary is Done with explicit approval: [summary brief](work-items/DR-023c1-checkin-summary.md).
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-08.
+Approval covers this summary, its bounded API prerequisite, tests, summary locale assets and repository handoff.
+Accepted failed/unperformed criteria remain unchecked; approval is not a claim that those checks passed.
+Fresh authorized browser confirms the visible consumer at
+`/tournament/759e0526-8440-4108-bba3-55a7d8b94e72/admin?tab=checkin`.
+Native Panel/typed metric loop replaces five decorative tiles; scoped utility tokens fall 179 to 27.
+Named loading/error feedback and a stable native refresh action preserve keyboard focus.
+Resolver registration, initialization list output and typed filtering are corrected; query errors are explicit.
+Summary descriptions are complete in three locales; remaining tab copy is excluded.
+User restarted API; actual list/statistics now return HTTP 200 and genuine zeros.
+Runtime introspection verifies `[TournamentCheckIn!]!` initialization output without executing the mutation.
+Final 12 locale/theme/390/1440px cases fit; four safe loading/nonzero/error/recovery cases pass with zero mutations.
+Sampled summary text contrast passes: labels/descriptions 4.87/6.65:1, title/values 19.87/16.00:1.
+Native error Message contrast still fails at 4.44/4.40:1; preserve DR-034 rather than adding page styling.
+Focused summary 9 / resolver 6 tests pass; final tournament suite passes 18 suites / 264 tests.
+Affected Nx lint/build and API development build pass; final frontend lint/build rerun passes.
+Limits: exhaustive accessibility/contrast, dedicated SSR/hydration, live writes and complete operational API validation.
+Post-approval all 34 workspace lint targets pass with existing warnings.
+Exact next action in a fresh invocation: scope DR-023c2 filters/search on the confirmed visible consumer,
+including refresh consolidation and existing nonreactive controls. Do not begin it in this invocation.
+DR-023c and DR-023 remain open. Other children are unstarted; no dependencies, operational mutations or push.
+
+### Previous completed focus: enrollment aggregate acceptance
+
 DR-023b aggregate acceptance is Done with explicit approval: [reconciled parent](work-items/DR-023b-admin-enrollments.md).
 All five approved children are committed; DR-023b5 is `57c1fc65`, not a pending commit.
 Current source matches the approved native Panels/filters/Table/Dialog and three-locale copy.
@@ -1976,7 +2001,11 @@ and linked from their registry rows.
 | [DR-023b3](work-items/DR-023b3-enrollment-table.md)           | Enrollment table and feedback; explicit query errors                        | Done        |
 | [DR-023b4](work-items/DR-023b4-manual-enrollment.md)          | Manual enrollment dialog and functional authorized creation                 | Done        |
 | [DR-023b5](work-items/DR-023b5-enrollment-locales.md)         | Mounted enrollment locale completeness; descriptions, statuses and feedback | Done        |
-| DR-023c                                                       | Check-in tab; authorized mounted consumer confirmed, scope next             | Backlog     |
+| [DR-023c](work-items/DR-023c-admin-checkin.md)                | Check-in tab; approved bounded API prerequisite and summary child           | In progress |
+| [DR-023c1](work-items/DR-023c1-checkin-summary.md)            | Check-in five-count summary and approved read-API prerequisite              | Done        |
+| DR-023c2                                                      | Check-in filters/search; scope after summary approval                       | Backlog     |
+| DR-023c3                                                      | Check-in table/feedback and operational action presentation                 | Backlog     |
+| DR-023c4                                                      | Remaining mounted check-in locale completeness                              | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                                      | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                          | Backlog     |
@@ -2480,11 +2509,17 @@ Parent: DR-022. Project: `frontend-pages-tournament`.
 Projects: `frontend-pages-tournament`, with shared controls where already used. All three areas live under
 `/tournament/:tournamentId/admin`.
 
-- DR-023: enrollment management and check-in tabs, one child task per tab.
+- DR-023: enrollment management and check-in tabs, split into independently reviewable children.
 - DR-023a: shared administration chrome/feedback prerequisite for DR-023b/c and DR-024/DR-025 tab work.
-  Actual supplied tournament mounts the shell but disables all four operational tabs; no phase mutation for testing.
-  Confirm a real phase-enabled consumer before scoping DR-023b enrollment management or DR-023c check-in.
+  The original supplied tournament disabled operational tabs; later authorized evidence confirms enrollment and check-in
+  consumers on the imported finished tournament. DR-023b is approved Done with disclosed limits.
+  Fresh DR-023c investigation confirms the visible Check-in tab, but its read API is missing from the running schema.
+  The approved DR-023c1 prerequisite repair now registers the existing resolver; user restart restores real reads.
+  DR-023c1 is approved Done with disclosed limits; the remaining filter/table/locale children stay unstarted.
+  Never treat swallowed query failures as a successful empty dataset or mutate phase/records for testing.
 - DR-024: draw management and scheduling tabs, one child task per tab.
+  DR-023c1 browser observation: the independently mounted `TournamentScheduleData` still fails HTTP 400.
+  Confirm its query/schema prerequisites when scoping scheduling; do not repair this other tab during check-in work.
 - DR-025: settings, general settings, sub-events, and phase controls.
 - Treat any shared admin tab shell change as an explicit cross-tab dependency.
 - Preserve permissions, confirmations, validation, live state, and destructive-action safeguards.

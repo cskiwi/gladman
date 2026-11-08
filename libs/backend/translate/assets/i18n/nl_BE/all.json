@@ -1376,7 +1376,7 @@
         "checkinTime": "Check-in tijd",
         "filterByStatus": "Filter op status",
         "groupBySubEvent": "Groepeer op onderdeel",
-        "initialize": "",
+        "initialize": "Check-ins initialiseren",
         "initializeCheckins": "Check-ins initialiseren",
         "initializeFirst": "Initialiseer eerst de check-ins",
         "initializeHint": "",

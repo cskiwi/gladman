@@ -35,6 +35,13 @@ export class CheckinTabService {
   });
 
   private filterSignal = toSignal(this.filter.valueChanges, { initialValue: this.filter.getRawValue() });
+  private readonly queryParams = computed(
+    () => ({
+      tournamentEventId: this.filterSignal().tournamentEventId,
+      status: this.filterSignal().status,
+    }),
+    { equal: (previous, current) => previous.tournamentEventId === current.tournamentEventId && previous.status === current.status },
+  );
 
   // Loading and error states
   readonly updating = signal(false);
@@ -42,7 +49,7 @@ export class CheckinTabService {
 
   // Check-ins resource
   private checkInsResource = resource({
-    params: this.filterSignal,
+    params: this.queryParams,
     loader: async ({ params, abortSignal }) => {
       if (!params.tournamentEventId) {
         return { checkIns: [], stats: null };
@@ -110,7 +117,7 @@ export class CheckinTabService {
   // Public selectors
   checkIns = computed(() => {
     const allCheckIns = this.checkInsResource.hasValue() ? this.checkInsResource.value().checkIns : [];
-    const search = this.filter.get('search')?.value?.toLowerCase() ?? '';
+    const search = this.filterSignal().search?.trim().toLowerCase() ?? '';
 
     if (!search) {
       return allCheckIns;

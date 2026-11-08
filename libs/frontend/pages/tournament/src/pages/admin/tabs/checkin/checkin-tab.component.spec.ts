@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
+import { CheckInStatus } from '@app/models-enum';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
 import { CheckinTabComponent } from './checkin-tab.component';
 
-describe('Check-in summary', () => {
+describe('Check-in summary and filters', () => {
   let fixture: ComponentFixture<CheckinTabComponent>;
   let query: jest.Mock;
   let mutate: jest.Mock;
@@ -117,4 +118,97 @@ describe('Check-in summary', () => {
       expect(mutate).not.toHaveBeenCalled();
     },
   );
+
+  it('sends status enum changes, clears All and preserves filters when the tournament changes', async () => {
+    await settle();
+    fixture.componentInstance.statusFilter.setValue(CheckInStatus.CHECKED_IN);
+    await settle();
+    expect(query.mock.lastCall[0].variables.status).toBe(CheckInStatus.CHECKED_IN);
+    fixture.componentInstance.searchControl.setValue('safe');
+    await settle();
+    expect(query).toHaveBeenCalledTimes(2);
+    fixture.componentRef.setInput('tournament', { id: 'other-safe-tournament' });
+    await settle();
+    expect(query.mock.lastCall[0].variables).toEqual({ tournamentEventId: 'other-safe-tournament', status: CheckInStatus.CHECKED_IN });
+    expect(fixture.componentInstance.searchControl.value).toBe('safe');
+    fixture.componentInstance.statusFilter.setValue(null);
+    await settle();
+    expect(query.mock.lastCall[0].variables.status).toBeUndefined();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('filters player, guest and member-ID locally and clearing restores records without a query', async () => {
+    const records = [
+      { id: 'safe-member', status: CheckInStatus.PENDING, player: { fullName: 'Safe Member', memberId: 'TEST123' } },
+      { id: 'safe-guest', status: CheckInStatus.PENDING, enrollment: { isGuest: true, guestName: 'Example Guest' } },
+    ];
+    query.mockReturnValue(of({ data: { tournamentCheckInList: records, checkInStats: stats } }));
+    await settle();
+    for (const [search, id] of [
+      ['  SAFE MEMBER  ', 'safe-member'],
+      ['test123', 'safe-member'],
+      ['example guest', 'safe-guest'],
+    ]) {
+      fixture.componentInstance.searchControl.setValue(search);
+      await settle();
+      expect(fixture.componentInstance.checkIns().map((record) => record.id)).toEqual([id]);
+    }
+    fixture.componentInstance.searchControl.setValue('not-found');
+    await settle();
+    expect(fixture.componentInstance.checkIns()).toEqual([]);
+    fixture.componentInstance.searchControl.setValue('');
+    await settle();
+    expect(fixture.componentInstance.checkIns()).toHaveLength(2);
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('uses named native fluid filters and one refresh while loading, with no operational test writes', async () => {
+    const pending = new Subject<typeof response>();
+    query.mockReturnValue(pending);
+    fixture.detectChanges();
+    TestBed.tick();
+    fixture.detectChanges();
+    const filters: HTMLElement = fixture.nativeElement.querySelector('[data-testid="checkin-filters"]');
+    expect(filters.tagName.toLowerCase()).toBe('p-panel');
+    expect(filters.querySelector('#admin-checkin-status')?.getAttribute('aria-labelledby')).toBe('admin-checkin-status-label');
+    expect(filters.querySelector('label[for="admin-checkin-search"]')).not.toBeNull();
+    expect(filters.querySelector('p-iconfield p-inputicon')).not.toBeNull();
+    expect(fixture.nativeElement.querySelectorAll('.pi-refresh')).toHaveLength(1);
+    expect(filters.querySelector('input')?.disabled).toBe(false);
+    pending.next(response);
+    pending.complete();
+    await settle();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('updates real locale options and filter copy without resetting status/search or refetching', async () => {
+    const translate = TestBed.inject(TranslateService);
+    await settle();
+    fixture.componentInstance.statusFilter.setValue(CheckInStatus.NO_SHOW);
+    fixture.componentInstance.searchControl.setValue('safe');
+    await settle();
+    const queryCount = query.mock.calls.length;
+    for (const locale of ['en', 'nl_BE', 'fr_BE']) {
+      const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+      translate.setTranslation(locale, { all: dictionary });
+      translate.use(locale);
+      await settle();
+      const copy = dictionary.tournament.admin.checkin;
+      expect(fixture.componentInstance.statusOptions().map((option) => option.label)).toEqual([
+        copy.allStatuses,
+        copy.pending,
+        copy.checkedIn,
+        copy.noShow,
+      ]);
+      const filters: HTMLElement = fixture.nativeElement.querySelector('[data-testid="checkin-filters"]');
+      expect(filters.querySelector('input')?.placeholder).toBe(copy.searchPlayers);
+      expect(copy.initialize.trim()).not.toBe('');
+      expect(filters.textContent).toContain(copy.initialize);
+      expect(fixture.componentInstance.statusFilter.value).toBe(CheckInStatus.NO_SHOW);
+      expect(fixture.componentInstance.searchControl.value).toBe('safe');
+    }
+    expect(query).toHaveBeenCalledTimes(queryCount);
+    expect(mutate).not.toHaveBeenCalled();
+  });
 });

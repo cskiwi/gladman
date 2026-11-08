@@ -1376,7 +1376,7 @@
         "checkinTime": "Heure d'enregistrement",
         "filterByStatus": "Filtrer par statut",
         "groupBySubEvent": "Groupe par composante",
-        "initialize": "",
+        "initialize": "Initialiser les enregistrements",
         "initializeCheckins": "Initialisation de l'enregistrement",
         "initializeFirst": "Initialiser d'abord les check-ins",
         "initializeHint": "",

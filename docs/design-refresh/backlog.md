@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023c2 is Done with explicit approval: [check-in filters/search](work-items/DR-023c2-checkin-filters.md).
+Fresh authorized mounted Check-in consumer confirmed on 2026-11-08.
+Native responsive filters, reactive status/local search and refresh consolidation are implemented.
+Preserve initialization and selection; exclude table/operational redesign, other tabs and shared styling.
+Focused 13 tests, scoped lint/build and API development build pass; utility tokens fall 36 to 15.
+User restarted API; three actual HTTP 200 dictionaries now contain the initialization labels.
+Final 12 settled locale/theme/390/1440px checks and four fresh status overlays fit.
+Safe local-search/status/locale/loading/error/recovery checks pass; stable focus and zero mutations.
+Sampled heading/labels and initialization contrast pass; exhaustive accessibility and SSR/hydration remain unverified.
+Full tournament suite/live operations are not run; DR-034 native error contrast and DR-024 stay separate.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-08.
+Approval covers this child, two initialization locale values, tests and handoff; limits remain unchecked.
+All 34 post-approval workspace lint targets pass with existing warnings.
+Commit this approved slice only; no push. DR-023c and DR-023 remain open.
+Exact next action in a fresh invocation: scope DR-023c3 table/operational presentation with safeguards.
+Do not start another child in this invocation.
+
+### Previous completed focus: check-in summary
+
 DR-023c1 check-in summary is Done with explicit approval: [summary brief](work-items/DR-023c1-checkin-summary.md).
 User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-08.
 Approval covers this summary, its bounded API prerequisite, tests, summary locale assets and repository handoff.
@@ -2003,7 +2022,7 @@ and linked from their registry rows.
 | [DR-023b5](work-items/DR-023b5-enrollment-locales.md)         | Mounted enrollment locale completeness; descriptions, statuses and feedback | Done        |
 | [DR-023c](work-items/DR-023c-admin-checkin.md)                | Check-in tab; approved bounded API prerequisite and summary child           | In progress |
 | [DR-023c1](work-items/DR-023c1-checkin-summary.md)            | Check-in five-count summary and approved read-API prerequisite              | Done        |
-| DR-023c2                                                      | Check-in filters/search; scope after summary approval                       | Backlog     |
+| [DR-023c2](work-items/DR-023c2-checkin-filters.md)            | Reactive check-in filters/search and refresh consolidation                  | Done        |
 | DR-023c3                                                      | Check-in table/feedback and operational action presentation                 | Backlog     |
 | DR-023c4                                                      | Remaining mounted check-in locale completeness                              | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                                      | Backlog     |

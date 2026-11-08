@@ -1,12 +1,16 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TournamentEvent } from '@app/models';
 import { CheckInStatus } from '@app/models-enum';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { map } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -31,6 +35,8 @@ import { CheckInStats, CheckInWithDetails, CheckinTabService } from './checkin-t
     TagModule,
     SelectModule,
     InputTextModule,
+    IconFieldModule,
+    InputIconModule,
     MessageModule,
     ProgressBarModule,
     TooltipModule,
@@ -45,10 +51,13 @@ export class CheckinTabComponent {
   tournament = input.required<TournamentEvent>();
 
   private readonly dataService = new CheckinTabService();
+  private readonly translate = inject(TranslateService);
 
   // Form controls
   statusFilter = new FormControl<CheckInStatus | null>(null);
   searchControl = new FormControl<string>('');
+  private readonly selectedStatus = toSignal(this.statusFilter.valueChanges, { initialValue: this.statusFilter.value });
+  private readonly search = toSignal(this.searchControl.valueChanges, { initialValue: this.searchControl.value });
 
   // Data
   checkIns = this.dataService.checkIns;
@@ -70,37 +79,25 @@ export class CheckinTabComponent {
   ] as const satisfies ReadonlyArray<{ key: keyof CheckInStats; label: string; description: string }>;
 
   // Status filter options
-  readonly statusOptions = [
-    { label: 'All', value: null },
-    { label: 'Pending', value: CheckInStatus.PENDING },
-    { label: 'Checked In', value: CheckInStatus.CHECKED_IN },
-    { label: 'No Show', value: CheckInStatus.NO_SHOW },
+  private readonly statusOptionDefinitions = [
+    { label: 'all.tournament.admin.checkin.allStatuses', value: null },
+    { label: 'all.tournament.admin.checkin.pending', value: CheckInStatus.PENDING },
+    { label: 'all.tournament.admin.checkin.checkedIn', value: CheckInStatus.CHECKED_IN },
+    { label: 'all.tournament.admin.checkin.noShow', value: CheckInStatus.NO_SHOW },
   ];
+  readonly statusOptions = toSignal(
+    this.translate
+      .stream(this.statusOptionDefinitions.map((option) => option.label))
+      .pipe(map(() => this.statusOptionDefinitions.map((option) => ({ ...option, label: this.translate.instant(option.label) })))),
+    { initialValue: this.statusOptionDefinitions },
+  );
 
   constructor() {
-    // Initialize filter with tournament ID
     effect(() => {
-      const tournament = this.tournament();
-      if (tournament) {
-        this.dataService.filter.patchValue({
-          tournamentEventId: tournament.id,
-        });
-      }
-    });
-
-    // Watch status filter
-    effect(() => {
-      const status = this.statusFilter.value;
       this.dataService.filter.patchValue({
-        status,
-      });
-    });
-
-    // Watch search
-    effect(() => {
-      const search = this.searchControl.value;
-      this.dataService.filter.patchValue({
-        search: search ?? '',
+        tournamentEventId: this.tournament().id,
+        status: this.selectedStatus(),
+        search: this.search() ?? '',
       });
     });
   }

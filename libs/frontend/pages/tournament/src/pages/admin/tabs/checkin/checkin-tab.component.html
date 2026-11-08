@@ -41,53 +41,50 @@
     }
   </p-panel>
 
-  <!-- Actions Bar -->
-  <div class="bg-emphasis rounded-xl border border-surface p-4">
-    <div class="flex flex-wrap gap-4 items-end">
-      <!-- Status Filter -->
-      <div class="flex flex-col gap-1.5">
-        <label for="status" class="text-sm font-medium text-color">
+  <p-panel data-testid="checkin-filters" [header]="'all.tournament.admin.checkin.filterByStatus' | translate">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+      <div class="flex flex-col gap-2 min-w-0">
+        <label id="admin-checkin-status-label" for="admin-checkin-status">
           {{ 'all.tournament.admin.checkin.status' | translate }}
         </label>
-        <p-select id="status" [formControl]="statusFilter" [options]="statusOptions" optionLabel="label" optionValue="value" styleClass="w-44" />
+        <p-select
+          inputId="admin-checkin-status"
+          ariaLabelledBy="admin-checkin-status-label"
+          [formControl]="statusFilter"
+          [options]="statusOptions()"
+          optionLabel="label"
+          optionValue="value"
+          fluid
+        />
       </div>
 
-      <!-- Search -->
-      <div class="flex flex-col gap-1.5">
-        <label for="search" class="text-sm font-medium text-color">
-          {{ 'all.tournament.admin.checkin.search' | translate }}
+      <div class="flex flex-col gap-2 min-w-0">
+        <label for="admin-checkin-search">
+          {{ 'all.common.search' | translate }}
         </label>
-        <div class="relative">
-          <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-muted-color text-sm"></i>
+        <p-iconfield>
+          <p-inputicon class="pi pi-search" aria-hidden="true" />
           <input
             pInputText
-            id="search"
+            id="admin-checkin-search"
             [formControl]="searchControl"
-            [placeholder]="'all.tournament.admin.checkin.searchPlaceholder' | translate"
-            class="w-64 pl-9"
+            [placeholder]="'all.tournament.admin.checkin.searchPlayers' | translate"
+            fluid
           />
-        </div>
+        </p-iconfield>
       </div>
 
-      <!-- Spacer -->
-      <div class="flex-1"></div>
-
-      <!-- Action Buttons -->
-      <div class="flex gap-2">
-        <p-button
-          icon="pi pi-play"
-          [label]="'all.tournament.admin.checkin.initialize' | translate"
-          severity="secondary"
-          [outlined]="true"
-          (click)="initializeCheckIns()"
-          [loading]="updating()"
-          pTooltip="Create check-in records for all confirmed enrollments"
-        />
-
-        <p-button icon="pi pi-refresh" severity="secondary" [outlined]="true" (click)="refetch()" [loading]="loading()" pTooltip="Refresh data" />
-      </div>
+      <p-button
+        icon="pi pi-play"
+        [label]="'all.tournament.admin.checkin.initialize' | translate"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="initializeCheckIns()"
+        [loading]="updating()"
+        fluid
+      />
     </div>
-  </div>
+  </p-panel>
 
   <!-- Error Message -->
   @if (updateError()) {

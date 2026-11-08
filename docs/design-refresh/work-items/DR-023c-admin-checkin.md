@@ -8,7 +8,8 @@ description: 'Check-in child scopes, confirmed mounted consumer and API prerequi
 - ID: DR-023c; parent DR-023 remains open. Authoritative status: [backlog](../backlog.md).
 - Dependency: approved DR-023a administration chrome.
 - Design rules: [rollout](../README.md).
-- Current selected child: [DR-023c1 summary](DR-023c1-checkin-summary.md).
+- Current selected child: [DR-023c2 filters](DR-023c2-checkin-filters.md).
+  Approved [DR-023c1 summary](DR-023c1-checkin-summary.md) remains complete with disclosed limits.
   User approved the bounded API prerequisite repair; implementation and focused checks now pass.
   User restarted API; real list/statistics reads and summary browser checks pass.
   Summary child is now approved Done with disclosed limits; this parent remains open.
@@ -22,7 +23,9 @@ description: 'Check-in child scopes, confirmed mounted consumer and API prerequi
 - Preserve phase/permission gates, tournament context, data, notifications, localization and operational safeguards.
 - Exclude other tabs, global theme/shared components and all operational visual-test mutations.
 - DR-023c1: five-count summary and explicitly approved API prerequisite; approved Done with disclosed limits.
-- DR-023c2: filters/search; scope separately after summary approval.
+- DR-023c2: native filters/search, reactive controls and refresh consolidation implemented.
+  Focused checks and final live-dictionary/browser verification pass after user API restart;
+  user approved completion/commit with disclosed limits.
 - DR-023c3: table/feedback and operational action presentation; separately scope functional safeguards.
 - DR-023c4: remaining mounted locale completeness; do not fill unrelated/unconsumed dictionary blanks.
 - Keep the existing smart tab/service separation. Reuse the approved native Panel/definition-list direction.
@@ -65,5 +68,12 @@ description: 'Check-in child scopes, confirmed mounted consumer and API prerequi
 - User approved completion/commit with disclosed limits and selected "Nothing else" on 2026-11-08.
   Approval covers DR-023c1 implementation/tests, its bounded prerequisite, summary assets and repository handoff only.
   Unperformed/failed child criteria remain unchecked. All 34 post-approval workspace lint targets pass.
-- Exact next action in a fresh invocation: scope DR-023c2 filters/search only.
+- DR-023c2 records 13 focused tests, scoped lint/build, API development build, 12 settled locale/theme/width cases,
+  four native overlays, local search/status/locale/recovery checks and passing sampled text contrast.
+  No operational mutations; real data and preferences restored. Exhaustive accessibility, dedicated hydration,
+  live operations and full tournament suite remain unverified.
+- User approved DR-023c2 completion/commit with disclosed limits and selected "Nothing else" on 2026-11-08.
+  Child remains honest about unperformed/failed criteria; all 34 post-approval workspace lint targets pass.
+- Exact next action: commit approved DR-023c2 and its scoped handoff only, without push.
+  DR-023c3 is the next candidate in a fresh invocation, not another active slice.
   Parents stay open until all required children are complete; no other child is started here.

@@ -1588,7 +1588,7 @@
         "endTime": "Eindtijd",
         "filterByDate": "Filter op datum",
         "generateSlots": "Tijdslots genereren",
-        "hideUnscheduled": "",
+        "hideUnscheduled": "Niet geplande wedstrijden verbergen",
         "inProgress": "Bezig",
         "minimizeWait": "Wachttijd minimaliseren",
         "minRestTime": "Minimale rusttijd (min)",
@@ -1604,7 +1604,7 @@
         "scheduled": "Gepland",
         "selectCourts": "Selecteer velden",
         "selectDates": "Selecteer dagen",
-        "showUnscheduled": "",
+        "showUnscheduled": "Niet geplande wedstrijden tonen",
         "slotDuration": "Duur tijdslot",
         "startTime": "Starttijd",
         "strategies": {

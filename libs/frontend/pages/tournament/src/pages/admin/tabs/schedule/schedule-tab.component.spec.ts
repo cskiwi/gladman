@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { print } from 'graphql';
@@ -86,6 +87,120 @@ describe('Scheduling read feedback', () => {
     expect(counts()).toEqual(['0', '0', '0', '0', '0', '0']);
   });
 
+  it.each(['en', 'nl_BE', 'fr_BE'])('renders named native controls and a localized panel toggle in %s', async (locale) => {
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    await settle();
+    const controls: HTMLElement = fixture.nativeElement.querySelector('[data-testid="schedule-controls"]');
+    const copy = dictionary.tournament.admin.schedule;
+    expect(controls.tagName).toBe('P-TOOLBAR');
+    expect(controls.getAttribute('role')).toBe('toolbar');
+    expect(controls.getAttribute('aria-label')).toBe(copy.title);
+    const select = controls.querySelector('[role="combobox"]');
+    expect(select?.id).toBe('scheduleDateFilter');
+    expect(select?.getAttribute('aria-label')).toBe(copy.filterByDate);
+    expect(controls.querySelector('label')?.getAttribute('for')).toBe(select?.id);
+    expect(controls.querySelector('label')?.textContent?.trim()).toBe(copy.filterByDate);
+    const buttons = controls.querySelectorAll<HTMLButtonElement>('button.p-button');
+    expect(buttons).toHaveLength(5);
+    expect(buttons[0].textContent).toContain(copy.generateSlots);
+    expect(buttons[1].textContent).toContain(copy.autoSchedule);
+    expect(buttons[2].textContent).toContain(copy.publishSchedule);
+    expect(buttons[3].getAttribute('aria-label')).toBe(dictionary.button.refresh);
+    const toggle = buttons[4];
+    expect(copy.hideUnscheduled.trim()).not.toBe('');
+    expect(copy.showUnscheduled.trim()).not.toBe('');
+    expect(toggle.getAttribute('aria-label')).toBe(copy.hideUnscheduled);
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    toggle.click();
+    await settle();
+    expect(toggle.getAttribute('aria-label')).toBe(copy.showUnscheduled);
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(fixture.componentInstance.showUnscheduledPanel()).toBe(false);
+    toggle.click();
+    await settle();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(fixture.componentInstance.showUnscheduledPanel()).toBe(true);
+    expect(controls.textContent).not.toContain('all.tournament.');
+    expect(controls.querySelector('[style], .bg-emphasis, .border-surface')).toBeNull();
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it('preserves empty/populated/updating action gates and dispatches each handler once', async () => {
+    await settle();
+    const actions = () =>
+      fixture.nativeElement.querySelectorAll('[data-testid="schedule-controls"] p-button button') as NodeListOf<HTMLButtonElement>;
+    expect(Array.from(actions(), (button) => button.disabled)).toEqual([false, true, true, false]);
+    query.mockReturnValue(
+      of({
+        data: {
+          ...empty.data,
+          tournamentSchedule: ['AVAILABLE', 'SCHEDULED'].map((status, index) => ({
+            id: `safe-slot-${index}`,
+            courtId: 'safe-court',
+            startTime: '2026-11-09T09:00:00Z',
+            endTime: '2026-11-09T09:30:00Z',
+            status,
+          })),
+          tournamentScheduleCourts: [{ id: 'safe-court', name: 'Safe Court' }],
+          unscheduledGames: [{ id: 'safe-game' }],
+        },
+      }),
+    );
+    actions()[3].click();
+    await settle();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(Array.from(actions(), (button) => button.disabled)).toEqual([false, false, false, false]);
+    fixture.componentInstance.updating.set(true);
+    await settle();
+    expect(Array.from(actions(), (button) => button.disabled)).toEqual([true, true, true, false]);
+    fixture.componentInstance.updating.set(false);
+    await settle();
+    const generate = jest.spyOn(fixture.componentInstance, 'openGenerateSlotsDialog').mockImplementation();
+    const autoSchedule = jest.spyOn(fixture.componentInstance, 'openAutoScheduleDialog').mockImplementation();
+    const publish = jest.spyOn(fixture.componentInstance, 'publishSchedule').mockResolvedValue();
+    actions()[0].click();
+    actions()[1].click();
+    actions()[2].click();
+    expect(generate).toHaveBeenCalledTimes(1);
+    expect(autoSchedule).toHaveBeenCalledTimes(1);
+    expect(publish).toHaveBeenCalledTimes(1);
+  });
+
+  it('applies and clears the native date filter and refreshes the current date without writes', async () => {
+    const date = new Date(2026, 10, 9);
+    const response = {
+      data: {
+        ...empty.data,
+        tournamentSchedule: [
+          { id: 'safe-slot', courtId: 'safe-court', startTime: date.toISOString(), endTime: '2026-11-09T00:30:00Z', status: 'AVAILABLE' },
+        ],
+      },
+    };
+    query.mockReturnValue(of(response));
+    await settle();
+    fixture.debugElement.query(By.css('p-select')).triggerEventHandler('ngModelChange', date);
+    await settle();
+    expect(fixture.componentInstance.selectedDate()).toBe(date);
+    expect(query.mock.lastCall?.[0].variables.date).toBe(date);
+    const controls: HTMLElement = fixture.nativeElement.querySelector('[data-testid="schedule-controls"]');
+    expect(controls.querySelector('[role="combobox"]')?.textContent?.trim()).toBe('Mon, Nov 9');
+    const refresh = controls.querySelectorAll<HTMLButtonElement>('p-button button')[3];
+    refresh.click();
+    await settle();
+    expect(query.mock.lastCall?.[0].variables.date).toBe(date);
+    const refreshedControls: HTMLElement = fixture.nativeElement.querySelector('[data-testid="schedule-controls"]');
+    const clear = refreshedControls.querySelector('.p-select-clear-icon');
+    expect(clear).not.toBeNull();
+    clear?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await settle();
+    expect(fixture.componentInstance.selectedDate()).toBeNull();
+    expect(query.mock.lastCall?.[0].variables.date).toBeUndefined();
+    expect(query).toHaveBeenCalledTimes(4);
+  });
+
   it('keeps genuine empty success distinct from an error and uses the real court contract', async () => {
     await settle();
     expect(fixture.componentInstance.error()).toBeNull();
@@ -107,6 +222,7 @@ describe('Scheduling read feedback', () => {
     expect(fixture.nativeElement.querySelector('[aria-busy="true"]')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('p-progressbar')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('[data-testid="schedule-summary"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="schedule-controls"]')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.schedule.noSlots');
     expect(fixture.nativeElement.querySelector('p-button')).toBeNull();
     pending.next(empty);
@@ -122,6 +238,7 @@ describe('Scheduling read feedback', () => {
     expect(fixture.componentInstance.error()).toBe('Safe scheduling read failure');
     expect(fixture.nativeElement.querySelector('p-message')?.textContent).toContain('Safe scheduling read failure');
     expect(fixture.nativeElement.querySelector('[data-testid="schedule-summary"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="schedule-controls"]')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.schedule.noSlots');
     expect(fixture.componentInstance.stats().totalSlots).toBe(0);
     const retry: HTMLButtonElement = fixture.nativeElement.querySelector('p-button button');

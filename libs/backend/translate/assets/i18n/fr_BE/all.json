@@ -1588,7 +1588,7 @@
         "endTime": "Heure de fin",
         "filterByDate": "Filtrer par date",
         "generateSlots": "Générer des créneaux horaires",
-        "hideUnscheduled": "",
+        "hideUnscheduled": "Masquer les matchs non programmés",
         "inProgress": "En cours",
         "minimizeWait": "Minimiser le temps d'attente",
         "minRestTime": "Temps de repos minimum (min)",
@@ -1604,7 +1604,7 @@
         "scheduled": "Prévu",
         "selectCourts": "Sélectionner les champs",
         "selectDates": "Sélectionner les jours",
-        "showUnscheduled": "",
+        "showUnscheduled": "Afficher les matchs non programmés",
         "slotDuration": "Durée du créneau horaire",
         "startTime": "Heure de début",
         "strategies": {

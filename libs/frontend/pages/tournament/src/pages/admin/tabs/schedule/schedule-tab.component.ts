@@ -19,6 +19,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToolbarModule } from 'primeng/toolbar';
 import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
 
 @Component({
@@ -38,6 +39,7 @@ import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
     ProgressBarModule,
     DialogModule,
     TooltipModule,
+    ToolbarModule,
     CheckboxModule,
     DatePickerModule,
     MultiSelectModule,

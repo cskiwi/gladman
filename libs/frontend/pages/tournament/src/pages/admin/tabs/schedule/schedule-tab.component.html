@@ -28,54 +28,54 @@
       </dl>
     </p-panel>
 
-    <!-- Actions Bar -->
-    <div class="bg-emphasis rounded-border border border-surface p-5">
-      <div class="flex flex-wrap gap-4 items-end">
-        <div class="flex flex-col gap-2">
-          <label for="dateFilter" class="text-sm font-medium text-color">
-            {{ 'all.tournament.admin.schedule.date' | translate }}
+    <p-toolbar data-testid="schedule-controls" [attr.aria-label]="'all.tournament.admin.schedule.title' | translate">
+      <div class="flex flex-col xl:flex-row xl:items-end gap-4 w-full">
+        <div class="flex flex-col gap-2 xl:w-48">
+          <label for="scheduleDateFilter">
+            {{ 'all.tournament.admin.schedule.filterByDate' | translate }}
           </label>
           <p-select
-            id="dateFilter"
+            inputId="scheduleDateFilter"
+            [ariaLabel]="'all.tournament.admin.schedule.filterByDate' | translate"
             [options]="availableDates()"
             [ngModel]="selectedDate()"
             (ngModelChange)="onDateChange($event)"
             [placeholder]="'all.tournament.admin.schedule.allDates' | translate"
             [showClear]="true"
-            styleClass="w-48"
+            fluid
           >
-            <ng-template let-date pTemplate="item">
+            <ng-template #item let-date>
               {{ date | date: 'EEE, MMM d' }}
             </ng-template>
-            <ng-template let-date pTemplate="selectedItem">
+            <ng-template #selectedItem let-date>
               {{ date | date: 'EEE, MMM d' }}
             </ng-template>
           </p-select>
         </div>
 
-        <div class="flex gap-2 flex-wrap flex-1 justify-end">
+        <div class="flex flex-wrap gap-2 xl:ml-auto">
           <p-button
             icon="pi pi-clock"
             [label]="'all.tournament.admin.schedule.generateSlots' | translate"
             severity="secondary"
             [outlined]="true"
-            (click)="openGenerateSlotsDialog()"
+            (onClick)="openGenerateSlotsDialog()"
             [loading]="updating()"
           />
 
           <p-button
             icon="pi pi-bolt"
             [label]="'all.tournament.admin.schedule.autoSchedule' | translate"
-            (click)="openAutoScheduleDialog()"
+            (onClick)="openAutoScheduleDialog()"
             [loading]="updating()"
             [disabled]="stats().unscheduledGames === 0 || stats().available === 0"
           />
 
           <p-button
             icon="pi pi-check-circle"
-            [label]="'all.tournament.admin.schedule.publish' | translate"
+            [label]="'all.tournament.admin.schedule.publishSchedule' | translate"
             severity="success"
-            (click)="publishSchedule()"
+            (onClick)="publishSchedule()"
             [loading]="updating()"
             [disabled]="stats().scheduled === 0"
           />
@@ -84,23 +84,34 @@
             icon="pi pi-refresh"
             severity="secondary"
             [outlined]="true"
-            pTooltip="Refresh"
+            [ariaLabel]="'all.button.refresh' | translate"
+            [pTooltip]="'all.button.refresh' | translate"
             tooltipPosition="top"
-            (click)="refetch()"
+            (onClick)="refetch()"
             [loading]="loading()"
           />
 
-          <p-button
-            [icon]="showUnscheduledPanel() ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
+          <button
+            pButton
+            type="button"
+            iconOnly
             severity="secondary"
-            [text]="true"
-            pTooltip="{{ showUnscheduledPanel() ? 'Hide games panel' : 'Show games panel' }}"
+            variant="text"
+            [attr.aria-label]="
+              (showUnscheduledPanel() ? 'all.tournament.admin.schedule.hideUnscheduled' : 'all.tournament.admin.schedule.showUnscheduled') | translate
+            "
+            [attr.aria-expanded]="showUnscheduledPanel()"
+            [pTooltip]="
+              (showUnscheduledPanel() ? 'all.tournament.admin.schedule.hideUnscheduled' : 'all.tournament.admin.schedule.showUnscheduled') | translate
+            "
             tooltipPosition="top"
             (click)="showUnscheduledPanel.set(!showUnscheduledPanel())"
-          />
+          >
+            <i [class]="showUnscheduledPanel() ? 'pi pi-chevron-right' : 'pi pi-chevron-left'" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
-    </div>
+    </p-toolbar>
 
     @if (updateError()) {
       <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>

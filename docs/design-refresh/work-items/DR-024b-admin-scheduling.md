@@ -12,14 +12,15 @@ description: 'Scheduling prerequisites, independently reviewable presentation ch
 - Rules: [design refresh](../README.md).
 - This parent retains the historical prerequisite check and tracks bounded children, not a whole-tab redesign.
 - Required children: approved [DR-024b1 reads/errors](DR-024b1-schedule-read.md),
-  [DR-024b2 summary](DR-024b2-schedule-summary.md), then separately scoped filters/actions, grid/game panel
+  [DR-024b2 summary](DR-024b2-schedule-summary.md),
+  [DR-024b3 filters/actions](DR-024b3-schedule-controls.md), then separately scoped grid/game panel
   and operational dialogs. Keep this parent open until its required work and aggregate review are complete.
 
 ## Scope and intended outcome
 
 - Route: `/tournament/:tournamentId/admin?tab=schedule`; project: `frontend-pages-tournament`.
-- Intended next outcome: establish a real mounted Scheduling consumer and a reliable read/error baseline
-  before selecting one small presentation child. Split broad tab work before implementation.
+- Intended next outcome: scope the bounded grid/game-panel child on the established mounted consumer.
+  The read/error prerequisite, summary and controls are approved; grid/game panel and dialogs remain unstarted.
 - Supplied tournament: `759e0526-8440-4108-bba3-55a7d8b94e72`.
 - Initial actual consumer: authorized admin Draws tab, not Scheduling.
   The later read-repair check below confirms the now-enabled mounted Scheduling consumer.
@@ -139,8 +140,16 @@ No operational write, navigation, fixture, theme/viewport change or UI gate over
   The summary child retains all unperformed suite/browser/accessibility/SSR checks unchecked.
   User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
   Only DR-024b2 is Done; approval neither verifies the unperformed checks nor closes this parent.
-- Exact next action: commit only approved DR-024b2 and its handoff without pushing.
-  DR-024b3 filters/actions is the next fresh-invocation scoping candidate, not an active implementation.
+- DR-024b3 filters/actions now uses a native Toolbar, localized names/expansion, associated date label
+  and native date templates; the user approves completion and commit with disclosed limits on 2026-11-10.
+  All 20 focused tests pass fresh; scoped lint/build pass 12 tasks with ten cache replays.
+  Four Dutch theme/width cases and enabled contrast pass; safe date selection/refresh/Delete clear passes.
+  Complete keyboard-only selection, exhaustive accessibility, locale browser/full-suite/live-operation/SSR checks
+  remain unverified. Inherited date-option narrowing/read-remount focus is recorded separately as DR-054.
+  Original Dutch/dark/1355x1249/Scheduling and genuine empty reads are restored, without operational writes.
+- Approval leaves the controls child's unperformed criteria unchecked and this parent open.
+- Exact next action in a fresh invocation: scope DR-024b4 grid/game panel on its real mounted consumer.
+  Commit only the approved controls/tests/handoff without pushing; do not begin another child here.
   Remaining grid/game panel/dialog/localization/operational and aggregate acceptance stays open.
 
 [admin]: ../../../libs/frontend/pages/tournament/src/pages/admin/page-admin.component.ts

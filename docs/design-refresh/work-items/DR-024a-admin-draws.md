@@ -47,7 +47,92 @@ description: 'Draw-management aggregate and bounded child sequence.'
 
 ## Aggregate acceptance
 
-- [ ] Required child implementation and focused validation are complete.
+- [x] Required child implementation and focused validation are complete.
 - [ ] Light/dark, narrow/wide, locale, keyboard, overlays and contrast are verified.
-- [ ] Mutation/confirmation contracts, permissions and SSR/hydration are verified or disclosed as limits.
-- [ ] Aggregate review and user approval are recorded.
+- [x] Mutation/confirmation contracts, permissions and SSR/hydration are verified or disclosed as limits.
+- [x] Aggregate review and user approval are recorded.
+
+## Aggregate reconciliation on 2026-11-09
+
+- Selected only aggregate verification and handoff. Initial worktree is clean; no application edits are needed.
+- All four required children are approved Done in the authoritative backlog:
+
+| Child    | Committed evidence | Reconciled outcome                                                          |
+| -------- | ------------------ | --------------------------------------------------------------------------- |
+| DR-024a1 | `a12df819`         | Reactive selection, explicit read/loading/error/retry and stale-read safety |
+| DR-024a2 | `09076974`         | Native Panel and semantic four-count summary                                |
+| DR-024a3 | `d15f4d41`         | Approved filters, selection/assignment and draw-list aggregate              |
+| DR-024a4 | `3a0c2fd2`         | Approved seeding, creation and mounted-locale aggregate                     |
+
+- DR-024a3's implementations are `1f8a4aef`, `94755dab` and `dd5eac92`;
+  DR-024a4's implementations are `6ec04b39`, `91ca230c` and `ecbfe7fd`.
+  Child approvals do not substitute for this draw-management aggregate review.
+- Combined source retains native named Panels, scrolling Tables, fluid Selects, semantic counts,
+  explicit loading/error branches and native Dialog/form/Button/Message controls.
+  Selection changes clear stale assignment state; refresh and read failures do not imply successful empty data.
+  Existing operation arguments, native confirmations, pending gates and dialog opener-focus handling remain wired.
+- Required creation name/type and optional size preserve the selected sub-event API.
+  Ignored gender/level controls were removed with explicit child approval, not silently by this reconciliation.
+  Seeding keeps ranking/random/manual values; both dialogs retain their documented pending-safe Escape workaround.
+- Mounted descriptions, identity/type labels, confirmation copy and five local failure fallbacks use translations.
+  Server Error diagnostics remain unchanged. The unused setEntrySeed method is not a mounted localization requirement.
+- Preserve the existing smart tab/service split. No second real consumer sharing domain presentation justifies
+  a dumb component; no one-to-one PrimeNG wrapper is introduced merely to hide markup or style once.
+- Utility evidence is cumulative, not additive: full-template static class/styleClass tokens progress
+  519 to 512 (read), 363 (summary), 357/272/171 (presentation), 168/124/124 (dialogs/locales).
+  No new component, dependency, stylesheet, inline/global styling, shared theme or backend/schema change here.
+  No new exception. The recorded body-ported Dialog Escape workaround remains explicit.
+
+### Validation and browser evidence
+
+- `npx nx show project frontend-pages-tournament --json` and
+  `npx nx show project backend-translate --json` confirm existing lint/build/test targets.
+- `npx nx run frontend-pages-tournament:test --testPathPatterns=pages/admin/tabs/draws --runInBand --output-style=static`:
+  four suites / 127 tests pass by Nx cache replay, not fresh execution.
+  These combine selection/read/summary/list/assignment, dialog contracts and all three real locale dictionaries.
+- `npx nx run-many -t lint build -p frontend-pages-tournament,backend-translate --output-style=static`:
+  all 16 tasks pass by Nx cache replay. Existing cached warnings remain, including Jest executor/metadata warnings
+  and NG8102 on the draw-type fallback at template line 189. Do not claim a warning-free or fresh build.
+- Fresh actual authorized Draws snapshot and read-only DOM inspection confirm Dutch/dark, HE 1,
+  genuine empty counts 0/0/0/0, four nonempty descriptions and four named native regions.
+  At the original 1355x1249 viewport, document width fits; no dialog is open.
+  This is mounted DOM evidence, not a new screenshot or a full responsive/interaction matrix.
+- The shared browser reports visibilityState hidden. A normal theme-toggle click times out after 3000ms
+  waiting for visibility/enabled/stable actionability. No forced click or permission override is used.
+  No fresh light/dark, narrow/wide, keyboard, dialog, screenshot or refresh-network pass is claimed.
+  Existing console InvalidStateError is observed on initial snapshot; no new application code is introduced.
+- Prior child evidence is retained with its original provenance, not claimed freshly rerun:
+  read prerequisite covers four genuine-empty layouts and eight failed/incomplete read fixtures;
+  summary covers four genuine-empty layouts, scoped label/count contrast and keyboard refresh;
+  presentation aggregate covers four genuine-empty layouts and real HTTP 200 refresh with focus;
+  dialogs cover four theme/width layouts each, overlays and client-only pending/error fixtures;
+  locale child covers twelve populated locale/theme/width cases, 36 overlays, nine canceled confirmations,
+  60 local feedback fixtures and final genuine HTTP 200 refresh with focus.
+  Synthetic read/client feedback fixtures are not live operational verification.
+- Original Dutch/dark/1355x1249/HE 1/Draws remains unchanged after the failed click.
+  No selection, dialog, interceptor, synthetic record, operational write or backend/translation restart is introduced.
+- Current snapshot shows Scheduling and Check-in disabled. Older parent evidence of enabled tabs and
+  Scheduling HTTP 400 is historical, not a fresh access or network pass.
+  Do not enable a gated tab or mutate phase/permissions to verify scheduling.
+- Only this brief, the backlog and DR-024 parent handoff change.
+  `npx prettier --write` on all three documents and `git diff --check` pass.
+  Git reports existing LF-to-CRLF configuration warnings; authored changes retain LF.
+  Documentation-only edits need no additional application checks.
+
+### Disclosed limits and exact next action
+
+- [ ] Resolve DR-033: native light primary normal text fails at 3.65:1; recorded hover and Tooltip limits remain.
+- [ ] Resolve DR-034: native dark info text fails at 4.32:1 and error text at light/dark 4.44/4.40:1.
+- [ ] Fresh aggregate light/dark, narrow/wide, keyboard and overlay checks pass in a visible shared browser.
+- [ ] Full tournament/workspace suite, app production build, live operational/permission variants,
+      populated real draw matrix, exhaustive accessibility and dedicated SSR/hydration checks pass.
+- [x] User approves aggregate completion with these limits, or requests bounded further verification.
+- DR-052 owns adjacent shared French action/tab terminology; DR-053 owns mounted operation missing/partial-response
+  feedback and selection/post-write focus reliability. Neither is silently repaired or treated as verified here.
+- User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+  Authoritative backlog status is Done by explicit aggregate approval, separate from the child approvals.
+  Approval covers only this three-document handoff; failed/unperformed checks remain unchecked,
+  not retroactively passed. Commit only this approved scope without pushing. Keep DR-024 open.
+- Exact next action in a fresh invocation is DR-024b: confirm a currently permitted mounted Scheduling consumer
+  and reconcile its recorded read-schema/HTTP 400 prerequisite before scoping one child.
+  If gated or unavailable, record the precise blocker rather than enabling it. Do not start that work here.

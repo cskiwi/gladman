@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a draw-management aggregate reconciliation is Done with explicit approval:
+[draw management](work-items/DR-024a-admin-draws.md).
+All four required children are approved Done; their committed source, focused checks and browser evidence
+are reconciled without application changes or restarting completed children.
+Confirmed consumer on 2026-11-09: authorized tournament admin Draws tab, Dutch/dark, HE 1,
+genuine empty counts 0/0/0/0, four descriptions, no dialog and no document overflow at 1355x1249.
+All 127 focused tests and all 16 scoped lint/build tasks pass by Nx cache replay, not fresh execution.
+Normal theme-toggle click times out after 3000ms while the shared browser reports hidden.
+No fresh screenshot/theme/width/keyboard/overlay or refresh-network pass is claimed.
+Keep smart tab/service boundaries; no repeated live domain consumer justifies extraction.
+Exclude scheduling, other tabs, backend/schema, global/shared styling and operational browser writes.
+Retain DR-033/DR-034 contrast failures, DR-052/DR-053 follow-ups and all unperformed full-suite/app-build,
+populated real operation/permission, exhaustive accessibility and SSR/hydration checks.
+Only three handoff documents change; no new styling layer, wrapper or exception.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this three-document aggregate handoff; failed/unperformed checks remain unchecked.
+Commit only this approved scope without pushing; keep DR-024 open.
+Exact next action in a fresh invocation is DR-024b: confirm a currently permitted mounted Scheduling consumer
+and its recorded read-schema/HTTP 400 prerequisite before scoping. Current snapshot has Scheduling disabled;
+do not enable gated tabs or mutate phase/permissions for verification.
+Do not start DR-024b or another implementation slice in this invocation.
+
+### Previous completed focus: draw dialogs and locales aggregate
+
 DR-024a4 aggregate reconciliation is Done with explicit approval:
 [draw dialogs and locales](work-items/DR-024a4-draw-dialogs-locales.md).
 Three approved children are committed as `6ec04b39`, `91ca230c` and `ecbfe7fd`.
@@ -2364,7 +2388,7 @@ and linked from their registry rows.
 | [DR-023c3](work-items/DR-023c3-checkin-table.md)              | Check-in table/feedback and operational action presentation                 | Done        |
 | [DR-023c4](work-items/DR-023c4-checkin-locales.md)            | Remaining mounted check-in locale completeness                              | Done        |
 | [DR-024](work-items/DR-024-admin-draws-scheduling.md)         | Tournament admin: draws and scheduling                                      | In progress |
-| [DR-024a](work-items/DR-024a-admin-draws.md)                  | Draw management aggregate                                                   | In progress |
+| [DR-024a](work-items/DR-024a-admin-draws.md)                  | Draw management aggregate; approved with disclosed verification limits      | Done        |
 | [DR-024a1](work-items/DR-024a1-draw-read.md)                  | Reactive draw selection and explicit read feedback prerequisite             | Done        |
 | [DR-024a2](work-items/DR-024a2-draw-summary.md)               | Draw summary presentation                                                   | Done        |
 | [DR-024a3](work-items/DR-024a3-draw-presentation.md)          | Draw filters, assignment and draw-list presentation aggregate               | Done        |
@@ -2943,9 +2967,12 @@ Projects: `frontend-pages-tournament`, with shared controls where already used. 
   Never treat swallowed query failures as a successful empty dataset or mutate phase/records for testing.
 - DR-024: draw management and scheduling tabs, one child task per tab.
   Split into DR-024a draw-management aggregate and DR-024b scheduling; no whole-tab rewrite.
-  DR-024a1 repairs the mounted draw selector/read prerequisite before presentation children.
-  DR-023c1 browser observation: the independently mounted `TournamentScheduleData` still fails HTTP 400.
-  Confirm its query/schema prerequisites when scoping scheduling; do not repair this other tab during check-in work.
+  All required DR-024a children and draw-management aggregate reconciliation are approved Done
+  with retained verification limits. Do not restart the approved selector/read, presentation or dialog/locale children.
+  Historical DR-023c1 observation: independently mounted `TournamentScheduleData` fails HTTP 400.
+  Current 2026-11-09 Draws snapshot shows Scheduling disabled; neither current access nor its query is verified.
+  After DR-024a approval, confirm a permitted mounted consumer and query/schema prerequisites before scoping scheduling.
+  Do not enable gated tabs, mutate phase/permissions or repair this independent tab during draw-management work.
 - DR-025: settings, general settings, sub-events, and phase controls.
 - Treat any shared admin tab shell change as an explicit cross-tab dependency.
 - Preserve permissions, confirmations, validation, live state, and destructive-action safeguards.

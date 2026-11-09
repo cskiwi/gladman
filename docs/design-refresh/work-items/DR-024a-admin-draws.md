@@ -22,7 +22,9 @@ description: 'Draw-management aggregate and bounded child sequence.'
 3. [DR-024a3](DR-024a3-draw-presentation.md): filter/actions, unassigned assignment and draw-list children.
    All three presentation children are approved Done and committed. Aggregate reconciliation is complete;
    user approved aggregate completion on 2026-11-09 with child verification limits retained.
-4. DR-024a4: split creation/seeding dialogs and remaining locale completeness before execution.
+4. [DR-024a4](DR-024a4-draw-dialogs-locales.md): split into seeding dialog, creation dialog and
+   remaining mounted locale completeness. Seeding child DR-024a4a is approved Done on 2026-11-09;
+   preserve its shared contrast failures and unperformed checks. Other children are not started.
 
 ## Baseline and exclusions
 

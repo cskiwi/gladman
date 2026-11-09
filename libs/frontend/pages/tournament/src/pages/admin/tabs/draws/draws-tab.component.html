@@ -31,6 +31,7 @@
           [options]="subEvents()"
           optionLabel="name"
           [placeholder]="'all.tournament.admin.draws.selectSubEvent' | translate"
+          [filter]="true"
           fluid
         />
       </div>
@@ -198,7 +199,7 @@
                   [ariaLabel]="('all.tournament.admin.draws.autoSeed' | translate) + ': ' + draw.name"
                   [pTooltip]="'all.tournament.admin.draws.autoSeed' | translate"
                   tooltipPosition="top"
-                  (onClick)="openSeedingDialog(draw)"
+                  (onClick)="openSeedingDialog(draw, $event)"
                   [disabled]="updating() || !draw.entries?.length"
                 />
                 <p-button
@@ -404,40 +405,58 @@
     [header]="'all.tournament.admin.draws.seedingOptions' | translate"
     [(visible)]="showSeedingDialog"
     [modal]="true"
-    [style]="{ width: '400px' }"
+    styleClass="w-full sm:w-md"
     [draggable]="false"
     [resizable]="false"
+    [closable]="!updating()"
+    [closeOnEscape]="false"
+    [closeAriaLabel]="'all.button.close' | translate"
+    (document:keydown.escape)="closeSeedingDialog($event)"
+    (onHide)="restoreSeedingFocus()"
   >
-    <div class="flex flex-col gap-5">
-      <p class="text-sm text-muted-color m-0">
+    <form class="flex flex-col gap-4" (ngSubmit)="applySeeding()" [attr.aria-busy]="updating()">
+      <p id="seeding-description" class="text-muted-color m-0">
         {{ 'all.tournament.admin.draws.seedingDescription' | translate }}
       </p>
 
+      @if (updateError(); as seedingError) {
+        <p-message severity="error">{{ seedingError }}</p-message>
+      }
+
       <div class="flex flex-col gap-2">
-        <label for="seedingMethod" class="text-sm font-medium text-color">
+        <label for="seedingMethod" id="seeding-method-label">
           {{ 'all.tournament.admin.draws.seedingMethod' | translate }}
         </label>
         <p-select
-          id="seedingMethod"
+          inputId="seedingMethod"
+          ariaLabelledBy="seeding-method-label"
           [formControl]="seedingMethod"
-          [options]="seedingMethodOptions"
+          [options]="seedingMethodOptions()"
           optionLabel="label"
           optionValue="value"
-          styleClass="w-full"
+          [readonly]="updating()"
+          fluid
         />
       </div>
-    </div>
 
-    <ng-template pTemplate="footer">
-      <div class="flex gap-3 justify-end">
-        <p-button [label]="'all.button.cancel' | translate" severity="secondary" [outlined]="true" (click)="showSeedingDialog.set(false)" />
+      <div class="grid sm:grid-cols-2 gap-3">
         <p-button
+          [label]="'all.button.cancel' | translate"
+          severity="secondary"
+          [outlined]="true"
+          [fluid]="true"
+          [disabled]="updating()"
+          (onClick)="closeSeedingDialog()"
+        />
+        <p-button
+          type="submit"
           [label]="'all.tournament.admin.draws.applySeeding' | translate"
           icon="pi pi-check"
-          (click)="applySeeding()"
+          [fluid]="true"
+          [disabled]="updating() || !seedingDrawId() || !seedingMethod.value"
           [loading]="updating()"
         />
       </div>
-    </ng-template>
+    </form>
   </p-dialog>
 </div>

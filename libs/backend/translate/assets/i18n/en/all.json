@@ -1449,7 +1449,7 @@
         "seed": "Seed",
         "seedByRanking": "By Ranking",
         "seeding": "Seeding",
-        "seedingDescription": "Choose how you want to seeding subscriptions",
+        "seedingDescription": "Choose how to seed the entries in this draw.",
         "seedingMethod": "Seeding method",
         "seedingOptions": "Seeding Options",
         "seedManual": "Manual",

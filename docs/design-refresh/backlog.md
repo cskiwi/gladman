@@ -5,6 +5,37 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a4a is Done with explicit approval: [seeding dialog](work-items/DR-024a4a-seeding-dialog.md).
+Split DR-024a4 into seeding, creation and remaining mounted locale children.
+Actual authorized Draws tab and visible auto-seed action confirmed on 2026-11-09;
+use only one-use safe browser read fixtures for its currently empty real data.
+Scope responsive native seeding dialog, translated options, accessible labels/focus and operation states.
+Preserve ranking/random/manual payloads and the smart tab/service; no one-off wrapper.
+Exclude creation, other tabs, backend/schema behavior, shared/global styling and browser operational writes.
+Native responsive Dialog/form/Select/actions, translated options and modal error/pending feedback are implemented.
+Ranking/random/manual payloads, defaults/reset, cancellation, failure/retry and success refetch pass mock tests.
+74 focused tests and scoped tournament/translation lint/build pass; final lint/build replays 14 of 16 tasks.
+Four light/dark 390/1440px layouts and fresh option overlays fit; selection and return focus pass.
+Four browser-only pending/error signal fixtures fit and block dismissal/selection; no operational handlers submitted.
+Native Dialog registers Escape once without rechecking pending inputs. A visibility-guarded document handler
+handles this body-ported dialog; overlay Escape, idle dismissal and pending blocking are verified.
+Static class/styleClass tokens fall 171 to 168 overall, 16 to 13 in seeding; no new styling or wrapper.
+Retain DR-033 light Apply contrast 3.65:1 default (2.79:1 sampled hover) and DR-034 error Message 4.44/4.40:1.
+Full suite, populated real reads, live-operation/permission variants, alternative browser locales,
+exhaustive accessibility and SSR/hydration remain unverified.
+Final real TournamentAdmin/SubEventDrawsData return 200 without GraphQL errors; refresh retains focus.
+Original Dutch/dark/1355x1249/HE 1/Draws and genuine empty records are restored; one-use fixtures expire.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this child implementation/tests/scoped copy and handoff; failed/unperformed checks remain.
+Post-approval workspace lint passes all 34 projects with existing warnings and zero errors;
+29 tasks replay cache and five execute. No fresh full-workspace lint execution is claimed.
+Commit only this approved scope without pushing.
+Exact next action in a fresh invocation: scope DR-024a4b creation and explicitly resolve its recorded
+non-submitted gender/level controls before implementation. Do not start it here.
+Keep DR-024a4, DR-024a and DR-024 open; do not start siblings in this invocation.
+
+### Previous completed focus: draw presentation aggregate
+
 DR-024a3 aggregate reconciliation is Done with explicit approval:
 [draw filters, assignment and lists](work-items/DR-024a3-draw-presentation.md).
 All three required presentation children are approved Done and committed; do not restart their implementation.
@@ -2268,7 +2299,10 @@ and linked from their registry rows.
 | [DR-024a3a](work-items/DR-024a3a-draw-filters.md)             | Draw sub-event filter and top-level actions                                 | Done        |
 | [DR-024a3b](work-items/DR-024a3b-unassigned-entries.md)       | Unassigned entry selection and assignment                                   | Done        |
 | [DR-024a3c](work-items/DR-024a3c-draw-lists.md)               | Draw lists, draw actions and empty/no-selection panels                      | Done        |
-| DR-024a4                                                      | Draw creation/seeding dialogs and mounted locale completeness; split first  | Backlog     |
+| [DR-024a4](work-items/DR-024a4-draw-dialogs-locales.md)       | Draw dialogs and mounted locale completeness aggregate                      | In progress |
+| [DR-024a4a](work-items/DR-024a4a-seeding-dialog.md)           | Seeding dialog, scoped locale options and operation states                  | Done        |
+| DR-024a4b                                                     | Creation dialog; resolve unused form controls before execution              | Backlog     |
+| DR-024a4c                                                     | Remaining mounted draw locale completeness                                  | Backlog     |
 | DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                          | Backlog     |

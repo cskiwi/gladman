@@ -342,13 +342,13 @@ export class DrawsTabService {
         }),
       );
 
-      if (result.data?.autoSeedDraw) {
-        this.refetch();
-        return true;
+      if (!Array.isArray(result.data?.autoSeedDraw)) {
+        throw new Error(this.translate.instant('all.error.genericTitle'));
       }
-      return false;
+      this.refetch();
+      return true;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to auto-seed draw');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.error.genericTitle'));
       return false;
     } finally {
       this.updating.set(false);

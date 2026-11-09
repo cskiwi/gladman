@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Entry, TournamentDraw, TournamentEvent, TournamentSubEvent } from '@app/models';
 import { SubEventTypeEnum } from '@app/models-enum';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
@@ -16,6 +16,7 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { map } from 'rxjs';
 import { DrawsTabService, SeedingMethod } from './draws-tab.service';
 
 @Component({
@@ -45,6 +46,8 @@ export class DrawsTabComponent {
   tournament = input.required<TournamentEvent>();
 
   private readonly dataService = new DrawsTabService();
+  private readonly translate = inject(TranslateService);
+  private seedingTrigger: HTMLElement | null = null;
 
   // Form controls
   subEventControl = new FormControl<TournamentSubEvent | null>(null);
@@ -98,11 +101,19 @@ export class DrawsTabComponent {
   ];
 
   // Seeding method options
-  readonly seedingMethodOptions = [
-    { label: 'By Ranking', value: 'BY_RANKING' as SeedingMethod },
-    { label: 'Random', value: 'RANDOM' as SeedingMethod },
-    { label: 'Manual', value: 'MANUAL' as SeedingMethod },
-  ];
+  readonly seedingMethodOptions = toSignal(
+    this.translate.stream('all.tournament.admin.draws').pipe(
+      map(
+        () =>
+          [
+            { label: this.translate.instant('all.tournament.admin.draws.seedByRanking'), value: 'BY_RANKING' },
+            { label: this.translate.instant('all.tournament.admin.draws.seedRandom'), value: 'RANDOM' },
+            { label: this.translate.instant('all.tournament.admin.draws.seedManual'), value: 'MANUAL' },
+          ] satisfies Array<{ label: string; value: SeedingMethod }>,
+      ),
+    ),
+    { initialValue: [] },
+  );
 
   // Draw size options for KO
   readonly drawSizeOptions = [4, 8, 16, 32, 64].map((size) => ({ label: `${size} entries`, value: size }));
@@ -229,13 +240,29 @@ export class DrawsTabComponent {
   }
 
   // Seeding
-  openSeedingDialog(draw: TournamentDraw): void {
+  openSeedingDialog(draw: TournamentDraw, event?: Event): void {
+    this.seedingTrigger = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+    this.updateError.set(null);
     this.seedingDrawId.set(draw.id);
     this.seedingMethod.setValue('BY_RANKING');
     this.showSeedingDialog.set(true);
   }
 
+  restoreSeedingFocus(): void {
+    this.seedingTrigger?.focus();
+    this.seedingTrigger = null;
+  }
+
+  closeSeedingDialog(event?: Event): void {
+    // PrimeNG binds Escape once on open, without rechecking the pending state.
+    if (!this.showSeedingDialog()) return;
+    event?.stopPropagation();
+    if (!this.updating()) this.showSeedingDialog.set(false);
+  }
+
   async applySeeding(): Promise<void> {
+    if (this.updating()) return;
+
     const drawId = this.seedingDrawId();
     const method = this.seedingMethod.value;
     if (!drawId || !method) return;

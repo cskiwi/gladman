@@ -20,7 +20,9 @@ description: 'Aggregate scope for independently reviewable draw-management and s
 - Draws has a confirmed visible consumer, not merely an export or hidden panel.
 - DR-024a1/a2 and all three DR-024a3 presentation children are approved complete.
   DR-024a3 aggregate evidence is reconciled and explicitly approved on 2026-11-09 with recorded limits retained.
-  Dialog/remaining locale work stays DR-024a4; keep this parent open.
+  DR-024a4 is split into seeding, creation and remaining locale children.
+  Seeding DR-024a4a is approved Done on 2026-11-09 with disclosed verification limits;
+  creation/remaining locales are not started. Keep this parent open.
 - DR-024a1 implementation and focused checks pass; the user approved completion with disclosed limits on 2026-11-09.
 - Scheduling's previously observed `TournamentScheduleData` HTTP 400 remains independent and unrepaired.
 - No shared component extraction is justified yet: retain smart page/tab/service boundaries.

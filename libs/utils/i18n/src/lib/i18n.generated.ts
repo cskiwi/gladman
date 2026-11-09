@@ -1449,6 +1449,7 @@ export type I18nTranslations = {
                     "noDrawsHint": string;
                     "noDrawsYet": string;
                     "noEntries": string;
+                    "noEntriesAssigned": string;
                     "noEntriesHint": string;
                     "noEntriesYet": string;
                     "removeFromDraw": string;

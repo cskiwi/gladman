@@ -1442,6 +1442,7 @@
         "noDrawsHint": "Create a draw to start assigning entries",
         "noDrawsYet": "No draws created yet",
         "noEntries": "No entries available",
+        "noEntriesAssigned": "No entries assigned yet",
         "noEntriesHint": "Generate entries from confirmed enrollments first",
         "noEntriesYet": "No registrations generated yet",
         "removeFromDraw": "Remove from Draw",

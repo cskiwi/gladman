@@ -179,125 +179,105 @@
         }
       </p-panel>
 
-      <!-- Draws Panel -->
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 min-w-0" data-testid="draw-list">
         @for (draw of draws(); track draw.id) {
-          <div class="bg-emphasis rounded-border border border-surface overflow-hidden">
-            <!-- Draw Header -->
-            <div class="px-5 py-4 border-b border-surface bg-emphasis">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
-                    <i class="pi pi-sitemap text-primary"></i>
-                  </div>
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <h4 class="text-base font-semibold text-color m-0">{{ draw.name }}</h4>
-                      <p-tag [value]="draw.type ?? 'N/A'" [severity]="getDrawTypeSeverity(draw.type)" [rounded]="true" styleClass="text-xs" />
-                    </div>
-                    <p class="text-xs text-muted-color m-0">{{ draw.entries?.length ?? 0 }} / {{ draw.size ?? '∞' }} entries</p>
-                  </div>
-                </div>
-                <div class="flex gap-1">
-                  <p-button
-                    size="small"
-                    [text]="true"
-                    icon="pi pi-sort-numeric-up"
-                    pTooltip="Auto-seed"
-                    tooltipPosition="top"
-                    (click)="openSeedingDialog(draw)"
-                    [disabled]="!draw.entries?.length"
-                  />
-                  <p-button
-                    size="small"
-                    [text]="true"
-                    icon="pi pi-eraser"
-                    pTooltip="Clear seeds"
-                    tooltipPosition="top"
-                    (click)="clearSeeds(draw)"
-                    [disabled]="!draw.entries?.length"
-                  />
-                  <p-button
-                    size="small"
-                    [text]="true"
-                    severity="danger"
-                    icon="pi pi-trash"
-                    pTooltip="Delete draw"
-                    tooltipPosition="top"
-                    (click)="deleteDraw(draw)"
-                  />
-                </div>
+          <p-panel class="block min-w-0 wrap-anywhere" data-testid="draw" [header]="draw.name">
+            <div class="flex flex-col gap-3 mb-4">
+              <div class="flex items-center gap-3 flex-wrap">
+                <p-tag [value]="draw.type ?? 'N/A'" [severity]="getDrawTypeSeverity(draw.type)" />
+                <p class="text-sm text-muted-color m-0">
+                  {{ draw.entries?.length ?? 0 }} / {{ draw.size ?? '∞' }} {{ 'all.tournament.entries' | translate }}
+                </p>
+              </div>
+              <div class="flex gap-2 flex-wrap">
+                <p-button
+                  size="small"
+                  [text]="true"
+                  severity="secondary"
+                  icon="pi pi-sort-numeric-up"
+                  [ariaLabel]="('all.tournament.admin.draws.autoSeed' | translate) + ': ' + draw.name"
+                  [pTooltip]="'all.tournament.admin.draws.autoSeed' | translate"
+                  tooltipPosition="top"
+                  (onClick)="openSeedingDialog(draw)"
+                  [disabled]="updating() || !draw.entries?.length"
+                />
+                <p-button
+                  size="small"
+                  [text]="true"
+                  severity="secondary"
+                  icon="pi pi-eraser"
+                  [ariaLabel]="('all.tournament.admin.draws.clearSeeds' | translate) + ': ' + draw.name"
+                  [pTooltip]="'all.tournament.admin.draws.clearSeeds' | translate"
+                  tooltipPosition="top"
+                  (onClick)="clearSeeds(draw)"
+                  [disabled]="updating() || !draw.entries?.length"
+                />
+                <p-button
+                  size="small"
+                  [text]="true"
+                  severity="danger"
+                  icon="pi pi-trash"
+                  [ariaLabel]="('all.tournament.admin.draws.deleteDraw' | translate) + ': ' + draw.name"
+                  [pTooltip]="'all.tournament.admin.draws.deleteDraw' | translate"
+                  tooltipPosition="top"
+                  (onClick)="deleteDraw(draw)"
+                  [disabled]="updating()"
+                />
               </div>
             </div>
-
-            <!-- Draw Entries -->
-            <div class="p-0">
-              @if (draw.entries?.length) {
-                <div class="max-h-56 overflow-y-auto">
-                  @for (entry of draw.entries; track entry.id) {
-                    <div class="flex items-center gap-3 px-5 py-3 border-b border-surface last:border-b-0 hover:bg-emphasis transition-colors">
-                      <!-- Seed Badge -->
-                      <div
-                        class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                        [class.bg-primary]="entry.seed"
-                        [class.text-primary-contrast]="entry.seed"
-                        [class.bg-emphasis]="!entry.seed"
-                        [class.dark:bg-emphasis]="!entry.seed"
-                      >
-                        @if (entry.seed) {
-                          <span class="text-xs font-bold">{{ entry.seed }}</span>
-                        } @else {
-                          <span class="text-xs text-muted-color">—</span>
-                        }
-                      </div>
-                      <span class="text-sm font-medium text-color flex-1">{{ getEntryName(entry) }}</span>
+            @if (draw.entries?.length) {
+              <p-table [value]="draw.entries" [scrollable]="true" scrollHeight="14rem" size="small">
+                <ng-template #header>
+                  <tr>
+                    <th scope="col" class="whitespace-nowrap">{{ 'all.tournament.admin.draws.seed' | translate }}</th>
+                    <th scope="col" class="whitespace-nowrap">{{ 'all.tournament.entries' | translate }}</th>
+                    <th scope="col">
+                      <span class="sr-only">{{ 'all.tournament.admin.draws.removeFromDraw' | translate }}</span>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-entry>
+                  <tr>
+                    <td class="tabular-nums">{{ entry.seed || '—' }}</td>
+                    <td class="wrap-anywhere">{{ getEntryName(entry) }}</td>
+                    <td>
                       <p-button
                         size="small"
                         [text]="true"
                         severity="danger"
                         icon="pi pi-minus"
-                        pTooltip="Remove from draw"
+                        [ariaLabel]="('all.tournament.admin.draws.removeFromDraw' | translate) + ': ' + getEntryName(entry)"
+                        [pTooltip]="'all.tournament.admin.draws.removeFromDraw' | translate"
                         tooltipPosition="top"
-                        (click)="removeFromDraw(entry)"
+                        (onClick)="removeFromDraw(entry)"
                         [loading]="updating()"
                       />
-                    </div>
-                  }
-                </div>
-              } @else {
-                <div class="flex flex-col items-center justify-center py-8 text-center">
-                  <div class="w-12 h-12 rounded-full bg-emphasis flex items-center justify-center mb-3">
-                    <i class="pi pi-inbox text-xl text-muted-color"></i>
-                  </div>
-                  <p class="text-sm text-muted-color">No entries assigned yet</p>
-                </div>
-              }
-            </div>
-          </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            } @else {
+              <p class="text-muted-color m-0">{{ 'all.tournament.admin.draws.noEntriesAssigned' | translate }}</p>
+            }
+          </p-panel>
         } @empty {
-          <div class="bg-emphasis rounded-border border border-surface p-12 text-center">
-            <div class="w-16 h-16 rounded-full bg-emphasis flex items-center justify-center mb-4 mx-auto">
-              <i class="pi pi-sitemap text-2xl text-muted-color"></i>
-            </div>
-            <p class="text-muted-color mb-4">{{ 'all.tournament.admin.draws.noDrawsYet' | translate }}</p>
+          <p-panel data-testid="empty-draw-list" [header]="'all.tournament.admin.draws.drawCount' | translate">
+            <p class="text-muted-color m-0 mb-4">{{ 'all.tournament.admin.draws.noDrawsYet' | translate }}</p>
             <p-button
               [label]="'all.tournament.admin.draws.createDraw' | translate"
               icon="pi pi-plus"
               size="small"
               [outlined]="true"
-              (click)="openCreateDrawDialog()"
+              (onClick)="openCreateDrawDialog()"
             />
-          </div>
+          </p-panel>
         }
       </div>
     </div>
   } @else {
-    <div class="bg-emphasis rounded-border border border-surface p-12 text-center">
-      <div class="w-16 h-16 rounded-full bg-emphasis flex items-center justify-center mb-4 mx-auto">
-        <i class="pi pi-arrow-up text-2xl text-muted-color"></i>
-      </div>
-      <p class="text-muted-color text-lg">{{ 'all.tournament.admin.draws.selectSubEventFirst' | translate }}</p>
-    </div>
+    <p-message data-testid="draw-no-selection" severity="info">
+      {{ 'all.tournament.admin.draws.selectSubEventFirst' | translate }}
+    </p-message>
   }
 
   <!-- Create Draw Dialog -->

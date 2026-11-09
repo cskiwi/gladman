@@ -5,6 +5,34 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a3c is Done with explicit approval: [draw lists and actions](work-items/DR-024a3c-draw-lists.md).
+Actual authorized Draws consumer reconfirmed on 2026-11-09 at the imported tournament administration route.
+Scope native draw Panels/Tables, identity/type/capacity, seeds/names, actions and empty/no-selection feedback.
+Native named Panels, scrolling Tables, contextual translated actions and empty/no-selection feedback are implemented.
+Completed only surfaced draw-list locale gaps; preserve the smart tab/service without a one-off wrapper.
+Exclude summary, filters, assignment, dialogs, scheduling, backend/schema and shared/global styling.
+Sixty focused tests and scoped Nx lint/build pass; final build/lint run replays ten of twelve tasks.
+Static class/styleClass tokens fall 272 to 171; no extraction, new styling or exception.
+Backend reload initially blocked after-browser checks; user restored it on 2026-11-09.
+HTTP now responds and the authorized actual Draws route mounts again with genuine-empty HE 1 data.
+Four genuine-empty, four synthetic-populated/empty-draw and four synthetic-no-selection theme/390/1440px cases fit.
+Native compact Table and unbroken headings correct an observed narrow-header readability issue.
+Long names, native scrolling, action names, keyboard order and settled 1px focus outlines pass.
+Sampled normal list text passes in both themes; native no-selection info Message fails dark at 4.32:1 under DR-034.
+Full suite, populated real reads, live operations/permissions, exhaustive accessibility and SSR remain unverified.
+Real TournamentAdmin/SubEventDrawsData return 200; refresh retains focus. No operational browser writes.
+Original Dutch/dark/1355x1249/HE 1/Draws preferences and genuine empty records are restored; one-use fixtures expire.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this implementation, focused tests, scoped locales/generated type and repository handoff.
+DR-034 failure and unperformed checks remain unchecked; approval is not evidence that they passed.
+Post-approval workspace lint passes all 34 projects with existing warnings; 21 replay cache and 13 execute.
+Commit only this approved scope; do not push.
+Exact next action in a fresh invocation: reconcile DR-024a3 aggregate evidence/review from its three approved children,
+then scope the next DR-024a4 dialog/locale child from its mounted consumer. Do not start that work here.
+Keep DR-024a3, DR-024a and DR-024 open.
+
+### Previous completed focus: unassigned entries
+
 DR-024a3b is Done with explicit approval:
 [unassigned entry selection and assignment](work-items/DR-024a3b-unassigned-entries.md).
 Actual authorized Draws consumer confirmed on 2026-11-09 at the imported tournament administration route.
@@ -2219,7 +2247,7 @@ and linked from their registry rows.
 | [DR-024a3](work-items/DR-024a3-draw-presentation.md)          | Draw filters, assignment and draw-list presentation aggregate               | In progress |
 | [DR-024a3a](work-items/DR-024a3a-draw-filters.md)             | Draw sub-event filter and top-level actions                                 | Done        |
 | [DR-024a3b](work-items/DR-024a3b-unassigned-entries.md)       | Unassigned entry selection and assignment                                   | Done        |
-| DR-024a3c                                                     | Draw lists, draw actions and empty/no-selection panels; scope first         | Backlog     |
+| [DR-024a3c](work-items/DR-024a3c-draw-lists.md)               | Draw lists, draw actions and empty/no-selection panels                      | Done        |
 | DR-024a4                                                      | Draw creation/seeding dialogs and mounted locale completeness; split first  | Backlog     |
 | DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
@@ -2440,6 +2468,14 @@ Page subtitle/count/loading use semantic normal text after initial muted text fa
 Final page text passes at 18.20:1 / 16.64:1; native no-results info Message passes at 4.75:1 / 4.57:1.
 Keep the shared control audit open; no preset or page-specific palette overrides were introduced.
 See the [enrollment chrome brief](work-items/DR-021a-enrollment-chrome.md).
+
+### DR-034 additional evidence: administration draw no-selection Message
+
+[DR-024a3c](work-items/DR-024a3c-draw-lists.md) measures the native informational no-selection Message over
+the actual administration Card: 4.77:1 light passes, 4.32:1 dark fails the 4.5:1 normal-text threshold.
+Four safe no-sub-event read fixtures at 390/1440px fit with all operational controls disabled.
+Preserve native styling and leave this criterion unchecked; any correction belongs to the shared Message audit.
+No page workaround, shared token change or styling exception is introduced.
 
 ### DR-034 additional evidence: creation read-error Message
 

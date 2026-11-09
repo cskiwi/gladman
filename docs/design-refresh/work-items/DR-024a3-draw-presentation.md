@@ -19,7 +19,11 @@ description: 'Bounded presentation children for the mounted administration Draws
    Approved complete on 2026-11-09 with DR-033 contrast failure and unperformed checks retained.
 2. [DR-024a3b](DR-024a3b-unassigned-entries.md): unassigned entries, selection and assignment controls.
    Approved complete on 2026-11-09 with DR-033 contrast failure and unperformed checks retained.
-3. DR-024a3c: populated draw lists, draw actions and empty/no-selection presentation. Scope before execution.
+3. [DR-024a3c](DR-024a3c-draw-lists.md): populated draw lists, draw actions and empty/no-selection presentation.
+   Approved complete on 2026-11-09 with DR-034 dark Message contrast failure and unperformed checks retained.
+
+All three required presentation children are approved Done. Keep the aggregate open for evidence/review reconciliation;
+their unchecked live-operation, accessibility and SSR limits are not aggregate passes.
 
 ## Boundaries and acceptance
 

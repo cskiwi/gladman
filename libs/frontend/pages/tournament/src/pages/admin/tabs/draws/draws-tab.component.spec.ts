@@ -6,6 +6,241 @@ import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
 import { DrawsTabComponent } from './draws-tab.component';
 
+describe('Draw lists and actions', () => {
+  let fixture: ComponentFixture<DrawsTabComponent>;
+  let query: jest.Mock;
+  let mutate: jest.Mock;
+  const entries = [
+    { id: 'safe-seeded', seed: 2, player1: { fullName: 'Safe Player One' }, player2: { fullName: 'Safe Partner' } },
+    { id: 'safe-unseeded', player1: { fullName: 'Safe Player Two' } },
+  ];
+  const draws = [
+    { id: 'safe-ko', name: 'Safe knockout', type: 'KO', size: 8, entries },
+    { id: 'safe-poule', name: 'Safe poule', type: 'POULE', entries: [] },
+    { id: 'safe-qualification', name: 'Safe qualification', type: 'QUALIFICATION' },
+    { id: 'safe-other', name: 'Safe other', entries: [] },
+  ];
+  const response = { data: { tournamentSubEvent: { entries, unassignedEntries: [], drawTournaments: draws } } };
+
+  beforeEach(async () => {
+    query = jest.fn(() => of(response));
+    mutate = jest.fn();
+    await TestBed.configureTestingModule({
+      imports: [DrawsTabComponent, TranslateModule.forRoot()],
+      providers: [{ provide: Apollo, useValue: { query, mutate } }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(DrawsTabComponent);
+    fixture.componentRef.setInput('tournament', {
+      id: 'safe-tournament',
+      tournamentSubEvents: [{ id: 'safe-singles', name: 'Safe singles', gameType: 'S' }],
+    });
+  });
+
+  async function settle() {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function panels(): HTMLElement[] {
+    return Array.from(fixture.nativeElement.querySelectorAll('[data-testid="draw"]'));
+  }
+
+  function actions(index = 0): HTMLButtonElement[] {
+    return Array.from(panels()[index].querySelectorAll('p-button button'));
+  }
+
+  it('uses named native Panels and a scrolling Table with identity, capacity and original seed order', async () => {
+    await settle();
+    expect(panels()).toHaveLength(4);
+    expect(panels().every((panel) => panel.tagName === 'P-PANEL')).toBe(true);
+    const first = panels()[0];
+    expect(first.querySelector('.p-panel-title')?.textContent).toBe('Safe knockout');
+    expect(first.querySelector('[role="region"]')?.getAttribute('aria-labelledby')).toBe(first.querySelector('.p-panel-title')?.id);
+    expect(first.textContent).toContain('2 / 8 all.tournament.entries');
+    expect(panels()[1].textContent).toContain('0 / ∞ all.tournament.entries');
+    expect(first.querySelector('.p-datatable-table-container')?.getAttribute('style')).toContain('14rem');
+    expect(first.querySelector('p-table')?.classList.contains('p-datatable-sm')).toBe(true);
+    expect(
+      Array.from(first.querySelectorAll('thead th'))
+        .slice(0, 2)
+        .every((th) => th.classList.contains('whitespace-nowrap')),
+    ).toBe(true);
+    expect(Array.from(first.querySelectorAll('thead th'), (th) => th.getAttribute('scope'))).toEqual(['col', 'col', 'col']);
+    expect(Array.from(first.querySelectorAll('tbody tr td:first-child'), (td) => td.textContent?.trim())).toEqual(['2', '—']);
+    expect(first.querySelector('tbody')?.textContent).toContain('Safe Player One');
+    expect(first.querySelector('p-card, .rounded-full, .bg-emphasis, .border-surface')).toBeNull();
+    expect(panels().map((panel) => panel.querySelector('p-tag')?.textContent?.trim())).toEqual(['KO', 'POULE', 'QUALIFICATION', 'N/A']);
+    expect(panels().map((panel) => panel.querySelector('p-tag')?.className)).toEqual([
+      expect.stringContaining('p-tag-success'),
+      expect.stringContaining('p-tag-info'),
+      expect.stringContaining('p-tag-warn'),
+      expect.stringContaining('p-tag-secondary'),
+    ]);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('names every action with its draw or entry context and preserves doubles names', async () => {
+    fixture.componentRef.setInput('tournament', {
+      id: 'safe-tournament',
+      tournamentSubEvents: [{ id: 'safe-doubles', name: 'Safe doubles', gameType: 'D' }],
+    });
+    await settle();
+    expect(actions().map((button) => button.getAttribute('aria-label'))).toEqual([
+      'all.tournament.admin.draws.autoSeed: Safe knockout',
+      'all.tournament.admin.draws.clearSeeds: Safe knockout',
+      'all.tournament.admin.draws.deleteDraw: Safe knockout',
+      'all.tournament.admin.draws.removeFromDraw: Safe Player One / Safe Partner',
+      'all.tournament.admin.draws.removeFromDraw: Safe Player Two',
+    ]);
+    expect(panels()[0].querySelector('tbody')?.textContent).toContain('Safe Player One / Safe Partner');
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('opens the existing seeding dialog for the correct draw without a mutation', async () => {
+    await settle();
+    actions()[0].click();
+    await settle();
+    expect(fixture.componentInstance.seedingDrawId()).toBe('safe-ko');
+    expect(fixture.componentInstance.seedingMethod.value).toBe('BY_RANKING');
+    expect(fixture.componentInstance.showSeedingDialog()).toBe(true);
+    fixture.componentInstance.showSeedingDialog.set(false);
+    await settle();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { action: 1, data: { clearDrawSeeds: entries }, variables: { drawId: 'safe-ko' } },
+    { action: 2, data: { deleteTournamentDraw: true }, variables: { drawId: 'safe-ko' } },
+    { action: 3, data: { removeEntryFromDraw: entries[0] }, variables: { input: { entryId: 'safe-seeded' } } },
+  ])('preserves action $action payload and refetches only after mock success', async ({ action, data, variables }) => {
+    await settle();
+    const confirm = jest.spyOn(window, 'confirm').mockReturnValue(true);
+    mutate.mockReturnValueOnce(of({ data }));
+    try {
+      actions()[action].click();
+      await settle();
+      expect(mutate).toHaveBeenCalledTimes(1);
+      expect(mutate.mock.calls[0][0].variables).toEqual(variables);
+      expect(query).toHaveBeenCalledTimes(2);
+      expect(confirm).toHaveBeenCalledTimes(action === 3 ? 0 : 1);
+    } finally {
+      confirm.mockRestore();
+    }
+  });
+
+  it('preserves clear/delete cancellation without mutations or extra reads', async () => {
+    await settle();
+    const confirm = jest.spyOn(window, 'confirm').mockReturnValue(false);
+    try {
+      actions()[1].click();
+      actions()[2].click();
+      await settle();
+      expect(confirm).toHaveBeenCalledTimes(2);
+      expect(mutate).not.toHaveBeenCalled();
+      expect(query).toHaveBeenCalledTimes(1);
+    } finally {
+      confirm.mockRestore();
+    }
+  });
+
+  it('disables empty-draw seeding actions while retaining delete and explicit assigned-empty text', async () => {
+    await settle();
+    expect(actions(1).map((button) => button.disabled)).toEqual([true, true, false]);
+    expect(actions(2).map((button) => button.disabled)).toEqual([true, true, false]);
+    expect(panels()[1].querySelector('p-table')).toBeNull();
+    expect(panels()[1].textContent).toContain('all.tournament.admin.draws.noEntriesAssigned');
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('guards draw actions and shows native removal loading during a pending mutation', async () => {
+    await settle();
+    const pending = new Subject<{ data: { removeEntryFromDraw: (typeof entries)[number] } }>();
+    mutate.mockReturnValueOnce(pending);
+    actions()[3].click();
+    fixture.detectChanges();
+    expect(actions().every((button) => button.disabled)).toBe(true);
+    expect(actions(1).every((button) => button.disabled)).toBe(true);
+    expect(actions()[3].querySelector('[data-pc-section="loadingicon"]')).not.toBeNull();
+    pending.next({ data: { removeEntryFromDraw: entries[0] } });
+    pending.complete();
+    await settle();
+    await settle();
+    expect(actions().every((button) => !button.disabled)).toBe(true);
+    expect(mutate).toHaveBeenCalledTimes(1);
+  });
+
+  it('retains the populated list and retry controls after explicit update failure', async () => {
+    await settle();
+    mutate.mockReturnValueOnce(throwError(() => new Error('Safe removal failure')));
+    actions()[3].click();
+    await settle();
+    expect(fixture.nativeElement.textContent).toContain('Safe removal failure');
+    expect(panels()[0].querySelectorAll('tbody tr')).toHaveLength(2);
+    expect(actions().every((button) => !button.disabled)).toBe(true);
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders native no-draw and no-selection feedback without decorative surfaces', async () => {
+    query.mockReturnValueOnce(of({ data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: [] } } }));
+    await settle();
+    const empty: HTMLElement = fixture.nativeElement.querySelector('[data-testid="empty-draw-list"]');
+    expect(empty.tagName).toBe('P-PANEL');
+    expect(empty.textContent).toContain('all.tournament.admin.draws.noDrawsYet');
+    empty.querySelector<HTMLButtonElement>('button')?.click();
+    await settle();
+    expect(fixture.componentInstance.showCreateDrawDialog()).toBe(true);
+    fixture.componentInstance.showCreateDrawDialog.set(false);
+    fixture.componentRef.setInput('tournament', { id: 'safe-empty', tournamentSubEvents: [] });
+    await settle();
+    const noSelection: HTMLElement = fixture.nativeElement.querySelector('[data-testid="draw-no-selection"]');
+    expect(noSelection.tagName).toBe('P-MESSAGE');
+    expect(noSelection.textContent).toContain('all.tournament.admin.draws.selectSubEventFirst');
+    expect(panels()).toHaveLength(0);
+    expect(fixture.nativeElement.querySelector('[data-testid="draw-list"]')).toBeNull();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('hides the list and false empty feedback while loading or after read failure', async () => {
+    const pending = new Subject<typeof response>();
+    query.mockReturnValueOnce(pending);
+    fixture.detectChanges();
+    TestBed.tick();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-testid="draw-list"], [data-testid="draw-no-selection"]')).toBeNull();
+    pending.error(new Error('Safe draw read failure'));
+    await settle();
+    expect(fixture.nativeElement.textContent).toContain('Safe draw read failure');
+    expect(fixture.nativeElement.querySelector('[data-testid="draw-list"], [data-testid="draw-no-selection"]')).toBeNull();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('uses nonempty actual %s labels and assigned-empty copy', async (locale) => {
+    await settle();
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    await settle();
+    const copy = dictionary.tournament.admin.draws;
+    for (const key of ['autoSeed', 'clearSeeds', 'deleteDraw', 'removeFromDraw', 'noEntriesAssigned', 'seed']) {
+      expect(copy[key]).toBeTruthy();
+    }
+    expect(actions().map((button) => button.getAttribute('aria-label'))).toEqual([
+      `${copy.autoSeed}: Safe knockout`,
+      `${copy.clearSeeds}: Safe knockout`,
+      `${copy.deleteDraw}: Safe knockout`,
+      `${copy.removeFromDraw}: Safe Player One`,
+      `${copy.removeFromDraw}: Safe Player Two`,
+    ]);
+    expect(panels()[1].textContent).toContain(copy.noEntriesAssigned);
+    expect(panels()[0].querySelector('thead')?.textContent).toContain(copy.seed);
+    expect(panels()[0].querySelector('thead')?.textContent).toContain(dictionary.tournament.entries);
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+});
+
 describe('Unassigned entry selection and assignment', () => {
   const originalMatchMedia = window.matchMedia;
   let fixture: ComponentFixture<DrawsTabComponent>;

@@ -23,7 +23,9 @@ description: 'Aggregate scope for independently reviewable draw-management and s
   DR-024a4 is split into seeding, creation and remaining locale children.
   Seeding DR-024a4a is approved Done on 2026-11-09 with disclosed verification limits;
   Creation DR-024a4b is approved Done on 2026-11-09 with accepted contrast/network/operational limits.
-  Remaining locales are not started. Keep this parent open.
+  Remaining locales [DR-024a4c](DR-024a4c-draw-locales.md) are approved Done on 2026-11-09 with disclosed limits.
+  Focused tests/lint/build and scoped three-locale browser checks pass; recorded verification limits remain.
+  DR-024a4 aggregate reconciliation remains outstanding. Keep this parent open.
 - DR-024a1 implementation and focused checks pass; the user approved completion with disclosed limits on 2026-11-09.
 - Scheduling's previously observed `TournamentScheduleData` HTTP 400 remains independent and unrepaired.
 - No shared component extraction is justified yet: retain smart page/tab/service boundaries.

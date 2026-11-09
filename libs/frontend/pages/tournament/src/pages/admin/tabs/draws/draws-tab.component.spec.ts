@@ -70,7 +70,12 @@ describe('Draw lists and actions', () => {
     expect(Array.from(first.querySelectorAll('tbody tr td:first-child'), (td) => td.textContent?.trim())).toEqual(['2', '—']);
     expect(first.querySelector('tbody')?.textContent).toContain('Safe Player One');
     expect(first.querySelector('p-card, .rounded-full, .bg-emphasis, .border-surface')).toBeNull();
-    expect(panels().map((panel) => panel.querySelector('p-tag')?.textContent?.trim())).toEqual(['KO', 'POULE', 'QUALIFICATION', 'N/A']);
+    expect(panels().map((panel) => panel.querySelector('p-tag')?.textContent?.trim())).toEqual([
+      'all.tournament.admin.draws.knockout',
+      'all.tournament.admin.draws.roundRobin',
+      'all.tournament.admin.draws.qualification',
+      'all.common.unknown',
+    ]);
     expect(panels().map((panel) => panel.querySelector('p-tag')?.className)).toEqual([
       expect.stringContaining('p-tag-success'),
       expect.stringContaining('p-tag-info'),
@@ -680,6 +685,7 @@ describe('Draw selection and read prerequisite', () => {
     const groups: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('[data-testid="draws-summary"] dl > div');
     fixture.componentInstance.summaryItems.forEach((item, index) => {
       expect(groups[index].querySelector('dt')?.textContent?.trim()).toBe(dictionary.tournament.admin.draws[item.label]);
+      expect(dictionary.tournament.admin.draws[item.description].trim()).not.toBe('');
       expect(groups[index].querySelectorAll('dd')[1].textContent?.trim()).toBe(dictionary.tournament.admin.draws[item.description]);
     });
     expect(summaryValues()).toEqual(['0', '0', '0', '0']);

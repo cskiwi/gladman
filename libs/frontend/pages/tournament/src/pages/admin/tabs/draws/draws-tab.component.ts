@@ -89,6 +89,12 @@ export class DrawsTabComponent {
   subEvents = computed(() => this.tournament()?.tournamentSubEvents ?? []);
 
   // Draw type options
+  readonly drawTypeLabels: Readonly<Record<string, string>> = {
+    KO: 'all.tournament.admin.draws.knockout',
+    POULE: 'all.tournament.admin.draws.roundRobin',
+    QUALIFICATION: 'all.tournament.admin.draws.qualification',
+  };
+
   readonly drawTypeOptions = toSignal(
     this.translate.stream('all.tournament.admin.draws').pipe(
       map(() => [
@@ -148,7 +154,7 @@ export class DrawsTabComponent {
   }
 
   getEntryName(entry: Entry): string {
-    const player1Name = entry.player1?.fullName ?? 'Unknown';
+    const player1Name = entry.player1?.fullName ?? this.translate.instant('all.common.unknown');
     if (this.isDoublesEvent() && entry.player2) {
       return `${player1Name} / ${entry.player2.fullName}`;
     }
@@ -184,7 +190,7 @@ export class DrawsTabComponent {
 
     const hasEntries = this.entries().length > 0;
     if (hasEntries) {
-      if (!confirm('Entries already exist. Do you want to regenerate them? This will remove existing entries.')) {
+      if (!confirm(this.translate.instant('all.tournament.admin.draws.confirmRegenerateEntries'))) {
         return;
       }
     }
@@ -231,7 +237,7 @@ export class DrawsTabComponent {
   }
 
   async deleteDraw(draw: TournamentDraw): Promise<void> {
-    if (!confirm(`Are you sure you want to delete draw "${draw.name}"? Entries will be unassigned but not deleted.`)) {
+    if (!confirm(this.translate.instant('all.tournament.admin.draws.confirmDeleteDraw', { name: draw.name }))) {
       return;
     }
     await this.dataService.deleteDraw(draw.id);
@@ -290,7 +296,7 @@ export class DrawsTabComponent {
   }
 
   async clearSeeds(draw: TournamentDraw): Promise<void> {
-    if (!confirm('Are you sure you want to clear all seeds from this draw?')) return;
+    if (!confirm(this.translate.instant('all.tournament.admin.draws.confirmClearSeeds', { name: draw.name }))) return;
     await this.dataService.clearDrawSeeds(draw.id);
   }
 

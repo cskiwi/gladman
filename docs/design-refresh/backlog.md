@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a4c is Done with explicit approval: [mounted draw locales](work-items/DR-024a4c-draw-locales.md).
+Actual authorized Draws tab reconfirmed on 2026-11-09 with HE 8-9 and two genuine unassigned entries.
+Summary descriptions, consumed French terminology, identity/type labels, native confirmations and
+five mounted local operation fallbacks are implemented. Payloads, selection, server diagnostics and layout remain.
+Exclude unused copy/methods, other tabs, backend/schema, shared/global styling and browser operational writes.
+All 127 focused tests and scoped lint/build pass; 33 new asset-backed cases cover all three locales.
+Twelve locale/theme/390/1440px populated cases, 36 settled overlays, nine canceled native confirmations
+and 60 client-only feedback fixtures pass. No operational browser writes are performed.
+Static class/styleClass tokens remain 124; no new component wrapper, styling layer or exception.
+Retain DR-033/DR-034 contrast failures and unperformed full-suite/app-build, live-operation/permission,
+exhaustive accessibility and SSR/hydration checks. Adjacent French labels and draw reliability are DR-052/DR-053.
+Original Dutch/dark/1355x1249/HE 8-9/Draws and genuine two-unassigned-entry data are restored; no fixtures remain.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this child's implementation/tests/scoped copy/generated keys and repository handoff.
+Failed/unperformed checks remain unchecked; approval is not evidence that they passed.
+Post-approval workspace lint passes all 34 projects with existing warnings and zero errors;
+22 tasks replay cache and twelve execute. No fresh full-workspace lint execution is claimed.
+Commit only this approved scope without pushing.
+Exact next action in a fresh invocation: reconcile DR-024a4 aggregate evidence across its three approved children.
+Do not begin aggregate reconciliation or another implementation slice here.
+Keep DR-024a4, DR-024a and DR-024 open; no sibling implementation in this invocation.
+
+### Previous completed focus: creation dialog
+
 DR-024a4b is Done with explicit approval: [creation dialog](work-items/DR-024a4b-creation-dialog.md).
 Actual authorized Draws tab and both mounted Create Draw actions confirmed on 2026-11-09.
 User explicitly selected removal of ignored gender/level controls; preserve selected sub-event/API.
@@ -2329,7 +2353,7 @@ and linked from their registry rows.
 | [DR-024a4](work-items/DR-024a4-draw-dialogs-locales.md)       | Draw dialogs and mounted locale completeness aggregate                      | In progress |
 | [DR-024a4a](work-items/DR-024a4a-seeding-dialog.md)           | Seeding dialog, scoped locale options and operation states                  | Done        |
 | [DR-024a4b](work-items/DR-024a4b-creation-dialog.md)          | Creation dialog; remove ignored controls with explicit scope approval       | Done        |
-| DR-024a4c                                                     | Remaining mounted draw locale completeness                                  | Backlog     |
+| [DR-024a4c](work-items/DR-024a4c-draw-locales.md)             | Remaining mounted draw locale completeness                                  | Done        |
 | DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                          | Backlog     |
@@ -2358,12 +2382,30 @@ and linked from their registry rows.
 | DR-049                                                        | Sub-event localization; withdrawn with page retirement                      | Done        |
 | DR-050                                                        | Shared GraphQL nested AND/OR conversion loses predicates                    | Backlog     |
 | DR-051                                                        | Check-in operational result feedback, stale selection and post-write focus  | Backlog     |
+| DR-052                                                        | Shared French action and tournament-administration tab terminology          | Backlog     |
+| DR-053                                                        | Draw operational result feedback, selection and post-write focus            | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-052: adjacent French action and administration tab terminology
+
+- DR-024a4c browser checks observe global `all.button.create` as "Création", and tournament administration
+  tab labels "Entrées"/"Dessiner"/"Enregistrement" rather than domain-consistent action/entry/draw/check-in terms.
+- Scope shared dictionary changes separately, inventory their mounted consumers and verify all affected surfaces.
+  Draw-child copy is corrected, but its locale-only slice does not silently change shared/global labels.
+- Native English option-list and dropdown-trigger labels remain under DR-037.
+
+### DR-053: draw operational reliability
+
+- DR-024a4c source inspection confirms mounted generate/delete/assign/remove/clear operations can return false
+  without explicit feedback for absent mutation data; partial-result and post-refetch selection/focus need scoping.
+- Keep operational behavior separate from the locale-only child. Inventory response contracts and intended
+  partial-success/permission semantics, then use mocked tests rather than tournament-data mutations for design checks.
+- Creation/seeding children already handle their own missing/malformed results; do not regress those paths.
 
 ### DR-051: check-in operational reliability
 

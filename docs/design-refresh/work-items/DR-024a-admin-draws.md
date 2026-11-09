@@ -27,13 +27,16 @@ description: 'Draw-management aggregate and bounded child sequence.'
    preserve its shared contrast failures and unperformed checks.
    Creation child DR-024a4b is approved Done on 2026-11-09, with explicitly approved removal of ignored
    gender/level controls. Its focused checks pass; retain accepted contrast/network/operational limits.
-   Remaining mounted locales DR-024a4c are not started.
+   [Mounted locales DR-024a4c](DR-024a4c-draw-locales.md) are approved Done on 2026-11-09 with disclosed limits.
+   All 127 focused tests and scoped lint/build pass; three-locale theme/width/overlay/feedback evidence is recorded.
+   Shared contrast failures and unperformed live-operation/accessibility/SSR checks remain disclosed.
 
 ## Baseline and exclusions
 
 - The four decorative counters are replaced by DR-024a2's native Panel/semantic summary.
   DR-024a1 already replaced the loading bar. DR-024a3's children replace the legacy filter/list surfaces
-  with native Panels/Tables and scoped translations. Dialog styling and remaining locale gaps stay DR-024a4.
+  with native Panels/Tables and scoped translations. Both DR-024a4 dialogs are approved complete;
+  its remaining locale child is approved complete. DR-024a4 aggregate reconciliation remains outstanding.
 - Do not claim a visual refresh from the prerequisite repair or silently include those presentation changes.
 - Keep existing smart orchestration. Extract dumb components only for meaningful confirmed repeated consumers,
   not to conceal utility markup or wrap PrimeNG one-to-one.

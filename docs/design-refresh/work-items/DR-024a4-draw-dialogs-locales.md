@@ -26,8 +26,13 @@ description: 'Bounded child sequence for mounted draw dialogs and remaining loca
    All 94 focused tests and scoped lint/build pass; four theme/width layouts and overlays fit.
    Retain shared DR-033/DR-034 contrast failures, final network-observation timeouts and unperformed checks.
    User approved completion/commit with these disclosed limits on 2026-11-09; unchecked criteria remain.
-3. DR-024a4c: remaining mounted draw locale completeness, including summary descriptions, creation options
-   and confirmation/error copy. Inspect only after both dialogs are resolved.
+3. [DR-024a4c](DR-024a4c-draw-locales.md): remaining mounted draw locale completeness, including summary
+   descriptions, identity/type labels and confirmation/error copy. Both dialogs are approved Done.
+   Existing localized creation/seeding options need verification, not another redesign.
+   Locale child is approved Done on 2026-11-09: 127 focused tests and scoped lint/build pass.
+   Twelve populated locale/theme/width cases, 36 overlays, nine canceled confirmations and 60 feedback fixtures pass.
+   Keep shared DR-033/DR-034 contrast failures and unperformed operational/accessibility/SSR checks disclosed.
+   User explicitly approves completion/commit with these limits; aggregate reconciliation remains the next invocation.
 
 ## Aggregate acceptance
 

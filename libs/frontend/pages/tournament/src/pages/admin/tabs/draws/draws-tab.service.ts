@@ -181,7 +181,7 @@ export class DrawsTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to generate entries');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.draws.generateEntriesFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -247,7 +247,7 @@ export class DrawsTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to delete draw');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.draws.deleteDrawFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -281,7 +281,7 @@ export class DrawsTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to assign entries');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.draws.assignEntriesFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -315,7 +315,7 @@ export class DrawsTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to remove entry from draw');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.draws.removeEntryFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -381,7 +381,7 @@ export class DrawsTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to clear seeds');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.draws.clearSeedsFailed'));
       return false;
     } finally {
       this.updating.set(false);

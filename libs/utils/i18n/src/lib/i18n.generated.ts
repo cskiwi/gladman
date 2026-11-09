@@ -1421,15 +1421,20 @@ export type I18nTranslations = {
                     "allEntriesAssigned": string;
                     "applySeeding": string;
                     "assign": string;
+                    "assignEntriesFailed": string;
                     "assigned": string;
                     "assignedDescription": string;
                     "assignSelected": string;
                     "autoSeed": string;
                     "clearSeeds": string;
+                    "clearSeedsFailed": string;
                     "clearSelection": string;
+                    "confirmClearSeeds": string;
                     "confirmDeleteDraw": string;
+                    "confirmRegenerateEntries": string;
                     "createDraw": string;
                     "deleteDraw": string;
+                    "deleteDrawFailed": string;
                     "drawCount": string;
                     "drawCountDescription": string;
                     "drawName": string;
@@ -1438,6 +1443,7 @@ export type I18nTranslations = {
                     "entries": string;
                     "entry": string;
                     "generateEntries": string;
+                    "generateEntriesFailed": string;
                     "generateEntriesDescription": string;
                     "knockout": string;
                     "maxLevel": string;
@@ -1455,6 +1461,7 @@ export type I18nTranslations = {
                     "noEntriesYet": string;
                     "qualification": string;
                     "removeFromDraw": string;
+                    "removeEntryFailed": string;
                     "roundRobin": string;
                     "seed": string;
                     "seedByRanking": string;

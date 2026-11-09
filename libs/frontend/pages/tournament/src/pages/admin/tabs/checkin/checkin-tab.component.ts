@@ -1,5 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TournamentEvent } from '@app/models';
@@ -69,6 +69,7 @@ export class CheckinTabComponent {
 
   // Selection
   selectedCheckIns = signal<CheckInWithDetails[]>([]);
+  readonly hasPendingCheckIns = computed(() => this.checkIns().some((record) => record.status === CheckInStatus.PENDING && !!record.enrollment?.id));
 
   readonly summaryItems = [
     { key: 'total', label: 'totalPlayers', description: 'totalDescription' },
@@ -117,9 +118,14 @@ export class CheckinTabComponent {
 
   getPlayerName(checkIn: CheckInWithDetails): string {
     if (checkIn.enrollment?.isGuest && checkIn.enrollment.guestName) {
-      return `${checkIn.enrollment.guestName} (Guest)`;
+      return `${checkIn.enrollment.guestName} (${this.translate.instant('all.tournament.admin.enrollments.guest')})`;
     }
-    return checkIn.player?.fullName ?? 'Unknown';
+    return checkIn.player?.fullName ?? this.translate.instant('all.common.unknown');
+  }
+
+  getStatusLabel(status: CheckInStatus): string {
+    const option = this.statusOptionDefinitions.find((item) => item.value === status);
+    return option ? this.translate.instant(option.label) : status;
   }
 
   // Selection handlers
@@ -137,7 +143,7 @@ export class CheckinTabComponent {
   }
 
   selectAllPending(): void {
-    const pending = this.checkIns().filter((c) => c.status === CheckInStatus.PENDING);
+    const pending = this.checkIns().filter((c) => c.status === CheckInStatus.PENDING && !!c.enrollment?.id);
     this.selectedCheckIns.set(pending);
   }
 

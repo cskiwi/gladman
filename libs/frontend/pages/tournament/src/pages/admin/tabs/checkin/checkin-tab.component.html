@@ -81,187 +81,177 @@
         [outlined]="true"
         (onClick)="initializeCheckIns()"
         [loading]="updating()"
+        [disabled]="loading() || !!error() || updating()"
         fluid
       />
     </div>
   </p-panel>
 
-  <!-- Error Message -->
   @if (updateError()) {
-    <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>
+    <p-message severity="error" class="wrap-anywhere">{{ updateError()! }}</p-message>
   }
 
-  <!-- Loading State -->
-  @if (loading()) {
-    <div class="h-1 bg-emphasis rounded-full overflow-hidden">
-      <div class="h-full bg-primary animate-pulse" style="width: 100%"></div>
-    </div>
-  }
-
-  <!-- Check-in List Section -->
-  <div class="bg-emphasis rounded-xl border border-surface overflow-hidden">
-    <!-- Section Header -->
-    <div class="px-5 py-4 border-b border-surface flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
-          <i class="pi pi-id-card text-primary"></i>
-        </div>
-        <div>
-          <h3 class="text-lg font-semibold text-color m-0">
-            {{ 'all.tournament.admin.checkin.players' | translate }}
-          </h3>
-          <span class="text-sm text-muted-color">{{ checkIns().length }} players</span>
-        </div>
-      </div>
-
-      <!-- Selection Actions -->
-      <div class="flex items-center gap-2">
-        <p-button size="small" [text]="true" icon="pi pi-check-square" pTooltip="Select all pending" (click)="selectAllPending()" />
-        <p-button
-          size="small"
-          [text]="true"
-          icon="pi pi-times"
-          pTooltip="Clear selection"
-          (click)="clearSelection()"
-          [disabled]="selectedCheckIns().length === 0"
-        />
-
-        @if (selectedCheckIns().length > 0) {
-          <div class="w-px h-6 bg-emphasis mx-1"></div>
+  <section class="min-w-0" data-testid="checkin-list" aria-labelledby="admin-checkin-list-title">
+    <div class="mb-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 w-full min-w-0">
+        <h2 id="admin-checkin-list-title" class="text-base font-semibold m-0 wrap-anywhere">
+          {{ 'all.tournament.admin.checkin.players' | translate }}
+          @if (!loading() && !error()) {
+            <span class="text-muted-color tabular-nums">({{ checkIns().length }})</span>
+          }
+        </h2>
+        <div class="flex flex-wrap items-center gap-2">
           <p-button
             size="small"
-            icon="pi pi-check"
-            [label]="'all.tournament.admin.checkin.bulkCheckIn' | translate"
-            (click)="bulkCheckIn()"
-            [loading]="updating()"
-            [badge]="selectedCheckIns().length.toString()"
-            badgeClass="p-badge-contrast"
+            severity="secondary"
+            [text]="true"
+            icon="pi pi-check-square"
+            [ariaLabel]="('all.tournament.admin.checkin.selectAll' | translate) + ': ' + ('all.tournament.admin.checkin.pending' | translate)"
+            [pTooltip]="('all.tournament.admin.checkin.selectAll' | translate) + ': ' + ('all.tournament.admin.checkin.pending' | translate)"
+            (onClick)="selectAllPending()"
+            [disabled]="loading() || !!error() || updating() || !hasPendingCheckIns()"
           />
-        }
+          <p-button
+            size="small"
+            severity="secondary"
+            [text]="true"
+            icon="pi pi-times"
+            [ariaLabel]="'all.tournament.admin.checkin.clearSelection' | translate"
+            [pTooltip]="'all.tournament.admin.checkin.clearSelection' | translate"
+            (onClick)="clearSelection()"
+            [disabled]="updating() || selectedCheckIns().length === 0"
+          />
+
+          @if (selectedCheckIns().length > 0) {
+            <p-button
+              size="small"
+              icon="pi pi-check"
+              [label]="'all.tournament.admin.checkin.bulkCheckIn' | translate"
+              (onClick)="bulkCheckIn()"
+              [loading]="updating()"
+              [disabled]="loading() || !!error() || updating()"
+              [badge]="selectedCheckIns().length.toString()"
+            />
+          }
+        </div>
       </div>
     </div>
 
-    <!-- Table Content -->
-    @if (checkIns().length > 0) {
+    @if (loading()) {
+      <div aria-busy="true">
+        <span id="admin-checkin-list-loading" role="status">{{ 'all.tournament.edit.messages.loading' | translate }}</span>
+        <p-progressbar mode="indeterminate" [showValue]="false" aria-labelledby="admin-checkin-list-loading" />
+      </div>
+    } @else if (error(); as err) {
+      <p-message severity="error" class="wrap-anywhere">{{ err }}</p-message>
+    } @else {
       <p-table
         [value]="checkIns()"
-        [tableStyle]="{ 'min-width': '50rem' }"
+        [scrollable]="true"
+        tableStyleClass="min-w-max"
         [paginator]="checkIns().length > 10"
         [rows]="10"
         [rowsPerPageOptions]="[10, 25, 50]"
-        styleClass="p-datatable-sm"
+        size="small"
       >
         <ng-template #header>
           <tr>
-            <th style="width: 3rem" class="bg-emphasis"></th>
-            <th class="bg-emphasis font-semibold text-color">
+            <th scope="col">
+              <span class="sr-only">{{ 'all.tournament.admin.checkin.selectAll' | translate }}</span>
+            </th>
+            <th scope="col">
               {{ 'all.tournament.admin.checkin.player' | translate }}
             </th>
-            <th class="bg-emphasis font-semibold text-color">
+            <th scope="col">
               {{ 'all.tournament.admin.checkin.subEvent' | translate }}
             </th>
-            <th class="bg-emphasis font-semibold text-color">
+            <th scope="col">
               {{ 'all.tournament.admin.checkin.status' | translate }}
             </th>
-            <th class="bg-emphasis font-semibold text-color">
+            <th scope="col">
               {{ 'all.tournament.admin.checkin.checkedInAt' | translate }}
             </th>
-            <th style="width: 10rem" class="bg-emphasis font-semibold text-color">
+            <th scope="col">
               {{ 'all.tournament.admin.checkin.actions' | translate }}
             </th>
           </tr>
         </ng-template>
-        <ng-template #body let-checkIn>
-          <tr
-            class="hover:bg-emphasis transition-colors"
-            [class.bg-green-50]="checkIn.status === 'CHECKED_IN'"
-            [class.dark:bg-green-900/20]="checkIn.status === 'CHECKED_IN'"
-            [class.bg-red-50]="checkIn.status === 'NO_SHOW'"
-            [class.dark:bg-red-900/20]="checkIn.status === 'NO_SHOW'"
-          >
-            <!-- Checkbox -->
-            <td class="text-center">
-              @if (checkIn.status === 'PENDING') {
-                <p-checkbox [binary]="true" [ngModel]="isSelected(checkIn)" (onChange)="toggleSelection(checkIn)" />
+        <ng-template #body let-record>
+          <tr>
+            <td>
+              @if (record.status === 'PENDING') {
+                <p-checkbox
+                  [binary]="true"
+                  [ngModel]="isSelected(record)"
+                  [ariaLabel]="getPlayerName(record)"
+                  [disabled]="updating() || !record.enrollment?.id"
+                  (onChange)="toggleSelection(record)"
+                />
               }
             </td>
 
-            <!-- Player Info -->
             <td>
-              <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-emphasis flex items-center justify-center flex-shrink-0">
-                  <i class="pi pi-user text-muted-color"></i>
-                </div>
-                <div class="flex flex-col">
-                  <span class="font-medium text-color">{{ getPlayerName(checkIn) }}</span>
-                  @if (checkIn.player?.memberId) {
-                    <span class="text-xs text-muted-color">{{ checkIn.player.memberId }}</span>
-                  }
-                </div>
+              <div class="flex flex-col gap-1">
+                <span class="font-medium">{{ getPlayerName(record) }}</span>
+                @if (record.player?.memberId) {
+                  <span class="text-sm text-muted-color">{{ record.player.memberId }}</span>
+                }
               </div>
             </td>
 
-            <!-- Sub-Event -->
             <td>
-              @if (checkIn.enrollment?.tournamentSubEvent?.name) {
-                <span class="text-color">{{ checkIn.enrollment.tournamentSubEvent.name }}</span>
+              {{ record.enrollment?.tournamentSubEvent?.name || '-' }}
+            </td>
+
+            <td>
+              <p-tag [value]="getStatusLabel(record.status)" [severity]="getStatusSeverity(record.status)" />
+            </td>
+
+            <td>
+              @if (record.checkedInAt) {
+                {{ record.checkedInAt | date: 'HH:mm' }}
               } @else {
-                <span class="text-muted-color">-</span>
+                -
               }
             </td>
 
-            <!-- Status -->
-            <td>
-              <p-tag [value]="checkIn.status" [severity]="getStatusSeverity(checkIn.status)" [rounded]="true" styleClass="text-xs" />
-            </td>
-
-            <!-- Checked In Time -->
-            <td>
-              @if (checkIn.checkedInAt) {
-                <div class="flex items-center gap-1.5 text-muted-color">
-                  <i class="pi pi-clock text-xs"></i>
-                  <span>{{ checkIn.checkedInAt | date: 'HH:mm' }}</span>
-                </div>
-              } @else {
-                <span class="text-muted-color">-</span>
-              }
-            </td>
-
-            <!-- Actions -->
             <td>
               <div class="flex gap-1">
-                @if (checkIn.status === 'PENDING') {
+                @if (record.status === 'PENDING') {
                   <p-button
                     icon="pi pi-check"
                     severity="success"
                     [text]="true"
-                    [rounded]="true"
                     size="small"
-                    pTooltip="Check in"
-                    (click)="checkIn(checkIn)"
+                    [ariaLabel]="('all.tournament.admin.checkin.checkIn' | translate) + ': ' + getPlayerName(record)"
+                    [pTooltip]="'all.tournament.admin.checkin.checkIn' | translate"
+                    (onClick)="checkIn(record)"
                     [loading]="updating()"
+                    [disabled]="updating() || !record.enrollment?.id"
                   />
                   <p-button
                     icon="pi pi-times"
                     severity="danger"
                     [text]="true"
-                    [rounded]="true"
                     size="small"
-                    pTooltip="Mark no-show"
-                    (click)="markNoShow(checkIn)"
+                    [ariaLabel]="('all.tournament.admin.checkin.markNoShow' | translate) + ': ' + getPlayerName(record)"
+                    [pTooltip]="'all.tournament.admin.checkin.markNoShow' | translate"
+                    (onClick)="markNoShow(record)"
                     [loading]="updating()"
+                    [disabled]="updating() || !record.enrollment?.id"
                   />
                 }
-                @if (checkIn.status === 'CHECKED_IN' || checkIn.status === 'NO_SHOW') {
+                @if (record.status === 'CHECKED_IN' || record.status === 'NO_SHOW') {
                   <p-button
                     icon="pi pi-undo"
                     severity="secondary"
                     [text]="true"
-                    [rounded]="true"
                     size="small"
-                    pTooltip="Undo"
-                    (click)="undoCheckIn(checkIn)"
+                    [ariaLabel]="('all.tournament.admin.checkin.undo' | translate) + ': ' + getPlayerName(record)"
+                    [pTooltip]="'all.tournament.admin.checkin.undo' | translate"
+                    (onClick)="undoCheckIn(record)"
                     [loading]="updating()"
+                    [disabled]="updating()"
                   />
                 }
               </div>
@@ -270,34 +260,12 @@
         </ng-template>
         <ng-template #emptymessage>
           <tr>
-            <td colspan="6" class="text-center py-8">
-              <div class="flex flex-col items-center gap-2">
-                <i class="pi pi-inbox text-4xl text-muted-color"></i>
-                <span class="text-muted-color">{{ 'all.tournament.admin.checkin.noCheckIns' | translate }}</span>
-              </div>
+            <td colspan="6">
+              <p-message severity="info">{{ 'all.tournament.admin.checkin.noCheckIns' | translate }}</p-message>
             </td>
           </tr>
         </ng-template>
       </p-table>
-    } @else {
-      <!-- Empty State -->
-      <div class="p-8 text-center">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emphasis flex items-center justify-center">
-          <i class="pi pi-id-card text-3xl text-muted-color"></i>
-        </div>
-        <p class="text-lg font-medium text-color mb-2">
-          {{ 'all.tournament.admin.checkin.noCheckIns' | translate }}
-        </p>
-        <p class="text-muted-color mb-4 max-w-md mx-auto">
-          {{ 'all.tournament.admin.checkin.initializeHint' | translate }}
-        </p>
-        <p-button
-          icon="pi pi-play"
-          [label]="'all.tournament.admin.checkin.initialize' | translate"
-          (click)="initializeCheckIns()"
-          [loading]="updating()"
-        />
-      </div>
     }
-  </div>
+  </section>
 </div>

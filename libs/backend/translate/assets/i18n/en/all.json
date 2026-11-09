@@ -1374,6 +1374,7 @@
         "checkinRate": "Check-in rate",
         "checkInSelected": "Selection check-in",
         "checkinTime": "Check-in time",
+        "clearSelection": "Clear selection",
         "filterByStatus": "Filter by status",
         "groupBySubEvent": "Group by component",
         "initialize": "Initialize Check-ins",

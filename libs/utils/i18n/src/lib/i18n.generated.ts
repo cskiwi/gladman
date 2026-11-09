@@ -1381,6 +1381,7 @@ export type I18nTranslations = {
                     "checkinRate": string;
                     "checkInSelected": string;
                     "checkinTime": string;
+                    "clearSelection": string;
                     "filterByStatus": string;
                     "groupBySubEvent": string;
                     "initialize": string;

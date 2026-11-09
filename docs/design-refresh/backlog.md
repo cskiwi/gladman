@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023c3 is Done with explicit approval: [check-in table and actions](work-items/DR-023c3-checkin-table.md).
+Fresh authorized visible Check-in consumer confirmed on 2026-11-08 at the recorded administration route.
+Refresh native table/feedback and named selection/action presentation; preserve summary, filters and mutation contracts.
+Exclude other tabs, global/shared styling, dependencies and browser operational writes.
+DR-023c2 is already committed as `0cdbbdd9`; its pending-commit wording below is historical and superseded.
+Native table/feedback/action presentation is implemented; utility tokens fall 133 to 31 with no new styling.
+Focused 26 tests and scoped lint/build/API development build pass; final test/lint rerun has no lint findings.
+User restarted API; port 5000 and all three actual dictionaries now pass, with the bounded generated key.
+Populated narrow-screen verification found native Panel grid overflow; reused the approved enrollment section pattern.
+Final 12 locale/theme/width cases, 25/50-row paging, keyboard selection and four recovery cases pass.
+Sampled heading/member/status text contrast passes; no browser mutations and real data/preferences are restored.
+Limits: full tournament suite, exhaustive accessibility/contrast, dedicated SSR/hydration and live operations.
+DR-034 contrast, DR-024 scheduling and DR-051 operational reliability remain separate.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else".
+Approval covers this child, bounded locale labels/generated key, tests and handoff; limits remain unchecked.
+All 34 post-approval workspace lint targets pass with existing warnings.
+Approved commit scope is this slice/handoff only; no push.
+Exact next action in a fresh invocation: scope DR-023c4 remaining mounted check-in locale completeness.
+Do not start it here; DR-023c and DR-023 remain open.
+DR-023c and DR-023 remain open; do not start another child in this invocation.
+
+### Previous completed focus: check-in filters
+
 DR-023c2 is Done with explicit approval: [check-in filters/search](work-items/DR-023c2-checkin-filters.md).
 Fresh authorized mounted Check-in consumer confirmed on 2026-11-08.
 Native responsive filters, reactive status/local search and refresh consolidation are implemented.
@@ -2023,7 +2046,7 @@ and linked from their registry rows.
 | [DR-023c](work-items/DR-023c-admin-checkin.md)                | Check-in tab; approved bounded API prerequisite and summary child           | In progress |
 | [DR-023c1](work-items/DR-023c1-checkin-summary.md)            | Check-in five-count summary and approved read-API prerequisite              | Done        |
 | [DR-023c2](work-items/DR-023c2-checkin-filters.md)            | Reactive check-in filters/search and refresh consolidation                  | Done        |
-| DR-023c3                                                      | Check-in table/feedback and operational action presentation                 | Backlog     |
+| [DR-023c3](work-items/DR-023c3-checkin-table.md)              | Check-in table/feedback and operational action presentation                 | Done        |
 | DR-023c4                                                      | Remaining mounted check-in locale completeness                              | Backlog     |
 | DR-024                                                        | Tournament admin: draws and scheduling                                      | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
@@ -2052,12 +2075,25 @@ and linked from their registry rows.
 | DR-048                                                        | Partner search failure feedback and request lifecycle                       | Backlog     |
 | DR-049                                                        | Sub-event localization; withdrawn with page retirement                      | Done        |
 | DR-050                                                        | Shared GraphQL nested AND/OR conversion loses predicates                    | Backlog     |
+| DR-051                                                        | Check-in operational result feedback, stale selection and post-write focus  | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-051: check-in operational reliability
+
+- Separately scope the existing smart tab/service's operational result handling, rather than hiding business changes
+  inside DR-023c3 presentation.
+- Missing mutation data currently returns false/null without explicit feedback; bulk partial results clear the entire
+  selection without surfacing failed IDs. Selection can outlive filtering, refetch or a tournament context change.
+- Native row controls are replaced during successful refetch; preserving post-write focus needs an explicit target.
+- Confirm intended partial-success/selection semantics and permission/phase/concurrency requirements before changing
+  contracts. Use mocked tests; do not mutate tournament data merely to verify design.
+- DR-023c3 only names/disables existing controls, excludes missing-ID pending records from Select pending and fixes
+  template variable shadowing of `checkIn()`. It does not claim complete operational workflow verification.
 
 ### DR-050: nested GraphQL filter conversion
 

@@ -1572,6 +1572,12 @@ export type I18nTranslations = {
                     "title": string;
                 };
                 "schedule": {
+                    "totalSlotsDescription": string;
+                    "availableDescription": string;
+                    "scheduledDescription": string;
+                    "inProgressDescription": string;
+                    "blockedDescription": string;
+                    "unscheduledGamesDescription": string;
                     "allDates": string;
                     "autoSchedule": string;
                     "autoScheduleDescription": string;

@@ -31,8 +31,8 @@ description: 'Aggregate scope for independently reviewable draw-management and s
   All 127 focused tests and 16 scoped lint/build tasks pass by cache replay; fresh interactions time out
   on the hidden shared browser. Preserve child contrast failures and unperformed checks. Keep this parent open.
 - DR-024a1 implementation and focused checks pass; the user approved completion with disclosed limits on 2026-11-09.
-- Scheduling's previously observed `TournamentScheduleData` HTTP 400 remains independent and unrepaired;
-  the DR-024b prerequisite check below reproduces the failure with explicit schema diagnostics.
+- Scheduling's initially observed `TournamentScheduleData` HTTP 400 is recorded by the prerequisite check below;
+  the later approved DR-024b1 repair resolves that read-schema blocker.
 - No shared component extraction is justified yet: retain smart page/tab/service boundaries.
 - DR-024a draw-management aggregate reconciliation is separately approved on 2026-11-09 with disclosed limits.
   All four required children are approved Done and their committed source/evidence is reconciled.
@@ -66,8 +66,13 @@ description: 'Aggregate scope for independently reviewable draw-management and s
 - The user selects "Approve completion and commit with disclosed limits" and "Nothing else" for DR-024b1
   on 2026-11-09. Only that read/error prerequisite is Done; unchecked visual/full-suite/live-data/accessibility/SSR
   criteria remain unchecked. DR-024b and this parent remain open.
-  Exact next action: scope DR-024b2 summary/count labels in a fresh invocation.
-  Do not bypass gates, restart approved Draws work or begin another slice here.
+  DR-024b2 summary/count labels are subsequently implemented and explicitly approved with disclosed limits.
+  All 15 focused tests and scoped lint/build pass; four Dutch theme/width browser checks and summary contrast pass.
+  User approval and disclosed full-suite/browser/accessibility/SSR limits are recorded in the
+  [summary brief](DR-024b2-schedule-summary.md). Only the summary presentation changes.
+  Only DR-024b2 is Done; all unperformed checks remain unchecked.
+  Exact next action: commit the approved summary/handoff; scope DR-024b3 filters/actions in a fresh invocation.
+  Keep both Scheduling and this parent open. Do not bypass gates or restart approved Draws work.
 
 ## Aggregate acceptance
 

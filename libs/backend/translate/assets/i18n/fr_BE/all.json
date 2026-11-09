@@ -1565,6 +1565,12 @@
         "title": "Stades du tournoi"
       },
       "schedule": {
+        "totalSlotsDescription": "Créneaux du jour sélectionné ou de tous les jours, y compris les créneaux terminés.",
+        "availableDescription": "Créneaux disponibles pour attribuer un match.",
+        "scheduledDescription": "Créneaux avec un match dont le début est prévu.",
+        "inProgressDescription": "Créneaux avec un match en cours.",
+        "blockedDescription": "Créneaux indisponibles pour la planification.",
+        "unscheduledGamesDescription": "Matchs du tournoi en attente d'un créneau, indépendamment du filtre de date.",
         "allDates": "Tous les jours",
         "autoSchedule": "Planification automatique",
         "autoScheduleDescription": "",
@@ -1583,7 +1589,7 @@
         "filterByDate": "Filtrer par date",
         "generateSlots": "Générer des créneaux horaires",
         "hideUnscheduled": "",
-        "inProgress": "",
+        "inProgress": "En cours",
         "minimizeWait": "Minimiser le temps d'attente",
         "minRestTime": "Temps de repos minimum (min)",
         "noConflicts": "Aucun conflit n'a été trouvé",

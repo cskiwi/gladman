@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { print } from 'graphql';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
 import { ScheduleTabComponent } from './schedule-tab.component';
 
@@ -30,6 +32,60 @@ describe('Scheduling read feedback', () => {
 
   afterEach(() => expect(mutate).not.toHaveBeenCalled());
 
+  it.each(['en', 'nl_BE', 'fr_BE'])('renders a named, semantic, noninteractive zero summary in %s', async (locale) => {
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    await settle();
+    const summary: HTMLElement = fixture.nativeElement.querySelector('[data-testid="schedule-summary"]');
+    const copy = dictionary.tournament.admin.schedule;
+    expect(summary.tagName).toBe('P-PANEL');
+    expect(summary.querySelector('.p-panel-title')?.textContent).toBe(copy.title);
+    expect(summary.querySelector('[role="region"]')?.getAttribute('aria-labelledby')).toBe(summary.querySelector('.p-panel-title')?.id);
+    expect(summary.querySelectorAll('dl > div')).toHaveLength(6);
+    fixture.componentInstance.summaryItems.forEach((item, index) => {
+      expect(copy[item.key].trim()).not.toBe('');
+      expect(copy[item.description].trim()).not.toBe('');
+      const row = summary.querySelectorAll('dl > div')[index];
+      expect(row.querySelector('dt')?.textContent?.trim()).toBe(copy[item.key]);
+      expect(Array.from(row.querySelectorAll('dd'), (dd) => dd.textContent?.trim())).toEqual(['0', copy[item.description]]);
+    });
+    expect(summary.textContent).not.toContain('all.tournament.');
+    expect(summary.querySelector('button, a, input, [tabindex], .rounded-full, .bg-emphasis')).toBeNull();
+    expect(summary.querySelector('dl [style]')).toBeNull();
+  });
+
+  it('keeps populated slot totals distinct from unscheduled games and updates counts with the date filter', async () => {
+    const statuses = ['AVAILABLE', 'AVAILABLE', 'SCHEDULED', 'IN_PROGRESS', 'BLOCKED', 'COMPLETED', 'COMPLETED', 'COMPLETED'];
+    query.mockReturnValueOnce(
+      of({
+        data: {
+          tournamentSchedule: statuses.map((status, index) => ({
+            id: `safe-slot-${index}`,
+            courtId: 'safe-court',
+            startTime: '2026-11-09T09:00:00Z',
+            endTime: '2026-11-09T09:30:00Z',
+            status,
+          })),
+          tournamentScheduleCourts: [{ id: 'safe-court', name: 'Safe Court' }],
+          unscheduledGames: [{ id: 'safe-one' }, { id: 'safe-two' }],
+        },
+      }),
+    );
+    await settle();
+    const counts = () =>
+      Array.from(fixture.nativeElement.querySelectorAll('[data-testid="schedule-summary"] dl > div dd:first-of-type'), (dd: Element) =>
+        dd.textContent?.trim(),
+      );
+    expect(counts()).toEqual(['8', '2', '1', '1', '1', '2']);
+    const date = new Date('2026-11-10T00:00:00Z');
+    fixture.componentInstance.onDateChange(date);
+    await settle();
+    expect(query.mock.lastCall?.[0].variables.date).toBe(date);
+    expect(counts()).toEqual(['0', '0', '0', '0', '0', '0']);
+  });
+
   it('keeps genuine empty success distinct from an error and uses the real court contract', async () => {
     await settle();
     expect(fixture.componentInstance.error()).toBeNull();
@@ -50,12 +106,14 @@ describe('Scheduling read feedback', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('[aria-busy="true"]')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('p-progressbar')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="schedule-summary"]')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.schedule.noSlots');
     expect(fixture.nativeElement.querySelector('p-button')).toBeNull();
     pending.next(empty);
     pending.complete();
     await settle();
     expect(fixture.nativeElement.querySelector('[aria-busy="true"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="schedule-summary"]')).not.toBeNull();
   });
 
   it('retains server diagnostics, hides empty success and retries without a mutation', async () => {
@@ -63,6 +121,7 @@ describe('Scheduling read feedback', () => {
     await settle();
     expect(fixture.componentInstance.error()).toBe('Safe scheduling read failure');
     expect(fixture.nativeElement.querySelector('p-message')?.textContent).toContain('Safe scheduling read failure');
+    expect(fixture.nativeElement.querySelector('[data-testid="schedule-summary"]')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.schedule.noSlots');
     expect(fixture.componentInstance.stats().totalSlots).toBe(0);
     const retry: HTMLButtonElement = fixture.nativeElement.querySelector('p-button button');
@@ -72,6 +131,7 @@ describe('Scheduling read feedback', () => {
     expect(query).toHaveBeenCalledTimes(2);
     expect(fixture.componentInstance.error()).toBeNull();
     expect(fixture.nativeElement.querySelector('p-message')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="schedule-summary"]')).not.toBeNull();
   });
 
   it.each([

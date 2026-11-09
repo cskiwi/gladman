@@ -1565,6 +1565,12 @@
         "title": "Tournament Stages"
       },
       "schedule": {
+        "totalSlotsDescription": "Slots for the selected date, or all dates, including completed slots.",
+        "availableDescription": "Slots available for assigning a game.",
+        "scheduledDescription": "Slots with a game scheduled to start.",
+        "inProgressDescription": "Slots with a game currently being played.",
+        "blockedDescription": "Slots unavailable for scheduling.",
+        "unscheduledGamesDescription": "Tournament games awaiting a slot, regardless of the date filter.",
         "allDates": "All Dates",
         "autoSchedule": "Auto Schedule",
         "autoScheduleDescription": "Automatically assign unscheduled games to available slots based on the selected strategy.",

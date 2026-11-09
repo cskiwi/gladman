@@ -1,6 +1,6 @@
 ---
-title: 'DR-024b: Tournament Scheduling prerequisite'
-description: 'Verified access and read-schema blockers before selecting a mounted Scheduling refresh slice.'
+title: 'DR-024b: Tournament Scheduling'
+description: 'Scheduling prerequisites, independently reviewable presentation children and remaining acceptance.'
 ---
 
 ## Identity
@@ -10,7 +10,10 @@ description: 'Verified access and read-schema blockers before selecting a mounte
 - Dependencies: approved DR-023a administration chrome and the separately approved
   [DR-024b1 read/error prerequisite](DR-024b1-schedule-read.md).
 - Rules: [design refresh](../README.md).
-- This brief records a blocked prerequisite check, not an implementation-ready whole-tab redesign.
+- This parent retains the historical prerequisite check and tracks bounded children, not a whole-tab redesign.
+- Required children: approved [DR-024b1 reads/errors](DR-024b1-schedule-read.md),
+  [DR-024b2 summary](DR-024b2-schedule-summary.md), then separately scoped filters/actions, grid/game panel
+  and operational dialogs. Keep this parent open until its required work and aggregate review are complete.
 
 ## Scope and intended outcome
 
@@ -91,7 +94,7 @@ No operational write, navigation, fixture, theme/viewport change or UI gate over
 - [ ] The actual Scheduling read succeeds against the running API with correct court/slot/game data.
 - [ ] Query failure is explicit and retryable; failed reads do not appear as successful empty datasets.
 - [ ] Relevant date/filter/refetch behavior and loading/empty/error states have focused regression coverage.
-- [ ] Scope one presentation child with concrete light/dark, narrow/wide and interaction acceptance checks.
+- [x] Scope one presentation child with concrete light/dark, narrow/wide and interaction acceptance checks.
 - [ ] Native PrimeNG, semantic colors and no-new-styling rules are verified on that implementation.
 - [ ] Keyboard, focus, labels, contrast, localization and applicable SSR/hydration behavior are checked.
 - [ ] Relevant existing Nx lint/build/test tasks pass for any eventual application changes.
@@ -127,8 +130,18 @@ No operational write, navigation, fixture, theme/viewport change or UI gate over
   All fixture routes are removed and real empty reads, Dutch/dark/1355x1249/Scheduling are restored.
 - The user explicitly approves DR-024b1 completion and commit with disclosed limits on 2026-11-09.
   That child is Done; unperformed checks remain unchecked and this parent is not complete.
-- Exact next action: scope DR-024b2 summary/count labels in a fresh invocation.
-  This parent's remaining presentation/localization/operational acceptance stays open; do not start it here.
+- DR-024b2 summary/count labels are implemented and explicitly approved with disclosed limits.
+  The confirmed authorized consumer now uses a native Panel/definition list with six localized labels/descriptions.
+  All 15 focused tests pass; scoped lint/build pass 12 tasks with six cache replays.
+  Four Dutch light/dark/390/1440px browser cases preserve labels, counts and containment without overflow.
+  Summary text contrast passes at 4.87:1 light and 6.65:1 dark; no new tab stops or styling layer.
+  Original Dutch/dark/1355x1249/Scheduling is restored, with no operational browser writes.
+  The summary child retains all unperformed suite/browser/accessibility/SSR checks unchecked.
+  User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+  Only DR-024b2 is Done; approval neither verifies the unperformed checks nor closes this parent.
+- Exact next action: commit only approved DR-024b2 and its handoff without pushing.
+  DR-024b3 filters/actions is the next fresh-invocation scoping candidate, not an active implementation.
+  Remaining grid/game panel/dialog/localization/operational and aggregate acceptance stays open.
 
 [admin]: ../../../libs/frontend/pages/tournament/src/pages/admin/page-admin.component.ts
 [template]: ../../../libs/frontend/pages/tournament/src/pages/admin/page-admin.component.html

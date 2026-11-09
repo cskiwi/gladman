@@ -1565,6 +1565,12 @@
         "title": "Toernooi Fases"
       },
       "schedule": {
+        "totalSlotsDescription": "Tijdslots voor de gekozen dag of alle dagen, inclusief voltooide tijdslots.",
+        "availableDescription": "Tijdslots waaraan een wedstrijd kan worden toegewezen.",
+        "scheduledDescription": "Tijdslots met een wedstrijd die nog moet starten.",
+        "inProgressDescription": "Tijdslots met een wedstrijd die momenteel bezig is.",
+        "blockedDescription": "Tijdslots die niet beschikbaar zijn voor de planning.",
+        "unscheduledGamesDescription": "Toernooiwedstrijden die nog een tijdslot nodig hebben, ongeacht het datumfilter.",
         "allDates": "Alle dagen",
         "autoSchedule": "Automatisch plannen",
         "autoScheduleDescription": "",
@@ -1583,7 +1589,7 @@
         "filterByDate": "Filter op datum",
         "generateSlots": "Tijdslots genereren",
         "hideUnscheduled": "",
-        "inProgress": "",
+        "inProgress": "Bezig",
         "minimizeWait": "Wachttijd minimaliseren",
         "minRestTime": "Minimale rusttijd (min)",
         "noConflicts": "Geen conflicten gevonden",

@@ -14,6 +14,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
@@ -40,6 +41,7 @@ import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
     CheckboxModule,
     DatePickerModule,
     MultiSelectModule,
+    PanelModule,
     DatePipe,
     CdkDropListGroup,
     CdkDropList,
@@ -86,6 +88,15 @@ export class ScheduleTabComponent {
   updating = this.dataService.updating;
   updateError = this.dataService.updateError;
   stats = this.dataService.stats;
+
+  readonly summaryItems = [
+    { key: 'totalSlots', description: 'totalSlotsDescription' },
+    { key: 'available', description: 'availableDescription' },
+    { key: 'scheduled', description: 'scheduledDescription' },
+    { key: 'inProgress', description: 'inProgressDescription' },
+    { key: 'blocked', description: 'blockedDescription' },
+    { key: 'unscheduledGames', description: 'unscheduledGamesDescription' },
+  ] as const satisfies ReadonlyArray<{ key: keyof ReturnType<ScheduleTabService['stats']>; description: string }>;
 
   // Strategy options
   readonly strategyOptions = [

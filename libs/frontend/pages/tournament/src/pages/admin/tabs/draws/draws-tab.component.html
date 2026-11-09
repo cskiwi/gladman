@@ -50,7 +50,7 @@
         <p-button
           icon="pi pi-plus"
           [label]="'all.tournament.admin.draws.createDraw' | translate"
-          (onClick)="openCreateDrawDialog()"
+          (onClick)="openCreateDrawDialog($event)"
           [disabled]="!selectedSubEvent() || loading() || !!error()"
         />
 
@@ -269,7 +269,7 @@
               icon="pi pi-plus"
               size="small"
               [outlined]="true"
-              (onClick)="openCreateDrawDialog()"
+              (onClick)="openCreateDrawDialog($event)"
             />
           </p-panel>
         }
@@ -286,118 +286,92 @@
     [header]="'all.tournament.admin.draws.createDraw' | translate"
     [(visible)]="showCreateDrawDialog"
     [modal]="true"
-    [style]="{ width: '500px' }"
+    styleClass="w-full sm:w-md"
     [draggable]="false"
     [resizable]="false"
+    [closable]="!updating()"
+    [closeOnEscape]="false"
+    [closeAriaLabel]="'all.button.close' | translate"
+    (document:keydown.escape)="closeCreateDrawDialog($event)"
+    (onHide)="restoreCreationFocus()"
   >
-    <div class="flex flex-col gap-5">
+    <form class="flex flex-col gap-4" [formGroup]="drawForm" (ngSubmit)="createDraw()" [attr.aria-busy]="updating()">
+      @if (updateError(); as creationError) {
+        <p-message severity="error">{{ creationError }}</p-message>
+      }
+
       <div class="flex flex-col gap-2">
-        <label for="drawName" class="text-sm font-medium text-color">
+        <label for="drawName">
           {{ 'all.tournament.admin.draws.drawName' | translate }}
-          <span class="text-red-500">*</span>
         </label>
-        <input pInputText id="drawName" [formControl]="drawForm.controls.name" class="w-full" />
-      </div>
-
-      <div class="grid grid-cols-2 gap-4">
-        <div class="flex flex-col gap-2">
-          <label for="drawType" class="text-sm font-medium text-color">
-            {{ 'all.tournament.admin.draws.drawType' | translate }}
-            <span class="text-red-500">*</span>
-          </label>
-          <p-select
-            id="drawType"
-            [formControl]="drawForm.controls.type"
-            [options]="drawTypeOptions"
-            optionLabel="label"
-            optionValue="value"
-            styleClass="w-full"
-          />
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label for="subEventType" class="text-sm font-medium text-color">
-            {{ 'all.tournament.admin.draws.subEventType' | translate }}
-            <span class="text-red-500">*</span>
-          </label>
-          <p-select
-            id="subEventType"
-            [formControl]="drawForm.controls.subEventType"
-            [options]="subEventTypeOptions"
-            optionLabel="label"
-            optionValue="value"
-            styleClass="w-full"
-          />
-        </div>
+        <input
+          pInputText
+          id="drawName"
+          formControlName="name"
+          required
+          [readonly]="updating()"
+          [attr.aria-describedby]="drawForm.controls.name.invalid && drawForm.controls.name.touched ? 'draw-name-error' : null"
+          fluid
+        />
+        @if (drawForm.controls.name.invalid && drawForm.controls.name.touched) {
+          <p-message id="draw-name-error" severity="error" size="small" variant="simple">{{ 'all.common.required' | translate }}</p-message>
+        }
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="drawSize" class="text-sm font-medium text-color">
+        <label for="drawType" id="draw-type-label">
+          {{ 'all.tournament.admin.draws.drawType' | translate }}
+        </label>
+        <p-select
+          inputId="drawType"
+          ariaLabelledBy="draw-type-label"
+          formControlName="type"
+          [options]="drawTypeOptions()"
+          optionLabel="label"
+          optionValue="value"
+          [readonly]="updating()"
+          required
+          fluid
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="drawSize" id="draw-size-label">
           {{ 'all.tournament.admin.draws.drawSize' | translate }}
         </label>
         <p-select
-          id="drawSize"
-          [formControl]="drawForm.controls.size"
-          [options]="drawSizeOptions"
+          inputId="drawSize"
+          ariaLabelledBy="draw-size-label"
+          formControlName="size"
+          [options]="drawSizeOptions()"
           optionLabel="label"
           optionValue="value"
           [placeholder]="'all.tournament.admin.draws.selectSize' | translate"
-          [showClear]="true"
-          styleClass="w-full"
+          [showClear]="!updating()"
+          [readonly]="updating()"
+          fluid
         />
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div class="flex flex-col gap-2">
-          <label for="minLevel" class="text-sm font-medium text-color">
-            {{ 'all.tournament.admin.draws.minLevel' | translate }}
-          </label>
-          <p-inputnumber
-            id="minLevel"
-            [formControl]="drawForm.controls.minLevel"
-            [min]="1"
-            [max]="12"
-            [showButtons]="true"
-            styleClass="w-full"
-            [placeholder]="'all.tournament.admin.draws.minLevelPlaceholder' | translate"
-          />
-          <small class="text-muted-color text-xs">
-            {{ 'all.tournament.admin.draws.minLevelHelp' | translate }}
-          </small>
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label for="maxLevel" class="text-sm font-medium text-color">
-            {{ 'all.tournament.admin.draws.maxLevel' | translate }}
-          </label>
-          <p-inputnumber
-            id="maxLevel"
-            [formControl]="drawForm.controls.maxLevel"
-            [min]="1"
-            [max]="12"
-            [showButtons]="true"
-            styleClass="w-full"
-            [placeholder]="'all.tournament.admin.draws.maxLevelPlaceholder' | translate"
-          />
-          <small class="text-muted-color text-xs">
-            {{ 'all.tournament.admin.draws.maxLevelHelp' | translate }}
-          </small>
-        </div>
-      </div>
-    </div>
-
-    <ng-template pTemplate="footer">
-      <div class="flex gap-3 justify-end">
-        <p-button [label]="'all.button.cancel' | translate" severity="secondary" [outlined]="true" (click)="showCreateDrawDialog.set(false)" />
+      <div class="grid sm:grid-cols-2 gap-3">
         <p-button
+          [label]="'all.button.cancel' | translate"
+          severity="secondary"
+          [outlined]="true"
+          [fluid]="true"
+          [disabled]="updating()"
+          (onClick)="closeCreateDrawDialog()"
+        />
+        <p-button
+          type="submit"
           [label]="'all.button.create' | translate"
           icon="pi pi-plus"
-          (click)="createDraw()"
-          [disabled]="!drawForm.valid"
+          [fluid]="true"
+          [disabled]="!drawForm.valid || updating() || !selectedSubEvent()"
           [loading]="updating()"
         />
       </div>
-    </ng-template>
+    </form>
   </p-dialog>
 
   <!-- Seeding Dialog -->

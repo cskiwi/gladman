@@ -1439,6 +1439,7 @@ export type I18nTranslations = {
                     "entry": string;
                     "generateEntries": string;
                     "generateEntriesDescription": string;
+                    "knockout": string;
                     "maxLevel": string;
                     "maxLevelHelp": string;
                     "maxLevelPlaceholder": string;
@@ -1452,7 +1453,9 @@ export type I18nTranslations = {
                     "noEntriesAssigned": string;
                     "noEntriesHint": string;
                     "noEntriesYet": string;
+                    "qualification": string;
                     "removeFromDraw": string;
+                    "roundRobin": string;
                     "seed": string;
                     "seedByRanking": string;
                     "seeding": string;

@@ -211,13 +211,14 @@ export class DrawsTabService {
         }),
       );
 
-      if (result.data?.createTournamentDraw) {
-        this.refetch();
-        return result.data.createTournamentDraw;
+      const draw = result.data?.createTournamentDraw;
+      if (!draw?.id) {
+        throw new Error(this.translate.instant('all.error.genericTitle'));
       }
-      return null;
+      this.refetch();
+      return draw;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to create draw');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.error.genericTitle'));
       return null;
     } finally {
       this.updating.set(false);

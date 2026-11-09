@@ -2,12 +2,10 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, input, si
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Entry, TournamentDraw, TournamentEvent, TournamentSubEvent } from '@app/models';
-import { SubEventTypeEnum } from '@app/models-enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
@@ -32,7 +30,6 @@ import { DrawsTabService, SeedingMethod } from './draws-tab.service';
     TagModule,
     SelectModule,
     InputTextModule,
-    InputNumberModule,
     MessageModule,
     PanelModule,
     ProgressBarModule,
@@ -47,6 +44,7 @@ export class DrawsTabComponent {
 
   private readonly dataService = new DrawsTabService();
   private readonly translate = inject(TranslateService);
+  private creationTrigger: HTMLElement | null = null;
   private seedingTrigger: HTMLElement | null = null;
 
   // Form controls
@@ -58,10 +56,7 @@ export class DrawsTabComponent {
   drawForm = new FormGroup({
     name: new FormControl<string>('', Validators.required),
     type: new FormControl<string>('KO', Validators.required),
-    subEventType: new FormControl<SubEventTypeEnum>(SubEventTypeEnum.M, Validators.required),
     size: new FormControl<number | null>(null),
-    minLevel: new FormControl<number | null>(null),
-    maxLevel: new FormControl<number | null>(null),
   });
 
   // Seeding dialog
@@ -94,11 +89,16 @@ export class DrawsTabComponent {
   subEvents = computed(() => this.tournament()?.tournamentSubEvents ?? []);
 
   // Draw type options
-  readonly drawTypeOptions = [
-    { label: 'Knockout', value: 'KO' },
-    { label: 'Poule/Round Robin', value: 'POULE' },
-    { label: 'Qualification', value: 'QUALIFICATION' },
-  ];
+  readonly drawTypeOptions = toSignal(
+    this.translate.stream('all.tournament.admin.draws').pipe(
+      map(() => [
+        { label: this.translate.instant('all.tournament.admin.draws.knockout'), value: 'KO' },
+        { label: this.translate.instant('all.tournament.admin.draws.roundRobin'), value: 'POULE' },
+        { label: this.translate.instant('all.tournament.admin.draws.qualification'), value: 'QUALIFICATION' },
+      ]),
+    ),
+    { initialValue: [] },
+  );
 
   // Seeding method options
   readonly seedingMethodOptions = toSignal(
@@ -116,14 +116,12 @@ export class DrawsTabComponent {
   );
 
   // Draw size options for KO
-  readonly drawSizeOptions = [4, 8, 16, 32, 64].map((size) => ({ label: `${size} entries`, value: size }));
-
-  // Sub-event type options (M, F, MX only - NATIONAL is not used for tournaments)
-  readonly subEventTypeOptions = [
-    { label: 'Men (M)', value: SubEventTypeEnum.M },
-    { label: 'Women (F)', value: SubEventTypeEnum.F },
-    { label: 'Mixed (MX)', value: SubEventTypeEnum.MX },
-  ];
+  readonly drawSizeOptions = toSignal(
+    this.translate
+      .stream('all.tournament.entries')
+      .pipe(map(() => [4, 8, 16, 32, 64].map((size) => ({ label: `${size} ${this.translate.instant('all.tournament.entries')}`, value: size })))),
+    { initialValue: [] },
+  );
 
   constructor() {
     // Watch sub-event selection
@@ -194,13 +192,31 @@ export class DrawsTabComponent {
     await this.dataService.generateEntries(subEvent.id, hasEntries);
   }
 
-  openCreateDrawDialog(): void {
-    this.drawForm.reset({ type: 'KO', subEventType: SubEventTypeEnum.M });
+  openCreateDrawDialog(event?: Event): void {
+    if (this.updating()) return;
+    this.creationTrigger = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+    this.updateError.set(null);
+    this.drawForm.reset({ type: 'KO' });
     this.showCreateDrawDialog.set(true);
   }
 
+  closeCreateDrawDialog(event?: Event): void {
+    if (!this.showCreateDrawDialog()) return;
+    event?.stopPropagation();
+    if (!this.updating()) this.showCreateDrawDialog.set(false);
+  }
+
+  restoreCreationFocus(): void {
+    this.creationTrigger?.focus();
+    this.creationTrigger = null;
+  }
+
   async createDraw(): Promise<void> {
-    if (!this.drawForm.valid) return;
+    if (this.updating()) return;
+    if (!this.drawForm.valid) {
+      this.drawForm.markAllAsTouched();
+      return;
+    }
 
     const subEvent = this.selectedSubEvent();
     if (!subEvent) return;

@@ -5,6 +5,33 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a4b is Done with explicit approval: [creation dialog](work-items/DR-024a4b-creation-dialog.md).
+Actual authorized Draws tab and both mounted Create Draw actions confirmed on 2026-11-09.
+User explicitly selected removal of ignored gender/level controls; preserve selected sub-event/API.
+Native responsive name/type/optional-size form, scoped translations, labels/focus and operation states are implemented.
+Exclude backend/schema, other tabs, shared/global styling and operational browser writes.
+The pre-existing enrollment template edit was committed externally; this slice did not touch or stage it.
+All 94 focused tests pass freshly; scoped tournament/translation lint/build pass (final 16-task cache replay).
+Four light/dark 390/1440px layouts and type/size overlays fit; selection, clear, keyboard and return focus pass.
+Four browser-only pending/error signal fixtures fit and guard dismissal without operational submissions.
+Static class/styleClass tokens fall 168 to 124 overall and 61 to 17 in creation; no new styling or wrapper.
+Retain DR-033 light Create contrast 3.65:1 and DR-034 error Message 4.44/4.40:1 failures.
+Full suite, app build, live operations/permissions, populated real reads, alternate browser locales,
+exhaustive accessibility and SSR/hydration remain unverified.
+API root readiness probe expected 200 but the restarted API returns 404; port 5000 listens and real Draws mounts.
+Final automated refresh/network-observation attempts time out; do not claim final GraphQL status/focus verification.
+Original Dutch/dark/1355x1249/HE 1 and genuine empty records are restored; no dialog or synthetic records remain.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this child implementation/tests/scoped copy and handoff; failed/unperformed checks remain.
+Post-approval workspace lint passes all 34 projects with existing warnings and zero errors;
+22 tasks replay cache and twelve execute. No fresh full-workspace lint execution is claimed.
+Commit only this approved scope without pushing.
+Exact next action in a fresh invocation: scope DR-024a4c remaining mounted draw locale completeness.
+Do not start it here.
+Keep DR-024a4, DR-024a and DR-024 open.
+
+### Previous completed focus: seeding dialog
+
 DR-024a4a is Done with explicit approval: [seeding dialog](work-items/DR-024a4a-seeding-dialog.md).
 Split DR-024a4 into seeding, creation and remaining mounted locale children.
 Actual authorized Draws tab and visible auto-seed action confirmed on 2026-11-09;
@@ -2301,7 +2328,7 @@ and linked from their registry rows.
 | [DR-024a3c](work-items/DR-024a3c-draw-lists.md)               | Draw lists, draw actions and empty/no-selection panels                      | Done        |
 | [DR-024a4](work-items/DR-024a4-draw-dialogs-locales.md)       | Draw dialogs and mounted locale completeness aggregate                      | In progress |
 | [DR-024a4a](work-items/DR-024a4a-seeding-dialog.md)           | Seeding dialog, scoped locale options and operation states                  | Done        |
-| DR-024a4b                                                     | Creation dialog; resolve unused form controls before execution              | Backlog     |
+| [DR-024a4b](work-items/DR-024a4b-creation-dialog.md)          | Creation dialog; remove ignored controls with explicit scope approval       | Done        |
 | DR-024a4c                                                     | Remaining mounted draw locale completeness                                  | Backlog     |
 | DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |

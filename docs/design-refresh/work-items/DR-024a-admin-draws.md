@@ -24,7 +24,10 @@ description: 'Draw-management aggregate and bounded child sequence.'
    user approved aggregate completion on 2026-11-09 with child verification limits retained.
 4. [DR-024a4](DR-024a4-draw-dialogs-locales.md): split into seeding dialog, creation dialog and
    remaining mounted locale completeness. Seeding child DR-024a4a is approved Done on 2026-11-09;
-   preserve its shared contrast failures and unperformed checks. Other children are not started.
+   preserve its shared contrast failures and unperformed checks.
+   Creation child DR-024a4b is approved Done on 2026-11-09, with explicitly approved removal of ignored
+   gender/level controls. Its focused checks pass; retain accepted contrast/network/operational limits.
+   Remaining mounted locales DR-024a4c are not started.
 
 ## Baseline and exclusions
 

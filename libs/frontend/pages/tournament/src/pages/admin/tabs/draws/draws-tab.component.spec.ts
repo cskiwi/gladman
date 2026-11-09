@@ -6,6 +6,271 @@ import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
 import { DrawsTabComponent } from './draws-tab.component';
 
+describe('Unassigned entry selection and assignment', () => {
+  const originalMatchMedia = window.matchMedia;
+  let fixture: ComponentFixture<DrawsTabComponent>;
+  let query: jest.Mock;
+  let mutate: jest.Mock;
+  const entries = [
+    { id: 'safe-entry-one', player1: { id: 'safe-player-one', fullName: 'Safe Player One' }, player2: { fullName: 'Safe Partner' } },
+    { id: 'safe-entry-two', player1: { id: 'safe-player-two', fullName: 'Safe Player Two' } },
+  ];
+  const draw = { id: 'safe-draw', name: 'Safe draw', type: 'KO', entries: [] };
+  const response = { data: { tournamentSubEvent: { entries, unassignedEntries: entries, drawTournaments: [draw] } } };
+
+  beforeEach(async () => {
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      writable: true,
+      value: jest.fn((media: string) => ({
+        matches: false,
+        media,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+    query = jest.fn(() => of(response));
+    mutate = jest.fn(() => of({ data: { assignEntriesToDraw: entries } }));
+    await TestBed.configureTestingModule({
+      imports: [DrawsTabComponent, TranslateModule.forRoot()],
+      providers: [{ provide: Apollo, useValue: { query, mutate } }],
+    }).compileComponents();
+    fixture = TestBed.createComponent(DrawsTabComponent);
+    fixture.componentRef.setInput('tournament', {
+      id: 'safe-tournament',
+      tournamentSubEvents: [{ id: 'safe-singles', name: 'Safe singles', gameType: 'S' }],
+    });
+  });
+
+  afterEach(() => {
+    window.matchMedia = originalMatchMedia;
+  });
+
+  async function settle() {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function panel(): HTMLElement {
+    const element = fixture.nativeElement.querySelector('[data-testid="unassigned-entries"]');
+    if (!element) throw new Error('Missing unassigned entries Panel');
+    return element;
+  }
+
+  function actions(): HTMLButtonElement[] {
+    return Array.from(panel().querySelectorAll('p-button button'));
+  }
+
+  function checkboxes(): HTMLInputElement[] {
+    return Array.from(panel().querySelectorAll('tbody input[type="checkbox"]'));
+  }
+
+  it('uses native grouped selection with named actions and no decorative surfaces or icons', async () => {
+    await settle();
+    expect(panel().tagName).toBe('P-PANEL');
+    expect(panel().querySelector('p-table')).not.toBeNull();
+    expect(panel().querySelector('p-card, .bg-emphasis, .border-surface, .rounded-full')).toBeNull();
+    expect(panel().querySelector('.p-panel-title')?.textContent).toContain('(2)');
+    const region = panel().querySelector('[role="region"]');
+    expect(region?.getAttribute('aria-labelledby')).toBe(panel().querySelector('.p-panel-title')?.id);
+    expect(actions().map((button) => button.getAttribute('aria-label'))).toEqual([
+      'all.tournament.admin.checkin.selectAll',
+      'all.tournament.admin.checkin.clearSelection',
+    ]);
+    expect(actions().map((button) => button.disabled)).toEqual([false, true]);
+    expect(checkboxes().map((checkbox) => checkbox.getAttribute('aria-label'))).toEqual(['Safe Player One', 'Safe Player Two']);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('toggles a checkbox exactly once and supports native row selection without modifier keys', async () => {
+    await settle();
+    checkboxes()[0].click();
+    await settle();
+    expect(fixture.componentInstance.selectedEntries().map((entry) => entry.id)).toEqual(['safe-entry-one']);
+    expect(checkboxes().map((checkbox) => checkbox.checked)).toEqual([true, false]);
+    panel().querySelectorAll<HTMLTableCellElement>('tbody tr td:last-child')[1].click();
+    await settle();
+    expect(fixture.componentInstance.selectedEntries().map((entry) => entry.id)).toEqual(['safe-entry-one', 'safe-entry-two']);
+    checkboxes()[0].click();
+    await settle();
+    expect(fixture.componentInstance.selectedEntries().map((entry) => entry.id)).toEqual(['safe-entry-two']);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('selects all, clears selection and binds a fluid named target selector to reset state', async () => {
+    await settle();
+    actions()[0].click();
+    await settle();
+    expect(fixture.componentInstance.selectedEntries()).toEqual(entries);
+    expect(checkboxes().every((checkbox) => checkbox.checked)).toBe(true);
+    expect(panel().querySelector('label')?.htmlFor).toBe('assignmentDraw');
+    expect(panel().querySelector('[role="combobox"]')?.getAttribute('aria-label')).toBe('all.tournament.admin.draws.selectDraw');
+    expect(panel().querySelector('p-select')?.classList.contains('p-select-fluid')).toBe(true);
+    expect(actions()[2].disabled).toBe(true);
+    expect(actions()[2].textContent).toContain('2');
+    fixture.componentInstance.targetDrawId.set(draw.id);
+    await settle();
+    expect(panel().querySelector('p-select')?.textContent).toContain(draw.name);
+    expect(actions()[2].disabled).toBe(false);
+    fixture.componentInstance.targetDrawId.set(null);
+    await settle();
+    expect(panel().querySelector('p-select')?.textContent).not.toContain(draw.name);
+    actions()[1].click();
+    await settle();
+    expect(fixture.componentInstance.selectedEntries()).toEqual([]);
+    expect(checkboxes().every((checkbox) => !checkbox.checked)).toBe(true);
+    expect(panel().querySelector('p-select')).toBeNull();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('supports keyboard row selection and roving focus with native row indices', async () => {
+    await settle();
+    const rows = panel().querySelectorAll<HTMLTableRowElement>('tbody tr');
+    rows[1].dispatchEvent(new KeyboardEvent('keydown', { key: ' ', code: 'Space', bubbles: true }));
+    await settle();
+    expect(fixture.componentInstance.selectedEntries().map((entry) => entry.id)).toEqual(['safe-entry-two']);
+    expect(checkboxes().map((checkbox) => checkbox.checked)).toEqual([false, true]);
+    expect(rows[1].tabIndex).toBe(0);
+    expect(rows[0].tabIndex).toBe(-1);
+    rows[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true }));
+    await settle();
+    expect(fixture.componentInstance.selectedEntries()).toEqual([]);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('synchronizes target selection from the native overlay', async () => {
+    await settle();
+    actions()[0].click();
+    await settle();
+    panel().querySelector<HTMLElement>('[role="combobox"]')?.click();
+    await settle();
+    const option = panel().querySelector<HTMLElement>('[role="option"]');
+    expect(option?.textContent).toContain(draw.name);
+    option?.click();
+    await settle();
+    expect(fixture.componentInstance.targetDrawId()).toBe(draw.id);
+    expect(actions()[2].disabled).toBe(false);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('preserves both player names for doubles in row text and checkbox names', async () => {
+    fixture.componentRef.setInput('tournament', {
+      id: 'safe-tournament',
+      tournamentSubEvents: [{ id: 'safe-doubles', name: 'Safe doubles', gameType: 'D' }],
+    });
+    await settle();
+    expect(checkboxes()[0].getAttribute('aria-label')).toBe('Safe Player One / Safe Partner');
+    expect(panel().querySelector('tbody')?.textContent).toContain('Safe Player One / Safe Partner');
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('sends only selected IDs and target, refetches and clears assignment state on success', async () => {
+    await settle();
+    checkboxes()[1].click();
+    fixture.componentInstance.targetDrawId.set(draw.id);
+    await settle();
+    query.mockReturnValue(of({ data: { tournamentSubEvent: { entries, unassignedEntries: [], drawTournaments: [draw] } } }));
+    actions()[2].click();
+    await settle();
+    await settle();
+    expect(mutate).toHaveBeenCalledTimes(1);
+    expect(mutate.mock.lastCall[0].variables).toEqual({ input: { entryIds: ['safe-entry-two'], drawId: 'safe-draw' } });
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(fixture.componentInstance.selectedEntries()).toEqual([]);
+    expect(fixture.componentInstance.targetDrawId()).toBeNull();
+    expect(panel().textContent).toContain('all.tournament.admin.draws.allEntriesAssigned');
+    expect(panel().querySelector('p-select, p-table')).toBeNull();
+  });
+
+  it('surfaces assignment failure and preserves selected entries and target for retry', async () => {
+    mutate.mockReturnValue(throwError(() => new Error('Safe assignment failure')));
+    await settle();
+    actions()[0].click();
+    fixture.componentInstance.targetDrawId.set(draw.id);
+    await settle();
+    actions()[2].click();
+    await settle();
+    expect(fixture.nativeElement.querySelector('p-message')?.textContent).toContain('Safe assignment failure');
+    expect(fixture.componentInstance.selectedEntries()).toEqual(entries);
+    expect(fixture.componentInstance.targetDrawId()).toBe(draw.id);
+    expect(panel().querySelector('p-select')?.textContent).toContain(draw.name);
+    expect(actions()[2].disabled).toBe(false);
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it('disables selection, target and duplicate assignment while an update is pending', async () => {
+    const pending = new Subject<{ data: { assignEntriesToDraw: typeof entries } }>();
+    mutate.mockReturnValue(pending);
+    await settle();
+    actions()[0].click();
+    fixture.componentInstance.targetDrawId.set(draw.id);
+    await settle();
+    actions()[2].click();
+    fixture.detectChanges();
+    expect(actions().every((button) => button.disabled)).toBe(true);
+    expect(checkboxes().every((checkbox) => checkbox.disabled)).toBe(true);
+    expect(panel().querySelector('[role="combobox"]')?.getAttribute('aria-disabled')).toBe('true');
+    panel().querySelector<HTMLTableCellElement>('tbody td:last-child')?.click();
+    expect(fixture.componentInstance.selectedEntries()).toEqual(entries);
+    pending.next({ data: { assignEntriesToDraw: entries } });
+    pending.complete();
+    await settle();
+    expect(mutate).toHaveBeenCalledTimes(1);
+    expect(fixture.componentInstance.selectedEntries()).toEqual([]);
+  });
+
+  it('does not assign without both a target and selected entries', async () => {
+    await settle();
+    await fixture.componentInstance.assignSelectedToDraw();
+    fixture.componentInstance.targetDrawId.set(draw.id);
+    await fixture.componentInstance.assignSelectedToDraw();
+    fixture.componentInstance.targetDrawId.set(null);
+    actions()[0].click();
+    await settle();
+    await fixture.componentInstance.assignSelectedToDraw();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it('shows the genuine no-entries message and disabled named bulk controls', async () => {
+    query.mockReturnValue(of({ data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: [] } } }));
+    await settle();
+    expect(panel().textContent).toContain('all.tournament.admin.draws.noEntriesYet');
+    expect(panel().textContent).not.toContain('all.tournament.admin.draws.allEntriesAssigned');
+    expect(actions().every((button) => button.disabled)).toBe(true);
+    expect(panel().querySelector('p-table, p-select')).toBeNull();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('uses nonempty actual %s copy and names without additional reads', async (locale) => {
+    await settle();
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    await settle();
+    const copy = dictionary.tournament.admin;
+    expect(copy.checkin.selectAll).toBeTruthy();
+    expect(copy.checkin.clearSelection).toBeTruthy();
+    expect(dictionary.tournament.entries).toBeTruthy();
+    expect(copy.draws.selectDraw).toBeTruthy();
+    expect(panel().textContent).toContain(copy.draws.unassignedEntries);
+    expect(actions()[0].getAttribute('aria-label')).toBe(copy.checkin.selectAll);
+    expect(actions()[1].getAttribute('aria-label')).toBe(copy.checkin.clearSelection);
+    expect(panel().querySelector('thead')?.textContent).toContain(dictionary.tournament.entries);
+    actions()[0].click();
+    await settle();
+    expect(panel().querySelector('label')?.textContent).toBe(copy.draws.selectDraw);
+    expect(actions()[2].textContent).toContain(copy.draws.assign);
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+});
+
 describe('Draw selection and read prerequisite', () => {
   let fixture: ComponentFixture<DrawsTabComponent>;
   let query: jest.Mock;

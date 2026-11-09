@@ -6,7 +6,6 @@ import { SubEventTypeEnum } from '@app/models-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
@@ -38,7 +37,6 @@ import { DrawsTabService, SeedingMethod } from './draws-tab.service';
     ProgressBarModule,
     DialogModule,
     TooltipModule,
-    CheckboxModule,
   ],
   templateUrl: './draws-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -162,19 +160,6 @@ export class DrawsTabComponent {
   }
 
   // Entry selection handlers
-  isEntrySelected(entry: Entry): boolean {
-    return this.selectedEntries().some((e) => e.id === entry.id);
-  }
-
-  toggleEntrySelection(entry: Entry): void {
-    const current = this.selectedEntries();
-    if (this.isEntrySelected(entry)) {
-      this.selectedEntries.set(current.filter((e) => e.id !== entry.id));
-    } else {
-      this.selectedEntries.set([...current, entry]);
-    }
-  }
-
   selectAllUnassigned(): void {
     this.selectedEntries.set([...this.unassignedEntries()]);
   }

@@ -5,6 +5,32 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a3b is Done with explicit approval:
+[unassigned entry selection and assignment](work-items/DR-024a3b-unassigned-entries.md).
+Actual authorized Draws consumer confirmed on 2026-11-09 at the imported tournament administration route.
+Scope only the unassigned Panel, entry/bulk selection, target selector, assignment and related empty messages.
+Native named Panel/Table, bulk controls, counted Assign action and bound fluid target selector are implemented.
+Retain the smart tab/service without a one-off wrapper; native selection replaces custom toggle markup/logic.
+Exclude draw lists, dialogs, scheduling, backend/translations and shared/global styling.
+Forty-five focused tests and scoped lint/build pass; ten prerequisite builds replay cache.
+Four real-empty and four synthetic-populated theme/390/1440px cases pass without document/control overflow.
+Native target overlays, checkbox/row keyboard toggles, bulk selection and Escape/selector focus pass with safe data.
+Real DE 1/HE 1 reads and refresh return HTTP 200; refresh retains focus. No operational browser actions are clicked.
+Template static class/styleClass tokens fall 357 to 272; no extraction, new style or exception.
+Light Assign normal text fails 3.65:1 under existing DR-033; measured remaining normal text passes.
+Full suite, populated real reads, live operations/permissions, exhaustive accessibility and SSR remain unverified.
+Original dark/Dutch/1355x1249/HE 1/Draws preferences and genuine empty records are restored; one-use fixtures expire.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this implementation, focused tests and repository handoff; failed/unperformed checks remain.
+Post-approval workspace lint passes all 34 projects from Nx cache with existing warnings and zero errors.
+No fresh workspace lint execution is claimed.
+Commit only this approved slice/handoff; do not push.
+Exact next action in a fresh invocation: scope DR-024a3c draw lists/actions/empty-state presentation
+from its mounted consumer before implementation.
+Keep DR-024a3, DR-024a and DR-024 open; do not begin siblings in this invocation.
+
+### Previous completed focus: draw filters and actions
+
 DR-024a3a is Done with explicit approval: [draw filters and actions](work-items/DR-024a3a-draw-filters.md).
 Actual authorized visible Draws consumer confirmed on 2026-11-09 at the imported tournament administration route.
 Split DR-024a3 into filter/actions, unassigned assignment, and draw-list/empty-state children.
@@ -2192,7 +2218,7 @@ and linked from their registry rows.
 | [DR-024a2](work-items/DR-024a2-draw-summary.md)               | Draw summary presentation                                                   | Done        |
 | [DR-024a3](work-items/DR-024a3-draw-presentation.md)          | Draw filters, assignment and draw-list presentation aggregate               | In progress |
 | [DR-024a3a](work-items/DR-024a3a-draw-filters.md)             | Draw sub-event filter and top-level actions                                 | Done        |
-| DR-024a3b                                                     | Unassigned entry selection and assignment; scope before execution           | Backlog     |
+| [DR-024a3b](work-items/DR-024a3b-unassigned-entries.md)       | Unassigned entry selection and assignment                                   | Done        |
 | DR-024a3c                                                     | Draw lists, draw actions and empty/no-selection panels; scope first         | Backlog     |
 | DR-024a4                                                      | Draw creation/seeding dialogs and mounted locale completeness; split first  | Backlog     |
 | DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |
@@ -2273,6 +2299,10 @@ Scope translation/error-copy work separately; DR-021f1 adds no dictionary or ser
 - Native secondary Generate/Refresh normal text passes at 4.87:1 light and 6.65:1 dark on the native Panel.
   Header/label/selector normal text also passes. Exhaustive hover/focus/border contrast remains unverified.
 - Preserve native styling here; any shared theme correction belongs to DR-033 with cross-consumer validation.
+- [DR-024a3b](work-items/DR-024a3b-unassigned-entries.md), same mounted consumer on 2026-11-09:
+  synthetic-populated native Assign normal text also fails light at 3.65:1 and passes dark at 10.63:1.
+  Selection text passes at 4.67:1 light / 10.30:1 dark; badge text passes at 7.74:1 / 9.51:1.
+  Retain this additional consumer in the shared audit, without page-specific color workarounds.
 
 ### DR-032/034 historical evidence: withdrawn sub-event enrollment chrome
 

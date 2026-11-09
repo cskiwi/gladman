@@ -17,7 +17,8 @@ description: 'Bounded presentation children for the mounted administration Draws
 
 1. [DR-024a3a](DR-024a3a-draw-filters.md): sub-event filter and top-level actions only.
    Approved complete on 2026-11-09 with DR-033 contrast failure and unperformed checks retained.
-2. DR-024a3b: unassigned entries, selection and assignment controls. Scope before execution.
+2. [DR-024a3b](DR-024a3b-unassigned-entries.md): unassigned entries, selection and assignment controls.
+   Approved complete on 2026-11-09 with DR-033 contrast failure and unperformed checks retained.
 3. DR-024a3c: populated draw lists, draw actions and empty/no-selection presentation. Scope before execution.
 
 ## Boundaries and acceptance

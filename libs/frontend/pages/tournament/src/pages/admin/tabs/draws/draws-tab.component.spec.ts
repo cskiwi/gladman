@@ -43,6 +43,59 @@ describe('Draw selection and read prerequisite', () => {
     return button;
   }
 
+  function summaryValues(): string[] {
+    const values: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('[data-testid="draws-summary"] dd.tabular-nums');
+    return Array.from(values, (value) => value.textContent?.trim() ?? '');
+  }
+
+  it('renders four semantic zero counts without decorative icons or nested cards', async () => {
+    await settle();
+    const summary: HTMLElement = fixture.nativeElement.querySelector('[data-testid="draws-summary"]');
+    expect(summary.tagName).toBe('P-PANEL');
+    expect(summary.querySelectorAll('dl dt')).toHaveLength(4);
+    expect(summaryValues()).toEqual(['0', '0', '0', '0']);
+    expect(summary.querySelector('i, p-card')).toBeNull();
+  });
+
+  it('updates nonzero summary counts on selection and refresh without mutations', async () => {
+    query.mockReturnValueOnce(
+      of({
+        data: {
+          tournamentSubEvent: {
+            entries: [{ id: 'one' }, { id: 'two' }, { id: 'three' }],
+            unassignedEntries: [{ id: 'three' }],
+            drawTournaments: [{ id: 'safe-draw', name: 'Safe draw', entries: [] }],
+          },
+        },
+      }),
+    );
+    await settle();
+    expect(summaryValues()).toEqual(['3', '2', '1', '1']);
+    fixture.componentInstance.subEventControl.setValue(fixture.componentInstance.subEvents()[1]);
+    await settle();
+    expect(summaryValues()).toEqual(['0', '0', '0', '0']);
+    refresh().click();
+    await settle();
+    expect(summaryValues()).toEqual(['0', '0', '0', '0']);
+    expect(query).toHaveBeenCalledTimes(3);
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('preserves actual %s summary copy across locale changes without querying again', async (locale) => {
+    await settle();
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    await settle();
+    const groups: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('[data-testid="draws-summary"] dl > div');
+    fixture.componentInstance.summaryItems.forEach((item, index) => {
+      expect(groups[index].querySelector('dt')?.textContent?.trim()).toBe(dictionary.tournament.admin.draws[item.label]);
+      expect(groups[index].querySelectorAll('dd')[1].textContent?.trim()).toBe(dictionary.tournament.admin.draws[item.description]);
+    });
+    expect(summaryValues()).toEqual(['0', '0', '0', '0']);
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
   it('auto-selects the first sub-event and performs its actual read', async () => {
     await settle();
     expect(fixture.componentInstance.selectedSubEvent()?.id).toBe('safe-singles');
@@ -82,6 +135,7 @@ describe('Draw selection and read prerequisite', () => {
     expect(fixture.componentInstance.entries()).toEqual([]);
     expect(fixture.nativeElement.textContent).toContain('all.tournament.admin.draws.selectSubEventFirst');
     expect(refresh().disabled).toBe(true);
+    expect(summaryValues()).toEqual([]);
   });
 
   it('reconciles replacement tournament inputs and handles removal of all sub-events', async () => {
@@ -118,6 +172,7 @@ describe('Draw selection and read prerequisite', () => {
     expect(fixture.nativeElement.querySelector('[aria-busy="true"]')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('[role="status"]')?.textContent).toContain('all.tournament.edit.messages.loading');
     expect(fixture.nativeElement.querySelector('p-progressbar')).not.toBeNull();
+    expect(summaryValues()).toEqual([]);
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.draws.totalEntries');
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.draws.noEntriesYet');
     pending.next(response);
@@ -133,6 +188,7 @@ describe('Draw selection and read prerequisite', () => {
     expect(fixture.nativeElement.querySelector('p-message')?.textContent).toContain('Safe draw read failure');
     expect(fixture.componentInstance.entries()).toEqual([]);
     expect(fixture.componentInstance.draws()).toEqual([]);
+    expect(summaryValues()).toEqual([]);
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.draws.totalEntries');
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.draws.noEntriesYet');
     const button = refresh();
@@ -174,6 +230,7 @@ describe('Draw selection and read prerequisite', () => {
     query.mockReturnValue(of(result));
     await settle();
     expect(fixture.nativeElement.querySelector('p-message')?.textContent).toContain('all.error.genericTitle');
+    expect(summaryValues()).toEqual([]);
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.draws.noEntriesYet');
     expect(fixture.componentInstance.stats()).toEqual({ total: 0, assigned: 0, unassigned: 0, draws: 0 });
   });

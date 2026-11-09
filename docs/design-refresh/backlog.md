@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a2 is Done with explicit approval: [draw summary presentation](work-items/DR-024a2-draw-summary.md).
+Actual authorized visible Draws consumer confirmed on 2026-11-09 at the imported tournament admin route.
+Four decorative counters become a native Panel and typed semantic definition-list loop, matching Check-in.
+Stats/read behavior and translations are preserved; filters/lists/dialogs, scheduling and global theme are unchanged.
+Twenty-two focused tests and scoped lint/build pass; ten build prerequisites replay cache.
+Four genuine-empty theme/390/1440px cases pass without document overflow; label contrast is 6.65/4.87 dark/light.
+Keyboard selector overlay/Escape and HTTP 200 refresh with stable focus pass; no browser operational writes.
+Template class/styleClass tokens fall 512 to 363. Existing smart tab/service boundary is sufficient; no extraction.
+Dutch/French blank descriptions and existing French terminology remain for DR-024a4 locale completeness.
+Full tournament suite, populated live reads/browser states, exhaustive accessibility and SSR/hydration remain unverified.
+Original dark theme, Dutch locale, 1355x1249 viewport, HE 1 selection and Draws route are restored.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers this summary implementation, focused tests and repository handoff only; unchecked limits remain.
+Post-approval workspace lint passes all 34 projects from Nx cache; no fresh workspace lint execution is claimed.
+DR-024a and DR-024 remain open. Commit only this approved slice/handoff; do not push.
+Exact next action in a fresh invocation: split DR-024a3 filters/assignment/draw-list into bounded children,
+confirm their actual mounted consumers and select only one. Do not start that child in this invocation.
+
+### Previous completed focus: draw read prerequisite
+
 DR-024a1 is Done with explicit approval: [draw selection and read prerequisite](work-items/DR-024a1-draw-read.md).
 Mounted authorized Draws consumer confirmed on 2026-11-09 at the imported completed tournament admin route.
 Repaired the nonreactive selector, input replacement and stale assignment reset; real reads now return HTTP 200.
@@ -2145,7 +2165,7 @@ and linked from their registry rows.
 | [DR-024](work-items/DR-024-admin-draws-scheduling.md)         | Tournament admin: draws and scheduling                                      | In progress |
 | [DR-024a](work-items/DR-024a-admin-draws.md)                  | Draw management aggregate                                                   | In progress |
 | [DR-024a1](work-items/DR-024a1-draw-read.md)                  | Reactive draw selection and explicit read feedback prerequisite             | Done        |
-| DR-024a2                                                      | Draw summary presentation; scope after read prerequisite                    | Backlog     |
+| [DR-024a2](work-items/DR-024a2-draw-summary.md)               | Draw summary presentation                                                   | Done        |
 | DR-024a3                                                      | Draw filters, assignment and draw-list presentation; split before execution | Backlog     |
 | DR-024a4                                                      | Draw creation/seeding dialogs and mounted locale completeness; split first  | Backlog     |
 | DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |

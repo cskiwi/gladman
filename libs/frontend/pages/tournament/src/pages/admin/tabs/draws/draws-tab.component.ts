@@ -11,6 +11,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -33,6 +34,7 @@ import { DrawsTabService, SeedingMethod } from './draws-tab.service';
     InputTextModule,
     InputNumberModule,
     MessageModule,
+    PanelModule,
     ProgressBarModule,
     DialogModule,
     TooltipModule,
@@ -79,6 +81,13 @@ export class DrawsTabComponent {
   updating = this.dataService.updating;
   updateError = this.dataService.updateError;
   stats = this.dataService.stats;
+
+  readonly summaryItems = [
+    { key: 'total', label: 'totalEntries', description: 'totalEntriesDescription' },
+    { key: 'assigned', label: 'assigned', description: 'assignedDescription' },
+    { key: 'unassigned', label: 'unassigned', description: 'unassignedDescription' },
+    { key: 'draws', label: 'drawCount', description: 'drawCountDescription' },
+  ] as const satisfies ReadonlyArray<{ key: keyof ReturnType<DrawsTabService['stats']>; label: string; description: string }>;
 
   // Sub-events list
   subEvents = computed(() => this.tournament()?.tournamentSubEvents ?? []);

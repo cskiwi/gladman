@@ -17,13 +17,15 @@ description: 'Draw-management aggregate and bounded child sequence.'
 
 1. [DR-024a1](DR-024a1-draw-read.md): reactive selection and honest read feedback prerequisite.
    Approved complete on 2026-11-09 with its disclosed verification limits retained.
-2. DR-024a2: scope only the four-count summary presentation after the prerequisite is accepted.
+2. [DR-024a2](DR-024a2-draw-summary.md): four-count summary approved complete on 2026-11-09
+   with its disclosed verification limits retained.
 3. DR-024a3: split filters, assignment and draw-list presentation into bounded children before execution.
 4. DR-024a4: split creation/seeding dialogs and remaining locale completeness before execution.
 
 ## Baseline and exclusions
 
-- Four decorative counters, handwritten containers/loading bar, palette colors and hard-coded English remain.
+- The four decorative counters are replaced by DR-024a2's native Panel/semantic summary.
+  DR-024a1 already replaced the loading bar. Legacy filter/list containers, palette colors and English remain.
 - Do not claim a visual refresh from the prerequisite repair or silently include those presentation changes.
 - Keep existing smart orchestration. Extract dumb components only for meaningful confirmed repeated consumers,
   not to conceal utility markup or wrap PrimeNG one-to-one.

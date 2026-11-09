@@ -140,7 +140,7 @@ describe('Check-in summary, filters and table', () => {
     async (result) => {
       query.mockReturnValue(of(result));
       await settle();
-      expect(summary().querySelector('p-message')?.textContent).toContain('missing records or statistics');
+      expect(summary().querySelector('p-message')?.textContent).toContain('all.tournament.admin.checkin.queryNoData');
       expect(summary().querySelector('dl')).toBeNull();
       expect(mutate).not.toHaveBeenCalled();
     },
@@ -403,6 +403,95 @@ describe('Check-in summary, filters and table', () => {
     await settle();
     expect(list().querySelector('tbody')?.textContent).toContain('Safe player 10');
     expect(fixture.componentInstance.checkIns()).toHaveLength(56);
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('localizes incomplete read errors from the actual %s asset and recovers without writes', async (locale) => {
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    query.mockReturnValueOnce(of({ data: { tournamentCheckInList: null, checkInStats: stats } }));
+    await settle();
+    const copy = dictionary.tournament.admin.checkin;
+    expect(copy.queryNoData.trim()).not.toBe('');
+    expect(summary().querySelector('p-message')?.textContent).toContain(copy.queryNoData);
+    expect(list().querySelector('p-message')?.textContent).toContain(copy.queryNoData);
+    expect(list().querySelector('p-table')).toBeNull();
+    fixture.componentInstance.refetch();
+    await settle();
+    expect(list().querySelector('p-table')).not.toBeNull();
+    expect(summary().querySelector('p-message')).toBeNull();
+    expect(mutate).not.toHaveBeenCalled();
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('uses %s local operation failures but preserves server diagnostics and recovery', async (locale) => {
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    useRecords();
+    await settle();
+    const component = fixture.componentInstance;
+    const record = component.checkIns()[0];
+    component.selectAllPending();
+    const actions = [
+      { key: 'initializeFailed', field: 'initializeCheckIns', run: () => component.initializeCheckIns() },
+      { key: 'checkInFailed', field: 'checkInPlayer', run: () => component.checkIn(record) },
+      { key: 'noShowFailed', field: 'markNoShow', run: () => component.markNoShow(record) },
+      { key: 'undoFailed', field: 'undoCheckIn', run: () => component.undoCheckIn(record) },
+      { key: 'bulkCheckInFailed', field: 'bulkCheckIn', run: () => component.bulkCheckIn() },
+    ];
+    for (const action of actions) {
+      const message = dictionary.tournament.admin.checkin[action.key];
+      expect(message.trim()).not.toBe('');
+      mutate.mockReturnValueOnce(throwError(() => 'safe non-Error failure'));
+      await action.run();
+      await settle();
+      expect(component.updateError()).toBe(message);
+      expect(fixture.nativeElement.textContent).toContain(message);
+      expect(component.updating()).toBe(false);
+      mutate.mockReturnValueOnce(throwError(() => new Error('Safe server diagnostic')));
+      await action.run();
+      await settle();
+      expect(component.updateError()).toBe('Safe server diagnostic');
+      expect(query).toHaveBeenCalledTimes(1);
+    }
+    mutate.mockReturnValueOnce(of({ data: { checkInPlayer: { id: record.id } } }));
+    await component.checkIn(record);
+    await settle();
+    expect(component.updateError()).toBeNull();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(component.updating()).toBe(false);
+  });
+
+  it('updates mounted copy on locale changes without resetting enum filters, search or selected identities', async () => {
+    useRecords();
+    await settle();
+    const component = fixture.componentInstance;
+    component.statusFilter.setValue(CheckInStatus.PENDING);
+    component.searchControl.setValue('Safe Member');
+    await settle();
+    component.selectAllPending();
+    await settle();
+    const selectedIds = component.selectedCheckIns().map((record) => record.id);
+    const queryCount = query.mock.calls.length;
+    const translate = TestBed.inject(TranslateService);
+    for (const locale of ['en', 'nl_BE', 'fr_BE']) {
+      const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+      translate.setTranslation(locale, { all: dictionary });
+      translate.use(locale);
+      await settle();
+      const copy = dictionary.tournament.admin.checkin;
+      expect(list().querySelector('p-tag')?.textContent).toBe(copy.pending);
+      expect(list().textContent).toContain(copy.bulkCheckIn);
+      expect(list().textContent).toContain(copy.subEvent);
+      expect(listButton(`button[aria-label="${copy.checkIn}: Safe Member"]`)).not.toBeNull();
+      expect(component.statusFilter.value).toBe(CheckInStatus.PENDING);
+      expect(component.searchControl.value).toBe('Safe Member');
+      expect(component.selectedCheckIns().map((record) => record.id)).toEqual(selectedIds);
+    }
+    expect(query).toHaveBeenCalledTimes(queryCount);
     expect(mutate).not.toHaveBeenCalled();
   });
 });

@@ -5,6 +5,28 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023c4 is Done with explicit approval: [check-in locale completeness](work-items/DR-023c4-checkin-locales.md).
+Fresh authorized visible Check-in consumer confirmed on 2026-11-09 at the recorded administration route.
+Six local diagnostics now use the active locale; mounted French status/action/sub-event wording is clarified.
+Existing layout, enum/query/mutation contracts, permissions and server/network Error diagnostics are preserved.
+Focused 33 tests, scoped lint/build and API development build pass; six generated keys are formatted.
+API recovered after rebuild; all three actual HTTP 200 dictionaries contain the scoped copy.
+Twelve populated and twelve incomplete-read locale/theme/390/1440px cases pass; native overlays fit.
+Sixty synthetic local-update-feedback layout cases pass; mocked tests cover all five operation failures/recovery.
+Keyboard selection persists across locale changes with zero extra queries; real empty data/preferences restored.
+Template utility tokens remain 72 to 72; no styling, dependencies, other tabs or browser mutations changed.
+Limits: full tournament suite, exhaustive accessibility/contrast, dedicated SSR/hydration and live operations.
+DR-034 native error contrast, DR-024 scheduling and DR-051 operational reliability remain separate.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers this child's implementation, assets/generated keys, tests and repository handoff only.
+Accepted failed/unperformed criteria remain unchecked; approval is not evidence that they passed.
+Post-approval workspace lint passes all 34 projects with existing warnings.
+Approved commit scope is this slice/handoff only; no push. DR-023c and DR-023 remain open.
+Exact next action in a fresh invocation: reconcile DR-023c aggregate acceptance across its four approved children.
+Do not begin that aggregate slice in this invocation.
+
+### Previous completed focus: check-in table and actions
+
 DR-023c3 is Done with explicit approval: [check-in table and actions](work-items/DR-023c3-checkin-table.md).
 Fresh authorized visible Check-in consumer confirmed on 2026-11-08 at the recorded administration route.
 Refresh native table/feedback and named selection/action presentation; preserve summary, filters and mutation contracts.
@@ -2047,7 +2069,7 @@ and linked from their registry rows.
 | [DR-023c1](work-items/DR-023c1-checkin-summary.md)            | Check-in five-count summary and approved read-API prerequisite              | Done        |
 | [DR-023c2](work-items/DR-023c2-checkin-filters.md)            | Reactive check-in filters/search and refresh consolidation                  | Done        |
 | [DR-023c3](work-items/DR-023c3-checkin-table.md)              | Check-in table/feedback and operational action presentation                 | Done        |
-| DR-023c4                                                      | Remaining mounted check-in locale completeness                              | Backlog     |
+| [DR-023c4](work-items/DR-023c4-checkin-locales.md)            | Remaining mounted check-in locale completeness                              | Done        |
 | DR-024                                                        | Tournament admin: draws and scheduling                                      | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                          | Backlog     |

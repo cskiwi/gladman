@@ -1374,10 +1374,12 @@ export type I18nTranslations = {
                     "actions": string;
                     "allStatuses": string;
                     "bulkCheckIn": string;
+                    "bulkCheckInFailed": string;
                     "checkedIn": string;
                     "checkedInAt": string;
                     "checkedInDescription": string;
                     "checkIn": string;
+                    "checkInFailed": string;
                     "checkinRate": string;
                     "checkInSelected": string;
                     "checkinTime": string;
@@ -1385,6 +1387,7 @@ export type I18nTranslations = {
                     "filterByStatus": string;
                     "groupBySubEvent": string;
                     "initialize": string;
+                    "initializeFailed": string;
                     "initializeCheckins": string;
                     "initializeFirst": string;
                     "initializeHint": string;
@@ -1393,10 +1396,12 @@ export type I18nTranslations = {
                     "noPlayersYet": string;
                     "noShow": string;
                     "noShowDescription": string;
+                    "noShowFailed": string;
                     "pending": string;
                     "pendingDescription": string;
                     "player": string;
                     "players": string;
+                    "queryNoData": string;
                     "rate": string;
                     "rateDescription": string;
                     "search": string;
@@ -1410,6 +1415,7 @@ export type I18nTranslations = {
                     "totalDescription": string;
                     "totalPlayers": string;
                     "undo": string;
+                    "undoFailed": string;
                 };
                 "draws": {
                     "allEntriesAssigned": string;

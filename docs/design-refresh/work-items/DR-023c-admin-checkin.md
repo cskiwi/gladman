@@ -29,7 +29,8 @@ description: 'Check-in child scopes, confirmed mounted consumer and API prerequi
   user approved completion/commit with disclosed limits.
 - [DR-023c3](DR-023c3-checkin-table.md): selected native table/feedback and named action presentation;
   safe fixture verification only, without browser operational mutations.
-- DR-023c4: remaining mounted locale completeness; do not fill unrelated/unconsumed dictionary blanks.
+- [DR-023c4](DR-023c4-checkin-locales.md): remaining mounted locale completeness, selected on 2026-11-09;
+  translate local diagnostics and clarify French wording without filling unrelated/unconsumed dictionary blanks.
 - Keep the existing smart tab/service separation. Reuse the approved native Panel/definition-list direction.
   Extract presentation only if real repeated domain structure warrants it, not to hide utility-heavy templates.
 
@@ -84,5 +85,13 @@ description: 'Check-in child scopes, confirmed mounted consumer and API prerequi
   The child's unverified criteria remain unchecked; this parent stays open.
 - All 34 post-approval workspace lint targets pass with existing warnings.
   Approved commit scope is DR-023c3 and its scoped handoff only, without push.
-- Exact next action in a fresh invocation: scope DR-023c4; do not start another child here.
+- DR-023c4 is now selected on a freshly confirmed authorized visible consumer.
+  Its six local diagnostics/French copy are implemented; 33 focused tests, scoped lint/build and API build pass.
+  Actual dictionaries, twelve populated and twelve read-error cases plus sixty synthetic feedback cases pass.
+  No browser mutations; original preferences and real empty data are restored.
+  User approved DR-023c4 completion and scoped commit with disclosed limits and selected "Nothing else".
+  All 34 post-approval workspace lint projects pass with existing warnings.
+  Unverified/failed criteria stay unchecked. No push.
+  Exact next action in a fresh invocation: reconcile this parent's aggregate acceptance across all four children.
+  Do not start that aggregate slice in this invocation.
   Parents stay open until all required children are complete; no other child is started here.

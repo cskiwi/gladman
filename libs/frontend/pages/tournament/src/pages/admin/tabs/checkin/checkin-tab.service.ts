@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Player, TournamentCheckIn, TournamentEnrollment } from '@app/models';
 import { CheckInStatus } from '@app/models-enum';
+import { TranslateService } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 
@@ -27,6 +28,7 @@ export interface CheckInWithDetails extends TournamentCheckIn {
 
 export class CheckinTabService {
   private readonly apollo = inject(Apollo);
+  private readonly translate = inject(TranslateService);
 
   filter = new FormGroup({
     tournamentEventId: new FormControl<string | null>(null),
@@ -105,7 +107,7 @@ export class CheckinTabService {
       );
 
       if (!result.data?.tournamentCheckInList || !result.data.checkInStats) {
-        throw new Error('Check-in response is missing records or statistics');
+        throw new Error(this.translate.instant('all.tournament.admin.checkin.queryNoData'));
       }
       return {
         checkIns: result.data.tournamentCheckInList,
@@ -175,7 +177,7 @@ export class CheckinTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to initialize check-ins');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.checkin.initializeFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -210,7 +212,7 @@ export class CheckinTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to check in player');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.checkin.checkInFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -244,7 +246,7 @@ export class CheckinTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to mark no-show');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.checkin.noShowFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -276,7 +278,7 @@ export class CheckinTabService {
       }
       return false;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to undo check-in');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.checkin.undoFailed'));
       return false;
     } finally {
       this.updating.set(false);
@@ -311,7 +313,7 @@ export class CheckinTabService {
       }
       return null;
     } catch (err) {
-      this.updateError.set(err instanceof Error ? err.message : 'Failed to bulk check-in');
+      this.updateError.set(err instanceof Error ? err.message : this.translate.instant('all.tournament.admin.checkin.bulkCheckInFailed'));
       return null;
     } finally {
       this.updating.set(false);

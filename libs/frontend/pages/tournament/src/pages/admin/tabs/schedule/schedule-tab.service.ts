@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Court, Game, TournamentScheduleSlot } from '@app/models';
 import { ScheduleSlotStatus, ScheduleStrategy } from '@app/models-enum';
+import { TranslateService } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 
@@ -22,13 +23,14 @@ export interface ScheduleResult {
 
 export class ScheduleTabService {
   private readonly apollo = inject(Apollo);
+  private readonly translate = inject(TranslateService);
 
   filter = new FormGroup({
     tournamentEventId: new FormControl<string | null>(null),
     date: new FormControl<Date | null>(null),
   });
 
-  private filterSignal = toSignal(this.filter.valueChanges);
+  private filterSignal = toSignal(this.filter.valueChanges, { initialValue: this.filter.getRawValue() });
 
   // Loading and error states
   readonly updating = signal(false);
@@ -42,58 +44,34 @@ export class ScheduleTabService {
         return { slots: [], courts: [], unscheduledGames: [] };
       }
 
-      try {
-        const result = await lastValueFrom(
-          this.apollo.query<{
-            tournamentSchedule: TournamentScheduleSlot[];
-            unscheduledGames: Game[];
-            tournamentEvent: { location?: { courts?: Court[] } };
-          }>({
-            query: gql`
-              query TournamentScheduleData($tournamentEventId: ID!, $date: DateTime) {
-                tournamentSchedule(tournamentEventId: $tournamentEventId, date: $date) {
+      const result = await lastValueFrom(
+        this.apollo.query<{
+          tournamentSchedule: TournamentScheduleSlot[];
+          unscheduledGames: Game[];
+          tournamentScheduleCourts: Court[];
+        }>({
+          query: gql`
+            query TournamentScheduleData($tournamentEventId: ID!, $date: DateTime) {
+              tournamentSchedule(tournamentEventId: $tournamentEventId, date: $date) {
+                id
+                courtId
+                startTime
+                endTime
+                status
+                order
+                gameId
+                court {
                   id
-                  courtId
-                  startTime
-                  endTime
-                  status
-                  order
-                  gameId
-                  court {
-                    id
-                    name
-                  }
-                  game {
-                    id
-                    round
-                    order
-                    gamePlayerMemberships {
-                      single
-                      double
-                      player {
-                        id
-                        fullName
-                      }
-                    }
-                    tournamentDraw {
-                      id
-                      name
-                      tournamentSubEvent {
-                        id
-                        name
-                        gameType
-                      }
-                    }
-                  }
+                  name
                 }
-                unscheduledGames(tournamentEventId: $tournamentEventId) {
+                game {
                   id
                   round
                   order
                   gamePlayerMemberships {
                     single
                     double
-                    player {
+                    gamePlayer {
                       id
                       fullName
                     }
@@ -108,40 +86,60 @@ export class ScheduleTabService {
                     }
                   }
                 }
-                tournamentEvent(id: $tournamentEventId) {
-                  location {
-                    courts {
-                      id
-                      name
-                    }
+              }
+              unscheduledGames(tournamentEventId: $tournamentEventId) {
+                id
+                round
+                order
+                gamePlayerMemberships {
+                  single
+                  double
+                  gamePlayer {
+                    id
+                    fullName
+                  }
+                }
+                tournamentDraw {
+                  id
+                  name
+                  tournamentSubEvent {
+                    id
+                    name
+                    gameType
                   }
                 }
               }
-            `,
-            variables: {
-              tournamentEventId: params.tournamentEventId,
-              date: params.date ?? undefined,
-            },
-            context: { signal: abortSignal },
-            fetchPolicy: 'network-only',
-          }),
-        );
+              tournamentScheduleCourts(tournamentEventId: $tournamentEventId) {
+                id
+                name
+              }
+            }
+          `,
+          variables: {
+            tournamentEventId: params.tournamentEventId,
+            date: params.date ?? undefined,
+          },
+          context: { signal: abortSignal },
+          fetchPolicy: 'network-only',
+        }),
+      );
 
-        return {
-          slots: result.data?.tournamentSchedule ?? [],
-          courts: result.data?.tournamentEvent?.location?.courts ?? [],
-          unscheduledGames: result.data?.unscheduledGames ?? [],
-        };
-      } catch {
-        return { slots: [], courts: [], unscheduledGames: [] };
+      const data = result.data;
+      if (!Array.isArray(data?.tournamentSchedule) || !Array.isArray(data?.tournamentScheduleCourts) || !Array.isArray(data?.unscheduledGames)) {
+        throw new Error(this.translate.instant('all.error.genericTitle'));
       }
+      return {
+        slots: data.tournamentSchedule,
+        courts: data.tournamentScheduleCourts,
+        unscheduledGames: data.unscheduledGames,
+      };
     },
   });
 
   // Public selectors
-  slots = computed(() => this.scheduleResource.value()?.slots ?? []);
-  courts = computed(() => this.scheduleResource.value()?.courts ?? []);
-  unscheduledGames = computed(() => this.scheduleResource.value()?.unscheduledGames ?? []);
+  slots = computed(() => (this.scheduleResource.hasValue() ? this.scheduleResource.value().slots : []));
+  courts = computed(() => (this.scheduleResource.hasValue() ? this.scheduleResource.value().courts : []));
+  unscheduledGames = computed(() => (this.scheduleResource.hasValue() ? this.scheduleResource.value().unscheduledGames : []));
   loading = computed(() => this.scheduleResource.isLoading());
   error = computed(() => this.scheduleResource.error()?.message || null);
 

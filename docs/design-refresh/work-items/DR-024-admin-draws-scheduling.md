@@ -9,14 +9,16 @@ description: 'Aggregate scope for independently reviewable draw-management and s
 - Dependencies: approved DR-023a administration shell.
 - Rules: [design refresh](../README.md).
 - Route: `/tournament/:tournamentId/admin`; project: `frontend-pages-tournament`.
-- Children: [DR-024a draw management](DR-024a-admin-draws.md) and DR-024b scheduling.
+- Children: [DR-024a draw management](DR-024a-admin-draws.md) and
+  [DR-024b scheduling](DR-024b-admin-scheduling.md).
 - Keep this parent open until both required children and aggregate acceptance are complete.
 - Preserve permissions, phase access, query/mutation contracts, localization and routes.
 - Exclude other tabs, global/shared styling and operational testing against real records.
 
 ## Evidence and handoff
 
-- On 2026-11-09 the authorized imported completed tournament exposes Draws and Scheduling.
+- Earlier on 2026-11-09 the authorized imported completed tournament exposed Draws and Scheduling.
+  This is historical evidence; the fresh prerequisite check below confirms a different current phase.
 - Draws has a confirmed visible consumer, not merely an export or hidden panel.
 - DR-024a1/a2 and all three DR-024a3 presentation children are approved complete.
   DR-024a3 aggregate evidence is reconciled and explicitly approved on 2026-11-09 with recorded limits retained.
@@ -29,7 +31,8 @@ description: 'Aggregate scope for independently reviewable draw-management and s
   All 127 focused tests and 16 scoped lint/build tasks pass by cache replay; fresh interactions time out
   on the hidden shared browser. Preserve child contrast failures and unperformed checks. Keep this parent open.
 - DR-024a1 implementation and focused checks pass; the user approved completion with disclosed limits on 2026-11-09.
-- Scheduling's previously observed `TournamentScheduleData` HTTP 400 remains independent and unrepaired.
+- Scheduling's previously observed `TournamentScheduleData` HTTP 400 remains independent and unrepaired;
+  the DR-024b prerequisite check below reproduces the failure with explicit schema diagnostics.
 - No shared component extraction is justified yet: retain smart page/tab/service boundaries.
 - DR-024a draw-management aggregate reconciliation is separately approved on 2026-11-09 with disclosed limits.
   All four required children are approved Done and their committed source/evidence is reconciled.
@@ -40,12 +43,31 @@ description: 'Aggregate scope for independently reviewable draw-management and s
   and unperformed aggregate/operational/permission/accessibility/SSR checks.
   User selected "Approve completion and commit with disclosed limits" and "Nothing else".
   Only DR-024a is Done; approval does not imply the unchecked criteria passed or close this parent.
-- Current snapshot shows Scheduling and Check-in disabled. The earlier enabled-tab observation and Scheduling
-  HTTP 400 are historical evidence, not verified current access or a fresh network result.
-  Once DR-024a review is approved, confirm an actually permitted Scheduling consumer and its read-schema prerequisite
-  before scoping DR-024b. Do not enable gated tabs or mutate phase/permissions for redesign verification.
-- Exact next action in a fresh invocation is DR-024b consumer/prerequisite scoping;
-  keep DR-024 open and do not begin scheduling in this invocation.
+- DR-024b prerequisite check on 2026-11-09: current authorized Draws page has Scheduling disabled
+  (`aria-disabled="true"`) and zero mounted `app-schedule-tab` elements.
+  A same-origin read returns HTTP 200 with phase `ENROLLMENT_CLOSED`, consistent with the existing access gate.
+  A second same-origin read using the exact existing `TournamentScheduleData` operation returns HTTP 400:
+  `Query.tournamentSchedule`, `Query.unscheduledGames` and `TournamentEvent.location` are absent,
+  each reported as `GRAPHQL_VALIDATION_FAILED`.
+  This probe does not establish a mounted Scheduling consumer or a successful empty schedule.
+  No application edits, operational writes, phase/permission changes or component extractions are made.
+  The shared browser currently reports visible; earlier hidden-browser failures remain historical child evidence.
+- The user subsequently approves the bounded [DR-024b1 read/error prerequisite](DR-024b1-schedule-read.md).
+  Its 20 focused tests and scoped lint/build pass; corrected source reads return HTTP 200 against the running API.
+  No dormant scheduling mutations are registered and no assistant operational/phase/data writes are made.
+  The supplied tournament is subsequently observed in `DRAWS_MADE`, and its authorized Scheduling route mounts.
+  The phase gate and missing backend read schema are no longer the current blockers.
+  After reload the shared browser still emits legacy `location`/`player` reads (HTTP 400) and displays empty success.
+  This is stale frontend runtime evidence, not verification of the new read/error UI.
+- The user subsequently restarts the frontend; the normally mounted browser emits the corrected read and
+  receives HTTP 200 with genuine empty data. The stale-source blocker is resolved.
+  Native pending/error fixture DOM is confirmed, but hidden-browser entry animation/actionability limits
+  prevent the complete theme/width/keyboard/retry matrix. Synthetic routes are removed and real data restored.
+- The user selects "Approve completion and commit with disclosed limits" and "Nothing else" for DR-024b1
+  on 2026-11-09. Only that read/error prerequisite is Done; unchecked visual/full-suite/live-data/accessibility/SSR
+  criteria remain unchecked. DR-024b and this parent remain open.
+  Exact next action: scope DR-024b2 summary/count labels in a fresh invocation.
+  Do not bypass gates, restart approved Draws work or begin another slice here.
 
 ## Aggregate acceptance
 

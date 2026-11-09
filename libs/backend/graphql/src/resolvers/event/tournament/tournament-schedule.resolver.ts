@@ -2,7 +2,8 @@ import { PermGuard, User } from '@app/backend-authorization';
 import { TournamentScheduleSlot, TournamentEvent, Court, Game, Player, TournamentDraw, GamePlayerMembership } from '@app/models';
 import { ScheduleSlotStatus, ScheduleStrategy, TournamentPhase } from '@app/models-enum';
 import { BadRequestException, ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, ID, Int, Mutation, ObjectType, Field, Parent, Query, ResolveField, Resolver, registerEnumType } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, ObjectType, Field, Query, Resolver, registerEnumType } from '@nestjs/graphql';
+import { TournamentScheduleReadResolver } from './tournament-schedule-read.resolver';
 import { TournamentScheduleSlotArgs } from '../../../args';
 import {
   GenerateTimeSlotsInput,
@@ -52,7 +53,7 @@ class ScheduleResult {
 }
 
 @Resolver(() => TournamentScheduleSlot)
-export class TournamentScheduleResolver {
+export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
   // ============ QUERIES ============
 
   @Query(() => TournamentScheduleSlot)
@@ -77,36 +78,6 @@ export class TournamentScheduleResolver {
     return TournamentScheduleSlot.find(args);
   }
 
-  @Query(() => [TournamentScheduleSlot], { description: 'Get all schedule slots for a tournament' })
-  async tournamentSchedule(
-    @Args('tournamentEventId', { type: () => ID }) tournamentEventId: string,
-    @Args('date', { type: () => Date, nullable: true }) date?: Date,
-    @Args('courtId', { type: () => ID, nullable: true }) courtId?: string,
-  ): Promise<TournamentScheduleSlot[]> {
-    const where: any = { tournamentEventId };
-
-    if (courtId) {
-      where.courtId = courtId;
-    }
-
-    let slots = await TournamentScheduleSlot.find({
-      where,
-      order: { startTime: 'ASC', order: 'ASC' },
-    });
-
-    // Filter by date if provided
-    if (date) {
-      const startOfDay = new Date(date);
-      startOfDay.setHours(0, 0, 0, 0);
-      const endOfDay = new Date(date);
-      endOfDay.setHours(23, 59, 59, 999);
-
-      slots = slots.filter((slot) => slot.startTime >= startOfDay && slot.startTime <= endOfDay);
-    }
-
-    return slots;
-  }
-
   @Query(() => [TournamentScheduleSlot], { description: 'Get available slots for scheduling' })
   async availableScheduleSlots(@Args('tournamentEventId', { type: () => ID }) tournamentEventId: string): Promise<TournamentScheduleSlot[]> {
     return TournamentScheduleSlot.find({
@@ -115,40 +86,6 @@ export class TournamentScheduleResolver {
         status: ScheduleSlotStatus.AVAILABLE,
       },
       order: { startTime: 'ASC', order: 'ASC' },
-    });
-  }
-
-  @Query(() => [Game], { description: 'Get unscheduled games for a tournament' })
-  async unscheduledGames(@Args('tournamentEventId', { type: () => ID }) tournamentEventId: string): Promise<Game[]> {
-    // Get all draws for this tournament
-    const tournament = await TournamentEvent.findOne({
-      where: { id: tournamentEventId },
-    });
-
-    if (!tournament) {
-      throw new NotFoundException(`Tournament with ID ${tournamentEventId} not found`);
-    }
-
-    // Find all tournament draws
-    const draws = await TournamentDraw.createQueryBuilder('draw')
-      .innerJoin('draw.tournamentSubEvent', 'subEvent')
-      .where('subEvent.eventId = :eventId', { eventId: tournamentEventId })
-      .getMany();
-
-    if (draws.length === 0) {
-      return [];
-    }
-
-    const drawIds = draws.map((d) => d.id);
-
-    // Find games without scheduled time
-    return Game.find({
-      where: {
-        linkId: In(drawIds),
-        linkType: 'tournament',
-        scheduleSlotId: IsNull(),
-      },
-      order: { round: 'ASC', order: 'ASC' },
     });
   }
 
@@ -596,26 +533,6 @@ export class TournamentScheduleResolver {
     await tournament.save();
 
     return true;
-  }
-
-  // ============ RESOLVE FIELDS ============
-
-  @ResolveField(() => TournamentEvent, { nullable: true })
-  async tournamentEvent(@Parent() { tournamentEventId }: TournamentScheduleSlot): Promise<TournamentEvent | null> {
-    if (!tournamentEventId) return null;
-    return TournamentEvent.findOne({ where: { id: tournamentEventId } });
-  }
-
-  @ResolveField(() => Court, { nullable: true })
-  async court(@Parent() { courtId }: TournamentScheduleSlot): Promise<Court | null> {
-    if (!courtId) return null;
-    return Court.findOne({ where: { id: courtId } });
-  }
-
-  @ResolveField(() => Game, { nullable: true })
-  async game(@Parent() { gameId }: TournamentScheduleSlot): Promise<Game | null> {
-    if (!gameId) return null;
-    return Game.findOne({ where: { id: gameId } });
   }
 
   // ============ HELPER METHODS ============

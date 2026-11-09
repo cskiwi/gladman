@@ -1,0 +1,37 @@
+---
+title: 'DR-024a: Draw management'
+description: 'Draw-management aggregate and bounded child sequence.'
+---
+
+## Identity and scope
+
+- ID: DR-024a. Parent: [DR-024](DR-024-admin-draws-scheduling.md).
+- Status: [backlog](../backlog.md). Rules: [design refresh](../README.md).
+- Consumer: `/tournament/759e0526-8440-4108-bba3-55a7d8b94e72/admin?tab=draws`,
+  authorized Draws/Loting panel on 2026-11-09; real phase COMPLETED.
+- Source: `libs/frontend/pages/tournament/src/pages/admin/tabs/draws/`.
+- Existing smart tab/service owns selection, reads, entry operations and two dialogs.
+- Preserve the shared administration Card/tab shell; use native Panels for future inner groups.
+
+## Child sequence
+
+1. [DR-024a1](DR-024a1-draw-read.md): reactive selection and honest read feedback prerequisite.
+   Approved complete on 2026-11-09 with its disclosed verification limits retained.
+2. DR-024a2: scope only the four-count summary presentation after the prerequisite is accepted.
+3. DR-024a3: split filters, assignment and draw-list presentation into bounded children before execution.
+4. DR-024a4: split creation/seeding dialogs and remaining locale completeness before execution.
+
+## Baseline and exclusions
+
+- Four decorative counters, handwritten containers/loading bar, palette colors and hard-coded English remain.
+- Do not claim a visual refresh from the prerequisite repair or silently include those presentation changes.
+- Keep existing smart orchestration. Extract dumb components only for meaningful confirmed repeated consumers,
+  not to conceal utility markup or wrap PrimeNG one-to-one.
+- No changes to scheduling, other tabs, global theme, shared components, dependencies or operational records.
+
+## Aggregate acceptance
+
+- [ ] Required child implementation and focused validation are complete.
+- [ ] Light/dark, narrow/wide, locale, keyboard, overlays and contrast are verified.
+- [ ] Mutation/confirmation contracts, permissions and SSR/hydration are verified or disclosed as limits.
+- [ ] Aggregate review and user approval are recorded.

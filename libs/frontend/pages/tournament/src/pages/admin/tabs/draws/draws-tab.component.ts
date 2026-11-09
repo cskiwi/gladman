@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Entry, TournamentDraw, TournamentEvent, TournamentSubEvent } from '@app/models';
 import { SubEventTypeEnum } from '@app/models-enum';
@@ -47,6 +48,7 @@ export class DrawsTabComponent {
 
   // Form controls
   subEventControl = new FormControl<TournamentSubEvent | null>(null);
+  readonly selectedSubEvent = toSignal(this.subEventControl.valueChanges, { initialValue: this.subEventControl.value });
 
   // New draw dialog
   showCreateDrawDialog = signal(false);
@@ -78,9 +80,6 @@ export class DrawsTabComponent {
   updateError = this.dataService.updateError;
   stats = this.dataService.stats;
 
-  // Selected sub-event
-  selectedSubEvent = signal<TournamentSubEvent | null>(null);
-
   // Sub-events list
   subEvents = computed(() => this.tournament()?.tournamentSubEvents ?? []);
 
@@ -111,24 +110,19 @@ export class DrawsTabComponent {
   constructor() {
     // Watch sub-event selection
     effect(() => {
-      const subEvent = this.subEventControl.value;
-      if (subEvent) {
-        this.selectedSubEvent.set(subEvent);
-        this.dataService.filter.patchValue({
-          subEventId: subEvent.id,
-        });
-        // Clear selections when changing sub-event
-        this.selectedEntries.set([]);
-        this.targetDrawId.set(null);
-      }
+      const subEventId = this.selectedSubEvent()?.id ?? null;
+      if (this.dataService.filter.controls.subEventId.value === subEventId) return;
+      this.dataService.filter.patchValue({ subEventId });
+      this.selectedEntries.set([]);
+      this.targetDrawId.set(null);
     });
 
     // Auto-select first sub-event
     effect(() => {
       const subEvents = this.subEvents();
-      if (subEvents.length > 0 && !this.selectedSubEvent()) {
-        this.subEventControl.setValue(subEvents[0]);
-      }
+      const current = this.subEventControl.value;
+      const selected = subEvents.find((subEvent) => subEvent.id === current?.id) ?? subEvents[0] ?? null;
+      if (current !== selected) this.subEventControl.setValue(selected);
     });
   }
 

@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a1 is Done with explicit approval: [draw selection and read prerequisite](work-items/DR-024a1-draw-read.md).
+Mounted authorized Draws consumer confirmed on 2026-11-09 at the imported completed tournament admin route.
+Repaired the nonreactive selector, input replacement and stale assignment reset; real reads now return HTTP 200.
+Failed/incomplete reads surface native errors instead of false empty success; loading hides metrics/empty panels.
+Native named loading, correctly named selector/refresh and stable asynchronous refresh focus are implemented.
+Seventeen focused tests and uncached scoped lint/build pass; ten build prerequisites replay cache.
+Four real-empty theme/390/1440px cases and native overlays pass; eight failed/incomplete-read cases pass.
+Keyboard DE 1 selection and refresh return HTTP 200; no operational browser writes.
+Delayed browser-interception probes time out; only the observed dark/wide loading state is claimed.
+Unit tests verify asynchronous recovery and late-response safety; no full delayed-browser matrix is claimed.
+Existing generic loading/error/refresh dictionaries pass in all three locales without translation/backend changes.
+Static class/styleClass tokens fall 519 to 512; existing decorative/palette markup remains for later children.
+Exhaustive accessibility/contrast, full tournament suite, populated real reads, live operations and SSR remain unverified.
+Exclude draw styling, dialogs, scheduling, backend/schema changes, shared components and global theme.
+Existing smart tab/service split is retained; no genuinely repeated consumer warrants a dumb-component extraction yet.
+Original dark theme, Dutch locale, viewport and Check-in route are restored; query interception is removed.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this prerequisite, focused tests and repository handoff; unchecked limits remain unchecked.
+Post-approval `npx nx run-many --target=lint` passes all 34 projects from cache; no fresh lint execution is claimed.
+DR-024a and DR-024 remain open. Commit only this approved slice/handoff; do not push.
+Exact next action in a fresh invocation: scope DR-024a2 draw-summary presentation on its actual visible consumer.
+Do not restart the approved prerequisite or start another child in this invocation.
+
+### Previous completed focus: administration aggregate acceptance
+
 DR-023 aggregate acceptance is Done with explicit approval:
 [administration parent](work-items/DR-023-admin-acceptance.md).
 Reconciled approved DR-023a/b/c against committed source (`1a4c2365`, `228e99d3`, `8f262e15`).
@@ -2117,7 +2142,13 @@ and linked from their registry rows.
 | [DR-023c2](work-items/DR-023c2-checkin-filters.md)            | Reactive check-in filters/search and refresh consolidation                  | Done        |
 | [DR-023c3](work-items/DR-023c3-checkin-table.md)              | Check-in table/feedback and operational action presentation                 | Done        |
 | [DR-023c4](work-items/DR-023c4-checkin-locales.md)            | Remaining mounted check-in locale completeness                              | Done        |
-| DR-024                                                        | Tournament admin: draws and scheduling                                      | Backlog     |
+| [DR-024](work-items/DR-024-admin-draws-scheduling.md)         | Tournament admin: draws and scheduling                                      | In progress |
+| [DR-024a](work-items/DR-024a-admin-draws.md)                  | Draw management aggregate                                                   | In progress |
+| [DR-024a1](work-items/DR-024a1-draw-read.md)                  | Reactive draw selection and explicit read feedback prerequisite             | Done        |
+| DR-024a2                                                      | Draw summary presentation; scope after read prerequisite                    | Backlog     |
+| DR-024a3                                                      | Draw filters, assignment and draw-list presentation; split before execution | Backlog     |
+| DR-024a4                                                      | Draw creation/seeding dialogs and mounted locale completeness; split first  | Backlog     |
+| DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                          | Backlog     |
 | DR-027                                                        | Global admin and search indexing                                            | Backlog     |
@@ -2646,6 +2677,8 @@ Projects: `frontend-pages-tournament`, with shared controls where already used. 
   Do not restart completed children. Next invocation scopes one DR-024 draw-management child on its real consumer.
   Never treat swallowed query failures as a successful empty dataset or mutate phase/records for testing.
 - DR-024: draw management and scheduling tabs, one child task per tab.
+  Split into DR-024a draw-management aggregate and DR-024b scheduling; no whole-tab rewrite.
+  DR-024a1 repairs the mounted draw selector/read prerequisite before presentation children.
   DR-023c1 browser observation: the independently mounted `TournamentScheduleData` still fails HTTP 400.
   Confirm its query/schema prerequisites when scoping scheduling; do not repair this other tab during check-in work.
 - DR-025: settings, general settings, sub-events, and phase controls.

@@ -2,6 +2,7 @@ import { computed, inject, resource, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Entry, TournamentDraw, TournamentSubEvent } from '@app/models';
+import { TranslateService } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 
@@ -9,12 +10,13 @@ export type SeedingMethod = 'BY_RANKING' | 'RANDOM' | 'MANUAL';
 
 export class DrawsTabService {
   private readonly apollo = inject(Apollo);
+  private readonly translate = inject(TranslateService);
 
   filter = new FormGroup({
     subEventId: new FormControl<string | null>(null),
   });
 
-  private filterSignal = toSignal(this.filter.valueChanges);
+  private filterSignal = toSignal(this.filter.valueChanges, { initialValue: this.filter.getRawValue() });
 
   // Loading and error states
   readonly updating = signal(false);
@@ -28,25 +30,62 @@ export class DrawsTabService {
         return { entries: [], unassignedEntries: [], draws: [] };
       }
 
-      try {
-        const result = await lastValueFrom(
-          this.apollo.query<{
-            tournamentSubEvent: TournamentSubEvent & {
-              entries: Entry[];
-              unassignedEntries: Entry[];
-              drawTournaments: TournamentDraw[];
-            };
-          }>({
-            query: gql`
-              query SubEventDrawsData($subEventId: ID!) {
-                tournamentSubEvent(id: $subEventId) {
+      const result = await lastValueFrom(
+        this.apollo.query<{
+          tournamentSubEvent: TournamentSubEvent & {
+            entries: Entry[];
+            unassignedEntries: Entry[];
+            drawTournaments: TournamentDraw[];
+          };
+        }>({
+          query: gql`
+            query SubEventDrawsData($subEventId: ID!) {
+              tournamentSubEvent(id: $subEventId) {
+                id
+                name
+                gameType
+                entries {
+                  id
+                  seed
+                  drawId
+                  player1 {
+                    id
+                    firstName
+                    lastName
+                    fullName
+                  }
+                  player2 {
+                    id
+                    firstName
+                    lastName
+                    fullName
+                  }
+                }
+                unassignedEntries {
+                  id
+                  seed
+                  player1 {
+                    id
+                    firstName
+                    lastName
+                    fullName
+                  }
+                  player2 {
+                    id
+                    firstName
+                    lastName
+                    fullName
+                  }
+                }
+                drawTournaments {
                   id
                   name
-                  gameType
+                  type
+                  size
+                  entryCount
                   entries {
                     id
                     seed
-                    drawId
                     player1 {
                       id
                       firstName
@@ -58,72 +97,34 @@ export class DrawsTabService {
                       firstName
                       lastName
                       fullName
-                    }
-                  }
-                  unassignedEntries {
-                    id
-                    seed
-                    player1 {
-                      id
-                      firstName
-                      lastName
-                      fullName
-                    }
-                    player2 {
-                      id
-                      firstName
-                      lastName
-                      fullName
-                    }
-                  }
-                  drawTournaments {
-                    id
-                    name
-                    type
-                    size
-                    entryCount
-                    entries {
-                      id
-                      seed
-                      player1 {
-                        id
-                        firstName
-                        lastName
-                        fullName
-                      }
-                      player2 {
-                        id
-                        firstName
-                        lastName
-                        fullName
-                      }
                     }
                   }
                 }
               }
-            `,
-            variables: { subEventId: params.subEventId },
-            context: { signal: abortSignal },
-            fetchPolicy: 'network-only',
-          }),
-        );
+            }
+          `,
+          variables: { subEventId: params.subEventId },
+          context: { signal: abortSignal },
+          fetchPolicy: 'network-only',
+        }),
+      );
 
-        const subEvent = result.data?.tournamentSubEvent;
-        return {
-          entries: subEvent?.entries ?? [],
-          unassignedEntries: subEvent?.unassignedEntries ?? [],
-          draws: subEvent?.drawTournaments ?? [],
-        };
-      } catch {
-        return { entries: [], unassignedEntries: [], draws: [] };
+      const subEvent = result.data?.tournamentSubEvent;
+      if (!Array.isArray(subEvent?.entries) || !Array.isArray(subEvent?.unassignedEntries) || !Array.isArray(subEvent?.drawTournaments)) {
+        throw new Error(this.translate.instant('all.error.genericTitle'));
       }
+      return {
+        entries: subEvent.entries,
+        unassignedEntries: subEvent.unassignedEntries,
+        draws: subEvent.drawTournaments,
+      };
     },
   });
 
   // Public selectors
-  entries = computed(() => this.entriesResource.value()?.entries ?? []);
-  unassignedEntries = computed(() => this.entriesResource.value()?.unassignedEntries ?? []);
-  draws = computed(() => this.entriesResource.value()?.draws ?? []);
+  entries = computed(() => (this.entriesResource.hasValue() ? this.entriesResource.value().entries : []));
+  unassignedEntries = computed(() => (this.entriesResource.hasValue() ? this.entriesResource.value().unassignedEntries : []));
+  draws = computed(() => (this.entriesResource.hasValue() ? this.entriesResource.value().draws : []));
   loading = computed(() => this.entriesResource.isLoading());
   error = computed(() => this.entriesResource.error()?.message || null);
 

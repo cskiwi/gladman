@@ -48,6 +48,96 @@ describe('Draw selection and read prerequisite', () => {
     return Array.from(values, (value) => value.textContent?.trim() ?? '');
   }
 
+  function filterActions(): HTMLButtonElement[] {
+    return Array.from(fixture.nativeElement.querySelectorAll('[data-testid="draw-filters"] p-button button'));
+  }
+
+  it('uses a native filter Panel and fluid named selector without nested cards or custom surfaces', async () => {
+    await settle();
+    const filters: HTMLElement = fixture.nativeElement.querySelector('[data-testid="draw-filters"]');
+    expect(filters.tagName).toBe('P-PANEL');
+    expect(filters.textContent).toContain('all.games.filters');
+    expect(filters.querySelector('p-card, .bg-emphasis, .border-surface')).toBeNull();
+    expect(filters.querySelector('p-select')?.classList.contains('p-select-fluid')).toBe(true);
+    expect(filters.querySelector('label')?.htmlFor).toBe('drawSubEvent');
+    expect(filters.querySelector('[role="combobox"]')?.getAttribute('aria-label')).toBe('all.tournament.admin.draws.subEvent');
+    expect(filterActions()).toHaveLength(3);
+    expect(filterActions().every((button) => !button.disabled)).toBe(true);
+  });
+
+  it('preserves generate/create action wiring without performing operational writes', async () => {
+    await settle();
+    const generate = jest.spyOn(fixture.componentInstance, 'generateEntries').mockResolvedValue();
+    const create = jest.spyOn(fixture.componentInstance, 'openCreateDrawDialog');
+    filterActions()[0].click();
+    expect(generate).toHaveBeenCalledTimes(1);
+    filterActions()[1].click();
+    await settle();
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(fixture.componentInstance.showCreateDrawDialog()).toBe(true);
+    fixture.componentInstance.showCreateDrawDialog.set(false);
+    await settle();
+  });
+
+  it('disables all filter actions without a selected sub-event', async () => {
+    fixture.componentRef.setInput('tournament', { id: 'empty', tournamentSubEvents: [] });
+    await settle();
+    expect(filterActions().every((button) => button.disabled)).toBe(true);
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it('guards generate/create during reads while retaining the same enabled refresh button', async () => {
+    const pending = new Subject<typeof response>();
+    query.mockReturnValue(pending);
+    fixture.detectChanges();
+    TestBed.tick();
+    fixture.detectChanges();
+    const actions = filterActions();
+    expect(actions.map((button) => button.disabled)).toEqual([true, true, false]);
+    pending.next(response);
+    pending.complete();
+    await settle();
+    expect(filterActions()).toEqual(actions);
+    expect(actions.every((button) => !button.disabled)).toBe(true);
+  });
+
+  it('guards generate/create after read failure while retaining refresh recovery', async () => {
+    query.mockReturnValueOnce(throwError(() => new Error('Safe filter read failure')));
+    await settle();
+    expect(filterActions().map((button) => button.disabled)).toEqual([true, true, false]);
+    refresh().click();
+    await settle();
+    expect(filterActions().every((button) => !button.disabled)).toBe(true);
+  });
+
+  it('keeps native generate loading feedback and existing create/refresh availability during updates', async () => {
+    await settle();
+    fixture.componentInstance.updating.set(true);
+    await settle();
+    expect(filterActions().map((button) => button.disabled)).toEqual([true, false, false]);
+    expect(filterActions()[0].querySelector('[data-pc-section="loadingicon"]')).not.toBeNull();
+    fixture.componentInstance.updating.set(false);
+    await settle();
+    expect(filterActions().every((button) => !button.disabled)).toBe(true);
+  });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])('preserves actual %s filter labels and values without additional locale reads', async (locale) => {
+    await settle();
+    const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation(locale, { all: dictionary });
+    translate.use(locale);
+    await settle();
+    const filters: HTMLElement = fixture.nativeElement.querySelector('[data-testid="draw-filters"]');
+    expect(filters.textContent).toContain(dictionary.games.filters);
+    expect(filters.querySelector('label')?.textContent?.trim()).toBe(dictionary.tournament.admin.draws.subEvent);
+    expect(filterActions()[0].textContent?.trim()).toBe(dictionary.tournament.admin.draws.generateEntries);
+    expect(filterActions()[1].textContent?.trim()).toBe(dictionary.tournament.admin.draws.createDraw);
+    expect(filterActions()[2].getAttribute('aria-label')).toBe(dictionary.button.refresh);
+    expect(fixture.componentInstance.selectedSubEvent()?.id).toBe('safe-singles');
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
   it('renders four semantic zero counts without decorative icons or nested cards', async () => {
     await settle();
     const summary: HTMLElement = fixture.nativeElement.querySelector('[data-testid="draws-summary"]');

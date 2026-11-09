@@ -18,10 +18,10 @@
       </dl>
     </p-panel>
   }
-  <div class="bg-emphasis rounded-border border border-surface p-5">
-    <div class="flex flex-wrap gap-4 items-end">
-      <div class="flex flex-col gap-2 flex-1 min-w-56">
-        <label for="drawSubEvent" class="text-sm font-medium text-color">
+  <p-panel class="block min-w-0" data-testid="draw-filters" [header]="'all.games.filters' | translate">
+    <div class="flex flex-col xl:flex-row gap-4 xl:items-end">
+      <div class="flex flex-col gap-2 flex-1 min-w-0">
+        <label for="drawSubEvent">
           {{ 'all.tournament.admin.draws.subEvent' | translate }}
         </label>
         <p-select
@@ -31,7 +31,7 @@
           [options]="subEvents()"
           optionLabel="name"
           [placeholder]="'all.tournament.admin.draws.selectSubEvent' | translate"
-          styleClass="w-full"
+          fluid
         />
       </div>
 
@@ -41,7 +41,7 @@
           [label]="'all.tournament.admin.draws.generateEntries' | translate"
           severity="secondary"
           [outlined]="true"
-          (click)="generateEntries()"
+          (onClick)="generateEntries()"
           [loading]="updating()"
           [disabled]="!selectedSubEvent() || loading() || !!error()"
         />
@@ -49,7 +49,7 @@
         <p-button
           icon="pi pi-plus"
           [label]="'all.tournament.admin.draws.createDraw' | translate"
-          (click)="openCreateDrawDialog()"
+          (onClick)="openCreateDrawDialog()"
           [disabled]="!selectedSubEvent() || loading() || !!error()"
         />
 
@@ -60,13 +60,13 @@
           [ariaLabel]="'all.button.refresh' | translate"
           [pTooltip]="'all.button.refresh' | translate"
           tooltipPosition="top"
-          (click)="refetch()"
+          (onClick)="refetch()"
           [attr.aria-busy]="loading()"
           [disabled]="!selectedSubEvent()"
         />
       </div>
     </div>
-  </div>
+  </p-panel>
 
   @if (updateError()) {
     <p-message severity="error" class="w-full">{{ updateError()! }}</p-message>

@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a3a is Done with explicit approval: [draw filters and actions](work-items/DR-024a3a-draw-filters.md).
+Actual authorized visible Draws consumer confirmed on 2026-11-09 at the imported tournament administration route.
+Split DR-024a3 into filter/actions, unassigned assignment, and draw-list/empty-state children.
+Only the top-level sub-event selector and generate/create/refresh group are selected.
+Native filter Panel and fluid Select match enrollment/check-in; retain smart tab/service, no one-off wrapper.
+Selection, read lifecycle, operational handlers and translated labels are preserved.
+Exclude summary, assignment/list/empty panels, dialogs, scheduling, backend, translations and shared/global styling.
+Thirty-one focused tests and scoped lint/build pass; ten prerequisite builds replay cache.
+Four genuine-empty theme/390/1440px layouts and selector overlays pass without document/control overflow.
+Keyboard selector/action order, DE 1 selection/restoration and HTTP 200 refresh with stable focus pass.
+No browser operational writes; original dark/Dutch/1355x1249/HE 1/Draws preferences are restored.
+Template static class/styleClass tokens fall 363 to 357. No extraction, new style or exception.
+Normal label/selector/secondary text contrast passes; light primary Create fails 3.65:1 under existing DR-033.
+Full suite, populated live reads, operational/permission checks, exhaustive accessibility and SSR remain unverified.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this filter/actions slice, focused tests and repository handoff; failed/unperformed checks remain.
+Post-approval workspace lint passes all 34 projects from Nx cache with existing warnings and zero errors.
+No fresh workspace lint execution is claimed.
+Commit only this approved implementation/tests/handoff; no push.
+Exact next action in a fresh invocation: scope DR-024a3b unassigned selection/assignment from its mounted consumer.
+DR-024a3, DR-024a and DR-024 remain open. Do not start siblings in this invocation.
+
+### Previous completed focus: draw summary
+
 DR-024a2 is Done with explicit approval: [draw summary presentation](work-items/DR-024a2-draw-summary.md).
 Actual authorized visible Draws consumer confirmed on 2026-11-09 at the imported tournament admin route.
 Four decorative counters become a native Panel and typed semantic definition-list loop, matching Check-in.
@@ -2166,7 +2190,10 @@ and linked from their registry rows.
 | [DR-024a](work-items/DR-024a-admin-draws.md)                  | Draw management aggregate                                                   | In progress |
 | [DR-024a1](work-items/DR-024a1-draw-read.md)                  | Reactive draw selection and explicit read feedback prerequisite             | Done        |
 | [DR-024a2](work-items/DR-024a2-draw-summary.md)               | Draw summary presentation                                                   | Done        |
-| DR-024a3                                                      | Draw filters, assignment and draw-list presentation; split before execution | Backlog     |
+| [DR-024a3](work-items/DR-024a3-draw-presentation.md)          | Draw filters, assignment and draw-list presentation aggregate               | In progress |
+| [DR-024a3a](work-items/DR-024a3a-draw-filters.md)             | Draw sub-event filter and top-level actions                                 | Done        |
+| DR-024a3b                                                     | Unassigned entry selection and assignment; scope before execution           | Backlog     |
+| DR-024a3c                                                     | Draw lists, draw actions and empty/no-selection panels; scope first         | Backlog     |
 | DR-024a4                                                      | Draw creation/seeding dialogs and mounted locale completeness; split first  | Backlog     |
 | DR-024b                                                       | Scheduling; confirm read-schema prerequisite before scoping                 | Backlog     |
 | DR-025                                                        | Tournament admin: settings and phase controls                               | Backlog     |
@@ -2238,6 +2265,14 @@ Historical source: removed sub-event template and the
 [translation dictionaries](../../libs/backend/translate/assets/i18n).
 Preserve semantics and supported languages; do not hide missing labels with success-shaped English fallbacks.
 Scope translation/error-copy work separately; DR-021f1 adds no dictionary or service changes.
+
+### DR-033 additional evidence: administration draw filters
+
+- [DR-024a3a](work-items/DR-024a3a-draw-filters.md), mounted authorized Draws filter Panel on 2026-11-09:
+  native primary Create text fails light normal-state contrast at 3.65:1; dark passes at 10.63:1.
+- Native secondary Generate/Refresh normal text passes at 4.87:1 light and 6.65:1 dark on the native Panel.
+  Header/label/selector normal text also passes. Exhaustive hover/focus/border contrast remains unverified.
+- Preserve native styling here; any shared theme correction belongs to DR-033 with cross-consumer validation.
 
 ### DR-032/034 historical evidence: withdrawn sub-event enrollment chrome
 

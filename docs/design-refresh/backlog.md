@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023 aggregate acceptance is Done with explicit approval:
+[administration parent](work-items/DR-023-admin-acceptance.md).
+Reconciled approved DR-023a/b/c against committed source (`1a4c2365`, `228e99d3`, `8f262e15`).
+Fresh authorized enrollment/check-in consumers are confirmed on 2026-11-09; real phase is COMPLETED.
+Scope: documentation and safe aggregate verification only; no new application styling or operational writes.
+Twenty-four actual empty locale/theme/390/1440px cases and native status overlays pass.
+Both real refreshes return HTTP 200; keyboard tab/status/search and stable refresh focus pass.
+Four unsubmitted manual Dialog theme/width cases pass, including disabled invalid submit and Escape/trigger focus.
+Scoped tournament tests (18 suites / 288 tests) and lint/build plus ten prerequisites pass from Nx cache.
+No fresh test execution or compilation is claimed. Recorded uncached execution remains in DR-023c.
+Original browser preferences, route, filters, genuine empty records and closed Dialog are restored; zero mutations.
+Existing smart page/tab/service split and typed loops are sufficient; no new extraction or styling exception.
+Known DR-032/DR-034/DR-044 contrast failures, exhaustive accessibility, live operations/API and SSR/hydration remain.
+DR-051 reliability and DR-024 scheduling-query discovery remain separate.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this parent/backlog handoff; accepted failed/unperformed criteria remain unchecked.
+Post-approval workspace lint passes all 34 projects from Nx cache with existing warnings and zero errors.
+Commit only this approved handoff; no push.
+Exact next action in a fresh invocation: scope one DR-024 child, draw management first,
+confirming its actual visible consumer and read prerequisites before implementation.
+Do not restart completed children or start DR-024 in this invocation.
+
+### Previous completed focus: check-in aggregate acceptance
+
 DR-023c aggregate acceptance is Done with explicit approval:
 [check-in parent](work-items/DR-023c-admin-checkin.md).
 Reconciled four approved children and commits (`67c3af15`, `0cdbbdd9`, `a159b804`, `a23f9d89`) against current source.
@@ -2080,7 +2104,7 @@ and linked from their registry rows.
 | [DR-022b](work-items/DR-022b-draw-feedback.md)                | Draw switching and page loading/error/empty feedback                        | Done        |
 | [DR-022c](work-items/DR-022c-draw-games.md)                   | Mounted draw games                                                          | Done        |
 | [DR-022d](work-items/DR-022d-draw-standings.md)               | Mounted round-robin draw standings                                          | Done        |
-| DR-023                                                        | Tournament admin: enrollments and check-in                                  | In progress |
+| [DR-023](work-items/DR-023-admin-acceptance.md)               | Tournament admin: enrollments and check-in aggregate acceptance             | Done        |
 | [DR-023a](work-items/DR-023a-admin-chrome.md)                 | Shared tournament administration chrome and feedback                        | Done        |
 | [DR-023b](work-items/DR-023b-admin-enrollments.md)            | Enrollment management; aggregate approved with disclosed limits             | Done        |
 | [DR-023b1](work-items/DR-023b1-enrollment-summary.md)         | Enrollment-management five-count summary                                    | Done        |
@@ -2616,7 +2640,10 @@ Projects: `frontend-pages-tournament`, with shared controls where already used. 
   The initial missing-check-in-query blocker is resolved by the approved DR-023c1 resolver repair and API restart.
   All four DR-023c children are approved Done and committed; source, fresh empty-tab checks and final 288-test suite
   are reconciled in the parent brief. DR-023c is approved Done with disclosed limits.
-  DR-023 remains open for its own reconciliation; do not restart completed children.
+  [DR-023 aggregate reconciliation](work-items/DR-023-admin-acceptance.md) is approved Done with disclosed limits:
+  fresh 24-case empty-tab layouts/overlays, safe keyboard/refresh/Dialog checks and cached scoped Nx checks pass.
+  User approval retains native contrast, exhaustive accessibility/live-operation/API/hydration limits unchecked.
+  Do not restart completed children. Next invocation scopes one DR-024 draw-management child on its real consumer.
   Never treat swallowed query failures as a successful empty dataset or mutate phase/records for testing.
 - DR-024: draw management and scheduling tabs, one child task per tab.
   DR-023c1 browser observation: the independently mounted `TournamentScheduleData` still fails HTTP 400.

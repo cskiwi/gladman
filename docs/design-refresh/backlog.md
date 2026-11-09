@@ -5,6 +5,27 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a4 aggregate reconciliation is Done with explicit approval:
+[draw dialogs and locales](work-items/DR-024a4-draw-dialogs-locales.md).
+Three approved children are committed as `6ec04b39`, `91ca230c` and `ecbfe7fd`.
+Combined source, focused tests and child evidence are reconciled on 2026-11-09; no application edits are needed.
+All 127 focused tests and all 16 scoped lint/build tasks pass by Nx cache replay, not fresh execution.
+Actual authorized Draws DOM confirms Dutch/dark/HE 8-9 with genuine counts 2/0/2/0 and four descriptions.
+Fresh click/screenshot actionability checks time out while the shared page remains hidden, including after
+desktop resize and bringToFront. No new visual/theme/width/keyboard or refresh-network pass is claimed.
+Original 1355x1249/Dutch/dark/HE 8-9/Draws are restored; no dialog, selection, fixture or operational write.
+Keep child three-locale/theme/width/overlay/feedback evidence attributed to its original verification.
+Retain DR-033/DR-034 contrast failures, cached build warnings and unperformed full-suite/app-build,
+live-operation/permission, exhaustive accessibility and SSR/hydration checks.
+Only four handoff documents change; no new component, wrapper, styling layer or exception.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this four-document aggregate handoff; failed/unperformed checks remain unchecked.
+Commit only this approved handoff without pushing.
+Exact next action in a fresh invocation: reconcile DR-024a draw-management aggregate across its required
+children, retaining all accepted limits. Do not begin it here. Keep DR-024a and DR-024 open.
+
+### Previous completed focus: mounted draw locales
+
 DR-024a4c is Done with explicit approval: [mounted draw locales](work-items/DR-024a4c-draw-locales.md).
 Actual authorized Draws tab reconfirmed on 2026-11-09 with HE 8-9 and two genuine unassigned entries.
 Summary descriptions, consumed French terminology, identity/type labels, native confirmations and
@@ -2350,7 +2371,7 @@ and linked from their registry rows.
 | [DR-024a3a](work-items/DR-024a3a-draw-filters.md)             | Draw sub-event filter and top-level actions                                 | Done        |
 | [DR-024a3b](work-items/DR-024a3b-unassigned-entries.md)       | Unassigned entry selection and assignment                                   | Done        |
 | [DR-024a3c](work-items/DR-024a3c-draw-lists.md)               | Draw lists, draw actions and empty/no-selection panels                      | Done        |
-| [DR-024a4](work-items/DR-024a4-draw-dialogs-locales.md)       | Draw dialogs and mounted locale completeness aggregate                      | In progress |
+| [DR-024a4](work-items/DR-024a4-draw-dialogs-locales.md)       | Draw dialogs and mounted locale completeness aggregate                      | Done        |
 | [DR-024a4a](work-items/DR-024a4a-seeding-dialog.md)           | Seeding dialog, scoped locale options and operation states                  | Done        |
 | [DR-024a4b](work-items/DR-024a4b-creation-dialog.md)          | Creation dialog; remove ignored controls with explicit scope approval       | Done        |
 | [DR-024a4c](work-items/DR-024a4c-draw-locales.md)             | Remaining mounted draw locale completeness                                  | Done        |

@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-023c aggregate acceptance is Done with explicit approval:
+[check-in parent](work-items/DR-023c-admin-checkin.md).
+Reconciled four approved children and commits (`67c3af15`, `0cdbbdd9`, `a159b804`, `a23f9d89`) against current source.
+Fresh authorized consumer confirmed on 2026-11-09 at the recorded administration route.
+Scope: aggregate verification and repository handoff only; no new application styling or operational writes.
+Final tournament suite passes 18 suites / 288 tests without cache replay.
+Scoped frontend lint/build and ten dependency tasks pass from cache; no fresh compilation is claimed.
+Twelve settled real-empty locale/theme/390/1440px cases and native status overlays pass.
+Keyboard Pending/search, locale preservation with zero extra queries, HTTP 200 refresh and stable focus pass.
+Three actual HTTP 200 dictionaries contain all six diagnostics. Child populated/error/paging evidence is retained.
+Original preferences, All status, empty search and genuine empty records restored; zero browser mutations.
+No new component extraction: existing smart tab/service and typed loops remain sufficient.
+Remaining limits: failed DR-034 contrast, exhaustive accessibility, dedicated SSR/hydration and live operations/API.
+DR-024 scheduling and DR-051 operational reliability remain separate.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this parent/backlog reconciliation; failed/unperformed criteria remain unchecked.
+All four children and DR-023c are Done; DR-023 stays open for its own aggregate reconciliation.
+Commit only this approved parent/backlog handoff; no push.
+Exact next action in a fresh invocation: reconcile DR-023 across approved a/b/c without restarting children.
+Do not begin that reconciliation or DR-024 in this invocation.
+
+### Previous completed focus: check-in locale completeness
+
 DR-023c4 is Done with explicit approval: [check-in locale completeness](work-items/DR-023c4-checkin-locales.md).
 Fresh authorized visible Check-in consumer confirmed on 2026-11-09 at the recorded administration route.
 Six local diagnostics now use the active locale; mounted French status/action/sub-event wording is clarified.
@@ -2065,7 +2088,7 @@ and linked from their registry rows.
 | [DR-023b3](work-items/DR-023b3-enrollment-table.md)           | Enrollment table and feedback; explicit query errors                        | Done        |
 | [DR-023b4](work-items/DR-023b4-manual-enrollment.md)          | Manual enrollment dialog and functional authorized creation                 | Done        |
 | [DR-023b5](work-items/DR-023b5-enrollment-locales.md)         | Mounted enrollment locale completeness; descriptions, statuses and feedback | Done        |
-| [DR-023c](work-items/DR-023c-admin-checkin.md)                | Check-in tab; approved bounded API prerequisite and summary child           | In progress |
+| [DR-023c](work-items/DR-023c-admin-checkin.md)                | Check-in aggregate acceptance across four approved children                 | Done        |
 | [DR-023c1](work-items/DR-023c1-checkin-summary.md)            | Check-in five-count summary and approved read-API prerequisite              | Done        |
 | [DR-023c2](work-items/DR-023c2-checkin-filters.md)            | Reactive check-in filters/search and refresh consolidation                  | Done        |
 | [DR-023c3](work-items/DR-023c3-checkin-table.md)              | Check-in table/feedback and operational action presentation                 | Done        |
@@ -2590,9 +2613,10 @@ Projects: `frontend-pages-tournament`, with shared controls where already used. 
 - DR-023a: shared administration chrome/feedback prerequisite for DR-023b/c and DR-024/DR-025 tab work.
   The original supplied tournament disabled operational tabs; later authorized evidence confirms enrollment and check-in
   consumers on the imported finished tournament. DR-023b is approved Done with disclosed limits.
-  Fresh DR-023c investigation confirms the visible Check-in tab, but its read API is missing from the running schema.
-  The approved DR-023c1 prerequisite repair now registers the existing resolver; user restart restores real reads.
-  DR-023c1 is approved Done with disclosed limits; the remaining filter/table/locale children stay unstarted.
+  The initial missing-check-in-query blocker is resolved by the approved DR-023c1 resolver repair and API restart.
+  All four DR-023c children are approved Done and committed; source, fresh empty-tab checks and final 288-test suite
+  are reconciled in the parent brief. DR-023c is approved Done with disclosed limits.
+  DR-023 remains open for its own reconciliation; do not restart completed children.
   Never treat swallowed query failures as a successful empty dataset or mutate phase/records for testing.
 - DR-024: draw management and scheduling tabs, one child task per tab.
   DR-023c1 browser observation: the independently mounted `TournamentScheduleData` still fails HTTP 400.

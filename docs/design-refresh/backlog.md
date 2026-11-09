@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024a3 aggregate reconciliation is Done with explicit approval:
+[draw filters, assignment and lists](work-items/DR-024a3-draw-presentation.md).
+All three required presentation children are approved Done and committed; do not restart their implementation.
+Combined source, child evidence and the actual authorized Draws consumer are reconciled on 2026-11-09.
+Sixty focused tests and all twelve scoped lint/build tasks pass by Nx cache replay, not fresh execution.
+Four genuine-empty light/dark 390/1440px layouts fit; selector keyboard order and HTTP 200 refresh/focus pass.
+Prior populated/assignment/no-selection fixture evidence remains attributed to the children, not rerun here.
+Retain the existing smart tab/service boundary; no repeated live consumer justifies a one-off dumb wrapper.
+Exclude dialogs/locales under DR-024a4, summary, scheduling, backend/schema and shared/global styling.
+Retain DR-033/DR-034 contrast failures and unperformed full-suite, populated-real-read,
+live-operation/permission, exhaustive accessibility/locale and SSR checks.
+Only aggregate/parent handoff documents change; no application implementation, operations or new exceptions.
+User selected "Approve completion and commit with disclosed limits" and "Nothing else" on 2026-11-09.
+Approval covers only this four-document aggregate handoff; failed/unperformed checks remain unchecked.
+Commit only the approved handoff without pushing.
+Exact next action in a fresh invocation: scope one DR-024a4 dialog/locale child from its mounted consumer.
+Do not begin DR-024a4 or close DR-024a/DR-024 in this invocation.
+
+### Previous completed focus: draw lists and actions
+
 DR-024a3c is Done with explicit approval: [draw lists and actions](work-items/DR-024a3c-draw-lists.md).
 Actual authorized Draws consumer reconfirmed on 2026-11-09 at the imported tournament administration route.
 Scope native draw Panels/Tables, identity/type/capacity, seeds/names, actions and empty/no-selection feedback.
@@ -2244,7 +2264,7 @@ and linked from their registry rows.
 | [DR-024a](work-items/DR-024a-admin-draws.md)                  | Draw management aggregate                                                   | In progress |
 | [DR-024a1](work-items/DR-024a1-draw-read.md)                  | Reactive draw selection and explicit read feedback prerequisite             | Done        |
 | [DR-024a2](work-items/DR-024a2-draw-summary.md)               | Draw summary presentation                                                   | Done        |
-| [DR-024a3](work-items/DR-024a3-draw-presentation.md)          | Draw filters, assignment and draw-list presentation aggregate               | In progress |
+| [DR-024a3](work-items/DR-024a3-draw-presentation.md)          | Draw filters, assignment and draw-list presentation aggregate               | Done        |
 | [DR-024a3a](work-items/DR-024a3a-draw-filters.md)             | Draw sub-event filter and top-level actions                                 | Done        |
 | [DR-024a3b](work-items/DR-024a3b-unassigned-entries.md)       | Unassigned entry selection and assignment                                   | Done        |
 | [DR-024a3c](work-items/DR-024a3c-draw-lists.md)               | Draw lists, draw actions and empty/no-selection panels                      | Done        |

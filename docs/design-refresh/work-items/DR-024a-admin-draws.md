@@ -20,13 +20,15 @@ description: 'Draw-management aggregate and bounded child sequence.'
 2. [DR-024a2](DR-024a2-draw-summary.md): four-count summary approved complete on 2026-11-09
    with its disclosed verification limits retained.
 3. [DR-024a3](DR-024a3-draw-presentation.md): filter/actions, unassigned assignment and draw-list children.
-   Only DR-024a3a filter/actions is selected; assignment/list surfaces remain separate.
+   All three presentation children are approved Done and committed. Aggregate reconciliation is complete;
+   user approved aggregate completion on 2026-11-09 with child verification limits retained.
 4. DR-024a4: split creation/seeding dialogs and remaining locale completeness before execution.
 
 ## Baseline and exclusions
 
 - The four decorative counters are replaced by DR-024a2's native Panel/semantic summary.
-  DR-024a1 already replaced the loading bar. Legacy filter/list containers, palette colors and English remain.
+  DR-024a1 already replaced the loading bar. DR-024a3's children replace the legacy filter/list surfaces
+  with native Panels/Tables and scoped translations. Dialog styling and remaining locale gaps stay DR-024a4.
 - Do not claim a visual refresh from the prerequisite repair or silently include those presentation changes.
 - Keep existing smart orchestration. Extract dumb components only for meaningful confirmed repeated consumers,
   not to conceal utility markup or wrap PrimeNG one-to-one.

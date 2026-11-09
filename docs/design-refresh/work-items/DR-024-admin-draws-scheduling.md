@@ -18,7 +18,9 @@ description: 'Aggregate scope for independently reviewable draw-management and s
 
 - On 2026-11-09 the authorized imported completed tournament exposes Draws and Scheduling.
 - Draws has a confirmed visible consumer, not merely an export or hidden panel.
-- DR-024a3a filter/actions is the current selected implementation slice; DR-024a1/a2 are approved complete.
+- DR-024a1/a2 and all three DR-024a3 presentation children are approved complete.
+  DR-024a3 aggregate evidence is reconciled and explicitly approved on 2026-11-09 with recorded limits retained.
+  Dialog/remaining locale work stays DR-024a4; keep this parent open.
 - DR-024a1 implementation and focused checks pass; the user approved completion with disclosed limits on 2026-11-09.
 - Scheduling's previously observed `TournamentScheduleData` HTTP 400 remains independent and unrepaired.
 - No shared component extraction is justified yet: retain smart page/tab/service boundaries.

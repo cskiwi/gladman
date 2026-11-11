@@ -54,7 +54,18 @@
       "follow": "Volgen",
       "members": "{{count}} leden",
       "season": "Seizoen {{season}}",
-      "share": "Delen"
+      "share": "Delen",
+      "stats": {
+        "clubRanking": "Clubranking",
+        "leaguesOne": "in {{count}} reeks",
+        "leaguesOther": "in {{count}} reeksen",
+        "nextHomeMatch": "Volgende thuiswedstrijd",
+        "noUpcomingHome": "Geen thuiswedstrijden gepland",
+        "seasonRecord": "Seizoensbalans",
+        "teamsActive": "Actieve teams",
+        "versus": "{{home}} - {{away}}",
+        "winRate": "{{rate}}% gewonnen"
+      }
     },
     "gamesDistribution": "Wedstrijdverdeling",
     "managePlayers": "Spelers Beheren",

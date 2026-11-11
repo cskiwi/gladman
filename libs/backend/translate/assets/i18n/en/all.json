@@ -54,7 +54,18 @@
       "follow": "Follow",
       "members": "{{count}} members",
       "season": "Season {{season}}",
-      "share": "Share"
+      "share": "Share",
+      "stats": {
+        "clubRanking": "Club ranking",
+        "leaguesOne": "across {{count}} league",
+        "leaguesOther": "across {{count}} leagues",
+        "nextHomeMatch": "Next home match",
+        "noUpcomingHome": "No upcoming home matches",
+        "seasonRecord": "Season record",
+        "teamsActive": "Teams active",
+        "versus": "{{home}} vs {{away}}",
+        "winRate": "{{rate}}% wins"
+      }
     },
     "gamesDistribution": "Games Distribution",
     "managePlayers": "Manage Players",

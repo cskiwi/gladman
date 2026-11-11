@@ -54,7 +54,18 @@
       "follow": "Suivre",
       "members": "{{count}} membres",
       "season": "Saison {{season}}",
-      "share": "Partager"
+      "share": "Partager",
+      "stats": {
+        "clubRanking": "Classement du club",
+        "leaguesOne": "dans {{count}} série",
+        "leaguesOther": "dans {{count}} séries",
+        "nextHomeMatch": "Prochain match à domicile",
+        "noUpcomingHome": "Aucun match à domicile prévu",
+        "seasonRecord": "Bilan de la saison",
+        "teamsActive": "Équipes actives",
+        "versus": "{{home}} - {{away}}",
+        "winRate": "{{rate}}% de victoires"
+      }
     },
     "gamesDistribution": "Répartition des Matchs",
     "managePlayers": "Gérer les Joueurs",

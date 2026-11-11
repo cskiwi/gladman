@@ -2,7 +2,7 @@
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { HeroAvatarComponent, HeroComponent, HeroStatValueComponent, HeroTitleComponent } from '@app/frontend-components/hero';
+import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { AuthService } from '@app/frontend-modules-auth/service';
 import { SeoService } from '@app/frontend-modules-seo/service';
@@ -48,7 +48,6 @@ import {
     HeroComponent,
     HeroAvatarComponent,
     HeroTitleComponent,
-    HeroStatValueComponent,
     ClubTeamsTabComponent,
     ClubPlayersTabComponent,
     ClubScheduleTabComponent,
@@ -59,8 +58,8 @@ import {
     ClubInfoCardComponent,
   ],
   providers: [DialogService],
+  host: { class: 'flex flex-col' },
   templateUrl: './page-detail.component.html',
-  styleUrl: './page-detail.component.scss',
 })
 export class PageDetailComponent {
   readonly dataService = new DetailService();

@@ -62,6 +62,17 @@ export type I18nTranslations = {
                 "members": string;
                 "season": string;
                 "share": string;
+                "stats": {
+                    "clubRanking": string;
+                    "leaguesOne": string;
+                    "leaguesOther": string;
+                    "nextHomeMatch": string;
+                    "noUpcomingHome": string;
+                    "seasonRecord": string;
+                    "teamsActive": string;
+                    "versus": string;
+                    "winRate": string;
+                };
             };
             "gamesDistribution": string;
             "managePlayers": string;

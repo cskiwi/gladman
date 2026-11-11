@@ -5,6 +5,14 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-012b Club hero stats strip is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012b-club-hero-stats.md)): the four `[stats]` items of the
+`/clubs/:clubId` hero use the competition/tournament stat pattern with a native win-rate Tag and nl/fr/en copy; the page
+SCSS is removed. Lint and build pass; browser-checked dark wide, light wide and light 390px (no overflow). Not verified:
+dark 390px, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012c club tabs and sidebar cards;
+DR-012 stays open until its children are done. `HeroStatValueComponent` has no application consumer left (DR-029).
+
+### Previous focus: Club detail page chrome (DR-012a)
+
 DR-012a Club detail page chrome is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012a-club-page-chrome.md)): the `/clubs/:clubId`
 hero identity row, hero actions copy and page-level loading/error, mirroring DR-008c. The hero stats strip and the tabs
 are excluded (next children). Implemented: native secondary id Tag, localized season/members/Share/Follow (nl/fr/en),
@@ -2532,6 +2540,7 @@ and linked from their registry rows.
 | DR-011                                                        | Player editing                                                               | Backlog     |
 | DR-012                                                        | Club detail and browsing tabs                                                | In progress |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
+| [DR-012b](work-items/DR-012b-club-hero-stats.md)              | Club hero stats strip (teams, season record, ranking, next home match)       | Done        |
 | DR-013                                                        | Club team builder                                                            | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |

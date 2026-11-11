@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
-import { NgClass, DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, OnDestroy, resource } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { injectParams } from 'ngxtension/inject-params';
 import { TranslateModule } from '@ngx-translate/core';
+import { Apollo, gql } from 'apollo-angular';
 import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
+import { lastValueFrom } from 'rxjs';
 import { TournamentLiveService } from '../../services';
+import { LiveConnectionState, LiveDisplayHeaderComponent } from '../../components/live-display-header/live-display-header.component';
 
 interface UpcomingGame {
   gameId: string;
@@ -16,22 +20,101 @@ interface UpcomingGame {
   round?: string;
 }
 
+interface UpcomingQuery {
+  tournamentEvent: {
+    tournamentSubEvents?: {
+      name?: string;
+      drawTournaments?: {
+        games?: {
+          id: string;
+          courtId?: string;
+          scheduledTime?: string;
+          winner?: number;
+          round?: string;
+          order?: number;
+          gamePlayerMemberships?: { team?: number; player?: number; gamePlayer?: { fullName?: string } }[];
+        }[];
+      }[];
+    }[];
+  };
+  tournamentScheduleCourts: { id: string; name?: string }[];
+}
+
+const UPCOMING_QUERY = gql`
+  query TournamentLiveUpcoming($id: ID!) {
+    tournamentEvent(id: $id) {
+      id
+      tournamentSubEvents {
+        id
+        name
+        drawTournaments {
+          id
+          games {
+            id
+            courtId
+            scheduledTime
+            winner
+            round
+            order
+            gamePlayerMemberships {
+              id
+              team
+              player
+              gamePlayer {
+                id
+                fullName
+              }
+            }
+          }
+        }
+      }
+    }
+    tournamentScheduleCourts(tournamentEventId: $id) {
+      id
+      name
+    }
+  }
+`;
+
 @Component({
   selector: 'app-page-live-upcoming',
   standalone: true,
-  imports: [NgClass, DatePipe, TranslateModule, CardModule, TagModule],
+  imports: [DatePipe, TranslateModule, CardModule, MessageModule, TagModule, LiveDisplayHeaderComponent],
   templateUrl: './page-live-upcoming.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageLiveUpcomingComponent implements OnDestroy {
   protected readonly liveService = inject(TournamentLiveService);
+  private readonly apollo = inject(Apollo);
   private readonly tournamentId = injectParams('tournamentId');
 
-  // Placeholder for upcoming games - in real implementation, would fetch from schedule
-  private readonly _upcomingGames = signal<UpcomingGame[]>([]);
+  private readonly upcomingResource = resource({
+    params: () => this.tournamentId(),
+    loader: async ({ params: id, abortSignal }): Promise<UpcomingGame[]> => {
+      if (!id) {
+        return [];
+      }
+      const { data } = await lastValueFrom(
+        this.apollo.query<UpcomingQuery>({
+          query: UPCOMING_QUERY,
+          variables: { id },
+          fetchPolicy: 'network-only',
+          context: { signal: abortSignal },
+        }),
+      );
+      return data ? this.toUpcomingGames(data) : [];
+    },
+  });
 
-  upcomingGames = computed(() => this._upcomingGames());
+  upcomingGames = computed(() => this.upcomingResource.value() ?? []);
   stats = computed(() => this.liveService.tournamentStats());
+  readonly connectionState = computed<LiveConnectionState>(() =>
+    this.liveService.isConnected() ? 'connected' : this.liveService.isConnecting() ? 'connecting' : 'offline',
+  );
+
+  protected announcementSeverity(type: string): 'error' | 'warn' | 'info' {
+    return type === 'urgent' ? 'error' : type === 'warning' ? 'warn' : 'info';
+  }
 
   constructor() {
     effect(() => {
@@ -41,14 +124,55 @@ export class PageLiveUpcomingComponent implements OnDestroy {
       }
     });
 
-    // Listen for schedule updates
-    this.liveService.onScheduleUpdated((update) => {
-      // Would refetch upcoming games when schedule changes
-      console.log('Schedule updated:', update);
+    // Refetch whenever the schedule changes or a game finishes
+    const reload = () => this.upcomingResource.reload();
+    const stopSchedule = this.liveService.onScheduleUpdated(reload);
+    const stopCompleted = this.liveService.onGameCompleted(reload);
+    inject(DestroyRef).onDestroy(() => {
+      stopSchedule();
+      stopCompleted();
     });
   }
 
   ngOnDestroy(): void {
     this.liveService.disconnect();
+  }
+
+  /** Unfinished games, soonest first; unscheduled games go last in draw order. */
+  private toUpcomingGames(data: UpcomingQuery): UpcomingGame[] {
+    const courts = new Map(data.tournamentScheduleCourts.map((court) => [court.id, court.name]));
+    return (data.tournamentEvent.tournamentSubEvents ?? [])
+      .flatMap((subEvent) =>
+        (subEvent.drawTournaments ?? []).flatMap((draw) =>
+          (draw.games ?? [])
+            .filter((game) => !game.winner)
+            .map((game) => {
+              const team = (nr: number) =>
+                (game.gamePlayerMemberships ?? [])
+                  .filter((membership) => membership.team === nr)
+                  .sort((a, b) => (a.player ?? 0) - (b.player ?? 0))
+                  .map((membership) => membership.gamePlayer?.fullName)
+                  .filter(Boolean)
+                  .join(' / ');
+              return {
+                gameId: game.id,
+                courtName: game.courtId ? courts.get(game.courtId) : undefined,
+                scheduledTime: game.scheduledTime,
+                team1: team(1),
+                team2: team(2),
+                category: subEvent.name,
+                round: game.round,
+                order: game.order ?? 0,
+              };
+            }),
+        ),
+      )
+      .sort((a, b) => {
+        if (a.scheduledTime && b.scheduledTime) {
+          return new Date(a.scheduledTime).getTime() - new Date(b.scheduledTime).getTime();
+        }
+        return a.scheduledTime ? -1 : b.scheduledTime ? 1 : a.order - b.order;
+      })
+      .map(({ order: _order, ...game }) => game);
   }
 }

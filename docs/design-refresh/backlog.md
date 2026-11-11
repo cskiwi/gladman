@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-026c Live upcoming display is in Review ([brief](work-items/DR-026c-live-upcoming.md)): shared header, native Card/Tag/Message, palette colors removed. Lint passes; light wide empty state browser-checked. Not verified: dark, 375px, populated cards, announcements, build, tests. Next candidate, not started: DR-026d kiosk.
+
+### Previous focus: Live results (DR-026b)
+
 DR-026b Live results display is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-026b-live-results.md)): shared header, native Card/Tag, palette colors removed. Lint passes; browser-checked light wide/375px with fixture data. Compact multi-column grid for TV. Not verified: dark, empty state, 375px after compaction, build, keyboard/contrast, tests. Next candidate, not started: DR-026c upcoming, then DR-026d kiosk.
 
 ### Previous focus: Live courts (DR-026a)

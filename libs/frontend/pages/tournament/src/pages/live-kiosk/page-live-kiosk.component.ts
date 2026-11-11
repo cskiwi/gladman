@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
-import { NgClass, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { injectParams } from 'ngxtension/inject-params';
 import { TranslateModule } from '@ngx-translate/core';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { TournamentLiveService, GameUpdate } from '../../services';
 import { interval, Subscription } from 'rxjs';
@@ -11,7 +13,7 @@ type KioskView = 'courts' | 'results' | 'upcoming' | 'announcements';
 @Component({
   selector: 'app-page-live-kiosk',
   standalone: true,
-  imports: [NgClass, DatePipe, TranslateModule, TagModule],
+  imports: [DatePipe, TranslateModule, CardModule, MessageModule, TagModule],
   templateUrl: './page-live-kiosk.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -25,9 +27,10 @@ export class PageLiveKioskComponent implements OnDestroy {
   private viewCycleSubscription?: Subscription;
   private clockSubscription?: Subscription;
 
+  readonly viewNames = computed<KioskView[]>(() => (this.liveService.announcements().length > 0 ? [...this.views, 'announcements'] : this.views));
+
   readonly currentView = computed(() => {
-    const hasAnnouncements = this.liveService.announcements().length > 0;
-    const allViews = hasAnnouncements ? [...this.views, 'announcements' as KioskView] : this.views;
+    const allViews = this.viewNames();
     return allViews[this.viewIndex() % allViews.length];
   });
 

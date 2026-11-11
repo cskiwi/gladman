@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-026d Live kiosk display is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-026d-live-kiosk.md). Hard-coded slate/rose/emerald palette replaced by semantic colors and native `p-card`/`p-tag`/`p-message`; cycling, clock and stats kept. Lint and build pass; light/dark wide empty state browser-checked. Not verified: populated views, announcements, 375px, keyboard/contrast, tests. Next candidate, not started: reconcile parent DR-026.
+
+### Previous focus: Live upcoming (DR-026c)
+
 DR-026c Live upcoming display is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-026c-live-upcoming.md)): shared header (breadcrumb + hero), new presentational `app-live-game-card` following the profile game cards (time rail, players per side, court column, two columns from `xl`), SSR guard in the live service. Lint and build pass; browser-checked light/dark wide and dark 375px. Not verified: announcements, light 375px, keyboard/contrast, tests, live courts/results with the reworked header. Next candidate, not started: DR-026d kiosk.
 
 ### Previous focus: Live results (DR-026b)
@@ -2585,6 +2589,8 @@ and linked from their registry rows.
 | [DR-026](work-items/DR-026a-live-courts.md)                   | Tournament live displays and kiosk; children a (courts) active               | In progress |
 | [DR-026a](work-items/DR-026a-live-courts.md)                  | Live courts display and shared live header                                   | Done        |
 | [DR-026b](work-items/DR-026b-live-results.md)                 | Live results display                                                         | Done        |
+| [DR-026c](work-items/DR-026c-live-upcoming.md)                | Live upcoming display                                                        | Done        |
+| [DR-026d](work-items/DR-026d-live-kiosk.md)                   | Live kiosk display                                                           | Done        |
 | DR-027                                                        | Global admin and search indexing                                             | Backlog     |
 | DR-028                                                        | Sync administration and team matching                                        | Backlog     |
 | DR-029                                                        | Legacy styling retirement and final regression                               | Backlog     |

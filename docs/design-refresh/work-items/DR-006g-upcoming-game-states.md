@@ -48,7 +48,7 @@ description: 'Refresh the mounted player upcoming-games heading, cards, loading,
 - [x] Refresh loading and empty presentations without changing service or state behavior.
 - [x] Preserve three loading cards and ensure they have no focus targets.
 - [x] Display the month in populated-card dates, group date/time clearly, and use a native button with the
-  `pButton` directive.
+      `pButton` directive.
 - [x] Remove the now-unused player placeholder styles.
 - [x] Update focused rendering tests and record any out-of-scope discoveries in the backlog.
 
@@ -56,11 +56,11 @@ description: 'Refresh the mounted player upcoming-games heading, cards, loading,
 
 - [x] The mounted player upcoming section has an accessible semantic heading in both themes and viewport sizes.
 - [x] Loading and settled-empty states remain distinct; loading retains three placeholders and its
-  Skeleton content without adding focusable elements.
+      Skeleton content without adding focusable elements.
 - [x] The empty state retains both existing translated messages and remains readable in light and dark themes.
 - [x] Populated cards, expansion, routes, services, queries, and team rendering are unchanged.
 - [x] Populated card dates include a month and the assembly action uses the native `button pButton` directive;
-  its translated name and router destinations are preserved.
+      its translated name and router destinations are preserved.
 - [x] No non-semantic colors, numbered palette utilities, or custom styling rules are introduced.
 - [x] Narrow and wide layouts have no horizontal overflow; focus targets and contrast are checked.
 - [x] Focused component tests and `frontend-components` Nx lint/build pass; exact commands and results are recorded.

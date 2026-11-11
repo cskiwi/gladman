@@ -59,28 +59,28 @@ native PrimeNG tag treatment. Preserve its content and public component API.
 - [x] Confirm the component, inputs, and all production consumers.
 - [x] Preserve the component API and rendered label/level values.
 - [x] Replace the custom visual with native PrimeNG styling and remove only
-  proven-unused local styles.
+      proven-unused local styles.
 - [x] Check all five consumer call sites without changing their data or behavior.
 - [x] Record consumer-coverage limits and the unused match-row consumer below.
 
 ## Acceptance and verification
 
 - [x] Native PrimeNG tag options provide the appearance; no custom gradient,
-  clipping, palette color, or styling workaround is added.
+      clipping, palette color, or styling workaround is added.
 - [x] Focused component tests cover numeric/string levels, optional label, and
-  both `default` and `sm` sizes.
+      both `default` and `sm` sizes.
 - [x] Existing call sites compile unchanged across encounter cards, recent
-  games, match rows, strongest matchups, and tournament draw games.
+      games, match rows, strongest matchups, and tournament draw games.
 - [x] Light/dark appearance is verified for the populated player-route
-  consumers. Other live consumer groups lack badge data or a mounted caller and
-  are recorded below as coverage limits, not visual passes.
+      consumers. Other live consumer groups lack badge data or a mounted caller and
+      are recorded below as coverage limits, not visual passes.
 - [x] The badge remains readable content, not a keyboard-focusable control; its
-  visible text remains available to assistive technology.
+      visible text remains available to assistive technology.
 - [x] No unrelated ranking data, permissions, translations, routes, or theme
-  behavior changes; the global gradient token remains for other consumers.
+      behavior changes; the global gradient token remains for other consumers.
 - [x] Relevant Nx test, lint, and build targets pass. Available owning targets:
-  `frontend-components` (test/lint/build), `frontend-pages-player`
-  (test/lint/build), and `frontend-pages-tournament` (test/lint/build).
+      `frontend-components` (test/lint/build), `frontend-pages-player`
+      (test/lint/build), and `frontend-pages-tournament` (test/lint/build).
 - [x] User requested marking DR-005a Done after reviewing the updated badge.
 
 ## Evidence and handoff
@@ -106,11 +106,11 @@ native PrimeNG tag treatment. Preserve its content and public component API.
   radius, font size, and padding. The legacy default minimum width was 36px;
   standard `min-w-10` resolves to 35px here.
 - **Passed:** `NX_DAEMON=false npm exec nx run frontend-components:test --
-  --runInBand --testPathPatterns=tier-badge.component.spec.ts --output-style=static`;
+--runInBand --testPathPatterns=tier-badge.component.spec.ts --output-style=static`;
   3 tests passed.
 - **Passed:** `NX_DAEMON=false npm exec nx run-many --
-  --targets=lint,build --projects=frontend-components,frontend-pages-player,frontend-pages-tournament
-  --output-style=static`; all targets passed. Components/player lint reported
+--targets=lint,build --projects=frontend-components,frontend-pages-player,frontend-pages-tournament
+--output-style=static`; all targets passed. Components/player lint reported
   existing warnings only (32 and 17 respectively); tournament lint was clean.
   11 of 15 tasks were served from cache.
 - Visual review: user requested marking DR-005a Done after reviewing the

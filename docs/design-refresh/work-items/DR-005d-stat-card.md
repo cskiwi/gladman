@@ -64,13 +64,13 @@ description: 'Use native PrimeNG card and delta severities while preserving the 
   `TestBed.overrideTemplate` after fixture creation. Move it before TestBed instantiation. A subsequent editor
   unused-host-import diagnostic was resolved by registering that import through TestBed metadata as well.
 - **Passed, final run:** `NX_DAEMON=false npm exec nx run frontend-components:test --
-  --runInBand --testPathPatterns=stat-card.component.spec.ts --output-style=static`.
+--runInBand --testPathPatterns=stat-card.component.spec.ts --output-style=static`.
   Eight tests cover label/zero, four direction cases, string value and delta updates/removal, projection,
   long-content wrapping hooks, and no added keyboard stops.
 - **Passed:** `NX_DAEMON=false npm exec nx run-many -- --targets=lint,build
-  --projects=frontend-components --output-style=static`. All 10 tasks pass, eight cached; stat-card builds.
+--projects=frontend-components --output-style=static`. All 10 tasks pass, eight cached; stat-card builds.
 - **Passed after final test change:** `NX_DAEMON=false npm exec nx run frontend-components:lint --
-  --output-style=static`. Zero errors, 32 unrelated existing warnings. Nx executor deprecation and ts-jest
+--output-style=static`. Zero errors, 32 unrelated existing warnings. Nx executor deprecation and ts-jest
   metadata warnings remain unrelated. Final component/template/test editor diagnostics report no errors.
 - **Passed:** `git diff --check`; a read-only Node check found no missing relative brief links, trailing whitespace,
   or brief lines over 120 characters. Final worktree scope retains the pre-existing untracked SQL file untouched.

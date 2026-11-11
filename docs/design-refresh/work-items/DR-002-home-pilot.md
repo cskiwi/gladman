@@ -29,7 +29,7 @@ description: 'A bounded PrimeNG-first redesign of the home ranking reference pag
 
 - [x] Native PrimeNG table, card, skeleton, and feedback components cover the page UI.
 - [x] Ranking data order, translated headings, null placeholders, zero values, selection updates, and authentication
-  conditions are preserved.
+      conditions are preserved.
 - [x] Loading, no-selection, empty, failure, and recovery states pass focused tests and safe browser fixtures.
 - [x] Narrow and wide layouts retain table access without page-level horizontal overflow in light and dark themes.
 - [x] The final page layout was visually approved with the shared heading and shell direction.

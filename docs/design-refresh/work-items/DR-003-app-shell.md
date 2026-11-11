@@ -38,7 +38,7 @@ configuration remain excluded.
 - [x] Keyboard/focus behavior and contrast are checked in the combined view.
 - [x] Relevant Nx lint and application build checks pass; exact results are recorded below.
 - [x] Available test coverage and outcomes are recorded; no shell/layout unit specs exist, and unrelated shared-suite
-  failures are documented below.
+      failures are documented below.
 - [x] SSR/hydration and localized live output are checked after an application restart.
 
 ## Evidence and handoff
@@ -64,7 +64,7 @@ long-name behavior, and keyboard/focus interactions.
 ### Nx verification: 2026-10-16
 
 - **Passed:** `NX_DAEMON=false npx nx run-many -t lint -p frontend-components frontend-modules-translation app
-  --outputStyle=summary`; all three lint tasks passed.
+--outputStyle=summary`; all three lint tasks passed.
 - **Passed:** `NX_DAEMON=false npx nx build app --configuration=development --output-style=summary`; 30 tasks passed,
   24 from cache.
 - **Passed with no tests found:**

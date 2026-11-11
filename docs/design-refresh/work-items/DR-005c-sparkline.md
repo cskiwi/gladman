@@ -72,11 +72,11 @@ description: 'Preserve the compact bar visualization using PrimeNG semantic them
   inside SVG `title` were parsed as text. A computed translated description replaced that markup. The next run
   passed five tests; after adding semantic fallbacks and long-sequence coverage the final run passed six.
 - **Passed:** `NX_DAEMON=false npm exec nx run frontend-components:test --
-  --runInBand --testPathPatterns=sparkline.component.spec.ts --output-style=static`.
+--runInBand --testPathPatterns=sparkline.component.spec.ts --output-style=static`.
   Six tests cover order/repetition, 0/25/50/100% and fractional heights, native tokens/fallbacks, empty/updated input,
   100-bar geometry, noninteractive semantics, and English/Dutch language updates.
 - **Passed twice:** `NX_DAEMON=false npm exec nx run-many -- --targets=lint,build
-  --projects=frontend-components --output-style=static`. Final run used `| tail -22` to limit terminal output.
+--projects=frontend-components --output-style=static`. Final run used `| tail -22` to limit terminal output.
   All 10 tasks passed, eight from cache. The initial lint log reported 32 existing unrelated warnings and zero errors;
   final lint/build also passed, including the sparkline package entry point.
 - **Passed:** final editor diagnostics for TypeScript/template/spec report no errors; `git diff --check` passes.

@@ -125,7 +125,7 @@ Before/after utility usage is unchanged in this pass.
 
 - **Passed (cached):**
   `NX_DAEMON=false npm exec nx run frontend-components:test -- --runInBand
-  --testPathPatterns=hero.component.spec.ts --output-style=static`.
+--testPathPatterns=hero.component.spec.ts --output-style=static`.
   Nx reports one local cache hit, one passing suite and seven passing tests, not a fresh test execution.
   Coverage includes all projection slots, conditional content, working actions, avatar variants, long title text,
   page/section headings, and native breadcrumb links. jsdom does not verify responsive geometry or contrast.
@@ -138,16 +138,35 @@ Before/after utility usage is unchanged in this pass.
 
 ```graphql
 query DesignRefreshRouteCoverage {
-  players(args: { take: 1 }) { id }
-  clubs(args: { take: 1 }) { id }
-  teams(args: { take: 1 }) { id club { id } }
+  players(args: { take: 1 }) {
+    id
+  }
+  clubs(args: { take: 1 }) {
+    id
+  }
+  teams(args: { take: 1 }) {
+    id
+    club {
+      id
+    }
+  }
   competitionEvents(args: { take: 10 }) {
     id
-    competitionSubEvents { id competitionDraws { id } }
+    competitionSubEvents {
+      id
+      competitionDraws {
+        id
+      }
+    }
   }
   tournamentEvents(args: { take: 10 }) {
     id
-    tournamentSubEvents { id drawTournaments { id } }
+    tournamentSubEvents {
+      id
+      drawTournaments {
+        id
+      }
+    }
   }
 }
 ```
@@ -269,17 +288,17 @@ homepage table treatment on 2026-10-16.
 Use the integrated browser. Preserve safe data in screenshots; do not invoke sync/indexing or editing mutations.
 Reuse the existing approved layout without reopening implementation.
 
-| Consumer | Route pattern | This continuation |
-| --- | --- | --- |
-| Player detail | `/players/:playerId` | Shared bounds pass x4; menu label deferred to DR-008 |
-| Player ranking | `/players/:playerId/ranking/:type` | Shared header/title/actions pass x4 |
-| Club detail | `/clubs/:clubId` | Shared header/title/actions pass x4 |
-| Club team | `/clubs/:clubId/teams/:teamId` | Shared bounds pass x4; narrow title deferred to DR-014 |
-| Competition detail | `/competition/:competitionId` | Shared header/title/actions pass x4 |
-| Competition draw | `/competition/:competitionId/sub-events/:subEventId/draws/:drawId` | Shared bounds pass x4 |
-| Tournament detail | `/tournament/:tournamentId` | Shared header/title/actions pass x4; keyboard focus passes |
-| Tournament draw | `/tournament/:tournamentId/sub-events/:subEventId/draws/:drawId` | Shared bounds pass x4 |
-| Tournament club | `/tournament/club/:clubId` | Shared header/title pass x4; no actions projected |
+| Consumer           | Route pattern                                                      | This continuation                                          |
+| ------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------- |
+| Player detail      | `/players/:playerId`                                               | Shared bounds pass x4; menu label deferred to DR-008       |
+| Player ranking     | `/players/:playerId/ranking/:type`                                 | Shared header/title/actions pass x4                        |
+| Club detail        | `/clubs/:clubId`                                                   | Shared header/title/actions pass x4                        |
+| Club team          | `/clubs/:clubId/teams/:teamId`                                     | Shared bounds pass x4; narrow title deferred to DR-014     |
+| Competition detail | `/competition/:competitionId`                                      | Shared header/title/actions pass x4                        |
+| Competition draw   | `/competition/:competitionId/sub-events/:subEventId/draws/:drawId` | Shared bounds pass x4                                      |
+| Tournament detail  | `/tournament/:tournamentId`                                        | Shared header/title/actions pass x4; keyboard focus passes |
+| Tournament draw    | `/tournament/:tournamentId/sub-events/:subEventId/draws/:drawId`   | Shared bounds pass x4                                      |
+| Tournament club    | `/tournament/club/:clubId`                                         | Shared header/title pass x4; no actions projected          |
 
 Shared hero, mounted page-header, and homepage section-heading checks are complete; do not repeat them. Existing
 feature-body and consumer-specific defects are deferred, not passed as full feature audits. Competition sub-events
@@ -301,7 +320,7 @@ example, and explicitly left the logged-in ranking header for later player/profi
   authenticated ranking projection still pass.
 - **Passed:** `NX_DAEMON=false npm exec nx run frontend-pages-home:lint -- --output-style=static`.
 - **Passed:** `NX_DAEMON=false npm exec nx build frontend-pages-home -- --configuration=development
-  --output-style=static`: homepage Angular package and nine prerequisite tasks passed; eight of ten tasks cached.
+--output-style=static`: homepage Angular package and nine prerequisite tasks passed; eight of ten tasks cached.
   The homepage compilation was fresh. Full application build and unrelated suites were not rerun.
 - **Passed live table matrix:** at 390x900 and 1280x900 in light/dark, computed row, column-header, and containing
   card backgrounds now match. Table text contrast is 19.87:1 light / 16:1 dark. All 12 rows and four columns remain;

@@ -56,61 +56,61 @@ description: 'Native PrimeNG populated encounter cards in the mounted player upc
 ## Evidence and handoff
 
 - Changed scope: populated template branch, CardModule import, and a new adjacent focused spec because no upcoming
-    component test existed. No public API or service changes. The mounted dispatcher/player-detail consumers remain.
+  component test existed. No public API or service changes. The mounted dispatcher/player-detail consumers remain.
 - Before: `/players/glenn-latomme` rendered ten real `.upcoming` encounter surfaces at 1487x1252 in dark mode;
-    host width 962.5px, no desktop overflow. Before screenshot showed primary stripes and custom date typography.
+  host width 962.5px, no desktop overflow. Before screenshot showed primary stripes and custom date typography.
 - After: native Card surface, border, and spacing; date row becomes a column at `sm`, identity text wraps, and
-    the native outlined secondary assembly action moves below the details on mobile. Button uses native icon/label
-    inputs instead of styled icon content. Existing draw Tags and router destinations remain unchanged.
+  the native outlined secondary assembly action moves below the details on mobile. Button uses native icon/label
+  inputs instead of styled icon content. Existing draw Tags and router destinations remain unchanged.
 - Authored populated class tokens: 36 before, 43 after. Five legacy `upcoming*`/`t-mono` tokens and the inline font
-    declaration are removed. The increase explicitly supplies responsive layout, shrinkable details, wrapping names,
-    semantic typography, and Card separation formerly hidden in SCSS; it is not a claim of fewer utility tokens.
+  declaration are removed. The increase explicitly supplies responsive layout, shrinkable details, wrapping names,
+  semantic typography, and Card separation formerly hidden in SCSS; it is not a claim of fewer utility tokens.
 - Existing local SCSS remains for excluded loading markup; populated cards no longer consume its custom surface.
 - Passed commands on 2026-10-17:
 
-    ```bash
-    NX_DAEMON=false npm exec -- nx show project frontend-components --json
-    NX_DAEMON=false npm exec -- nx run frontend-components:test --runInBand --testPathPatterns=upcoming-games-player.component.spec.ts --output-style=static
-    NX_DAEMON=false npm exec -- nx run-many --targets=lint,build --projects=frontend-components --output-style=static
-    git diff --check
-    ```
+  ```bash
+  NX_DAEMON=false npm exec -- nx show project frontend-components --json
+  NX_DAEMON=false npm exec -- nx run frontend-components:test --runInBand --testPathPatterns=upcoming-games-player.component.spec.ts --output-style=static
+  NX_DAEMON=false npm exec -- nx run-many --targets=lint,build --projects=frontend-components --output-style=static
+  git diff --check
+  ```
 
 - Six tests pass: native Card/date/team/draw rendering and destination trees; home/away assembly parameters and
-    labels; missing metadata/abbreviation fallbacks; unmatched teams; unchanged three loading placeholders with
-    eighteen Skeletons transitioning to the existing empty message. Services are mocked; no test network calls.
+  labels; missing metadata/abbreviation fallbacks; unmatched teams; unchanged three loading placeholders with
+  eighteen Skeletons transitioning to the existing empty message. Services are mocked; no test network calls.
 - Library lint: zero errors, 32 pre-existing warnings, including existing unused imports in this component.
-    Library build passes, with eight cached prerequisite tasks. Existing Nx executor and ts-jest warnings remain.
-    Template/test editor diagnostics are clear. No unrelated warnings were repaired.
+  Library build passes, with eight cached prerequisite tasks. Existing Nx executor and ts-jest warnings remain.
+  Template/test editor diagnostics are clear. No unrelated warnings were repaired.
 - Mounted matrix: ten real Cards and zero legacy populated surfaces at 390px/1280px in light/dark (four cases).
-    Host widths 347px/905.5px; no host/page overflow and no links/buttons outside host bounds. All ten assembly
-    buttons retain their translated accessible text. Card backgrounds are observed preset white in light and
-    `oklch(0.17 0.02 250)` in dark, not authored colors.
+  Host widths 347px/905.5px; no host/page overflow and no links/buttons outside host bounds. All ten assembly
+  buttons retain their translated accessible text. Card backgrounds are observed preset white in light and
+  `oklch(0.17 0.02 250)` in dark, not authored colors.
 - Settled ordinary card text contrast: minimum 4.87:1 light, 6.65:1 dark (canvas conversion of computed colors).
-    This measurement excludes native draw-Tag contrast against its own background; its appearance is unchanged.
+  This measurement excludes native draw-Tag contrast against its own background; its appearance is unchanged.
 - Keyboard: Tab from the draw reaches the home-team link with a visible browser outline. Tab from the away-team
-    link reaches the existing focusable `p-button` host with a visible outline; the inner native button is also
-    programmatically focusable and named. No real assembly navigation or full keyboard-activation pass is claimed.
-    The pre-existing host/inner-button tab-stop behavior is deferred in the backlog, not introduced by Card styling.
+  link reaches the existing focusable `p-button` host with a visible outline; the inner native button is also
+  programmatically focusable and named. No real assembly navigation or full keyboard-activation pass is claimed.
+  The pre-existing host/inner-button tab-stop behavior is deferred in the backlog, not introduced by Card styling.
 - Screenshots: dark desktop native Cards and current light mobile white Cards were inspected. Mobile shows wrapped
-    content and action below, without clipped names; the sticky shell occludes part of the first card in the capture.
-    Unlike earlier slices, the light/mobile capture is current. Opposite theme/viewport pairs have geometry evidence,
-    not independently inspected screenshots. No screenshot fixture or test account was needed.
+  content and action below, without clipped names; the sticky shell occludes part of the first card in the capture.
+  Unlike earlier slices, the light/mobile capture is current. Opposite theme/viewport pairs have geometry evidence,
+  not independently inspected screenshots. No screenshot fixture or test account was needed.
 - Settled same-origin SSR fetch: HTTP 200 with ten native Cards, ten assembly actions, date text, and no legacy
-    populated surfaces. This is not an exhaustive hydration, loading SSR, alternate-locale, or screen-reader pass.
+  populated surfaces. This is not an exhaustive hydration, loading SSR, alternate-locale, or screen-reader pass.
 - Browser restoration: read-only reload on the original player route with dark class and 1487x1252 viewport;
-    ten populated upcoming Cards. No component replacements, fixtures, preference writes, or backend mutations.
-    The existing server remains available at `http://localhost:3000/players/glenn-latomme`.
+  ten populated upcoming Cards. No component replacements, fixtures, preference writes, or backend mutations.
+  The existing server remains available at `http://localhost:3000/players/glenn-latomme`.
 - Reusable decision: direct native Card and a local responsive layout; no shared wrapper or global styling changes.
-    PrimeNG generated Card metadata was consulted; installed APIs are also validated by the package build.
+  PrimeNG generated Card metadata was consulted; installed APIs are also validated by the package build.
 - Exceptions: none. Deferred existing loading styles are not a new styling exception.
 - User decision: on 2026-10-21, the user confirmed DR-006f was finished and approved completion after the
-    remaining limits were disclosed: six unrelated bracket-tree test failures, real assembly navigation,
-    alternate locales, exhaustive hydration, and screen-reader output remain unverified. The unchecked criteria
-    above remain unchecked; approval does not claim those checks passed.
+  remaining limits were disclosed: six unrelated bracket-tree test failures, real assembly navigation,
+  alternate locales, exhaustive hydration, and screen-reader output remain unverified. The unchecked criteria
+  above remain unchecked; approval does not claim those checks passed.
 - Exact next action: no follow-on implementation in this invocation. On the next invocation, scope the mounted
-    upcoming header/loading/empty presentation as a separate child item before implementation.
+  upcoming header/loading/empty presentation as a separate child item before implementation.
 - Subsequent candidate, not started: scope the mounted upcoming header/loading/empty presentation separately,
-    preserving services and addressing native assembly-link semantics only in its own explicitly bounded scope.
+  preserving services and addressing native assembly-link semantics only in its own explicitly bounded scope.
 
 [consumer]: ../../../libs/frontend/pages/player/src/pages/detail/page-detail.component.html
 [template]: ../../../libs/frontend/components/games/upcoming/src/player/upcoming-games-player.component.html

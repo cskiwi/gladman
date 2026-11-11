@@ -92,9 +92,9 @@ No operational write, navigation, fixture, theme/viewport change or UI gate over
 
 ## Acceptance and verification still required
 
-- [ ] The actual Scheduling read succeeds against the running API with correct court/slot/game data.
-- [ ] Query failure is explicit and retryable; failed reads do not appear as successful empty datasets.
-- [ ] Relevant date/filter/refetch behavior and loading/empty/error states have focused regression coverage.
+- [x] The actual Scheduling read succeeds against the running API with correct court/slot/game data (DR-024b1).
+- [x] Query failure is explicit and retryable; failed reads do not appear as successful empty datasets (DR-024b1 focused tests).
+- [x] Relevant date/filter/refetch behavior and loading/empty/error states have focused regression coverage (DR-024b1/b3).
 - [x] Scope one presentation child with concrete light/dark, narrow/wide and interaction acceptance checks.
 - [ ] Native PrimeNG, semantic colors and no-new-styling rules are verified on that implementation.
 - [ ] Keyboard, focus, labels, contrast, localization and applicable SSR/hydration behavior are checked.
@@ -156,3 +156,24 @@ No operational write, navigation, fixture, theme/viewport change or UI gate over
 [template]: ../../../libs/frontend/pages/tournament/src/pages/admin/page-admin.component.html
 [service]: ../../../libs/frontend/pages/tournament/src/pages/admin/tabs/schedule/schedule-tab.service.ts
 [resolver]: ../../../libs/backend/graphql/src/resolvers/event/tournament/tournament-schedule.resolver.ts
+
+## Aggregate reconciliation (2026-11-11)
+
+All required children are Done by explicit approval: b1 reads/errors, b2 summary, b3 controls, b4 grid/game panel,
+b5 Generate/Auto-schedule dialogs and b6 confirmations/localized game names. Presentation uses native Toolbar, Panel,
+Card, Table, Tag, Dialog and ConfirmDialog with presentational `app-schedule-slot` and `app-schedule-game-card`
+children; the smart tab and service keep drag-and-drop, mutations and read state. No styling exception was recorded.
+
+Disclosed limits accepted on approval (unchecked items stay unperformed):
+
+- [ ] Native PrimeNG/semantic-color rules were verified per child, not as one end-to-end pass on the final tab.
+- [ ] Keyboard/focus, contrast, SSR/hydration and full workflow checks remain unperformed in several children
+      (see their briefs for exact limits, including drag-and-drop, delete dialog and light/wide checks).
+- [ ] Slot generation and auto-scheduling are not exposed by the API (`TournamentScheduleReadResolver` registers
+      reads only), so the Generate and Auto-schedule submits cannot work live. This is a functional/backend
+      activation, outside design refresh until separately authorized; it is a candidate, not started.
+- [x] Aggregate user review and explicit completion approval with the disclosed limits (`Approve and commit`, 2026-11-11).
+
+No application code changed in this reconciliation.
+
+The user approved completion and commit on 2026-11-11. Unchecked items above are not claimed as verified.

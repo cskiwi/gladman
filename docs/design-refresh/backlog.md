@@ -5,6 +5,13 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024b Scheduling aggregate is Done with explicit approval (2026-11-11) and disclosed limits:
+[brief](work-items/DR-024b-admin-scheduling.md). No application code changed. DR-024 stays open until its remaining
+children are reconciled. Next candidates, not started: expose/verify slot generation and auto-scheduling (backend,
+needs explicit authorization), or DR-025 tournament admin settings and phase controls.
+
+### Previous completed focus: Scheduling confirmations (DR-024b6)
+
 DR-024b6 Scheduling confirmations and copy is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-024b6-schedule-copy.md).
 Publish/delete `window.confirm()` prompts become native localized `p-confirmdialog`s and the English "TBD"/"vs" game
 name is localized (nl/fr/en). 30 focused tests, lint and build pass. Browser-checked: Publish confirmation
@@ -2515,7 +2522,7 @@ and linked from their registry rows.
 | [DR-024a4a](work-items/DR-024a4a-seeding-dialog.md)           | Seeding dialog, scoped locale options and operation states                   | Done        |
 | [DR-024a4b](work-items/DR-024a4b-creation-dialog.md)          | Creation dialog; remove ignored controls with explicit scope approval        | Done        |
 | [DR-024a4c](work-items/DR-024a4c-draw-locales.md)             | Remaining mounted draw locale completeness                                   | Done        |
-| [DR-024b](work-items/DR-024b-admin-scheduling.md)             | Scheduling; read/error prerequisite approved, presentation remains open      | In progress |
+| [DR-024b](work-items/DR-024b-admin-scheduling.md)             | Scheduling; all children done, approved with disclosed limits                | Done        |
 | [DR-024b1](work-items/DR-024b1-schedule-read.md)              | Scheduling reads/error feedback; approved with disclosed verification limits | Done        |
 | [DR-024b2](work-items/DR-024b2-schedule-summary.md)           | Scheduling summary and mounted count labels; approved with disclosed limits  | Done        |
 | [DR-024b3](work-items/DR-024b3-schedule-controls.md)          | Scheduling controls and labels; approved with disclosed verification limits  | Done        |

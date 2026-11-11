@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-028c Sync plans tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-028c-sync-plans-tab.md)): filters and hierarchy table in native Cards on `/admin?tab=1`, action row wraps at 375px. Lint and build pass; dark 375px and 1024px checked. Not verified: light, dialog, keyboard/contrast, tests. Committed. Next candidate: DR-028d cron jobs tab.
+
+### Previous focus: Sync ranking tab (DR-028b)
+
 DR-028b Sync ranking-systems tab is in Review ([brief](work-items/DR-028b-sync-ranking-tab.md)): table wrapped in a native Card on `/admin?tab=1`. Lint and build pass; dark wide and 375px checked. Not verified: light, dialogs, keyboard/contrast, tests. Approved and committed 2026-11-11 with disclosed limits; status Done. Dashboard tab panels also lose side padding so the three cards share one width. DR-028a was committed (cecbc37f). Next candidate: DR-028c sync plans tab.
 
 ### Previous focus: Sync overview (DR-028a)
@@ -2612,6 +2616,7 @@ and linked from their registry rows.
 | DR-028                                                        | Sync administration and team matching                                        | In progress |
 | [DR-028a](work-items/DR-028a-sync-overview.md)                | Sync overview section Cards and progress bar                                 | Done        |
 | [DR-028b](work-items/DR-028b-sync-ranking-tab.md)             | Sync ranking systems tab Card                                                | Done        |
+| [DR-028c](work-items/DR-028c-sync-plans-tab.md)               | Sync plans tab Cards                                                         | Done        |
 | DR-029                                                        | Legacy styling retirement and final regression                               | Backlog     |
 | DR-030                                                        | Shared header overflow at 320px                                              | Backlog     |
 | DR-031                                                        | Native FloatLabel focused-label contrast audit                               | Backlog     |

@@ -50,6 +50,12 @@
   "club": {
     "allPlayers": "Alle Spelers",
     "avgRanking": "Gem. Ranking",
+    "detail": {
+      "follow": "Volgen",
+      "members": "{{count}} leden",
+      "season": "Seizoen {{season}}",
+      "share": "Delen"
+    },
     "gamesDistribution": "Wedstrijdverdeling",
     "managePlayers": "Spelers Beheren",
     "performance": "Prestaties",

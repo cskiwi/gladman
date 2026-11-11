@@ -215,7 +215,7 @@ export class DetailService {
   });
 
   // Public selectors
-  club = computed(() => this.clubResource.value());
+  club = computed(() => (this.clubResource.hasValue() ? this.clubResource.value() : null));
   teams = computed(() => this.teamsResource.value()?.teams || []);
   stats = computed(() => this.clubStatsResource.value());
   teamCount = computed(() => this.teams().length);

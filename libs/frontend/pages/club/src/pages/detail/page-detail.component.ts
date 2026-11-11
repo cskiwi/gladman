@@ -12,9 +12,11 @@ import { injectParams } from 'ngxtension/inject-params';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
+import { MessageModule } from 'primeng/message';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TabsModule } from 'primeng/tabs';
+import { TagModule } from 'primeng/tag';
 import { TeamEditComponent } from '../../components/team-edit/team-edit.component';
 import { ClubScheduleCardComponent } from '../../components/club-schedule-card';
 import { ClubTopPerformersCardComponent } from '../../components/club-top-performers-card';
@@ -34,6 +36,7 @@ import {
     BreadcrumbComponent,
     CommonModule,
     RouterModule,
+    MessageModule,
     ProgressBarModule,
     ReactiveFormsModule,
     SelectModule,
@@ -41,6 +44,7 @@ import {
     TranslateModule,
     CardModule,
     TabsModule,
+    TagModule,
     HeroComponent,
     HeroAvatarComponent,
     HeroTitleComponent,
@@ -74,7 +78,11 @@ export class PageDetailComponent {
 
   /** Distinct league/type buckets across the club's teams (M/W/Mix). */
   readonly teamLeagueCount = computed(() => {
-    const types = new Set(this.teams().map((t) => t.type).filter(Boolean));
+    const types = new Set(
+      this.teams()
+        .map((t) => t.type)
+        .filter(Boolean),
+    );
     return types.size;
   });
 
@@ -92,14 +100,6 @@ export class PageDetailComponent {
       .join('')
       .toUpperCase();
   });
-
-
-
-
-
-
-
-
 
   error = this.dataService.error;
   loading = this.dataService.loading;

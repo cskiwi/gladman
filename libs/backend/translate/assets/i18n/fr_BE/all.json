@@ -50,6 +50,12 @@
   "club": {
     "allPlayers": "Tous les Joueurs",
     "avgRanking": "Classement Moy.",
+    "detail": {
+      "follow": "Suivre",
+      "members": "{{count}} membres",
+      "season": "Saison {{season}}",
+      "share": "Partager"
+    },
     "gamesDistribution": "Répartition des Matchs",
     "managePlayers": "Gérer les Joueurs",
     "performance": "Performance",

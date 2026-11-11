@@ -57,6 +57,12 @@ export type I18nTranslations = {
         "club": {
             "allPlayers": string;
             "avgRanking": string;
+            "detail": {
+                "follow": string;
+                "members": string;
+                "season": string;
+                "share": string;
+            };
             "gamesDistribution": string;
             "managePlayers": string;
             "performance": string;

@@ -5,6 +5,16 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-012a Club detail page chrome is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012a-club-page-chrome.md)): the `/clubs/:clubId`
+hero identity row, hero actions copy and page-level loading/error, mirroring DR-008c. The hero stats strip and the tabs
+are excluded (next children). Implemented: native secondary id Tag, localized season/members/Share/Follow (nl/fr/en),
+wrapping actions, native ProgressBar/Message, and `DetailService.club` guarded with `hasValue()` so the error state
+renders. Lint and build pass; the loaded hero was browser-checked in dark and light at 1280px and 390px (no overflow)
+and the error state renders natively. Not verified: keyboard/contrast, fr/en, tests. Committed. Next candidate, not
+started: DR-012b hero stats strip (then the tabs); DR-012 stays open until its children are done.
+
+### Previous focus: Player detail page chrome (DR-008c)
+
 DR-008c Player detail page chrome is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-008c-player-page-chrome.md)): the `/players/:playerId` hero member-id chip is a native Tag, Follow/Edit labels are localized (nl/fr/en), actions wrap, loading/error use native ProgressBar/Message, and the dead page SCSS is removed. Also fixed the error state never rendering (`resource.value()` threw). Lint and build pass; dark wide, light 375px and the error state browser-checked. Not verified: light wide, dark 375px, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012 club detail (hero identity and page-level states); DR-029 must wait for the unmigrated club page.
 
 ### Previous focus: Player detail sidebar (DR-008b)
@@ -2520,7 +2530,8 @@ and linked from their registry rows.
 | DR-009                                                        | Player head-to-head                                                          | Backlog     |
 | DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
 | DR-011                                                        | Player editing                                                               | Backlog     |
-| DR-012                                                        | Club detail and browsing tabs                                                | Backlog     |
+| DR-012                                                        | Club detail and browsing tabs                                                | In progress |
+| [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
 | DR-013                                                        | Club team builder                                                            | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |

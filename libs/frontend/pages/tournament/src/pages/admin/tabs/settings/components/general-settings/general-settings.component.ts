@@ -6,20 +6,18 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 
 @Component({
   selector: 'app-general-settings',
   standalone: true,
-  imports: [ReactiveFormsModule, TranslateModule, ButtonModule, InputTextModule, DatePickerModule, CheckboxModule, MessageModule, PanelModule],
+  imports: [ReactiveFormsModule, TranslateModule, ButtonModule, InputTextModule, DatePickerModule, CheckboxModule, PanelModule],
   templateUrl: './general-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeneralSettingsComponent {
   tournament = input.required<TournamentEvent>();
   updating = input<boolean>(false);
-  updateError = input<string | null>(null);
 
   saveSettingsRequested = output<{
     name?: string;

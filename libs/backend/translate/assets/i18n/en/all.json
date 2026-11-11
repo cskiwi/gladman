@@ -1646,6 +1646,21 @@
         }
       },
       "settings": {
+        "advancePhaseConfirm": {
+          "header": "Advance phase",
+          "message": "Move the tournament to the next phase? This changes what players and administrators can do.",
+          "accept": "Next phase"
+        },
+        "goBackPhaseConfirm": {
+          "header": "Go back a phase",
+          "message": "Move the tournament back to the previous phase? This changes what players and administrators can do.",
+          "accept": "Previous phase"
+        },
+        "deleteSubEventConfirm": {
+          "header": "Delete sub-event",
+          "message": "Are you sure you want to delete this sub-event? This cannot be undone.",
+          "accept": "Delete"
+        },
         "actions": "Actions",
         "addSubEvent": "Add Sub-Event",
         "advancePhase": "Advance Phase",

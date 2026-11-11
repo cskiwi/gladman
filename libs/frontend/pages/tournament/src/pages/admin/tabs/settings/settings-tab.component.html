@@ -1,4 +1,9 @@
+<p-confirmdialog />
 <div class="flex flex-col gap-6">
+  @if (updateError()) {
+    <p-message severity="error">{{ updateError()! }}</p-message>
+  }
+
   <!-- Phase Stepper -->
   <app-phase-stepper
     [tournament]="tournament()"
@@ -8,12 +13,7 @@
   />
 
   <!-- General Settings -->
-  <app-general-settings
-    [tournament]="tournament()"
-    [updating]="updating()"
-    [updateError]="updateError()"
-    (saveSettingsRequested)="handleSaveSettings($event)"
-  />
+  <app-general-settings [tournament]="tournament()" [updating]="updating()" (saveSettingsRequested)="handleSaveSettings($event)" />
 
   <!-- Sub-Events -->
   <app-sub-events

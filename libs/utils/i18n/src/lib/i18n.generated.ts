@@ -1653,6 +1653,21 @@ export type I18nTranslations = {
                     };
                 };
                 "settings": {
+                    "advancePhaseConfirm": {
+                        "header": string;
+                        "message": string;
+                        "accept": string;
+                    };
+                    "goBackPhaseConfirm": {
+                        "header": string;
+                        "message": string;
+                        "accept": string;
+                    };
+                    "deleteSubEventConfirm": {
+                        "header": string;
+                        "message": string;
+                        "accept": string;
+                    };
                     "actions": string;
                     "addSubEvent": string;
                     "advancePhase": string;

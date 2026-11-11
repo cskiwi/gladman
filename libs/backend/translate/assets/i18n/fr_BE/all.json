@@ -1646,6 +1646,21 @@
         }
       },
       "settings": {
+        "advancePhaseConfirm": {
+          "header": "Phase suivante",
+          "message": "Passer le tournoi à la phase suivante ? Cela modifie ce que les joueurs et les administrateurs peuvent faire.",
+          "accept": "Phase suivante"
+        },
+        "goBackPhaseConfirm": {
+          "header": "Phase précédente",
+          "message": "Revenir à la phase précédente du tournoi ? Cela modifie ce que les joueurs et les administrateurs peuvent faire.",
+          "accept": "Phase précédente"
+        },
+        "deleteSubEventConfirm": {
+          "header": "Supprimer le sous-événement",
+          "message": "Voulez-vous vraiment supprimer ce sous-événement ? Cette action est irréversible.",
+          "accept": "Supprimer"
+        },
         "actions": "Actions",
         "addSubEvent": "Ajouter une partie",
         "advancePhase": "Passage à la phase suivante",

@@ -5,6 +5,14 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-025c Settings confirmations and shared error feedback is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-025c-settings-confirmations.md).
+Native `p-confirmdialog` for next/previous phase and sub-event delete, plus one shared error `p-message` in the tab
+(removed from General settings); nl/fr/en keys added. Lint and build pass; browser-checked (Dutch, dark, wide and 375px): phase-next and sub-event delete dialogs.
+Not verified: light theme, previous-phase dialog, error display, accepting a mutation, keyboard/contrast, tests.
+Next candidate, not started: reconcile parent DR-025.
+
+### Previous focus: Settings sub-events (DR-025b)
+
 DR-025b Settings sub-events table and dialog is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-025b-settings-sub-events.md). Native
 `p-panel`, `p-tag`, localized Any/Yes/No/Edit/Delete (new `settings.any` key nl/fr/en), palette classes removed.
 Lint and build pass. Browser-checked (Dutch, dark, wide and 390px; fixed Panel overflow and raw select keys). Not verified: light theme,
@@ -2546,6 +2554,7 @@ and linked from their registry rows.
 | DR-025                                                        | Tournament admin: settings and phase controls                                | In progress |
 | [DR-025a](work-items/DR-025a-settings-phase-general.md)       | Settings phase stepper and general settings                                  | Done        |
 | [DR-025b](work-items/DR-025b-settings-sub-events.md)          | Settings sub-events table and dialog                                         | Done        |
+| [DR-025c](work-items/DR-025c-settings-confirmations.md)       | Settings confirmations and shared error feedback                             | Done        |
 | DR-026                                                        | Tournament live displays and kiosk                                           | Backlog     |
 | DR-027                                                        | Global admin and search indexing                                             | Backlog     |
 | DR-028                                                        | Sync administration and team matching                                        | Backlog     |

@@ -1646,6 +1646,21 @@
         }
       },
       "settings": {
+        "advancePhaseConfirm": {
+          "header": "Fase vooruit",
+          "message": "Het toernooi naar de volgende fase brengen? Dit wijzigt wat spelers en beheerders kunnen doen.",
+          "accept": "Volgende fase"
+        },
+        "goBackPhaseConfirm": {
+          "header": "Fase terug",
+          "message": "Het toernooi terug naar de vorige fase brengen? Dit wijzigt wat spelers en beheerders kunnen doen.",
+          "accept": "Vorige fase"
+        },
+        "deleteSubEventConfirm": {
+          "header": "Subevenement verwijderen",
+          "message": "Weet je zeker dat je dit subevenement wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+          "accept": "Verwijderen"
+        },
         "actions": "Acties",
         "addSubEvent": "Onderdeel toevoegen",
         "advancePhase": "Naar volgende fase",

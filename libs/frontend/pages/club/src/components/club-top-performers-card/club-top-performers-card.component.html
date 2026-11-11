@@ -1,27 +1,21 @@
-<section class="g-card">
- <div class="g-card__head">
- <span class="t-eyebrow">Top performers · Season</span>
- <span class="g-card__sub">W %</span>
- </div>
-
- @if (loading()) {
- <span class="t-body-sm text-muted-color">Loading…</span>
- } @else if (rows().length > 0) {
- <div>
- @for (p of rows(); track p.id; let i = $index) {
- <div class="perf-row">
- <span class="perf-row__rank">{{ i + 1 }}</span>
- <div class="min-w-0">
- <a [routerLink]="['/player', p.slug]" class="perf-row__name truncate block">
- {{ p.fullName }}
- </a>
- <div class="perf-row__meta truncate">{{ p.wins }}–{{ p.losses }}</div>
- </div>
- <span class="perf-row__record">{{ p.winRatePct }}%</span>
- </div>
- }
- </div>
- } @else {
- <span class="t-body-sm text-muted-color">No season stats yet.</span>
- }
-</section>
+<p-card [header]="'all.club.detail.sidebar.topPerformers.title' | translate">
+  @if (loading()) {
+    <p-progressbar mode="indeterminate" />
+  } @else if (rows().length > 0) {
+    <ol class="m-0 flex list-none flex-col gap-3 p-0">
+      @for (p of rows(); track p.id) {
+        <li class="flex items-center gap-3">
+          <div class="flex min-w-0 flex-1 flex-col">
+            <a class="truncate font-semibold text-color no-underline hover:underline" [routerLink]="['/players', p.slug]">
+              {{ p.fullName }}
+            </a>
+            <span class="text-sm tabular-nums text-muted-color">{{ p.wins }}–{{ p.losses }}</span>
+          </div>
+          <p-tag [severity]="p.winRatePct >= 50 ? 'success' : 'danger'" [value]="p.winRatePct + '%'" />
+        </li>
+      }
+    </ol>
+  } @else {
+    <p class="m-0 text-muted-color">{{ 'all.club.detail.sidebar.topPerformers.empty' | translate }}</p>
+  }
+</p-card>

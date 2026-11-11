@@ -1,8 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
+import { CardModule } from 'primeng/card';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { lastValueFrom } from 'rxjs';
 import { resource } from '@angular/core';
 
@@ -16,9 +18,8 @@ export interface ClubUpcomingEncounterRow {
 @Component({
   selector: 'app-club-schedule-card',
   standalone: true,
-  imports: [DatePipe, RouterModule],
+  imports: [DatePipe, CardModule, ProgressBarModule, TranslateModule],
   templateUrl: './club-schedule-card.component.html',
-  styleUrl: './club-schedule-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClubScheduleCardComponent {

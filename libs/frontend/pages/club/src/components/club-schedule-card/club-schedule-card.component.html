@@ -1,29 +1,24 @@
-<section class="g-card">
- <div class="g-card__head">
- <span class="t-eyebrow">Upcoming · Club</span>
- <a routerLink="." [fragment]="'schedule'" class="g-card__link">All ↗</a>
- </div>
-
- @if (loading()) {
- <span class="t-body-sm text-muted-color">Loading…</span>
- } @else if (items().length > 0) {
- <div class="sched">
- @for (enc of items(); track enc.id) {
- <div class="sched__item">
- <div class="sched__date">
- <span class="day">{{ enc.date | date: 'EEE' }}</span>
- <span class="num">{{ enc.date | date: 'dd' }}</span>
- </div>
- <div class="sched__body">
- <span class="sched__teams">
- {{ enc.homeTeam?.name || '—' }} · vs · {{ enc.awayTeam?.name || '—' }}
- </span>
- <span class="sched__meta">{{ enc.date | date: 'HH:mm' }}</span>
- </div>
- </div>
- }
- </div>
- } @else {
- <span class="t-body-sm text-muted-color">No upcoming fixtures.</span>
- }
-</section>
+<p-card [header]="'all.club.detail.sidebar.upcoming.title' | translate">
+  @if (loading()) {
+    <p-progressbar mode="indeterminate" />
+  } @else if (items().length > 0) {
+    <ul class="m-0 flex list-none flex-col p-0">
+      @for (enc of items(); track enc.id) {
+        <li class="flex items-center gap-4 border-b border-surface py-3 first:pt-0 last:border-b-0 last:pb-0">
+          @if (enc.date) {
+            <div class="flex w-14 shrink-0 flex-col items-center gap-1 text-center">
+              <time class="text-lg font-bold leading-none tabular-nums" [attr.datetime]="enc.date">{{ enc.date | date: 'HH:mm' }}</time>
+              <time class="text-xs tabular-nums text-muted-color" [attr.datetime]="enc.date">{{ enc.date | date: 'dd/MM' }}</time>
+            </div>
+          }
+          <div class="flex min-w-0 flex-1 flex-col gap-0.5 font-semibold">
+            <span class="break-words">{{ enc.homeTeam?.name || '—' }}</span>
+            <span class="break-words text-muted-color">{{ enc.awayTeam?.name || '—' }}</span>
+          </div>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="m-0 text-muted-color">{{ 'all.club.detail.sidebar.upcoming.empty' | translate }}</p>
+  }
+</p-card>

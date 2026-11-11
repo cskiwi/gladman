@@ -1,7 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, input, resource } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
+import { CardModule } from 'primeng/card';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TagModule } from 'primeng/tag';
 import { lastValueFrom } from 'rxjs';
 
 export interface ClubTopPerformerRow {
@@ -18,9 +22,8 @@ export interface ClubTopPerformerRow {
 @Component({
   selector: 'app-club-top-performers-card',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterLink, CardModule, ProgressBarModule, TagModule, TranslateModule],
   templateUrl: './club-top-performers-card.component.html',
-  styleUrl: './club-top-performers-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClubTopPerformersCardComponent {

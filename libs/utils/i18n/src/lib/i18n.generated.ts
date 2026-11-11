@@ -62,6 +62,16 @@ export type I18nTranslations = {
                 "members": string;
                 "season": string;
                 "share": string;
+                "sidebar": {
+                    "topPerformers": {
+                        "empty": string;
+                        "title": string;
+                    };
+                    "upcoming": {
+                        "empty": string;
+                        "title": string;
+                    };
+                };
                 "stats": {
                     "clubRanking": string;
                     "leaguesOne": string;

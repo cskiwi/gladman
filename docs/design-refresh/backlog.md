@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-012c Club sidebar cards is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012c-club-sidebar-cards.md)): the `/clubs/:clubId` aside has two native `p-card`s with nl/fr/en copy and no SCSS. Upcoming fixtures use a time rail with stacked home/away teams, top-performer rank numbers are gone, the club info card was removed (the hero carries that data) and top-performer links now go to `/players/:slug`. Lint and build pass; browser-checked dark wide and light 390px. Not verified: light wide, dark 390px, loading/empty states, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012d club teams tab; DR-012 stays open until its children are done (tabs DR-012d to DR-012g; team builder is DR-013).
+
+### Previous focus: Club hero stats strip (DR-012b)
+
 DR-012b Club hero stats strip is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012b-club-hero-stats.md)): the four `[stats]` items of the
 `/clubs/:clubId` hero use the competition/tournament stat pattern with a native win-rate Tag and nl/fr/en copy; the page
 SCSS is removed. Lint and build pass; browser-checked dark wide, light wide and light 390px (no overflow). Not verified:
@@ -2541,6 +2545,11 @@ and linked from their registry rows.
 | DR-012                                                        | Club detail and browsing tabs                                                | In progress |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
 | [DR-012b](work-items/DR-012b-club-hero-stats.md)              | Club hero stats strip (teams, season record, ranking, next home match)       | Done        |
+| [DR-012c](work-items/DR-012c-club-sidebar-cards.md)           | Club sidebar cards (upcoming fixtures, top performers)                       | Done        |
+| DR-012d                                                       | Club teams tab (`app-team-card`, filter bar)                                 | Backlog     |
+| DR-012e                                                       | Club player roster tab                                                       | Backlog     |
+| DR-012f                                                       | Club schedule tab                                                            | Backlog     |
+| DR-012g                                                       | Club tournaments tab                                                         | Backlog     |
 | DR-013                                                        | Club team builder                                                            | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |

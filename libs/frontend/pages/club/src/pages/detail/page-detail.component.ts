@@ -20,7 +20,6 @@ import { TagModule } from 'primeng/tag';
 import { TeamEditComponent } from '../../components/team-edit/team-edit.component';
 import { ClubScheduleCardComponent } from '../../components/club-schedule-card';
 import { ClubTopPerformersCardComponent } from '../../components/club-top-performers-card';
-import { ClubInfoCardComponent } from '../../components/club-info-card';
 import { DetailService } from './page-detail.service';
 import {
   ClubScheduleTabComponent,
@@ -55,7 +54,6 @@ import {
     ClubTeamBuilderTabComponent,
     ClubScheduleCardComponent,
     ClubTopPerformersCardComponent,
-    ClubInfoCardComponent,
   ],
   providers: [DialogService],
   host: { class: 'flex flex-col' },

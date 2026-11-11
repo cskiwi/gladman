@@ -55,6 +55,16 @@
       "members": "{{count}} membres",
       "season": "Saison {{season}}",
       "share": "Partager",
+      "sidebar": {
+        "topPerformers": {
+          "empty": "Pas encore de statistiques de saison.",
+          "title": "Meilleurs joueurs"
+        },
+        "upcoming": {
+          "empty": "Aucun match à venir.",
+          "title": "Prochains matchs"
+        }
+      },
       "stats": {
         "clubRanking": "Classement du club",
         "leaguesOne": "dans {{count}} série",

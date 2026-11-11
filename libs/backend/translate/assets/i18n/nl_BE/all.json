@@ -55,6 +55,16 @@
       "members": "{{count}} leden",
       "season": "Seizoen {{season}}",
       "share": "Delen",
+      "sidebar": {
+        "topPerformers": {
+          "empty": "Nog geen seizoensstatistieken.",
+          "title": "Beste spelers"
+        },
+        "upcoming": {
+          "empty": "Geen komende wedstrijden.",
+          "title": "Komende wedstrijden"
+        }
+      },
       "stats": {
         "clubRanking": "Clubranking",
         "leaguesOne": "in {{count}} reeks",

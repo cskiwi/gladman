@@ -1631,7 +1631,19 @@
         "skippedGames": "Skipped: {{count}} games",
         "moreConflicts": "... and {{count}} more",
         "venue": "Venue",
-        "selectVenue": "Select a venue"
+        "selectVenue": "Select a venue",
+        "tbd": "TBD",
+        "versus": "{{home}} vs {{away}}",
+        "publishConfirm": {
+          "header": "Publish schedule",
+          "message": "Are you sure you want to publish the schedule? Players will be able to see their game times.",
+          "accept": "Publish"
+        },
+        "deleteSlotConfirm": {
+          "header": "Delete time slot",
+          "message": "Are you sure you want to delete this time slot?",
+          "accept": "Delete"
+        }
       },
       "settings": {
         "actions": "Actions",

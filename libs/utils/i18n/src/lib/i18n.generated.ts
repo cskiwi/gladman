@@ -1639,6 +1639,18 @@ export type I18nTranslations = {
                     "moreConflicts": string;
                     "venue": string;
                     "selectVenue": string;
+                    "tbd": string;
+                    "versus": string;
+                    "publishConfirm": {
+                        "header": string;
+                        "message": string;
+                        "accept": string;
+                    };
+                    "deleteSlotConfirm": {
+                        "header": string;
+                        "message": string;
+                        "accept": string;
+                    };
                 };
                 "settings": {
                     "actions": string;

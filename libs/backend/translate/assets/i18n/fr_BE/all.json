@@ -1631,7 +1631,19 @@
         "skippedGames": "Ignorés : {{count}} matchs",
         "moreConflicts": "... et {{count}} de plus",
         "venue": "Lieu",
-        "selectVenue": "Sélectionnez un lieu"
+        "selectVenue": "Sélectionnez un lieu",
+        "tbd": "à déterminer",
+        "versus": "{{home}} contre {{away}}",
+        "publishConfirm": {
+          "header": "Publier le planning",
+          "message": "Voulez-vous vraiment publier le planning ? Les joueurs pourront voir les heures de leurs matchs.",
+          "accept": "Publier"
+        },
+        "deleteSlotConfirm": {
+          "header": "Supprimer le créneau",
+          "message": "Voulez-vous vraiment supprimer ce créneau ?",
+          "accept": "Supprimer"
+        }
       },
       "settings": {
         "actions": "Actions",

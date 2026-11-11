@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
+import { ConfirmationService } from 'primeng/api';
 import { print } from 'graphql';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -167,7 +168,7 @@ describe('Scheduling read feedback', () => {
     await settle();
     const generate = jest.spyOn(fixture.componentInstance, 'openGenerateSlotsDialog').mockImplementation();
     const autoSchedule = jest.spyOn(fixture.componentInstance, 'openAutoScheduleDialog').mockImplementation();
-    const publish = jest.spyOn(fixture.componentInstance, 'publishSchedule').mockResolvedValue();
+    const publish = jest.spyOn(fixture.componentInstance, 'publishSchedule').mockImplementation();
     actions()[0].click();
     actions()[1].click();
     actions()[2].click();
@@ -175,6 +176,42 @@ describe('Scheduling read feedback', () => {
     expect(autoSchedule).toHaveBeenCalledTimes(1);
     expect(publish).toHaveBeenCalledTimes(1);
   });
+
+  it.each(['en', 'nl_BE', 'fr_BE'])(
+    'asks for localized confirmation before publishing or deleting, and localizes game names in %s',
+    async (locale) => {
+      const dictionary = JSON.parse(readFileSync(join(process.cwd(), 'libs', 'backend', 'translate', 'assets', 'i18n', locale, 'all.json'), 'utf8'));
+      const translate = TestBed.inject(TranslateService);
+      translate.setTranslation(locale, { all: dictionary });
+      translate.use(locale);
+      await settle();
+      const copy = dictionary.tournament.admin.schedule;
+      const confirm = jest.spyOn(fixture.debugElement.injector.get(ConfirmationService), 'confirm');
+      const component = fixture.componentInstance;
+
+      component.publishSchedule();
+      component.deleteSlot({ id: 'safe-slot' } as never);
+
+      expect(confirm).toHaveBeenCalledTimes(2);
+      expect(confirm.mock.calls[0][0]).toMatchObject({
+        header: copy.publishConfirm.header,
+        message: copy.publishConfirm.message,
+        acceptLabel: copy.publishConfirm.accept,
+      });
+      expect(confirm.mock.calls[1][0]).toMatchObject({
+        header: copy.deleteSlotConfirm.header,
+        message: copy.deleteSlotConfirm.message,
+        acceptLabel: copy.deleteSlotConfirm.accept,
+      });
+      expect(mutate).not.toHaveBeenCalled();
+
+      const named = (name: string, team: number) => ({ single: team, gamePlayer: { fullName: name } });
+      expect(component.getGameDisplayName({ gamePlayerMemberships: [named('Ann', 1), named('Bo', 2)] } as never)).toBe(
+        copy.versus.replace('{{home}}', 'Ann').replace('{{away}}', 'Bo'),
+      );
+      expect(component.getGameDisplayName({} as never)).toBe(copy.versus.replace('{{home}}', copy.tbd).replace('{{away}}', copy.tbd));
+    },
+  );
 
   it('applies and clears the native date filter and refreshes the current date without writes', async () => {
     const date = new Date(2026, 10, 9);
@@ -273,6 +310,9 @@ describe('Scheduling read feedback', () => {
   });
 
   it('preserves populated player identities and replaces the grid with explicit feedback on a failed refresh', async () => {
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation('en', { all: { tournament: { admin: { schedule: { tbd: 'TBD', versus: '{{home}} vs {{away}}' } } } } });
+    translate.use('en');
     const game = { id: 'safe-game', gamePlayerMemberships: [{ single: 1, gamePlayer: { fullName: 'Safe One' } }] };
     const response = {
       data: {

@@ -1631,7 +1631,19 @@
         "skippedGames": "Overgeslagen: {{count}} wedstrijden",
         "moreConflicts": "... en nog {{count}} meer",
         "venue": "Locatie",
-        "selectVenue": "Selecteer een locatie"
+        "selectVenue": "Selecteer een locatie",
+        "tbd": "nog te bepalen",
+        "versus": "{{home}} tegen {{away}}",
+        "publishConfirm": {
+          "header": "Schema publiceren",
+          "message": "Weet je zeker dat je het schema wilt publiceren? Spelers kunnen dan hun wedstrijdtijden zien.",
+          "accept": "Publiceren"
+        },
+        "deleteSlotConfirm": {
+          "header": "Tijdslot verwijderen",
+          "message": "Weet je zeker dat je dit tijdslot wilt verwijderen?",
+          "accept": "Verwijderen"
+        }
       },
       "settings": {
         "actions": "Acties",

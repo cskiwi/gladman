@@ -1,12 +1,14 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Court, Game, TournamentEvent, TournamentScheduleSlot } from '@app/models';
 import { ScheduleSlotStatus } from '@app/models-enum';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -39,11 +41,13 @@ import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
     TooltipModule,
     ToolbarModule,
     PanelModule,
+    ConfirmDialogModule,
     DatePipe,
     CdkDropListGroup,
     CdkDropList,
     CdkDrag,
   ],
+  providers: [ConfirmationService],
   templateUrl: './schedule-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -51,6 +55,8 @@ export class ScheduleTabComponent {
   tournament = input.required<TournamentEvent>();
 
   private readonly dataService = new ScheduleTabService();
+  private readonly translate = inject(TranslateService);
+  private readonly confirmation = inject(ConfirmationService);
 
   // Date filter
   selectedDate = signal<Date | null>(null);
@@ -145,10 +151,11 @@ export class ScheduleTabComponent {
     const team1 = memberships.filter((m) => m.single === 1 || m.double === 1);
     const team2 = memberships.filter((m) => m.single === 2 || m.double === 2);
 
-    const team1Names = team1.map((m) => m.gamePlayer?.fullName ?? 'TBD').join(' / ');
-    const team2Names = team2.map((m) => m.gamePlayer?.fullName ?? 'TBD').join(' / ');
+    const tbd = this.translate.instant('all.tournament.admin.schedule.tbd');
+    const team1Names = team1.map((m) => m.gamePlayer?.fullName ?? tbd).join(' / ');
+    const team2Names = team2.map((m) => m.gamePlayer?.fullName ?? tbd).join(' / ');
 
-    return `${team1Names || 'TBD'} vs ${team2Names || 'TBD'}`;
+    return this.translate.instant('all.tournament.admin.schedule.versus', { home: team1Names || tbd, away: team2Names || tbd });
   }
 
   getSlotForCourt(slots: TournamentScheduleSlot[], courtId: string): TournamentScheduleSlot | undefined {
@@ -195,19 +202,31 @@ export class ScheduleTabComponent {
     this.lastScheduleResult.set(result);
   }
 
-  async publishSchedule(): Promise<void> {
+  publishSchedule(): void {
     const tournament = this.tournament();
     if (!tournament) return;
 
-    if (!confirm('Are you sure you want to publish the schedule? Players will be able to see their game times.')) {
-      return;
-    }
+    this.confirm('publishConfirm', 'pi pi-send', async () => {
+      const success = await this.dataService.publishSchedule(tournament.id);
+      if (success) {
+        // Reload tournament data to update phase
+        window.location.reload();
+      }
+    });
+  }
 
-    const success = await this.dataService.publishSchedule(tournament.id);
-    if (success) {
-      // Reload tournament data to update phase
-      window.location.reload();
-    }
+  private confirm(key: 'publishConfirm' | 'deleteSlotConfirm', icon: string, accept: () => unknown): void {
+    const prefix = `all.tournament.admin.schedule.${key}`;
+    this.confirmation.confirm({
+      header: this.translate.instant(`${prefix}.header`),
+      message: this.translate.instant(`${prefix}.message`),
+      acceptLabel: this.translate.instant(`${prefix}.accept`),
+      rejectLabel: this.translate.instant('all.button.cancel'),
+      icon,
+      acceptButtonProps: { severity: key === 'deleteSlotConfirm' ? 'danger' : 'primary' },
+      rejectButtonProps: { severity: 'secondary', outlined: true },
+      accept,
+    });
   }
 
   // Drag and drop handlers
@@ -247,9 +266,8 @@ export class ScheduleTabComponent {
     }
   }
 
-  async deleteSlot(slot: TournamentScheduleSlot): Promise<void> {
-    if (!confirm('Are you sure you want to delete this time slot?')) return;
-    await this.dataService.deleteSlot(slot.id);
+  deleteSlot(slot: TournamentScheduleSlot): void {
+    this.confirm('deleteSlotConfirm', 'pi pi-trash', () => this.dataService.deleteSlot(slot.id));
   }
 
   refetch(): void {

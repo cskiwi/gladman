@@ -5,6 +5,14 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024b6 Scheduling confirmations and copy is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-024b6-schedule-copy.md).
+Publish/delete `window.confirm()` prompts become native localized `p-confirmdialog`s and the English "TBD"/"vs" game
+name is localized (nl/fr/en). 30 focused tests, lint and build pass. Browser-checked: Publish confirmation
+(Dutch, dark wide, dark/light 375px). Not verified: light wide, keyboard/contrast, live publish, delete dialog (no
+template caller). Next candidate, not started: expose/verify slot generation. Keep DR-024b/DR-024 open; slot generation exposure stays a separate candidate.
+
+### Previous completed focus: Scheduling dialogs (DR-024b5)
+
 DR-024b5 Scheduling dialogs is Done with explicit approval on 2026-11-11 and disclosed verification limits:
 [dialogs brief](work-items/DR-024b5-schedule-dialogs.md).
 Generate and Auto-schedule dialogs are presentational components with native forms and localized nl/fr/en copy.
@@ -2513,6 +2521,7 @@ and linked from their registry rows.
 | [DR-024b3](work-items/DR-024b3-schedule-controls.md)          | Scheduling controls and labels; approved with disclosed verification limits  | Done        |
 | [DR-024b4](work-items/DR-024b4-schedule-grid.md)              | Scheduling grid/game panel; approved with disclosed verification limits      | Done        |
 | [DR-024b5](work-items/DR-024b5-schedule-dialogs.md)           | Scheduling Generate/Auto-schedule dialogs; approved with disclosed limits    | Done        |
+| [DR-024b6](work-items/DR-024b6-schedule-copy.md)              | Scheduling confirmations and localized game names                            | Done        |
 | DR-025                                                        | Tournament admin: settings and phase controls                                | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                           | Backlog     |
 | DR-027                                                        | Global admin and search indexing                                             | Backlog     |

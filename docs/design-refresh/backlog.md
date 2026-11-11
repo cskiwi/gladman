@@ -5,6 +5,13 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-025 Tournament admin settings aggregate is reconciled as Done (documentation only, 2026-11-11): [brief](work-items/DR-025-admin-settings.md).
+All children (DR-025a/b/c) are Done with disclosed limits, which stay unchecked in the brief (light theme,
+keyboard/contrast, live mutations, previous-phase dialog). Next candidate, not started: DR-026 tournament live displays
+and kiosk (scope one display as a child first), or reconcile parent DR-024.
+
+### Previous focus: Settings confirmations (DR-025c)
+
 DR-025c Settings confirmations and shared error feedback is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-025c-settings-confirmations.md).
 Native `p-confirmdialog` for next/previous phase and sub-event delete, plus one shared error `p-message` in the tab
 (removed from General settings); nl/fr/en keys added. Lint and build pass; browser-checked (Dutch, dark, wide and 375px): phase-next and sub-event delete dialogs.
@@ -2551,7 +2558,7 @@ and linked from their registry rows.
 | [DR-024b4](work-items/DR-024b4-schedule-grid.md)              | Scheduling grid/game panel; approved with disclosed verification limits      | Done        |
 | [DR-024b5](work-items/DR-024b5-schedule-dialogs.md)           | Scheduling Generate/Auto-schedule dialogs; approved with disclosed limits    | Done        |
 | [DR-024b6](work-items/DR-024b6-schedule-copy.md)              | Scheduling confirmations and localized game names                            | Done        |
-| DR-025                                                        | Tournament admin: settings and phase controls                                | In progress |
+| [DR-025](work-items/DR-025-admin-settings.md)                 | Tournament admin: settings; all children done, approved with limits          | Done        |
 | [DR-025a](work-items/DR-025a-settings-phase-general.md)       | Settings phase stepper and general settings                                  | Done        |
 | [DR-025b](work-items/DR-025b-settings-sub-events.md)          | Settings sub-events table and dialog                                         | Done        |
 | [DR-025c](work-items/DR-025c-settings-confirmations.md)       | Settings confirmations and shared error feedback                             | Done        |

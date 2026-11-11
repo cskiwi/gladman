@@ -1,0 +1,25 @@
+<app-breadcrumb [items]="breadcrumbItems()" />
+
+<app-hero>
+  @if (tournamentName()) {
+    <app-hero-avatar avatar>{{ crestText() }}</app-hero-avatar>
+  }
+
+  <div identity>
+    <app-hero-title>{{ tournamentName() || title() }}</app-hero-title>
+  </div>
+
+  <div actions>
+    @switch (state()) {
+      @case ('connected') {
+        <p-tag severity="success" value="Live" icon="pi pi-wifi" />
+      }
+      @case ('connecting') {
+        <p-tag severity="warn" value="Connecting..." icon="pi pi-spin pi-spinner" />
+      }
+      @default {
+        <p-tag severity="danger" value="Offline" icon="pi pi-times" />
+      }
+    }
+  </div>
+</app-hero>

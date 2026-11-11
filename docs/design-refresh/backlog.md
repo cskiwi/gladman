@@ -5,7 +5,7 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
-DR-026c Live upcoming display is in Review ([brief](work-items/DR-026c-live-upcoming.md)): shared header, native Card/Tag/Message, palette colors removed. Lint passes; light wide empty state browser-checked. Not verified: dark, 375px, populated cards, announcements, build, tests. Next candidate, not started: DR-026d kiosk.
+DR-026c Live upcoming display is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-026c-live-upcoming.md)): shared header (breadcrumb + hero), new presentational `app-live-game-card` following the profile game cards (time rail, players per side, court column, two columns from `xl`), SSR guard in the live service. Lint and build pass; browser-checked light/dark wide and dark 375px. Not verified: announcements, light 375px, keyboard/contrast, tests, live courts/results with the reworked header. Next candidate, not started: DR-026d kiosk.
 
 ### Previous focus: Live results (DR-026b)
 

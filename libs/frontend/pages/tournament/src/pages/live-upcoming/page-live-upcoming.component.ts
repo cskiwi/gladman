@@ -5,23 +5,31 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
 import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
+import { SectionHeaderComponent } from '@app/frontend-components/section-header';
 import { TagModule } from 'primeng/tag';
 import { lastValueFrom } from 'rxjs';
 import { TournamentLiveService } from '../../services';
+import { LiveGameCardComponent } from '../../components/live-game-card/live-game-card.component';
 import { LiveConnectionState, LiveDisplayHeaderComponent } from '../../components/live-display-header/live-display-header.component';
 
 interface UpcomingGame {
   gameId: string;
   courtName?: string;
   scheduledTime?: string;
-  team1?: string;
-  team2?: string;
+  team1: string[];
+  team2: string[];
   category?: string;
   round?: string;
 }
 
+interface UpcomingResult {
+  name?: string;
+  games: UpcomingGame[];
+}
+
 interface UpcomingQuery {
   tournamentEvent: {
+    name?: string;
     tournamentSubEvents?: {
       name?: string;
       drawTournaments?: {
@@ -44,6 +52,7 @@ const UPCOMING_QUERY = gql`
   query TournamentLiveUpcoming($id: ID!) {
     tournamentEvent(id: $id) {
       id
+      name
       tournamentSubEvents {
         id
         name
@@ -79,20 +88,29 @@ const UPCOMING_QUERY = gql`
 @Component({
   selector: 'app-page-live-upcoming',
   standalone: true,
-  imports: [DatePipe, TranslateModule, CardModule, MessageModule, TagModule, LiveDisplayHeaderComponent],
+  imports: [
+    DatePipe,
+    TranslateModule,
+    CardModule,
+    MessageModule,
+    TagModule,
+    SectionHeaderComponent,
+    LiveDisplayHeaderComponent,
+    LiveGameCardComponent,
+  ],
   templateUrl: './page-live-upcoming.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageLiveUpcomingComponent implements OnDestroy {
   protected readonly liveService = inject(TournamentLiveService);
   private readonly apollo = inject(Apollo);
-  private readonly tournamentId = injectParams('tournamentId');
+  protected readonly tournamentId = injectParams('tournamentId');
 
   private readonly upcomingResource = resource({
     params: () => this.tournamentId(),
-    loader: async ({ params: id, abortSignal }): Promise<UpcomingGame[]> => {
+    loader: async ({ params: id, abortSignal }): Promise<UpcomingResult> => {
       if (!id) {
-        return [];
+        return { games: [] };
       }
       const { data } = await lastValueFrom(
         this.apollo.query<UpcomingQuery>({
@@ -102,11 +120,12 @@ export class PageLiveUpcomingComponent implements OnDestroy {
           context: { signal: abortSignal },
         }),
       );
-      return data ? this.toUpcomingGames(data) : [];
+      return data ? { name: data.tournamentEvent.name, games: this.toUpcomingGames(data) } : { games: [] };
     },
   });
 
-  upcomingGames = computed(() => this.upcomingResource.value() ?? []);
+  upcomingGames = computed(() => this.upcomingResource.value()?.games ?? []);
+  tournamentName = computed(() => this.upcomingResource.value()?.name);
   stats = computed(() => this.liveService.tournamentStats());
   readonly connectionState = computed<LiveConnectionState>(() =>
     this.liveService.isConnected() ? 'connected' : this.liveService.isConnecting() ? 'connecting' : 'offline',
@@ -152,8 +171,7 @@ export class PageLiveUpcomingComponent implements OnDestroy {
                   .filter((membership) => membership.team === nr)
                   .sort((a, b) => (a.player ?? 0) - (b.player ?? 0))
                   .map((membership) => membership.gamePlayer?.fullName)
-                  .filter(Boolean)
-                  .join(' / ');
+                  .filter((name): name is string => !!name);
               return {
                 gameId: game.id,
                 courtName: game.courtId ? courts.get(game.courtId) : undefined,

@@ -1,4 +1,5 @@
-import { computed, effect, Injectable, OnDestroy, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { computed, effect, inject, Injectable, OnDestroy, PLATFORM_ID, signal } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 
 // Types for tournament live updates
@@ -66,6 +67,7 @@ export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected';
   providedIn: 'root',
 })
 export class TournamentLiveService implements OnDestroy {
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private socket: Socket | null = null;
   private currentTournamentId = signal<string | null>(null);
   private _connectionStatus = signal<ConnectionStatus>('disconnected');
@@ -112,6 +114,11 @@ export class TournamentLiveService implements OnDestroy {
    * Connect to tournament live updates
    */
   connectToTournament(tournamentEventId: string): void {
+    // Sockets only exist in the browser; skip during server-side rendering
+    if (!this.isBrowser) {
+      return;
+    }
+
     // If already connected to a different tournament, disconnect first
     if (this.currentTournamentId() && this.currentTournamentId() !== tournamentEventId) {
       this.disconnect();

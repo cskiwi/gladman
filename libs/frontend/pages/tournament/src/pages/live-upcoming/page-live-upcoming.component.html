@@ -1,77 +1,44 @@
-<div class="flex flex-col gap-4 p-4">
-  <app-live-display-header [title]="'all.tournament.live.upcomingGames' | translate" [state]="connectionState()" />
+<app-live-display-header
+  [title]="'all.tournament.live.upcomingGames' | translate"
+  [state]="connectionState()"
+  [tournamentName]="tournamentName()"
+  [tournamentId]="tournamentId() ?? undefined"
+/>
 
-  @if (stats(); as stats) {
-    <div>
-      <p-tag severity="info" [value]="stats.gamesRemaining + ' ' + ('all.tournament.live.gamesRemaining' | translate)" />
-    </div>
-  }
+<section class="mb-6">
+  <app-section-header [title]="'all.tournament.live.upcomingGames' | translate">
+    @if (stats(); as stats) {
+      <p-tag badge severity="info" [value]="stats.gamesRemaining + ' ' + ('all.tournament.live.gamesRemaining' | translate)" />
+    }
+  </app-section-header>
 
-  <div class="grid grid-cols-[repeat(auto-fill,minmax(26rem,1fr))] gap-3">
-    @for (game of upcomingGames(); track game.gameId; let i = $index) {
-      <p-card>
-        <div class="flex flex-wrap items-center gap-4">
-          <div class="w-16 shrink-0 text-center">
-            @if (i === 0) {
-              <p-tag severity="success" [value]="'all.tournament.live.next' | translate" />
-            } @else {
-              <span class="text-xl font-semibold text-muted-color">#{{ i + 1 }}</span>
-            }
-          </div>
-
-          <div class="min-w-48 flex-1">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="text-lg font-semibold">{{ game.team1 || 'TBD' }}</span>
-              <span class="text-sm text-muted-color">vs</span>
-              <span class="text-lg font-semibold">{{ game.team2 || 'TBD' }}</span>
-            </div>
-            @if (game.category || game.round) {
-              <div class="flex gap-2 text-sm text-muted-color">
-                @if (game.category) {
-                  <span>{{ game.category }}</span>
-                }
-                @if (game.round) {
-                  <span>• {{ game.round }}</span>
-                }
-              </div>
-            }
-          </div>
-
-          <div class="shrink-0 sm:text-right">
-            @if (game.courtName) {
-              <div class="flex items-center gap-2 font-medium sm:justify-end">
-                <i class="pi pi-map-marker text-sm"></i>
-                <span>{{ game.courtName }}</span>
-              </div>
-            }
-            @if (game.scheduledTime) {
-              <div class="flex items-center gap-2 text-muted-color sm:justify-end">
-                <i class="pi pi-clock text-sm"></i>
-                <span>{{ game.scheduledTime | date: 'HH:mm' }}</span>
-              </div>
-            }
-          </div>
-        </div>
-      </p-card>
+  <div class="grid grid-cols-1 gap-3 xl:grid-cols-2">
+    @for (game of upcomingGames(); track game.gameId; let first = $first) {
+      <app-live-game-card
+        [time]="game.scheduledTime"
+        [badge]="first ? ('all.tournament.live.next' | translate) : undefined"
+        [category]="game.category"
+        [round]="game.round"
+        [team1]="game.team1"
+        [team2]="game.team2"
+        [court]="game.courtName"
+      />
     } @empty {
-      <div class="col-span-full flex flex-col items-center justify-center py-16 text-muted-color">
-        <i class="pi pi-check-circle mb-4 text-5xl text-primary"></i>
-        <p class="m-0 text-xl">{{ 'all.tournament.live.allGamesCompleted' | translate }}</p>
-      </div>
+      <p-card>{{ 'all.tournament.live.allGamesCompleted' | translate }}</p-card>
     }
   </div>
+</section>
 
-  @if (liveService.announcements().length > 0) {
-    <section class="flex flex-col gap-3">
-      <h2 class="m-0 text-xl">{{ 'all.tournament.live.announcements' | translate }}</h2>
-      @for (announcement of liveService.announcements(); track announcement.timestamp) {
-        <p-message [severity]="announcementSeverity(announcement.type)">
-          <div class="flex flex-col">
-            <span>{{ announcement.message }}</span>
-            <span class="text-xs text-muted-color">{{ announcement.timestamp | date: 'HH:mm' }}</span>
-          </div>
-        </p-message>
-      }
-    </section>
-  }
-</div>
+@if (liveService.announcements().length > 0) {
+  <section class="flex flex-col gap-3">
+    <app-section-header [title]="'all.tournament.live.announcements' | translate" />
+    @for (announcement of liveService.announcements(); track announcement.timestamp) {
+      <p-message [severity]="announcementSeverity(announcement.type)">
+        <div class="flex flex-col">
+          <span>{{ announcement.message }}</span>
+          <span class="text-xs text-muted-color">{{ announcement.timestamp | date: 'HH:mm' }}</span>
+        </div>
+      </p-message>
+    }
+  </section>
+}

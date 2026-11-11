@@ -1,0 +1,49 @@
+<p-card class="block overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+  <article class="grid grid-cols-1 sm:grid-cols-[72px_minmax(0,1fr)_auto]">
+    <div
+      class="flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:row-span-2 sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r"
+    >
+      @if (time(); as time) {
+        <time class="font-bold text-2xl leading-none text-color" [attr.datetime]="time">{{ time | date: 'HH:mm' }}</time>
+        <time class="font-mono text-xs text-muted-color" [attr.datetime]="time">{{ time | date: 'd MMM' }}</time>
+      }
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 px-4 pt-3 sm:px-5 text-xs text-muted-color">
+      @if (badge(); as badge) {
+        <p-tag severity="success" [value]="badge" />
+      }
+      @if (category()) {
+        <p-tag severity="info" [value]="category()!" />
+      }
+      <span>{{ round() }}</span>
+    </div>
+
+    <div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2.5 px-4 pb-4 pt-2 sm:px-5">
+      <div class="flex flex-col gap-0.5 text-sm font-semibold text-color">
+        @for (player of team1(); track player) {
+          <span class="break-words">{{ player }}</span>
+        } @empty {
+          <span>TBD</span>
+        }
+      </div>
+      <span class="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted-color">vs</span>
+      <div class="flex flex-col items-end gap-0.5 text-right text-sm font-semibold text-color">
+        @for (player of team2(); track player) {
+          <span class="break-words">{{ player }}</span>
+        } @empty {
+          <span>TBD</span>
+        }
+      </div>
+    </div>
+
+    @if (court()) {
+      <div
+        class="flex items-center justify-end gap-2 px-4 py-3 border-t border-surface text-sm sm:col-start-3 sm:row-start-1 sm:row-span-2 sm:justify-center sm:px-5 sm:border-t-0 sm:border-l"
+      >
+        <i class="pi pi-map-marker text-primary" aria-hidden="true"></i>
+        {{ court() }}
+      </div>
+    }
+  </article>
+</p-card>

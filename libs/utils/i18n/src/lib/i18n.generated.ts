@@ -1578,6 +1578,14 @@ export type I18nTranslations = {
                     "inProgressDescription": string;
                     "blockedDescription": string;
                     "unscheduledGamesDescription": string;
+                    "dropHere": string;
+                    "blockSlot": string;
+                    "unblockSlot": string;
+                    "removeFromSlot": string;
+                    "live": string;
+                    "completed": string;
+                    "gamesCount": string;
+                    "defaultCourt": string;
                     "allDates": string;
                     "autoSchedule": string;
                     "autoScheduleDescription": string;

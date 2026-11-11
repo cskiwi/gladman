@@ -17,9 +17,11 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
-import { TagModule } from 'primeng/tag';
+import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToolbarModule } from 'primeng/toolbar';
+import { ScheduleGameCardComponent } from './schedule-game-card.component';
+import { ScheduleSlotComponent } from './schedule-slot.component';
 import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
 
 @Component({
@@ -31,7 +33,9 @@ import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
     TranslateModule,
     CardModule,
     ButtonModule,
-    TagModule,
+    TableModule,
+    ScheduleSlotComponent,
+    ScheduleGameCardComponent,
     SelectModule,
     InputTextModule,
     InputNumberModule,
@@ -124,8 +128,11 @@ export class ScheduleTabComponent {
     // Get unique court IDs from slots
     const courtIds = new Set(slotsData.map((s) => s.courtId));
 
-    return allCourts.filter((c) => courtIds.has(c.id)).sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''));
+    return allCourts.filter((c) => courtIds.has(c.id)).sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '', undefined, { numeric: true }));
   });
+
+  // Time column plus a readable minimum per court keeps 6 to 48+ courts scrollable instead of squeezed
+  gridMinWidth = computed(() => `${6 + this.gridCourts().length * 10}rem`);
 
   // Unscheduled panel visibility
   showUnscheduledPanel = signal(true);

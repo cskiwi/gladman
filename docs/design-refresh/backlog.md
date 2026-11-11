@@ -5,6 +5,16 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024b4 Scheduling grid/game panel is Done with explicit approval and disclosed verification limits: [grid brief](work-items/DR-024b4-schedule-grid.md).
+Native table/Card/Panel/Tag with presentational `app-schedule-slot` and `app-schedule-game-card`; smart tab keeps
+drag-and-drop and mutations. Palette colors removed; eight locale keys added. 20 focused tests, lint and build pass.
+Browser-verified with a client-only fixture (dark wide, light 390px). Not verified: drag/drop, keyboard/contrast, new component tests. Not committed.
+The user approves completion and commit on 2026-11-11. Unperformed checks stay unchecked: drag-and-drop,
+block/unblock/remove clicks, keyboard/contrast, new slot/game-card component tests, 24-court and light-wide checks.
+Next candidate, not started: DR-024b5 Generate/Auto-schedule dialogs and remaining English copy. Keep DR-024b/DR-024 open.
+
+### Previous completed focus: Scheduling controls
+
 DR-024b3 Scheduling filters/actions is Done with explicit approval and disclosed verification limits:
 [controls brief](work-items/DR-024b3-schedule-controls.md).
 Confirmed normally mounted authorized Scheduling consumer on 2026-11-10,
@@ -28,7 +38,7 @@ Approval covers only these controls/tests/handoff, not unperformed checks or who
 Post-approval workspace lint passes all 34 projects with existing warnings and zero errors;
 29 tasks replay cache and five execute. No fresh full-workspace lint execution is claimed.
 Commit only this approved slice without pushing.
-Exact next action in a fresh invocation: scope DR-024b4 grid/game panel on its real mounted consumer.
+Exact next action in a fresh invocation: scope DR-024b5 dialogs on its real mounted consumer.
 Do not begin another implementation slice here.
 Keep DR-024b and DR-024 open.
 
@@ -2490,7 +2500,7 @@ and linked from their registry rows.
 | [DR-024b1](work-items/DR-024b1-schedule-read.md)              | Scheduling reads/error feedback; approved with disclosed verification limits | Done        |
 | [DR-024b2](work-items/DR-024b2-schedule-summary.md)           | Scheduling summary and mounted count labels; approved with disclosed limits  | Done        |
 | [DR-024b3](work-items/DR-024b3-schedule-controls.md)          | Scheduling controls and labels; approved with disclosed verification limits  | Done        |
-| DR-024b4                                                      | Scheduling grid/game panel; scope after controls review                      | Backlog     |
+| [DR-024b4](work-items/DR-024b4-schedule-grid.md)              | Scheduling grid/game panel; approved with disclosed verification limits      | Done        |
 | DR-025                                                        | Tournament admin: settings and phase controls                                | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                           | Backlog     |
 | DR-027                                                        | Global admin and search indexing                                             | Backlog     |
@@ -3085,7 +3095,7 @@ Projects: `frontend-pages-tournament`, with shared controls where already used. 
   native Toolbar/names/date templates, 20 passing focused tests and scoped lint/build.
   Four Dutch theme/width cases and enabled control contrast pass; date fixture and keyboard limits are in its brief.
   User approval leaves unperformed checks unchecked and parents open.
-  Next action in a fresh invocation is scoping DR-024b4 grid/game panel on its real mounted consumer.
+  Next action in a fresh invocation is scoping DR-024b5 Generate/Auto-schedule dialogs; DR-024b4 grid is Done with disclosed limits.
   Grid/game panel/dialog presentation remains unstarted; preserve all parent and prerequisite limits.
   Do not enable gated tabs, mutate phase/permissions or repair this independent tab during draw-management work.
 - DR-025: settings, general settings, sub-events, and phase controls.

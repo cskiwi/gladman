@@ -15,6 +15,13 @@ describe('Scheduling read feedback', () => {
   const empty = { data: { tournamentSchedule: [], tournamentScheduleCourts: [], unscheduledGames: [] } };
 
   beforeEach(async () => {
+    // The native scrollable table observes its size; jsdom has no ResizeObserver.
+    globalThis.ResizeObserver ??= jest.fn(() => ({
+      observe: jest.fn(),
+      unobserve: jest.fn(),
+      disconnect: jest.fn(),
+    })) as unknown as typeof ResizeObserver;
+
     query = jest.fn(() => of(empty));
     mutate = jest.fn();
     await TestBed.configureTestingModule({

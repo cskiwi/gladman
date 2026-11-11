@@ -1,0 +1,67 @@
+@let current = slot();
+<div
+  class="h-full min-h-16 rounded-border border border-surface p-2 flex flex-col justify-between gap-1"
+  [class.border-dashed]="current.status === status.AVAILABLE"
+  [class.bg-highlight]="current.status === status.SCHEDULED"
+>
+  @switch (current.status) {
+    @case (status.AVAILABLE) {
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-xs text-muted-color">{{ 'all.tournament.admin.schedule.dropHere' | translate }}</span>
+        <p-button
+          size="small"
+          [text]="true"
+          severity="secondary"
+          icon="pi pi-ban"
+          [ariaLabel]="'all.tournament.admin.schedule.blockSlot' | translate"
+          [pTooltip]="'all.tournament.admin.schedule.blockSlot' | translate"
+          tooltipPosition="top"
+          [loading]="updating()"
+          (onClick)="toggleBlock.emit()"
+        />
+      </div>
+    }
+    @case (status.SCHEDULED) {
+      <div class="text-xs font-semibold text-color">{{ gameName() }}</div>
+      @if (current.game?.tournamentDraw?.tournamentSubEvent?.name; as subEvent) {
+        <div class="text-xs text-muted-color">{{ subEvent }}</div>
+      }
+      <div class="flex justify-end">
+        <p-button
+          size="small"
+          [text]="true"
+          severity="danger"
+          icon="pi pi-times"
+          [ariaLabel]="'all.tournament.admin.schedule.removeFromSlot' | translate"
+          [pTooltip]="'all.tournament.admin.schedule.removeFromSlot' | translate"
+          tooltipPosition="top"
+          [loading]="updating()"
+          (onClick)="remove.emit()"
+        />
+      </div>
+    }
+    @case (status.IN_PROGRESS) {
+      <div><p-tag severity="warn" icon="pi pi-play" [value]="'all.tournament.admin.schedule.live' | translate" /></div>
+      <div class="text-xs font-semibold text-color">{{ gameName() }}</div>
+    }
+    @case (status.COMPLETED) {
+      <div><p-tag severity="success" icon="pi pi-check" [value]="'all.tournament.admin.schedule.completed' | translate" /></div>
+      <div class="text-xs text-muted-color">{{ gameName() }}</div>
+    }
+    @case (status.BLOCKED) {
+      <div class="flex items-center justify-between gap-2">
+        <p-tag severity="danger" icon="pi pi-ban" [value]="'all.tournament.admin.schedule.blocked' | translate" />
+        <p-button
+          size="small"
+          [text]="true"
+          icon="pi pi-unlock"
+          [ariaLabel]="'all.tournament.admin.schedule.unblockSlot' | translate"
+          [pTooltip]="'all.tournament.admin.schedule.unblockSlot' | translate"
+          tooltipPosition="top"
+          [loading]="updating()"
+          (onClick)="toggleBlock.emit()"
+        />
+      </div>
+    }
+  }
+</div>

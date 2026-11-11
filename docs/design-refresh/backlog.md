@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-027 and DR-028 parent reconciliation is Done with explicit approval (`commit`, 2026-11-11; documentation only, no application code changed). DR-028 children a-d are Done with disclosed limits; team matching stays a deferred, unmounted surface (its `/admin` tab is commented out). DR-027's only child is DR-027a; the `/admin` tab shell was unchanged and still renders correctly beside the refreshed tabs. Not verified: light mode, keyboard/contrast and tests for the admin tabs (recorded per child). Committed. Next action: reconcile DR-021 (open only because DR-021i is deferred) and choose the next candidate, DR-029 final cleanup or a Backlog audit item (DR-030 to DR-034).
+
+### Previous focus: Cron jobs tab (DR-028d)
+
 DR-028d Cron jobs tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-028d-cron-jobs-tab.md)): refresh button and table in a native Card on `/admin?tab=1`, cron expressions no longer wrap. Lint and build pass; dark wide checked. Not verified: light, 375px, dialogs, keyboard/contrast, tests. Committed. Next action: reconcile parent DR-028 (all children done).
 
 ### Previous focus: Sync plans tab (DR-028c)
@@ -2615,12 +2619,13 @@ and linked from their registry rows.
 | [DR-026b](work-items/DR-026b-live-results.md)                 | Live results display                                                         | Done        |
 | [DR-026c](work-items/DR-026c-live-upcoming.md)                | Live upcoming display                                                        | Done        |
 | [DR-026d](work-items/DR-026d-live-kiosk.md)                   | Live kiosk display                                                           | Done        |
-| DR-027                                                        | Global admin and search indexing                                             | In progress |
+| DR-027                                                        | Global admin and search indexing; only child a, parent tabs unchanged        | Done        |
 | [DR-027a](work-items/DR-027a-admin-search-indexing.md)        | Admin search-indexing tab Cards and form                                     | Done        |
-| DR-028                                                        | Sync administration and team matching                                        | In progress |
+| DR-028                                                        | Sync administration; children a-d Done, team matching deferred (unmounted)   | Done        |
 | [DR-028a](work-items/DR-028a-sync-overview.md)                | Sync overview section Cards and progress bar                                 | Done        |
 | [DR-028b](work-items/DR-028b-sync-ranking-tab.md)             | Sync ranking systems tab Card                                                | Done        |
 | [DR-028c](work-items/DR-028c-sync-plans-tab.md)               | Sync plans tab Cards                                                         | Done        |
+| [DR-028d](work-items/DR-028d-cron-jobs-tab.md)                | Sync cron jobs tab Card                                                      | Done        |
 | DR-029                                                        | Legacy styling retirement and final regression                               | Backlog     |
 | DR-030                                                        | Shared header overflow at 320px                                              | Backlog     |
 | DR-031                                                        | Native FloatLabel focused-label contrast audit                               | Backlog     |

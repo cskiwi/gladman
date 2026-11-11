@@ -55,11 +55,11 @@ description: 'Replace custom W/L result dots with native PrimeNG status tags.'
   wrapping row (`flex flex-wrap gap-1`). PrimeNG now owns tag spacing, typography, shape, and severity colors.
   Native labels have natural widths rather than fixed 22px squares; this is intentional, with no size override.
 - **Passed:** `NX_DAEMON=false npm exec nx run frontend-components:test --
-  --runInBand --testPathPatterns=form-sequence.component.spec.ts --output-style=static`.
+--runInBand --testPathPatterns=form-sequence.component.spec.ts --output-style=static`.
   Four tests passed twice, including after the final spec-only edit: order/repeats, empty input, updated input,
   native severity mapping, and noninteractive wrapping markup.
 - **Passed:** `NX_DAEMON=false npm exec nx run-many -- --targets=lint,build
-  --projects=frontend-components --output-style=static`. All 10 tasks passed, eight from cache.
+--projects=frontend-components --output-style=static`. All 10 tasks passed, eight from cache.
   Lint reports 32 existing warnings in unrelated components, zero errors; the form-sequence entry point builds.
 - **Passed:** editor diagnostics for component TypeScript/template/spec: no errors. `git diff --check` passes.
 - Browser checks used the existing integrated player tab at `http://localhost:3000/players/glenn-latomme`.

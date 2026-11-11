@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-028d Cron jobs tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-028d-cron-jobs-tab.md)): refresh button and table in a native Card on `/admin?tab=1`, cron expressions no longer wrap. Lint and build pass; dark wide checked. Not verified: light, 375px, dialogs, keyboard/contrast, tests. Committed. Next action: reconcile parent DR-028 (all children done).
+
+### Previous focus: Sync plans tab (DR-028c)
+
 DR-028c Sync plans tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-028c-sync-plans-tab.md)): filters and hierarchy table in native Cards on `/admin?tab=1`, action row wraps at 375px. Lint and build pass; dark 375px and 1024px checked. Not verified: light, dialog, keyboard/contrast, tests. Committed. Next candidate: DR-028d cron jobs tab.
 
 ### Previous focus: Sync ranking tab (DR-028b)

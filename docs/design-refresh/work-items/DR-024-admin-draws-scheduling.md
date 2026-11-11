@@ -77,6 +77,18 @@ description: 'Aggregate scope for independently reviewable draw-management and s
 ## Aggregate acceptance
 
 - [x] Draw-management children are approved complete with recorded verification limits.
-- [ ] Scheduling is scoped, implemented and approved separately.
-- [ ] Aggregate behavior, accessibility, localization and responsive checks are reconciled.
-- [ ] User review and approval are recorded.
+- [x] Scheduling is scoped, implemented and approved separately: DR-024b1 to DR-024b6 and the DR-024b aggregate are
+      approved Done with disclosed limits ([brief](DR-024b-admin-scheduling.md)).
+- [ ] Aggregate behavior, accessibility, localization and responsive checks are reconciled. Not performed here: this
+      reconciliation is documentation only. Each child's unchecked limits (light theme, keyboard/contrast, drag and drop,
+      live mutations, slot generation exposure, SSR) remain unchecked in its own brief.
+- [x] User review and approval are recorded: approved Done with disclosed child limits on 2026-11-11.
+
+## Aggregate reconciliation (2026-11-11)
+
+- Draw management (DR-024a, four required children) and Scheduling (DR-024b, six children) are both Done in the
+  backlog. No application code was changed in this reconciliation and no checks were run.
+- Open follow-up, not started: expose and verify backend slot generation / auto-scheduling (needs explicit
+  authorization; `generateTimeSlots` is not exposed by the API).
+- User approved completion ("Approve and commit", 2026-11-11) with the child limits above retained. The unchecked
+  aggregate verification criterion stays unchecked; approval does not imply it passed.

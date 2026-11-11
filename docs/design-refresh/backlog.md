@@ -5,6 +5,13 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024 Tournament admin draws and scheduling aggregate is Done with explicit approval (2026-11-11, documentation only):
+[brief](work-items/DR-024-admin-draws-scheduling.md). DR-024a and DR-024b and all their children are Done with disclosed
+limits, which stay unchecked in the child briefs. Approval retains the unchecked aggregate verification. Next candidate, not
+started: DR-026 tournament live displays and kiosk (scope one display as a child first).
+
+### Previous focus: Settings aggregate (DR-025)
+
 DR-025 Tournament admin settings aggregate is reconciled as Done (documentation only, 2026-11-11): [brief](work-items/DR-025-admin-settings.md).
 All children (DR-025a/b/c) are Done with disclosed limits, which stay unchecked in the brief (light theme,
 keyboard/contrast, live mutations, previous-phase dialog). Next candidate, not started: DR-026 tournament live displays
@@ -2539,7 +2546,7 @@ and linked from their registry rows.
 | [DR-023c2](work-items/DR-023c2-checkin-filters.md)            | Reactive check-in filters/search and refresh consolidation                   | Done        |
 | [DR-023c3](work-items/DR-023c3-checkin-table.md)              | Check-in table/feedback and operational action presentation                  | Done        |
 | [DR-023c4](work-items/DR-023c4-checkin-locales.md)            | Remaining mounted check-in locale completeness                               | Done        |
-| [DR-024](work-items/DR-024-admin-draws-scheduling.md)         | Tournament admin: draws and scheduling                                       | In progress |
+| [DR-024](work-items/DR-024-admin-draws-scheduling.md)         | Tournament admin: draws and scheduling; approved with disclosed child limits | Done        |
 | [DR-024a](work-items/DR-024a-admin-draws.md)                  | Draw management aggregate; approved with disclosed verification limits       | Done        |
 | [DR-024a1](work-items/DR-024a1-draw-read.md)                  | Reactive draw selection and explicit read feedback prerequisite              | Done        |
 | [DR-024a2](work-items/DR-024a2-draw-summary.md)               | Draw summary presentation                                                    | Done        |

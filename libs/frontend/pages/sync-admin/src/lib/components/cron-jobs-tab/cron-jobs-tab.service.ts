@@ -84,9 +84,10 @@ export class CronJobsTabService {
   loading = computed(() => this._loading());
 
   constructor() {
-    // Wait for authentication; querying earlier (e.g. on page reload) yields "Forbidden resource"
+    // Wait for the auth token (SSR cookie on the server, Auth0 token in the browser);
+    // querying without it yields "Forbidden resource"
     effect(() => {
-      if (this.auth.loggedIn()) {
+      if (this.auth.token()) {
         untracked(() => this.loadCronJobs());
       }
     });

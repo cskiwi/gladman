@@ -1,4 +1,4 @@
-import { computed, inject, signal } from '@angular/core';
+import { computed, effect, inject, signal, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '@app/frontend-modules-auth/service';
@@ -78,8 +78,12 @@ export class SyncPlansTabService {
   constructor() {
     // Watch filter changes and reload events
     const filterWatch = toSignal(this.filter.valueChanges);
-    // Load initial events
-    this.loadEvents();
+    // Load initial events once the auth token is available (SSR cookie or Auth0 token)
+    effect(() => {
+      if (this.auth.token()) {
+        untracked(() => this.loadEvents());
+      }
+    });
   }
 
   toggleHierarchyExpansion(id: string): void {
@@ -144,7 +148,7 @@ export class SyncPlansTabService {
 
   private async loadEvents(): Promise<void> {
     try {
-      if (!this.auth.loggedIn()) return;
+      if (!this.auth.token()) return;
       this._eventsLoading.set(true);
 
       const filter = this.filter.value;

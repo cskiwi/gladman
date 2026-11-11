@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-012e Club player roster tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012e-club-player-roster-tab.md)): the `/clubs/:clubId` "Spelerslijst" tab replaces the per-player card grid with one native `p-card` holding a count, search `p-iconfield`, team `p-multiselect` and a sortable, paginated `p-table` (avatar, name link, member id, team tags linking to team pages, own-row highlight), native `p-message` error/empty/filtered-empty states, nl/fr/en copy under `all.club.detail.players.*`, and no SCSS. Lint and build pass; browser-checked dark 1024px, light wide and light 390px with search, team filter and paginator reset. Not verified: own-row highlight, loading/error in the browser, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012f club schedule tab. DR-012 stays open until DR-012e to DR-012g are done.
+
+### Previous focus: Club teams tab (DR-012d)
+
 DR-012d Club teams tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012d-club-teams-tab.md)): the `/clubs/:clubId` teams tab (`app-club-teams-tab`, `app-team-filter-bar`, `app-team-card`) uses native `p-card`, `p-selectbutton`, `p-table` (fixed colgroup so every team shares the same columns, tooltips on E/D/G), `p-tag`, `p-avatar`, `p-message` and `app-form-sequence`, two teams per row from `xl`, nl/fr/en copy under `all.club.detail.teams.*`, and no SCSS. Shared `app-form-sequence` tags are now equal width. Lint, build and form-sequence specs pass; browser-checked dark wide and 390px. Not verified: light wide, signed-in edit/own-row states, empty/loading states, keyboard/contrast, fr/en, card/filter tests. Committed. Next candidate, not started: DR-012e club player roster tab; DR-012 stays open until DR-012e to DR-012g are done.
 
 ### Previous focus: Club sidebar cards (DR-012c)
@@ -2551,7 +2555,7 @@ and linked from their registry rows.
 | [DR-012b](work-items/DR-012b-club-hero-stats.md)              | Club hero stats strip (teams, season record, ranking, next home match)       | Done        |
 | [DR-012c](work-items/DR-012c-club-sidebar-cards.md)           | Club sidebar cards (upcoming fixtures, top performers)                       | Done        |
 | [DR-012d](work-items/DR-012d-club-teams-tab.md)               | Club teams tab (`app-team-card`, filter bar)                                 | Done        |
-| DR-012e                                                       | Club player roster tab                                                       | Backlog     |
+| [DR-012e](work-items/DR-012e-club-player-roster-tab.md)       | Club player roster tab                                                       | Done        |
 | DR-012f                                                       | Club schedule tab                                                            | Backlog     |
 | DR-012g                                                       | Club tournaments tab                                                         | Backlog     |
 | DR-013                                                        | Club team builder                                                            | Backlog     |
@@ -2703,6 +2707,7 @@ and linked from their registry rows.
 | DR-054                                                        | Scheduling date-option stability and focus across read-state remounts        | Backlog     |
 | DR-055                                                        | Admin indexing tab hard-coded English copy and toast messages                | Backlog     |
 | DR-056                                                        | Admin page dead `@if (false)` access-denied branch                           | Backlog     |
+| DR-057                                                        | Native PrimeNG paginator aria-labels stay English in nl/fr                   | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -3319,6 +3324,8 @@ routes][admin-routes] and [sync routes][sync-routes].
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.
 - Check all migrated routes, shared overlays, translations, theme persistence, and SSR/hydration.
 - Record any remaining justified styling exceptions and remaining unmigrated surfaces.
+- DR-012e discovery: `apps/app/src/styles.scss` sets an unlayered `p-multiselect { width: 100% }` (with other inputs)
+  that overrides Tailwind width utilities on the host; the roster tab uses a sizing wrapper. Retire after a consumer check.
 
 ## Progress, evidence, and discoveries
 

@@ -65,7 +65,7 @@ export class ClubPlayersTabService {
 
   // Deduplicated players - each player appears once with all their teamPlayerMemberships populated
   players = computed((): Player[] => {
-    const teams = this.teamsResource.value() || [];
+    const teams = this.teamsResource.hasValue() ? this.teamsResource.value() : [];
     const playersMap = new Map<string, Player>();
 
     teams.forEach((team) => {
@@ -85,7 +85,7 @@ export class ClubPlayersTabService {
   });
 
   // Available teams for the filter bar
-  availableTeams = computed((): Team[] => this.teamsResource.value() || []);
+  availableTeams = computed((): Team[] => (this.teamsResource.hasValue() ? this.teamsResource.value() : []));
 
   loading = computed(() => this.teamsResource.isLoading());
   error = computed(() => this.teamsResource.error()?.message || null);

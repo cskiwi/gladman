@@ -53,6 +53,20 @@
     "detail": {
       "follow": "Follow",
       "members": "{{count}} members",
+      "players": {
+        "count": {
+          "one": "{{count}} player",
+          "other": "{{count}} players"
+        },
+        "empty": "No players in this season’s teams yet.",
+        "error": "Players could not be loaded.",
+        "filtered": "{{count}} of {{total}} players",
+        "noMatch": "No players match these filters.",
+        "player": "Player",
+        "search": "Search players",
+        "teamFilter": "Filter by team",
+        "teams": "Teams"
+      },
       "season": "Season {{season}}",
       "share": "Share",
       "sidebar": {

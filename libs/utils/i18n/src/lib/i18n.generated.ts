@@ -60,6 +60,20 @@ export type I18nTranslations = {
             "detail": {
                 "follow": string;
                 "members": string;
+                "players": {
+                    "count": {
+                        "one": string;
+                        "other": string;
+                    };
+                    "empty": string;
+                    "error": string;
+                    "filtered": string;
+                    "noMatch": string;
+                    "player": string;
+                    "search": string;
+                    "teamFilter": string;
+                    "teams": string;
+                };
                 "season": string;
                 "share": string;
                 "sidebar": {

@@ -1,129 +1,134 @@
-<!-- Toolbar: search + team filter -->
-<div class="flex flex-row flex-wrap gap-3 items-center mb-5">
- <p-iconfield class="flex-1" [style]="{ 'min-width': '200px' }">
- <p-inputicon class="pi pi-search" />
- <input
- pInputText
- type="text"
- (input)="searchQuery.set($any($event.target).value)"
- [placeholder]="('all.common.search' | translate) + '...'"
- class="w-full"
- />
- </p-iconfield>
- @if (service.availableTeams().length > 1) {
- <p-multiselect
- [options]="service.availableTeams()"
- [ngModel]="selectedTeamIds()"
- (ngModelChange)="selectedTeamIds.set($event)"
- optionLabel="name"
- optionValue="id"
- [showClear]="true"
- display="chip"
- [placeholder]="'all.team.filterByTeam' | translate"
- [style]="{ 'min-width': '200px', 'max-width': '340px' }"
- />
- }
-</div>
+@if (service.error()) {
+  <p-message severity="error" icon="pi pi-exclamation-circle">{{ 'all.club.detail.players.error' | translate }}</p-message>
+} @else if (service.loading() || !clubId()) {
+  <p-card>
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p-skeleton width="8rem" height="1.25rem" />
+        <p-skeleton width="16rem" height="2.5rem" />
+      </div>
+      @for (i of skeletonRows; track i) {
+        <div class="flex items-center gap-3">
+          <p-skeleton shape="circle" size="2rem" />
+          <div class="flex flex-1 flex-col gap-2">
+            <p-skeleton width="10rem" height="1rem" />
+            <p-skeleton width="5rem" height="0.75rem" />
+          </div>
+          <p-skeleton width="4rem" height="1.5rem" />
+        </div>
+      }
+    </div>
+  </p-card>
+} @else if (service.players().length > 0) {
+  <p-card>
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <span id="club-player-count" class="text-muted-color" aria-live="polite">
+          @if (isFiltered()) {
+            {{ 'all.club.detail.players.filtered' | translate: { count: filteredPlayers().length, total: service.players().length } }}
+          } @else {
+            {{ countKey() | translate: { count: service.players().length } }}
+          }
+        </span>
 
-@if (service.loading()) {
- <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
- @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
- <div class="border-surface rounded-border border bg-emphasis">
- <div class="flex items-center gap-2 p-3 border-b border-surface">
- <p-skeleton shape="circle" size="2.25rem" />
- <p-skeleton width="8rem" height="1.25rem" />
- </div>
- <div class="p-4 space-y-2">
- <p-skeleton width="7rem" height="1rem" />
- <p-skeleton width="5rem" height="1rem" />
- </div>
- </div>
- }
- </div>
-} @else if (filteredPlayers().length > 0) {
- <!-- Eyebrow header -->
- <div class="flex items-baseline justify-between mb-3">
- <span class="t-eyebrow">{{ 'all.player.players' | translate }}</span>
- <span class="t-mono text-xs text-muted-color">
- <strong class="text-color font-semibold">{{ filteredPlayers().length }}</strong>
- / {{ service.players().length }}
- </span>
- </div>
+        <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <p-iconfield class="w-full sm:w-64">
+            <p-inputicon class="pi pi-search" />
+            <input
+              pInputText
+              type="search"
+              class="w-full"
+              [ngModel]="searchQuery()"
+              (ngModelChange)="searchQuery.set($event)"
+              [placeholder]="'all.club.detail.players.search' | translate"
+              [attr.aria-label]="'all.club.detail.players.search' | translate"
+            />
+          </p-iconfield>
+          @if (service.availableTeams().length > 1) {
+            <div class="w-full sm:w-64">
+              <p-multiselect
+                [options]="service.availableTeams()"
+                [ngModel]="selectedTeamIds()"
+                (ngModelChange)="selectedTeamIds.set($event)"
+                optionLabel="name"
+                optionValue="id"
+                [showClear]="true"
+                [placeholder]="'all.club.detail.players.teamFilter' | translate"
+                [ariaLabel]="'all.club.detail.players.teamFilter' | translate"
+              />
+            </div>
+          }
+        </div>
+      </div>
 
- <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
- @for (player of filteredPlayers(); track player.id) {
- <article
- class="group relative flex flex-col bg-emphasis border border-surface rounded-xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-surface"
- >
- <!-- Top gradient band -->
- <div
- class="absolute top-0 left-0 h-[3px] w-[30%] bg-primary transition-[width] duration-300 ease-out group-hover:w-full"
- ></div>
-
- <!-- Head: avatar | name + memberId -->
- <div class="flex items-center gap-3 px-5 py-4">
- <span
- class="w-11 h-11 rounded-full bg-primary/15 text-primary grid place-items-center font-['Space_Grotesk',sans-serif] font-bold text-[0.9375rem] tracking-wide flex-shrink-0"
- >
- {{ getPlayerInitials(player) }}
- </span>
- <div class="flex flex-col min-w-0 flex-1">
- <a
- [routerLink]="['/players', player.slug]"
- class="font-['Space_Grotesk',sans-serif] font-semibold text-[0.9375rem] leading-tight text-color truncate no-underline hover:text-primary"
- >
- {{ player.fullName }}
- </a>
- @if (player.memberId) {
- <div class="t-mono text-[11px] text-muted-color tracking-wider mt-1">#{{ player.memberId }}</div>
- }
- </div>
- </div>
-
- <!-- Teams eyebrow -->
- <div class="flex items-center gap-3 px-5 py-3 border-t border-surface">
- <span class="t-eyebrow">
- {{ 'all.club.totalTeams' | translate }} · {{ player.teamPlayerMemberships.length }}
- </span>
- </div>
-
- <!-- Team rows -->
- <div class="flex flex-col flex-1">
- @for (membership of player.teamPlayerMemberships; track membership.id) {
- <a
- class="grid grid-cols-[auto_minmax(0,1fr)] gap-3 items-center px-5 py-2 border-t border-surface no-underline text-color hover:bg-emphasis hover:text-primary transition-colors"
- [routerLink]="['/clubs', clubId(), 'teams', membership.team.id]"
- >
- <span
- class="t-mono font-bold text-[11px] tracking-wider min-w-[32px] h-[22px] px-1.5 grid place-items-center rounded-sm bg-emphasis text-muted-color"
- >
- {{ membership.team.abbreviation || '—' }}
- </span>
- <span class="text-[0.8125rem] font-medium truncate">{{ membership.team.name }}</span>
- </a>
- }
- </div>
-
- <!-- Footer -->
- <div
- class="flex justify-end items-center px-5 py-2 border-t border-surface bg-emphasis t-mono text-[11px] mt-auto"
- >
- <a
- [routerLink]="['/players', player.slug]"
- class="text-primary font-semibold no-underline hover:underline"
- >
- View profile ↗
- </a>
- </div>
- </article>
- }
- </div>
+      <p-table
+        [value]="filteredPlayers()"
+        dataKey="id"
+        size="small"
+        [paginator]="filteredPlayers().length > pageSize"
+        [rows]="pageSize"
+        [first]="first()"
+        (firstChange)="first.set($event ?? 0)"
+        [scrollable]="true"
+        [tableStyle]="{ 'min-width': '20rem' }"
+        ariaLabelledBy="club-player-count"
+      >
+        <ng-template #header>
+          <tr>
+            <th scope="col" pSortableColumn="fullName">
+              {{ 'all.club.detail.players.player' | translate }}
+              <p-sorticon field="fullName" />
+            </th>
+            <th scope="col">{{ 'all.club.detail.players.teams' | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-player>
+          <tr [class.bg-highlight]="player.id === ownPlayerId()">
+            <td>
+              <div class="flex items-center gap-3">
+                <p-avatar class="shrink-0" [label]="getPlayerInitials(player)" shape="circle" aria-hidden="true" />
+                <div class="flex min-w-0 flex-col">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <a class="font-medium text-color no-underline wrap-anywhere hover:underline" [routerLink]="['/players', player.slug]">
+                      {{ player.fullName }}
+                    </a>
+                    @if (player.id === ownPlayerId()) {
+                      <p-tag severity="info" [value]="'all.club.detail.teams.you' | translate" />
+                    }
+                  </div>
+                  @if (player.memberId) {
+                    <span class="text-sm text-muted-color tabular-nums">{{ player.memberId }}</span>
+                  }
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="flex flex-wrap gap-1">
+                @for (membership of player.teamPlayerMemberships; track membership.id) {
+                  <a
+                    class="no-underline"
+                    [routerLink]="['/clubs', clubId(), 'teams', membership.team.id]"
+                    [attr.aria-label]="membership.team.name"
+                    [pTooltip]="membership.team.name"
+                    tooltipPosition="top"
+                  >
+                    <p-tag severity="secondary" [value]="membership.team.abbreviation || membership.team.name" />
+                  </a>
+                }
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="2">
+              <p-message severity="secondary" icon="pi pi-filter">{{ 'all.club.detail.players.noMatch' | translate }}</p-message>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
 } @else {
- <div class="text-center py-12 text-muted-color">
- <i class="pi pi-users text-6xl mb-4 block"></i>
- <h3 class="text-xl font-medium text-color mb-2">
- {{ 'all.player.noPlayers' | translate }}
- </h3>
- <p>{{ 'all.club.players.noPlayersDescription' | translate }}</p>
- </div>
+  <p-message severity="secondary" icon="pi pi-users">{{ 'all.club.detail.players.empty' | translate }}</p-message>
 }

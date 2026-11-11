@@ -53,6 +53,20 @@
     "detail": {
       "follow": "Volgen",
       "members": "{{count}} leden",
+      "players": {
+        "count": {
+          "one": "{{count}} speler",
+          "other": "{{count}} spelers"
+        },
+        "empty": "Nog geen spelers in de teams van dit seizoen.",
+        "error": "Spelers konden niet geladen worden.",
+        "filtered": "{{count}} van {{total}} spelers",
+        "noMatch": "Geen spelers voor deze filters.",
+        "player": "Speler",
+        "search": "Spelers zoeken",
+        "teamFilter": "Filteren op team",
+        "teams": "Teams"
+      },
       "season": "Seizoen {{season}}",
       "share": "Delen",
       "sidebar": {

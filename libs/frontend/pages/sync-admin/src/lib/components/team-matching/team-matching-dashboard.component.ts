@@ -8,6 +8,7 @@ import { Apollo, gql } from 'apollo-angular';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -96,6 +97,7 @@ const GET_MATCHED_TEAMS = gql`
     RouterModule,
     ReactiveFormsModule,
     CardModule,
+    PanelModule,
     ButtonModule,
     TableModule,
     TagModule,

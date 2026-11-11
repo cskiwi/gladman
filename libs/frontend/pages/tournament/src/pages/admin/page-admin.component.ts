@@ -7,7 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TabsModule } from 'primeng/tabs';
@@ -29,7 +29,7 @@ import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
     SkeletonModule,
     TabsModule,
     ButtonModule,
-    CardModule,
+    PanelModule,
     MessageModule,
     SettingsTabComponent,
     EnrollmentsTabComponent,

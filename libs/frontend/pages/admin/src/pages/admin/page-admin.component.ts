@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -38,7 +38,7 @@ const INDEX_ALL_MUTATION = gql`
     TranslateModule,
     ReactiveFormsModule,
     ButtonModule,
-    CardModule,
+    PanelModule,
     CheckboxModule,
     MessageModule,
     ProgressBarModule,

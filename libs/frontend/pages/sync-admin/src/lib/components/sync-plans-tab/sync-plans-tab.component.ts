@@ -6,7 +6,7 @@ import { delay } from 'rxjs';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -30,7 +30,7 @@ import { SyncPlansTabService } from './sync-plans-tab.service';
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,
-    CardModule,
+    PanelModule,
     CheckboxModule,
     ConfirmDialogModule,
     DatePickerModule,

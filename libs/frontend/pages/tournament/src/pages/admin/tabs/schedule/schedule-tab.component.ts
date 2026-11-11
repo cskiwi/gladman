@@ -7,7 +7,6 @@ import { ScheduleSlotStatus } from '@app/models-enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
@@ -28,7 +27,6 @@ import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
   imports: [
     FormsModule,
     TranslateModule,
-    CardModule,
     ButtonModule,
     TableModule,
     ScheduleSlotComponent,

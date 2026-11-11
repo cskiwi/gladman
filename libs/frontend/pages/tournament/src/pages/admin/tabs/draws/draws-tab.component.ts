@@ -4,7 +4,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Entry, TournamentDraw, TournamentEvent, TournamentSubEvent } from '@app/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
@@ -24,7 +23,6 @@ import { DrawsTabService, SeedingMethod } from './draws-tab.service';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    CardModule,
     ButtonModule,
     TableModule,
     TagModule,

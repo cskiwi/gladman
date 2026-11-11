@@ -30,7 +30,7 @@
   </div>
 
   <!-- Queue Statistics -->
-  <p-card [header]="'all.sync.dashboard.queue.title' | translate">
+  <p-panel [header]="'all.sync.dashboard.queue.title' | translate">
     @if (loadingStats()) {
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         @for (i of [1, 2, 3, 4]; track i) {
@@ -60,10 +60,10 @@
         </div>
       </div>
     }
-  </p-card>
+  </p-panel>
 
   <!-- Recent Jobs -->
-  <p-card [header]="'all.sync.dashboard.jobs.title' | translate">
+  <p-panel [header]="'all.sync.dashboard.jobs.title' | translate">
     <div class="mb-3">
       <input
         pInputText
@@ -150,7 +150,7 @@
         </tr>
       </ng-template>
     </p-table>
-  </p-card>
+  </p-panel>
 
   <!-- Job Details Dialog -->
   <p-dialog

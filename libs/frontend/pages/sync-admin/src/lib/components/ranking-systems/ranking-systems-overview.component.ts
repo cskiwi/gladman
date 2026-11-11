@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -24,7 +24,7 @@ import { SyncApiService } from '../../services';
     DatePipe,
     FormsModule,
     ButtonModule,
-    CardModule,
+    PanelModule,
     DatePickerModule,
     DialogModule,
     SkeletonModule,

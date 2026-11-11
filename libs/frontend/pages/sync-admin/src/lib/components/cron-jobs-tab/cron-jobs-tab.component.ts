@@ -6,7 +6,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import cronstrue from 'cronstrue/i18n';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
@@ -26,7 +26,7 @@ import { CronJobModel, CronJobsTabService } from './cron-jobs-tab.service';
     DatePipe,
     FormsModule,
     ButtonModule,
-    CardModule,
+    PanelModule,
     DialogModule,
     InputNumberModule,
     InputTextModule,

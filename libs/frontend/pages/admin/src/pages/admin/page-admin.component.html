@@ -28,7 +28,7 @@
       <p-tabpanel value="0">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Index Management Card -->
-          <p-card class="h-fit" [header]="'all.admin.panel.searchIndex.title' | translate">
+          <p-panel class="h-fit" [header]="'all.admin.panel.searchIndex.title' | translate">
             <p class="text-muted-color mb-4">
               Select the types of data you want to index for search functionality. This operation will rebuild the search index for the selected
               types.
@@ -91,10 +91,10 @@
                 <p-message severity="error">{{ errorMessage }}</p-message>
               }
             </form>
-          </p-card>
+          </p-panel>
 
           <!-- Information Card -->
-          <p-card [header]="'all.admin.panel.information.title' | translate">
+          <p-panel [header]="'all.admin.panel.information.title' | translate">
             <div class="space-y-4">
               <div>
                 <h4 class="font-medium mb-2">{{ 'all.admin.panel.information.availableTypes' | translate }}</h4>
@@ -106,7 +106,7 @@
                 </ul>
               </div>
             </div>
-          </p-card>
+          </p-panel>
         </div>
       </p-tabpanel>
 

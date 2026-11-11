@@ -1,7 +1,7 @@
 <p-toast />
 
 <!-- Ranking Systems Table -->
-<p-card>
+<p-panel>
   <p-table [value]="systems()" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
     <ng-template #header>
       <tr>
@@ -102,7 +102,7 @@
       }
     </ng-template>
   </p-table>
-</p-card>
+</p-panel>
 
 <!-- Calc dialog (non-VISUAL) -->
 <p-dialog

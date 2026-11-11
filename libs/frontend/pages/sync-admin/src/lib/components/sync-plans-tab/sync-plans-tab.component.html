@@ -1,5 +1,5 @@
 <div class="space-y-4">
-  <p-card>
+  <p-panel>
     <div class="space-y-4">
       <!-- Filter row -->
       <div class="flex flex-wrap gap-4 items-end">
@@ -83,10 +83,10 @@
         </span>
       </div>
     </div>
-  </p-card>
+  </p-panel>
 
   <!-- Hierarchy table -->
-  <p-card>
+  <p-panel>
     <p-table [value]="displayItems()" [loading]="eventsLoading()" [paginator]="true" [rows]="20">
       <ng-template #header>
         <tr>
@@ -148,7 +148,7 @@
         </tr>
       </ng-template>
     </p-table>
-  </p-card>
+  </p-panel>
 
   <!-- Ranking sync dialog -->
   <p-dialog

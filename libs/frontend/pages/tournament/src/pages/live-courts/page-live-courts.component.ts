@@ -1,16 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy } from '@angular/core';
-import { NgClass, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { injectParams } from 'ngxtension/inject-params';
 import { TranslateModule } from '@ngx-translate/core';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { TournamentLiveService, GameUpdate } from '../../services';
+import { LiveConnectionState, LiveDisplayHeaderComponent } from '../../components/live-display-header/live-display-header.component';
 
 @Component({
   selector: 'app-page-live-courts',
   standalone: true,
-  imports: [NgClass, DatePipe, TranslateModule, CardModule, TagModule, ProgressBarModule],
+  imports: [DatePipe, TranslateModule, CardModule, TagModule, LiveDisplayHeaderComponent],
   templateUrl: './page-live-courts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -27,6 +27,9 @@ export class PageLiveCourtsComponent implements OnDestroy {
     return map;
   });
   readonly stats = computed(() => this.liveService.tournamentStats());
+  readonly connectionState = computed<LiveConnectionState>(() =>
+    this.liveService.isConnected() ? 'connected' : this.liveService.isConnecting() ? 'connecting' : 'offline',
+  );
 
   constructor() {
     // Connect when tournament ID is available

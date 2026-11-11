@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-026b Live results display is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-026b-live-results.md)): shared header, native Card/Tag, palette colors removed. Lint passes; browser-checked light wide/375px with fixture data. Compact multi-column grid for TV. Not verified: dark, empty state, 375px after compaction, build, keyboard/contrast, tests. Next candidate, not started: DR-026c upcoming, then DR-026d kiosk.
+
+### Previous focus: Live courts (DR-026a)
+
 DR-026a Live courts display is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits (keyboard/contrast, dark 375px populated, no tests) ([brief](work-items/DR-026a-live-courts.md)): native Card/Tag, shared
 `app-live-display-header`, palette/inline colors removed. Lint/build pass; browser-checked with client-side fixture data (dark/light wide, light 375px). Next candidate, not started: DR-026b results, then DR-026c upcoming adopt the header; then DR-026b results and DR-026c upcoming adopt the header, DR-026d kiosk.
 
@@ -2576,6 +2580,7 @@ and linked from their registry rows.
 | [DR-025c](work-items/DR-025c-settings-confirmations.md)       | Settings confirmations and shared error feedback                             | Done        |
 | [DR-026](work-items/DR-026a-live-courts.md)                   | Tournament live displays and kiosk; children a (courts) active               | In progress |
 | [DR-026a](work-items/DR-026a-live-courts.md)                  | Live courts display and shared live header                                   | Done        |
+| [DR-026b](work-items/DR-026b-live-results.md)                 | Live results display                                                         | Done        |
 | DR-027                                                        | Global admin and search indexing                                             | Backlog     |
 | DR-028                                                        | Sync administration and team matching                                        | Backlog     |
 | DR-029                                                        | Legacy styling retirement and final regression                               | Backlog     |

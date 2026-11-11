@@ -1,10 +1,20 @@
-<div class="filter-bar">
-  <span class="filter-bar__count">{{ counts().all }} teams</span>
+<div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+  <span id="club-team-count" class="text-muted-color">
+    {{ countKey() | translate: { count: counts().all } }}
+  </span>
 
-  <div class="segmented" role="tablist" aria-label="Team gender filter">
-    <button type="button" role="tab" [class.is-active]="filter() === 'all'" (click)="select('all')">All</button>
-    <button type="button" role="tab" [class.is-active]="filter() === 'M'" (click)="select('M')">Men</button>
-    <button type="button" role="tab" [class.is-active]="filter() === 'F'" (click)="select('F')">Women</button>
-    <button type="button" role="tab" [class.is-active]="filter() === 'MX'" (click)="select('MX')">Mixed</button>
-  </div>
+  <p-selectbutton
+    class="flex-wrap"
+    size="small"
+    [options]="options()"
+    [ngModel]="filter()"
+    (ngModelChange)="select($event)"
+    optionValue="value"
+    [allowEmpty]="false"
+    ariaLabelledBy="club-team-count"
+  >
+    <ng-template #item let-option>
+      <span>{{ 'all.club.detail.teams.filter.' + option.key | translate }} · {{ option.count }}</span>
+    </ng-template>
+  </p-selectbutton>
 </div>

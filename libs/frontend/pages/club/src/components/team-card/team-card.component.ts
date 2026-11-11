@@ -1,9 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BadgeModule } from 'primeng/badge';
+import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
+import { FormSequenceComponent } from '@app/frontend-components/form-sequence';
 import { Team } from '@app/models';
 import { TeamCardService } from './team-card.service';
 
@@ -14,22 +20,32 @@ interface TeamPlayerRow {
   slug: string;
   fullName: string;
   initials: string;
-  role?: 'C' | 'VC' | 'YOU';
+  isCaptain: boolean;
   single?: number;
   double?: number;
   mix?: number;
   isOwn: boolean;
-  /** Last 5 W/L results, most recent first. Pads with `null` when fewer games played. */
-  form: (boolean | null)[];
+  /** Last 5 W/L results as returned by the API; empty when no games were played. */
+  form: ('W' | 'L')[];
 }
 
 @Component({
   selector: 'app-team-card',
-  standalone: true,
-  imports: [RouterModule, TranslateModule, BadgeModule, ButtonModule, SkeletonModule],
+  imports: [
+    RouterModule,
+    TranslateModule,
+    AvatarModule,
+    ButtonModule,
+    CardModule,
+    DividerModule,
+    SkeletonModule,
+    TableModule,
+    TagModule,
+    TooltipModule,
+    FormSequenceComponent,
+  ],
   providers: [TeamCardService],
   templateUrl: './team-card.component.html',
-  styleUrl: './team-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamCardComponent {
@@ -68,17 +84,6 @@ export class TeamCardComponent {
     return 'N';
   });
 
-  readonly captainInitials = computed(() => {
-    const name = this.team().captain?.fullName ?? '';
-    return name
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
-  });
-
   /** Sorted player rows; captain first, own player highlighted. */
   readonly playerRows = computed<TeamPlayerRow[]>(() => {
     const t = this.team();
@@ -90,22 +95,16 @@ export class TeamCardComponent {
         if (!p) return null;
         const initials = (p.firstName?.[0] ?? '') + (p.lastName?.[0] ?? '');
         const last = p.rankingLastPlaces?.[0];
-        let role: TeamPlayerRow['role'] | undefined;
-        if (own && p.id === own) role = 'YOU';
-        else if (p.id === captainId) role = 'C';
-        // Pad recentForm to exactly 5 slots; null = no game played.
         const rawForm: boolean[] = Array.isArray((p as { recentForm?: boolean[] }).recentForm)
           ? ((p as { recentForm?: boolean[] }).recentForm as boolean[])
           : [];
-        const form: (boolean | null)[] = Array.from({ length: 5 }, (_, i) =>
-          i < rawForm.length ? !!rawForm[i] : null,
-        );
+        const form = rawForm.slice(0, 5).map((won) => (won ? ('W' as const) : ('L' as const)));
         return {
           id: p.id!,
           slug: p.slug ?? p.id!,
           fullName: p.fullName ?? `${p.firstName ?? ''} ${p.lastName ?? ''}`.trim(),
           initials: initials.toUpperCase() || '?',
-          role,
+          isCaptain: p.id === captainId,
           single: last?.single ?? undefined,
           double: last?.double ?? undefined,
           mix: last?.mix ?? undefined,
@@ -119,8 +118,8 @@ export class TeamCardComponent {
     return list.sort((a, b) => {
       if (a.isOwn && !b.isOwn) return -1;
       if (!a.isOwn && b.isOwn) return 1;
-      if (a.role === 'C' && b.role !== 'C') return -1;
-      if (a.role !== 'C' && b.role === 'C') return 1;
+      if (a.isCaptain && !b.isCaptain) return -1;
+      if (!a.isCaptain && b.isCaptain) return 1;
       return a.fullName.localeCompare(b.fullName);
     });
   });

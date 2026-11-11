@@ -75,6 +75,39 @@
         "teamsActive": "Équipes actives",
         "versus": "{{home}} - {{away}}",
         "winRate": "{{rate}}% de victoires"
+      },
+      "teams": {
+        "captain": "Capitaine",
+        "count": {
+          "one": "{{count}} équipe",
+          "other": "{{count}} équipes"
+        },
+        "edit": "Modifier l'équipe",
+        "filter": {
+          "all": "Toutes",
+          "label": "Filtrer les équipes par type",
+          "men": "Hommes",
+          "mixed": "Mixte",
+          "women": "Dames"
+        },
+        "form": "Forme récente",
+        "levels": {
+          "double": "D",
+          "doubleFull": "Double",
+          "mix": "M",
+          "mixFull": "Mixte",
+          "single": "S",
+          "singleFull": "Simple"
+        },
+        "less": "Afficher moins",
+        "more": "+{{count}} de plus",
+        "noMatch": "Aucune équipe pour ce filtre.",
+        "noPlayers": "Aucun joueur dans cette équipe.",
+        "player": "Joueur",
+        "played": "{{count}} joués",
+        "view": "Voir l'équipe",
+        "won": "{{count}} gagnés",
+        "you": "Vous"
       }
     },
     "gamesDistribution": "Répartition des Matchs",

@@ -1,5 +1,5 @@
 <div class="flex flex-wrap gap-1">
   @for (result of results(); track $index) {
-    <p-tag [value]="result" [severity]="result === 'W' ? 'success' : 'danger'" />
+    <p-tag class="min-w-8 justify-center" [value]="result" [severity]="result === 'W' ? 'success' : 'danger'" />
   }
 </div>

@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { TeamGenderFilter } from '../../pages/detail/tabs/club-teams-tab.service';
 
 interface BucketCounts {
@@ -11,10 +13,8 @@ interface BucketCounts {
 
 @Component({
   selector: 'app-team-filter-bar',
-  standalone: true,
-  imports: [TranslateModule],
+  imports: [FormsModule, TranslateModule, SelectButtonModule],
   templateUrl: './team-filter-bar.component.html',
-  styleUrl: './team-filter-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamFilterBarComponent {
@@ -22,6 +22,18 @@ export class TeamFilterBarComponent {
   readonly counts = input.required<BucketCounts>();
 
   readonly filterChange = output<TeamGenderFilter>();
+
+  readonly countKey = computed(() => `all.club.detail.teams.count.${this.counts().all === 1 ? 'one' : 'other'}`);
+
+  readonly options = computed(() => {
+    const counts = this.counts();
+    return [
+      { key: 'all', value: 'all' as const, count: counts.all },
+      { key: 'men', value: 'M' as const, count: counts.M },
+      { key: 'women', value: 'F' as const, count: counts.F },
+      { key: 'mixed', value: 'MX' as const, count: counts.MX },
+    ];
+  });
 
   select(filter: TeamGenderFilter) {
     if (filter !== this.filter()) {

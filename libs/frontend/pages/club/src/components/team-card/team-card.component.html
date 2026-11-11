@@ -1,109 +1,178 @@
-<article class="team" [class.team--own]="playerRows().length > 0 && playerRows()[0].isOwn">
-  <!-- Top gradient band (grows on hover via SCSS) -->
-  <div class="team__band"></div>
-
-  <!-- Head: code · title/division · win% chip -->
-  <div class="team__head">
-    <div class="team__code">{{ teamCode() }}</div>
-    <div class="team__title-wrap">
-      @if (clubId()) {
-        <a [routerLink]="['/clubs', clubId(), 'teams', team().id]" class="team__title">{{ team().name }}</a>
-      } @else {
-        <span class="team__title">{{ team().name }}</span>
-      }
-      <div class="team__division">
+<p-card>
+  <ng-template #title>
+    <div class="flex items-start gap-3">
+      <p-avatar class="shrink-0" [label]="teamCode()" shape="circle" size="large" aria-hidden="true" />
+      <div class="flex min-w-0 flex-1 flex-col gap-1">
+        <h3 class="m-0 text-lg font-semibold wrap-break-word">
+          @if (clubId()) {
+            <a class="text-color no-underline hover:underline" [routerLink]="['/clubs', clubId(), 'teams', team().id]">
+              {{ team().name }}
+            </a>
+          } @else {
+            {{ team().name }}
+          }
+        </h3>
         @if (team().abbreviation) {
-          <span class="text-xs">{{ team().abbreviation }}</span>
+          <span class="text-sm font-normal text-muted-color">{{ team().abbreviation }}</span>
         }
       </div>
+      @if (canEdit()) {
+        <p-button
+          icon="pi pi-pencil"
+          severity="secondary"
+          variant="text"
+          size="small"
+          [rounded]="true"
+          [ariaLabel]="'all.club.detail.teams.edit' | translate"
+          (onClick)="onEdit($event)"
+        />
+      }
     </div>
-    @if (statsLoading()) {
-      <p-skeleton width="3rem" height="1.25rem" borderRadius="4px" />
-    } @else if (stats().gamesPlayed > 0) {
-      <span
-        class="team__winpct"
-        [class.team__winpct--good]="winRate() >= 50"
-        [class.team__winpct--bad]="winRate() < 50"
-      >{{ winRate() }}%</span>
-    }
-    @if (canEdit()) {
-      <p-button icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm team__edit" (onClick)="onEdit($event)" />
-    }
-  </div>
+  </ng-template>
 
-  <!-- Captain row -->
-  @if (team().captain) {
-    <div class="team__captain">
-      <span class="team__captain-avatar">{{ captainInitials() }}</span>
-      <div class="flex flex-col leading-tight min-w-0">
-        <span class="team__captain-name truncate">{{ team().captain!.fullName }}</span>
-        <span class="team__captain-role">Captain</span>
+  <p-divider />
+
+  <div class="flex flex-col gap-4">
+    @if (team().captain; as captain) {
+      <div class="flex items-center gap-3">
+        <p-avatar class="shrink-0" icon="pi pi-user" shape="circle" aria-hidden="true" />
+        <div class="flex min-w-0 flex-1 flex-col gap-1">
+          <span class="text-sm text-muted-color">{{ 'all.club.detail.teams.captain' | translate }}</span>
+          <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+            <span class="min-w-0 font-medium wrap-break-word">{{ captain.fullName }}</span>
+            <span class="flex shrink-0 items-center gap-1">
+              @if (team().email) {
+                <a
+                  pButton
+                  class="shrink-0 no-underline"
+                  severity="secondary"
+                  variant="text"
+                  size="small"
+                  [rounded]="true"
+                  [attr.aria-label]="team().email"
+                  [title]="team().email"
+                  [href]="'mailto:' + team().email"
+                >
+                  <i class="pi pi-envelope" aria-hidden="true"></i>
+                </a>
+              }
+              @if (team().phone) {
+                <a
+                  pButton
+                  class="shrink-0 no-underline"
+                  severity="secondary"
+                  variant="text"
+                  size="small"
+                  [rounded]="true"
+                  [attr.aria-label]="team().phone"
+                  [title]="team().phone"
+                  [href]="'tel:' + team().phone"
+                >
+                  <i class="pi pi-phone" aria-hidden="true"></i>
+                </a>
+              }
+            </span>
+          </div>
+        </div>
       </div>
-      <div class="team__captain-contact">
-        @if (team().email) {
-          <a [href]="'mailto:' + team().email" class="team__icon-btn" [title]="team().email"><i class="pi pi-envelope"></i></a>
-        }
-        @if (team().phone) {
-          <a [href]="'tel:' + team().phone" class="team__icon-btn" [title]="team().phone!"><i class="pi pi-phone"></i></a>
+    }
+
+    @if (playerRows().length > 0) {
+      <div class="flex min-w-0 flex-col gap-2">
+        <p-table
+          [value]="visibleRows()"
+          size="small"
+          [scrollable]="true"
+          [tableStyle]="{ 'min-width': '19rem', 'table-layout': 'fixed' }"
+          class="tabular-nums"
+        >
+          <ng-template #colgroup>
+            <colgroup>
+              <col />
+              <col class="w-10" />
+              <col class="w-10" />
+              <col class="w-10" />
+            </colgroup>
+          </ng-template>
+          <ng-template #header>
+            <tr>
+              <th scope="col">{{ 'all.club.detail.teams.player' | translate }}</th>
+              <th scope="col" class="text-right">
+                <abbr tabindex="0" [pTooltip]="'all.club.detail.teams.levels.singleFull' | translate" tooltipPosition="top">{{
+                  'all.club.detail.teams.levels.single' | translate
+                }}</abbr>
+              </th>
+              <th scope="col" class="text-right">
+                <abbr tabindex="0" [pTooltip]="'all.club.detail.teams.levels.doubleFull' | translate" tooltipPosition="top">{{
+                  'all.club.detail.teams.levels.double' | translate
+                }}</abbr>
+              </th>
+              <th scope="col" class="text-right">
+                <abbr tabindex="0" [pTooltip]="'all.club.detail.teams.levels.mixFull' | translate" tooltipPosition="top">{{
+                  'all.club.detail.teams.levels.mix' | translate
+                }}</abbr>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-row>
+            <tr [class.bg-highlight]="row.isOwn">
+              <td class="align-top">
+                <div class="flex flex-col gap-2">
+                  <div class="flex min-w-0 flex-wrap items-center gap-2">
+                    <a class="font-medium text-color no-underline wrap-anywhere hover:underline" [routerLink]="['/players', row.slug]">{{
+                      row.fullName
+                    }}</a>
+                    @if (row.isOwn) {
+                      <p-tag severity="info" [value]="'all.club.detail.teams.you' | translate" />
+                    }
+                  </div>
+                  <app-form-sequence [results]="row.form" role="group" [attr.aria-label]="'all.club.detail.teams.form' | translate" />
+                </div>
+              </td>
+              <td class="text-right align-top font-medium">{{ row.single ?? '–' }}</td>
+              <td class="text-right align-top font-medium">{{ row.double ?? '–' }}</td>
+              <td class="text-right align-top font-medium">{{ row.mix ?? '–' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        @if (hiddenRowCount() > 0) {
+          <button
+            pButton
+            type="button"
+            class="self-start"
+            severity="secondary"
+            variant="text"
+            size="small"
+            [attr.aria-expanded]="expanded()"
+            (click)="toggleExpanded($event)"
+          >
+            <i [class]="expanded() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" aria-hidden="true"></i>
+            <span>
+              {{ expanded() ? ('all.club.detail.teams.less' | translate) : ('all.club.detail.teams.more' | translate: { count: hiddenRowCount() }) }}
+            </span>
+          </button>
         }
       </div>
-    </div>
-  }
-
-  <!-- Roster summary row -->
-  <div class="team__roster">
-    <span class="team__roster-label">Roster · {{ playerRows().length }}</span>
-    <span class="team__summary">
-      <span>M <strong>{{ stats().gamesPlayed }}</strong></span>
-      <span>W <strong>{{ stats().gamesWon }}</strong></span>
-    </span>
-  </div>
-
-  <!-- Player rows -->
-  <div class="team__players">
-    @for (row of visibleRows(); track row.id) {
-      <a class="tp-row" [class.is-own]="row.isOwn" [routerLink]="['/players', row.slug]">
-        <span class="tp-row__avatar">{{ row.initials }}</span>
-        <span class="tp-row__name">
-          {{ row.fullName }}
-          @if (row.role) {
-            <span class="tp-row__role">{{ row.role }}</span>
-          }
-        </span>
-        <span class="tp-row__levels">
-          @if (row.single !== null && row.single !== undefined) { <span class="tp-lv" data-kind="S">{{ row.single }}</span> }
-          @if (row.double !== null && row.double !== undefined) { <span class="tp-lv" data-kind="D">{{ row.double }}</span> }
-          @if (row.mix !== null && row.mix !== undefined) { <span class="tp-lv" data-kind="M">{{ row.mix }}</span> }
-        </span>
-        <span class="tp-row__form">
-          @for (dot of row.form; track $index) {
-            <span
-              class="tp-dot"
-              [class.tp-dot--win]="dot === true"
-              [class.tp-dot--loss]="dot === false"
-              [attr.aria-label]="dot === true ? 'Won' : dot === false ? 'Lost' : 'No game'"
-            ></span>
-          }
-        </span>
-      </a>
-    }
-  </div>
-
-  <!-- Footer -->
-  <div class="team__footer">
-    @if (hiddenRowCount() > 0) {
-      <button type="button" class="team__expand" (click)="toggleExpanded($event)" [attr.aria-expanded]="expanded()">
-        @if (expanded()) {
-          <i class="pi pi-chevron-up text-[10px]"></i>
-          <span>Show less</span>
-        } @else {
-          <i class="pi pi-chevron-down text-[10px]"></i>
-          <span>+{{ hiddenRowCount() }} more on roster</span>
-        }
-      </button>
     } @else {
-      <span>&nbsp;</span>
+      <p class="m-0 text-muted-color">{{ 'all.club.detail.teams.noPlayers' | translate }}</p>
     }
-    <a [routerLink]="['/clubs', clubId(), 'teams', team().id]">View team ↗</a>
   </div>
-</article>
+
+  <ng-template #footer>
+    <div class="flex flex-wrap items-center justify-between gap-2 text-sm tabular-nums">
+      @if (statsLoading()) {
+        <p-skeleton width="8rem" height="1rem" />
+        <p-skeleton width="5rem" height="1.5rem" />
+      } @else {
+        <span class="text-muted-color">
+          {{ 'all.club.detail.teams.played' | translate: { count: stats().gamesPlayed } }} ·
+          {{ 'all.club.detail.teams.won' | translate: { count: stats().gamesWon } }}
+        </span>
+        @if (stats().gamesPlayed > 0) {
+          <p-tag [severity]="winRate() >= 50 ? 'success' : 'danger'" [value]="'all.club.detail.stats.winRate' | translate: { rate: winRate() }" />
+        }
+      }
+    </div>
+  </ng-template>
+</p-card>

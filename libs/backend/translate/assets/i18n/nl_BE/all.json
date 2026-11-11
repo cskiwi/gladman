@@ -75,6 +75,39 @@
         "teamsActive": "Actieve teams",
         "versus": "{{home}} - {{away}}",
         "winRate": "{{rate}}% gewonnen"
+      },
+      "teams": {
+        "captain": "Kapitein",
+        "count": {
+          "one": "{{count}} team",
+          "other": "{{count}} teams"
+        },
+        "edit": "Team bewerken",
+        "filter": {
+          "all": "Alle",
+          "label": "Teams filteren op type",
+          "men": "Heren",
+          "mixed": "Gemengd",
+          "women": "Dames"
+        },
+        "form": "Recente vorm",
+        "levels": {
+          "double": "D",
+          "doubleFull": "Dubbel",
+          "mix": "G",
+          "mixFull": "Gemengd",
+          "single": "E",
+          "singleFull": "Enkel"
+        },
+        "less": "Minder tonen",
+        "more": "+{{count}} meer",
+        "noMatch": "Geen teams voor deze filter.",
+        "noPlayers": "Nog geen spelers in dit team.",
+        "player": "Speler",
+        "played": "{{count}} gespeeld",
+        "view": "Team bekijken",
+        "won": "{{count}} gewonnen",
+        "you": "Jij"
       }
     },
     "gamesDistribution": "Wedstrijdverdeling",

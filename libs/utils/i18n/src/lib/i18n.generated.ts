@@ -83,6 +83,39 @@ export type I18nTranslations = {
                     "versus": string;
                     "winRate": string;
                 };
+                "teams": {
+                    "captain": string;
+                    "count": {
+                        "one": string;
+                        "other": string;
+                    };
+                    "edit": string;
+                    "filter": {
+                        "all": string;
+                        "label": string;
+                        "men": string;
+                        "mixed": string;
+                        "women": string;
+                    };
+                    "form": string;
+                    "levels": {
+                        "double": string;
+                        "doubleFull": string;
+                        "mix": string;
+                        "mixFull": string;
+                        "single": string;
+                        "singleFull": string;
+                    };
+                    "less": string;
+                    "more": string;
+                    "noMatch": string;
+                    "noPlayers": string;
+                    "player": string;
+                    "played": string;
+                    "view": string;
+                    "won": string;
+                    "you": string;
+                };
             };
             "gamesDistribution": string;
             "managePlayers": string;

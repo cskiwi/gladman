@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Team } from '@app/models';
 import { AuthService } from '@app/frontend-modules-auth/service';
@@ -10,7 +12,7 @@ import { TeamFilterBarComponent } from '../../../components/team-filter-bar';
 @Component({
   selector: 'app-club-teams-tab',
   standalone: true,
-  imports: [TranslateModule, SkeletonModule, TeamCardComponent, TeamFilterBarComponent],
+  imports: [TranslateModule, CardModule, MessageModule, SkeletonModule, TeamCardComponent, TeamFilterBarComponent],
   providers: [ClubTeamsTabService],
   templateUrl: './club-teams-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

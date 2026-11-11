@@ -75,6 +75,39 @@
         "teamsActive": "Teams active",
         "versus": "{{home}} vs {{away}}",
         "winRate": "{{rate}}% wins"
+      },
+      "teams": {
+        "captain": "Captain",
+        "count": {
+          "one": "{{count}} team",
+          "other": "{{count}} teams"
+        },
+        "edit": "Edit team",
+        "filter": {
+          "all": "All",
+          "label": "Filter teams by type",
+          "men": "Men",
+          "mixed": "Mixed",
+          "women": "Women"
+        },
+        "form": "Recent form",
+        "levels": {
+          "double": "D",
+          "doubleFull": "Doubles",
+          "mix": "M",
+          "mixFull": "Mixed",
+          "single": "S",
+          "singleFull": "Singles"
+        },
+        "less": "Show less",
+        "more": "+{{count}} more",
+        "noMatch": "No teams match this filter.",
+        "noPlayers": "No players in this team yet.",
+        "player": "Player",
+        "played": "{{count}} played",
+        "view": "View team",
+        "won": "{{count}} won",
+        "you": "You"
       }
     },
     "gamesDistribution": "Games Distribution",

@@ -170,7 +170,7 @@
     "webpack-dev-server": "^5.2.6"
   },
   "overrides": {
-    "stylus": "0.0.1-security"
+    "stylus": "0.64.0"
   },
   "engines": {
     "node": "^24.15.0"

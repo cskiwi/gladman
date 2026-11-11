@@ -1,0 +1,109 @@
+<p-dialog
+  [header]="'all.tournament.admin.schedule.generateSlots' | translate"
+  [(visible)]="visible"
+  [modal]="true"
+  styleClass="w-full sm:w-lg"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="!updating()"
+  [closeOnEscape]="!updating()"
+  [closeAriaLabel]="'all.button.close' | translate"
+>
+  <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()" [attr.aria-busy]="updating()">
+    @if (error(); as generationError) {
+      <p-message severity="error">{{ generationError }}</p-message>
+    }
+
+    @if (venuesError(); as loadError) {
+      <p-message severity="error">{{ loadError }}</p-message>
+    }
+
+    <div class="flex flex-col gap-2">
+      <label for="generate-venue" id="generate-venue-label">{{ 'all.tournament.admin.schedule.venue' | translate }}</label>
+      <p-select
+        inputId="generate-venue"
+        ariaLabelledBy="generate-venue-label"
+        [formControl]="venueControl"
+        [options]="venues()"
+        optionLabel="name"
+        optionValue="id"
+        [filter]="true"
+        filterBy="name"
+        [showClear]="true"
+        [loading]="venuesLoading()"
+        [placeholder]="'all.tournament.admin.schedule.selectVenue' | translate"
+        [readonly]="updating()"
+        (onChange)="onVenueChange()"
+        (onClear)="onVenueChange()"
+        fluid
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="generate-courts">{{ 'all.tournament.admin.schedule.courts' | translate }}</label>
+      <p-multiselect
+        inputId="generate-courts"
+        formControlName="courtIds"
+        [options]="courtOptions()"
+        optionLabel="name"
+        optionValue="id"
+        [placeholder]="'all.tournament.admin.schedule.selectCourts' | translate"
+        [readonly]="updating()"
+        fluid
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="generate-dates">{{ 'all.tournament.admin.schedule.dates' | translate }}</label>
+      <p-datepicker
+        inputId="generate-dates"
+        formControlName="dates"
+        selectionMode="multiple"
+        dateFormat="yy-mm-dd"
+        [readonlyInput]="updating()"
+        fluid
+      />
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="generate-start">{{ 'all.tournament.admin.schedule.startTime' | translate }}</label>
+        <input pInputText id="generate-start" formControlName="startTime" placeholder="09:00" [readonly]="updating()" fluid />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="generate-end">{{ 'all.tournament.admin.schedule.endTime' | translate }}</label>
+        <input pInputText id="generate-end" formControlName="endTime" placeholder="18:00" [readonly]="updating()" fluid />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="generate-duration" id="generate-duration-label">{{ 'all.tournament.admin.schedule.slotDuration' | translate }}</label>
+        <p-select
+          inputId="generate-duration"
+          ariaLabelledBy="generate-duration-label"
+          formControlName="slotDurationMinutes"
+          [options]="slotDurationOptions"
+          optionLabel="label"
+          optionValue="value"
+          [readonly]="updating()"
+          fluid
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="generate-break">{{ 'all.tournament.admin.schedule.breakBetween' | translate }}</label>
+        <p-inputnumber inputId="generate-break" formControlName="breakMinutes" suffix=" min" [readonly]="updating()" fluid />
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-3">
+      <p-button
+        [label]="'all.button.cancel' | translate"
+        severity="secondary"
+        variant="outlined"
+        type="button"
+        [disabled]="updating()"
+        (onClick)="close()"
+        fluid
+      />
+      <p-button [label]="'all.button.generate' | translate" icon="pi pi-cog" type="submit" [disabled]="form.invalid" [loading]="updating()" fluid />
+    </div>
+  </form>
+</p-dialog>

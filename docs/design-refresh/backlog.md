@@ -5,6 +5,17 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-024b5 Scheduling dialogs is Done with explicit approval on 2026-11-11 and disclosed verification limits:
+[dialogs brief](work-items/DR-024b5-schedule-dialogs.md).
+Generate and Auto-schedule dialogs are presentational components with native forms and localized nl/fr/en copy.
+The Generate dialog gains a venue select so courts can be chosen when none are linked to the tournament.
+27 focused tests, lint and build pass; Generate dialog browser-checked (Dutch/dark/wide).
+Not verified: Auto-schedule dialog in a browser, light/narrow, keyboard/contrast, live mutations (`generateTimeSlots`
+is not exposed by the API). Next candidate, not started: expose/verify slot generation, then DR-024b6 remaining English
+copy (`confirm()` texts). Keep DR-024b/DR-024 open.
+
+### Previous completed focus: Scheduling grid and game panel
+
 DR-024b4 Scheduling grid/game panel is Done with explicit approval and disclosed verification limits: [grid brief](work-items/DR-024b4-schedule-grid.md).
 Native table/Card/Panel/Tag with presentational `app-schedule-slot` and `app-schedule-game-card`; smart tab keeps
 drag-and-drop and mutations. Palette colors removed; eight locale keys added. 20 focused tests, lint and build pass.
@@ -2501,6 +2512,7 @@ and linked from their registry rows.
 | [DR-024b2](work-items/DR-024b2-schedule-summary.md)           | Scheduling summary and mounted count labels; approved with disclosed limits  | Done        |
 | [DR-024b3](work-items/DR-024b3-schedule-controls.md)          | Scheduling controls and labels; approved with disclosed verification limits  | Done        |
 | [DR-024b4](work-items/DR-024b4-schedule-grid.md)              | Scheduling grid/game panel; approved with disclosed verification limits      | Done        |
+| [DR-024b5](work-items/DR-024b5-schedule-dialogs.md)           | Scheduling Generate/Auto-schedule dialogs; approved with disclosed limits    | Done        |
 | DR-025                                                        | Tournament admin: settings and phase controls                                | Backlog     |
 | DR-026                                                        | Tournament live displays and kiosk                                           | Backlog     |
 | DR-027                                                        | Global admin and search indexing                                             | Backlog     |

@@ -21,6 +21,12 @@ export interface ScheduleResult {
   conflicts: ScheduleConflict[];
 }
 
+export interface ScheduleVenue {
+  id: string;
+  name: string;
+  courts: Pick<Court, 'id' | 'name'>[];
+}
+
 export class ScheduleTabService {
   private readonly apollo = inject(Apollo);
   private readonly translate = inject(TranslateService);
@@ -35,6 +41,52 @@ export class ScheduleTabService {
   // Loading and error states
   readonly updating = signal(false);
   readonly updateError = signal<string | null>(null);
+
+  readonly venues = signal<ScheduleVenue[]>([]);
+  readonly venuesLoading = signal(false);
+  readonly venuesError = signal<string | null>(null);
+
+  /** Loads every venue with its courts once, so slots can be generated for courts not yet linked to the tournament. */
+  async loadVenues(): Promise<void> {
+    if (this.venues().length > 0 || this.venuesLoading()) return;
+    this.venuesLoading.set(true);
+    this.venuesError.set(null);
+    try {
+      const result = await lastValueFrom(
+        this.apollo.query<{ locations: { id: string; name?: string | null; courts?: { id: string; name?: string | null }[] | null }[] }>({
+          query: gql`
+            query ScheduleVenues {
+              locations {
+                id
+                name
+                courts {
+                  id
+                  name
+                }
+              }
+            }
+          `,
+        }),
+      );
+      const venues = (result.data?.locations ?? [])
+        .filter((venue) => (venue.courts?.length ?? 0) > 0)
+        .map((venue) => ({
+          id: venue.id,
+          name: venue.name ?? venue.id,
+          courts: [...(venue.courts ?? [])].map((court) => ({ id: court.id, name: court.name ?? court.id })).sort(compareCourtNames),
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+      this.venues.set(venues);
+    } catch (err) {
+      this.venuesError.set(err instanceof Error ? err.message : 'Failed to load venues');
+    } finally {
+      this.venuesLoading.set(false);
+    }
+  }
+
+  clearUpdateError(): void {
+    this.updateError.set(null);
+  }
 
   // Schedule data resource
   private scheduleResource = resource({
@@ -495,4 +547,8 @@ export class ScheduleTabService {
       this.updating.set(false);
     }
   }
+}
+
+function compareCourtNames(a: { name: string }, b: { name: string }): number {
+  return a.name.localeCompare(b.name, undefined, { numeric: true });
 }

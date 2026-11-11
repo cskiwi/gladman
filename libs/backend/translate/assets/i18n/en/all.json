@@ -1626,7 +1626,12 @@
         "title": "Schedule",
         "totalSlots": "Total Slots",
         "unscheduled": "Unscheduled",
-        "unscheduledGames": "Unscheduled Games"
+        "unscheduledGames": "Unscheduled Games",
+        "scheduledGames": "Scheduled: {{count}} games",
+        "skippedGames": "Skipped: {{count}} games",
+        "moreConflicts": "... and {{count}} more",
+        "venue": "Venue",
+        "selectVenue": "Select a venue"
       },
       "settings": {
         "actions": "Actions",

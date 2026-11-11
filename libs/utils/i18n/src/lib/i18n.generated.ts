@@ -1634,6 +1634,11 @@ export type I18nTranslations = {
                     "totalSlots": string;
                     "unscheduled": string;
                     "unscheduledGames": string;
+                    "scheduledGames": string;
+                    "skippedGames": string;
+                    "moreConflicts": string;
+                    "venue": string;
+                    "selectVenue": string;
                 };
                 "settings": {
                     "actions": string;

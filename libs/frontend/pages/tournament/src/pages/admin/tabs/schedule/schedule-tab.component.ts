@@ -1,26 +1,22 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Court, Game, TournamentEvent, TournamentScheduleSlot } from '@app/models';
-import { ScheduleSlotStatus, ScheduleStrategy } from '@app/models-enum';
+import { ScheduleSlotStatus } from '@app/models-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { CheckboxModule } from 'primeng/checkbox';
-import { DatePickerModule } from 'primeng/datepicker';
-import { DialogModule } from 'primeng/dialog';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { MultiSelectModule } from 'primeng/multiselect';
 import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToolbarModule } from 'primeng/toolbar';
+import { ScheduleAutoDialogComponent, AutoScheduleValue } from './schedule-auto-dialog.component';
 import { ScheduleGameCardComponent } from './schedule-game-card.component';
+import { GenerateSlotsValue, ScheduleGenerateDialogComponent } from './schedule-generate-dialog.component';
 import { ScheduleSlotComponent } from './schedule-slot.component';
 import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
 
@@ -29,24 +25,19 @@ import { ScheduleResult, ScheduleTabService } from './schedule-tab.service';
   standalone: true,
   imports: [
     FormsModule,
-    ReactiveFormsModule,
     TranslateModule,
     CardModule,
     ButtonModule,
     TableModule,
     ScheduleSlotComponent,
     ScheduleGameCardComponent,
+    ScheduleGenerateDialogComponent,
+    ScheduleAutoDialogComponent,
     SelectModule,
-    InputTextModule,
-    InputNumberModule,
     MessageModule,
     ProgressBarModule,
-    DialogModule,
     TooltipModule,
     ToolbarModule,
-    CheckboxModule,
-    DatePickerModule,
-    MultiSelectModule,
     PanelModule,
     DatePipe,
     CdkDropListGroup,
@@ -66,21 +57,9 @@ export class ScheduleTabComponent {
 
   // Generate slots dialog
   showGenerateSlotsDialog = signal(false);
-  generateSlotsForm = new FormGroup({
-    courtIds: new FormControl<string[]>([], Validators.required),
-    dates: new FormControl<Date[]>([], Validators.required),
-    startTime: new FormControl<string>('09:00', Validators.required),
-    endTime: new FormControl<string>('18:00', Validators.required),
-    slotDurationMinutes: new FormControl<number>(30, Validators.required),
-    breakMinutes: new FormControl<number>(0),
-  });
 
   // Auto-schedule dialog
   showAutoScheduleDialog = signal(false);
-  autoScheduleForm = new FormGroup({
-    strategy: new FormControl<ScheduleStrategy>(ScheduleStrategy.MINIMIZE_WAIT, Validators.required),
-    minRestMinutes: new FormControl<number>(15),
-  });
   lastScheduleResult = signal<ScheduleResult | null>(null);
 
   // Data
@@ -103,22 +82,6 @@ export class ScheduleTabComponent {
     { key: 'blocked', description: 'blockedDescription' },
     { key: 'unscheduledGames', description: 'unscheduledGamesDescription' },
   ] as const satisfies ReadonlyArray<{ key: keyof ReturnType<ScheduleTabService['stats']>; description: string }>;
-
-  // Strategy options
-  readonly strategyOptions = [
-    { label: 'Minimize Wait Time', value: ScheduleStrategy.MINIMIZE_WAIT },
-    { label: 'Category Order', value: ScheduleStrategy.CATEGORY_ORDER },
-    { label: 'By Level', value: ScheduleStrategy.BY_LEVEL },
-    { label: 'Random', value: ScheduleStrategy.RANDOM },
-  ];
-
-  // Slot duration options
-  readonly slotDurationOptions = [
-    { label: '20 min', value: 20 },
-    { label: '30 min', value: 30 },
-    { label: '45 min', value: 45 },
-    { label: '60 min', value: 60 },
-  ];
 
   // Computed courts for grid header
   gridCourts = computed(() => {
@@ -197,56 +160,37 @@ export class ScheduleTabComponent {
   }
 
   // Actions
+  venues = this.dataService.venues;
+  venuesLoading = this.dataService.venuesLoading;
+  venuesError = this.dataService.venuesError;
+
   openGenerateSlotsDialog(): void {
-    const tournament = this.tournament();
-    const courts = this.courts();
-
-    // Pre-select all courts
-    this.generateSlotsForm.patchValue({
-      courtIds: courts.map((c) => c.id),
-      dates: tournament?.firstDay ? [new Date(tournament.firstDay)] : [],
-      startTime: '09:00',
-      endTime: '18:00',
-      slotDurationMinutes: 30,
-      breakMinutes: 0,
-    });
-
+    void this.dataService.loadVenues();
+    this.dataService.clearUpdateError();
     this.showGenerateSlotsDialog.set(true);
   }
 
-  async generateSlots(): Promise<void> {
-    if (!this.generateSlotsForm.valid) return;
-
+  async generateSlots(value: GenerateSlotsValue): Promise<void> {
     const tournament = this.tournament();
     if (!tournament) return;
 
-    const { courtIds, dates, startTime, endTime, slotDurationMinutes, breakMinutes } = this.generateSlotsForm.value;
-    if (!courtIds || !dates || !startTime || !endTime || slotDurationMinutes == null) return;
+    const { courtIds, dates, startTime, endTime, slotDurationMinutes, breakMinutes } = value;
+    await this.dataService.generateTimeSlots(tournament.id, courtIds, dates, startTime, endTime, slotDurationMinutes, breakMinutes);
 
-    await this.dataService.generateTimeSlots(tournament.id, courtIds, dates, startTime, endTime, slotDurationMinutes, breakMinutes ?? 0);
-
-    this.showGenerateSlotsDialog.set(false);
+    if (!this.updateError()) this.showGenerateSlotsDialog.set(false);
   }
 
   openAutoScheduleDialog(): void {
-    this.autoScheduleForm.reset({
-      strategy: ScheduleStrategy.MINIMIZE_WAIT,
-      minRestMinutes: 15,
-    });
     this.lastScheduleResult.set(null);
+    this.dataService.clearUpdateError();
     this.showAutoScheduleDialog.set(true);
   }
 
-  async autoSchedule(): Promise<void> {
-    if (!this.autoScheduleForm.valid) return;
-
+  async autoSchedule(value: AutoScheduleValue): Promise<void> {
     const tournament = this.tournament();
     if (!tournament) return;
 
-    const { strategy, minRestMinutes } = this.autoScheduleForm.value;
-    if (!strategy) return;
-
-    const result = await this.dataService.scheduleGames(tournament.id, strategy, minRestMinutes ?? 15);
+    const result = await this.dataService.scheduleGames(tournament.id, value.strategy, value.minRestMinutes);
 
     this.lastScheduleResult.set(result);
   }

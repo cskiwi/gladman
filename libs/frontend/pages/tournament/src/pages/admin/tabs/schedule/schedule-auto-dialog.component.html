@@ -1,0 +1,90 @@
+<p-dialog
+  [header]="'all.tournament.admin.schedule.autoSchedule' | translate"
+  [(visible)]="visible"
+  [modal]="true"
+  styleClass="w-full sm:w-md"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="!updating()"
+  [closeOnEscape]="!updating()"
+  [closeAriaLabel]="'all.button.close' | translate"
+>
+  <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="submit()" [attr.aria-busy]="updating()">
+    <p class="text-muted-color m-0">{{ 'all.tournament.admin.schedule.autoScheduleDescription' | translate }}</p>
+
+    @if (error(); as scheduleError) {
+      <p-message severity="error">{{ scheduleError }}</p-message>
+    }
+
+    <div class="flex flex-col gap-2">
+      <label for="auto-strategy" id="auto-strategy-label">{{ 'all.tournament.admin.schedule.strategy' | translate }}</label>
+      <p-select
+        inputId="auto-strategy"
+        ariaLabelledBy="auto-strategy-label"
+        formControlName="strategy"
+        [options]="strategies"
+        [readonly]="updating()"
+        fluid
+      >
+        <ng-template #selectedItem let-strategy>{{ 'all.tournament.admin.schedule.strategies.' + strategy | translate }}</ng-template>
+        <ng-template #item let-strategy>{{ 'all.tournament.admin.schedule.strategies.' + strategy | translate }}</ng-template>
+      </p-select>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="auto-rest">{{ 'all.tournament.admin.schedule.minRestTime' | translate }}</label>
+      <p-inputnumber inputId="auto-rest" formControlName="minRestMinutes" suffix=" min" [readonly]="updating()" fluid />
+    </div>
+
+    @if (result(); as scheduleResult) {
+      <section class="flex flex-col gap-2" data-testid="schedule-result" aria-live="polite">
+        <h3 class="m-0 text-base font-semibold">{{ 'all.tournament.admin.schedule.results' | translate }}</h3>
+        <div class="flex flex-wrap items-center gap-2">
+          <p-tag
+            severity="success"
+            icon="pi pi-check"
+            [value]="'all.tournament.admin.schedule.scheduledGames' | translate: { count: scheduleResult.scheduledCount }"
+          />
+          <p-tag
+            severity="warn"
+            icon="pi pi-minus"
+            [value]="'all.tournament.admin.schedule.skippedGames' | translate: { count: scheduleResult.skippedCount }"
+          />
+        </div>
+        @if (listedConflicts().length > 0) {
+          <p-message severity="error" size="small">
+            <p class="m-0 font-semibold">{{ 'all.tournament.admin.schedule.conflicts' | translate }}</p>
+            <ul class="m-0 ps-4">
+              @for (conflict of listedConflicts(); track conflict.gameId) {
+                <li>{{ conflict.message }}</li>
+              }
+            </ul>
+            @if (hiddenConflictCount() > 0) {
+              <p class="m-0">{{ 'all.tournament.admin.schedule.moreConflicts' | translate: { count: hiddenConflictCount() } }}</p>
+            }
+          </p-message>
+        }
+      </section>
+    }
+
+    <div class="grid sm:grid-cols-2 gap-3">
+      <p-button
+        [label]="'all.button.close' | translate"
+        severity="secondary"
+        variant="outlined"
+        type="button"
+        [disabled]="updating()"
+        (onClick)="close()"
+        fluid
+      />
+      <p-button
+        [label]="'all.tournament.admin.schedule.runScheduler' | translate"
+        icon="pi pi-bolt"
+        type="submit"
+        [disabled]="form.invalid"
+        [loading]="updating()"
+        fluid
+      />
+    </div>
+  </form>
+</p-dialog>

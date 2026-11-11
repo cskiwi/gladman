@@ -8,6 +8,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { PanelModule } from 'primeng/panel';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -25,6 +26,7 @@ import { SortMeta } from 'primeng/api';
     TableModule,
     TagModule,
     DialogModule,
+    PanelModule,
     SelectModule,
     InputTextModule,
     InputNumberModule,
@@ -87,6 +89,11 @@ export class SubEventsComponent {
     { label: 'all.tournament.gameTypes.mixed', value: 'MX' },
   ];
 
+  readonly booleanOptions = [
+    { label: 'all.common.yes', value: true },
+    { label: 'all.common.no', value: false },
+  ];
+
   // Event type options
   readonly eventTypeOptions = [
     { label: 'all.tournament.eventTypes.men', value: SubEventTypeEnum.M },
@@ -140,8 +147,6 @@ export class SubEventsComponent {
 
     const values = this.subEventForm.value;
     const editing = this.editingSubEvent();
-
-    console.log('Saving sub-event', values, editing);
 
     if (editing) {
       // Update existing

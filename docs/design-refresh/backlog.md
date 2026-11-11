@@ -5,6 +5,13 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-025b Settings sub-events table and dialog is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-025b-settings-sub-events.md). Native
+`p-panel`, `p-tag`, localized Any/Yes/No/Edit/Delete (new `settings.any` key nl/fr/en), palette classes removed.
+Lint and build pass. Browser-checked (Dutch, dark, wide and 390px; fixed Panel overflow and raw select keys). Not verified: light theme,
+keyboard/contrast, live create/edit/delete. Not committed. Next: authenticated browser review of DR-025a/b.
+
+### Previous focus: Settings phase and general (DR-025a)
+
 DR-025a Settings phase stepper and general settings is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-025a-settings-phase-general.md).
 Both sections use a native `p-panel`, native stepper labels and plain form markup; lint and build pass, dark wide/390px
 browser-checked. Mobile uses a ProgressBar summary below `lg`. Not verified: light theme, keyboard/contrast, live save/phase change.
@@ -2538,7 +2545,7 @@ and linked from their registry rows.
 | [DR-024b6](work-items/DR-024b6-schedule-copy.md)              | Scheduling confirmations and localized game names                            | Done        |
 | DR-025                                                        | Tournament admin: settings and phase controls                                | In progress |
 | [DR-025a](work-items/DR-025a-settings-phase-general.md)       | Settings phase stepper and general settings                                  | Done        |
-| DR-025b                                                       | Settings sub-events table and dialog                                         | Backlog     |
+| [DR-025b](work-items/DR-025b-settings-sub-events.md)          | Settings sub-events table and dialog                                         | Done        |
 | DR-026                                                        | Tournament live displays and kiosk                                           | Backlog     |
 | DR-027                                                        | Global admin and search indexing                                             | Backlog     |
 | DR-028                                                        | Sync administration and team matching                                        | Backlog     |

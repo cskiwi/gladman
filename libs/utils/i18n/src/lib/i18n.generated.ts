@@ -1658,6 +1658,7 @@ export type I18nTranslations = {
                     "advancePhase": string;
                     "allowGuests": string;
                     "allowGuestsDescription": string;
+                    "any": string;
                     "basic": string;
                     "closeDate": string;
                     "confirmAdvancePhase": string;

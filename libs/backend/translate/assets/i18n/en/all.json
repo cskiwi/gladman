@@ -1651,6 +1651,7 @@
         "advancePhase": "Advance Phase",
         "allowGuests": "Without a partner",
         "allowGuestsDescription": "Allows you to enroll without a partner",
+        "any": "Any",
         "basic": "Basic Information",
         "closeDate": "Entries close",
         "confirmAdvancePhase": "Are you sure you want to advance to the next phase? This action cannot be undone.",

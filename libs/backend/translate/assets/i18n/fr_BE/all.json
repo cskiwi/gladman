@@ -704,6 +704,7 @@
         "summary": "{{wins}}W – {{losses}}L · {{count}} derniers",
         "title": "Forme actuelle"
       },
+      "follow": "Suivre",
       "matchups": {
         "empty": "Aucun duel perdu, bien joué.",
         "title": "Adversaires les plus difficiles"

@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-008c Player detail page chrome is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-008c-player-page-chrome.md)): the `/players/:playerId` hero member-id chip is a native Tag, Follow/Edit labels are localized (nl/fr/en), actions wrap, loading/error use native ProgressBar/Message, and the dead page SCSS is removed. Also fixed the error state never rendering (`resource.value()` threw). Lint and build pass; dark wide, light 375px and the error state browser-checked. Not verified: light wide, dark 375px, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012 club detail (hero identity and page-level states); DR-029 must wait for the unmigrated club page.
+
+### Previous focus: Player detail sidebar (DR-008b)
+
 DR-008b Player detail sidebar cards is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits
 ([brief](work-items/DR-008b-player-sidebar-cards.md)): the four legacy sidebar cards on `/players/:playerId` (current
 form, season record, toughest match-ups, teams) now use native `p-card`, shared `app-form-sequence`, native Tag/Avatar
@@ -2512,6 +2516,7 @@ and linked from their registry rows.
 | DR-008                                                        | Player detail                                                                | Backlog     |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)          | Player hero actions                                                          | Done        |
 | [DR-008b](work-items/DR-008b-player-sidebar-cards.md)         | Player detail sidebar cards (form, record, match-ups, teams)                 | Done        |
+| [DR-008c](work-items/DR-008c-player-page-chrome.md)           | Player detail page chrome (hero identity, actions copy, loading/error)       | Done        |
 | DR-009                                                        | Player head-to-head                                                          | Backlog     |
 | DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
 | DR-011                                                        | Player editing                                                               | Backlog     |

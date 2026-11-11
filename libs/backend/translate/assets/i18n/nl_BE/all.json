@@ -704,6 +704,7 @@
         "summary": "{{wins}}W – {{losses}}L · laatste {{count}}",
         "title": "Huidige vorm"
       },
+      "follow": "Volgen",
       "matchups": {
         "empty": "Geen verliezende match-ups, goed bezig.",
         "title": "Moeilijkste tegenstanders"

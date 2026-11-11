@@ -704,6 +704,7 @@
         "summary": "{{wins}}W – {{losses}}L · last {{count}}",
         "title": "Current form"
       },
+      "follow": "Follow",
       "matchups": {
         "empty": "No losing match-ups, nicely done.",
         "title": "Toughest match-ups"

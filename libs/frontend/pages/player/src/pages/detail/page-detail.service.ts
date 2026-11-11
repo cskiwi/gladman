@@ -66,7 +66,8 @@ export class DetailService {
   });
 
   // Public selectors
-  player = computed(() => this.playerResource.value());
+  // value() throws while the resource is in an error state, which would hide the page's error message
+  player = computed(() => (this.playerResource.hasValue() ? this.playerResource.value() : null));
   club = computed(() => this.player()?.clubPlayerMemberships?.find((cpm) => cpm.active)?.club);
   error = computed(() => this.playerResource.error()?.message || null);
   loading = computed(() => this.playerResource.isLoading());

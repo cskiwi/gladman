@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { RecentGamesComponent } from '@app/frontend-components/games/recent';
 import { UpcomingGamesComponent } from '@app/frontend-components/games/upcoming';
@@ -8,7 +9,7 @@ import { PlayerRankingProgressComponent } from '@app/frontend-components/player-
 import { SeoService } from '@app/frontend-modules-seo/service';
 import { AuthService } from '@app/frontend-modules-auth/service';
 import { RankingSystemService } from '@app/frontend-modules-graphql/ranking';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
 import { ShowLevelService } from './components/show-level/show-level.service';
 import { DetailService } from './page-detail.service';
@@ -18,7 +19,8 @@ import { PlayerStrongestMatchupsComponent } from './components/player-strongest-
 import { PlayerTeamsComponent } from './components/player-teams/player-teams.component';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
+import { TagModule } from 'primeng/tag';
 import { MenuModule } from 'primeng/menu';
 
 @Component({
@@ -27,7 +29,8 @@ import { MenuModule } from 'primeng/menu';
     BreadcrumbComponent,
     ProgressBarModule,
     ButtonModule,
-    CardModule,
+    MessageModule,
+    TagModule,
     MenuModule,
     RouterModule,
     TranslateModule,
@@ -43,7 +46,6 @@ import { MenuModule } from 'primeng/menu';
     PlayerTeamsComponent,
   ],
   templateUrl: './page-detail.component.html',
-  styleUrl: './page-detail.component.scss'
 })
 export class PageDetailComponent {
   private readonly dataService = new DetailService();
@@ -61,15 +63,10 @@ export class PageDetailComponent {
   auth = inject(AuthService);
   user = this.auth.user;
 
-  clubs = computed(() =>
-    (this.user()?.clubPlayerMemberships ?? [])
-      .filter((m) => m?.active),
-  );
+  clubs = computed(() => (this.user()?.clubPlayerMemberships ?? []).filter((m) => m?.active));
 
   rankingPlace = this.showLevelService.rankingPlace;
-  maxLevel = computed(
-    () => this.rankingService.system()?.amountOfLevels ?? 12,
-  );
+  maxLevel = computed(() => this.rankingService.system()?.amountOfLevels ?? 12);
 
   playerInitials = computed(() => {
     const p = this.player();
@@ -80,13 +77,14 @@ export class PageDetailComponent {
     return (first + last).toUpperCase();
   });
 
-  editMenuItems = [
+  private readonly editLabel = toSignal(inject(TranslateService).stream('all.button.edit'));
+  editMenuItems = computed(() => [
     {
-      label: 'Edit',
+      label: this.editLabel(),
       icon: 'pi pi-user-edit',
       routerLink: ['edit'],
     },
-  ];
+  ]);
 
   // Follow state is UI-only for now; persistence will come later.
   readonly following = signal(false);
@@ -96,9 +94,7 @@ export class PageDetailComponent {
 
   constructor() {
     effect(() => {
-      this.dataService
-        .filter.get('playerId')
-        ?.setValue(this.playerId());
+      this.dataService.filter.get('playerId')?.setValue(this.playerId());
     });
 
     effect(() => {

@@ -711,6 +711,7 @@ export type I18nTranslations = {
                     "summary": string;
                     "title": string;
                 };
+                "follow": string;
                 "matchups": {
                     "empty": string;
                     "title": string;

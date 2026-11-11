@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-027a Admin search-indexing tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-027a-admin-search-indexing.md)): native Card titles, form layout and ProgressBar on the `/admin` Indexering tab; no indexing is run. Sync tab stays DR-028. Parent DR-021 remains In progress only because DR-021i is a deferred future item; reconcile it separately. Lint and build pass; dark 800px and light 375px checked, no indexing run. Next candidate, not started: DR-028 (Synchronisatie tab, scope one child first); DR-027 stays open until reconciled.
+
+### Previous focus: Live displays aggregate (DR-026)
+
 DR-026 Tournament live displays and kiosk is Done with explicit approval (`commit`, 2026-11-11; documentation only). All four children (DR-026a courts, b results, c upcoming, d kiosk) are Done with disclosed limits, which stay unchecked in their briefs: keyboard/contrast and tests for every display, dark/375px/populated gaps per brief, announcements, and kiosk view cycling. `/tournament/:id/live` still redirects to `courts`. No application code changed. Next action: pick the next candidate from the backlog (DR-027 global administration `/admin`, scope one child first).
 
 ### Previous focus: Live kiosk (DR-026d)
@@ -2595,7 +2599,8 @@ and linked from their registry rows.
 | [DR-026b](work-items/DR-026b-live-results.md)                 | Live results display                                                         | Done        |
 | [DR-026c](work-items/DR-026c-live-upcoming.md)                | Live upcoming display                                                        | Done        |
 | [DR-026d](work-items/DR-026d-live-kiosk.md)                   | Live kiosk display                                                           | Done        |
-| DR-027                                                        | Global admin and search indexing                                             | Backlog     |
+| DR-027                                                        | Global admin and search indexing                                             | In progress |
+| [DR-027a](work-items/DR-027a-admin-search-indexing.md)        | Admin search-indexing tab Cards and form                                     | Done        |
 | DR-028                                                        | Sync administration and team matching                                        | Backlog     |
 | DR-029                                                        | Legacy styling retirement and final regression                               | Backlog     |
 | DR-030                                                        | Shared header overflow at 320px                                              | Backlog     |
@@ -2623,6 +2628,8 @@ and linked from their registry rows.
 | DR-052                                                        | Shared French action and tournament-administration tab terminology           | Backlog     |
 | DR-053                                                        | Draw operational result feedback, selection and post-write focus             | Backlog     |
 | DR-054                                                        | Scheduling date-option stability and focus across read-state remounts        | Backlog     |
+| DR-055                                                        | Admin indexing tab hard-coded English copy and toast messages                | Backlog     |
+| DR-056                                                        | Admin page dead `@if (false)` access-denied branch                           | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md

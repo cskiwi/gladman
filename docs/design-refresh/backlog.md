@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-012g Club tournaments tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012g-club-tournaments-tab.md)): the "Toernooien" tab of `/clubs/:clubId` (`app-club-tournaments-tab`) shows a counted heading, create button and native `p-table` (name link, official `p-tag`, localized phase tags from `all.tournament.phases.*`) directly on the tab panel with no nested Card (the same Card removal was applied to the DR-012e roster tab after review), native `p-message` error/empty states, a skeleton, nl/fr/en error copy and no SCSS; the service guards `value()` with `hasValue()`. Lint and build pass; browser-checked empty state and the table (stubbed GraphQL response, the dev DB has no club-linked tournaments) in dark wide and light 390px (before the Card removal; dark wide re-checked after). Not verified: real data, loading/error in the browser, keyboard/contrast, fr/en, tests. DR-012 parent is Done (children a-g; team builder is DR-013). Committed. Next candidate, not started: DR-013 club team builder or DR-014 club team detail; DR-029 must wait for unmigrated player/club pages.
+
+### Previous focus: Club schedule tab (DR-012f)
+
 DR-012f Club schedule tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012f-club-schedule-tab.md)): the "Programma" tab of `/clubs/:clubId` (`app-club-schedule-tab`) now follows the player profile pattern (plain h2 with a tabular count above the shared encounter cards, no outer Card so borders are not doubled, no green/blue palette icons), `xl` viewport columns, native `p-message` error/no-teams/empty states, semantic skeletons and nl/fr/en copy under `all.club.detail.schedule.*`; `hasValue()` guards in the schedule and teams services let the error state render. Lint and build pass; browser-checked dark wide and dark 390px after review rework (no overflow; light not re-checked). Not verified: loading/error/empty in the browser, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012g club tournaments tab. DR-012 stays open until DR-012g is done.
 
 ### Previous focus: Club player roster tab (DR-012e)
@@ -2554,14 +2558,14 @@ and linked from their registry rows.
 | DR-009                                                        | Player head-to-head                                                          | Backlog     |
 | DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
 | DR-011                                                        | Player editing                                                               | Backlog     |
-| DR-012                                                        | Club detail and browsing tabs                                                | In progress |
+| DR-012                                                        | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
 | [DR-012b](work-items/DR-012b-club-hero-stats.md)              | Club hero stats strip (teams, season record, ranking, next home match)       | Done        |
 | [DR-012c](work-items/DR-012c-club-sidebar-cards.md)           | Club sidebar cards (upcoming fixtures, top performers)                       | Done        |
 | [DR-012d](work-items/DR-012d-club-teams-tab.md)               | Club teams tab (`app-team-card`, filter bar)                                 | Done        |
 | [DR-012e](work-items/DR-012e-club-player-roster-tab.md)       | Club player roster tab                                                       | Done        |
 | [DR-012f](work-items/DR-012f-club-schedule-tab.md)            | Club schedule tab                                                            | Done        |
-| DR-012g                                                       | Club tournaments tab                                                         | Backlog     |
+| [DR-012g](work-items/DR-012g-club-tournaments-tab.md)         | Club tournaments tab                                                         | Done        |
 | DR-013                                                        | Club team builder                                                            | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |

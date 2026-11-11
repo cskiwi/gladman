@@ -89,3 +89,7 @@ the browser, unit tests, hydration).
 ## Remaining action
 
 None for this slice. Next candidate, not started: DR-012f club schedule tab.
+
+## Follow-up (2026-11-11, during DR-012g review)
+
+The user disliked the border around the roster. The tab panel is already a filled surface, so the outer `p-card` was removed (and its `CardModule` import); the count/filters/table and skeleton sit directly on the panel. Lint and build pass; dark wide browser-checked. Light and 390px not re-checked.

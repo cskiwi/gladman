@@ -60,7 +60,7 @@ export class ClubTournamentsTabService {
   });
 
   // Public selectors
-  tournaments = computed(() => this.tournamentsResource.value() || []);
+  tournaments = computed(() => (this.tournamentsResource.hasValue() ? this.tournamentsResource.value() : []));
   loading = computed(() => this.tournamentsResource.isLoading());
   error = computed(() => this.tournamentsResource.error()?.message || null);
 

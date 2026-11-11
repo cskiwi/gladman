@@ -134,6 +134,9 @@ export type I18nTranslations = {
                     "won": string;
                     "you": string;
                 };
+                "tournaments": {
+                    "error": string;
+                };
             };
             "gamesDistribution": string;
             "managePlayers": string;

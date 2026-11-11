@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AvatarModule } from 'primeng/avatar';
-import { CardModule } from 'primeng/card';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -28,7 +27,6 @@ const PAGE_SIZE = 25;
     RouterModule,
     TranslateModule,
     AvatarModule,
-    CardModule,
     IconFieldModule,
     InputIconModule,
     InputTextModule,

@@ -126,6 +126,9 @@
         "view": "View team",
         "won": "{{count}} won",
         "you": "You"
+      },
+      "tournaments": {
+        "error": "Tournaments could not be loaded."
       }
     },
     "gamesDistribution": "Games Distribution",

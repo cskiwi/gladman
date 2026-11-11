@@ -126,6 +126,9 @@
         "view": "Team bekijken",
         "won": "{{count}} gewonnen",
         "you": "Jij"
+      },
+      "tournaments": {
+        "error": "Toernooien konden niet geladen worden."
       }
     },
     "gamesDistribution": "Wedstrijdverdeling",

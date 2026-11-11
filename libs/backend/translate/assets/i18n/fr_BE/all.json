@@ -126,6 +126,9 @@
         "view": "Voir l'équipe",
         "won": "{{count}} gagnés",
         "you": "Vous"
+      },
+      "tournaments": {
+        "error": "Les tournois n’ont pas pu être chargés."
       }
     },
     "gamesDistribution": "Répartition des Matchs",

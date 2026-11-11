@@ -1,90 +1,75 @@
-<div class="flex justify-between items-center mb-4">
- <h3 class="text-lg font-semibold m-0">{{ 'all.club.tournaments.title' | translate }}</h3>
- @if (canCreate()) {
- <p-button
- icon="pi pi-plus"
- [label]="'all.club.tournaments.create' | translate"
- (onClick)="createTournament.emit()"
- severity="primary"
- size="small"
- />
- }
-</div>
-
-@if (service.loading()) {
- <div class="space-y-2">
- @for (i of [1, 2, 3, 4, 5]; track i) {
- <p-skeleton height="3rem" />
- }
- </div>
-} @else if (service.tournaments().length > 0) {
- <p-table
- [value]="service.tournaments()"
- [paginator]="service.tournaments().length > 10"
- [rows]="10"
- styleClass="p-datatable-sm p-datatable-striped"
- [rowHover]="true"
- >
- <ng-template #header>
- <tr>
- <th>{{ 'all.common.name' | translate }}</th>
- <th>{{ 'all.club.tournaments.date' | translate }}</th>
- <th>{{ 'all.club.tournaments.phase' | translate }}</th>
- <th>{{ 'all.club.tournaments.official' | translate }}</th>
- <th class="w-20"></th>
- </tr>
- </ng-template>
- <ng-template #body let-tournament>
- <tr>
- <td>
- <a [routerLink]="['/tournament', tournament.slug || tournament.id]" class="text-primary hover:underline">
- {{ tournament.name || tournament.tournamentNumber }}
- </a>
- </td>
- <td>
- @if (tournament.firstDay) {
- {{ tournament.firstDay | date: 'mediumDate' }}
- } @else {
- <span class="text-muted-color">-</span>
- }
- </td>
- <td>
- <p-tag [value]="getPhaseLabel(tournament.phase)" [severity]="getPhaseSeverity(tournament.phase)" />
- </td>
- <td>
- @if (tournament.official) {
- <i class="pi pi-check-circle text-green-500" pTooltip="{{ 'all.club.tournaments.officialTooltip' | translate }}"></i>
- } @else {
- <i class="pi pi-minus-circle text-muted-color"></i>
- }
- </td>
- <td>
- <a [routerLink]="['/tournament', tournament.slug || tournament.id]" class="p-button p-button-text p-button-sm">
- <i class="pi pi-eye"></i>
- </a>
- </td>
- </tr>
- </ng-template>
- <ng-template #emptymessage>
- <tr>
- <td colspan="5" class="text-center py-4 text-muted-color">
- {{ 'all.club.tournaments.noTournaments' | translate }}
- </td>
- </tr>
- </ng-template>
- </p-table>
+@if (service.error()) {
+  <p-message severity="error" icon="pi pi-exclamation-circle">{{ 'all.club.detail.tournaments.error' | translate }}</p-message>
+} @else if (service.loading()) {
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <p-skeleton width="10rem" height="1.25rem" />
+      <p-skeleton width="9rem" height="2.5rem" />
+    </div>
+    @for (i of skeletonRows; track i) {
+      <p-skeleton height="2.5rem" />
+    }
+  </div>
 } @else {
- <div class="text-center py-8 text-muted-color">
- <i class="pi pi-calendar text-4xl mb-2 block"></i>
- <p>{{ 'all.club.tournaments.noTournaments' | translate }}</p>
- @if (canCreate()) {
- <p-button
- icon="pi pi-plus"
- [label]="'all.club.tournaments.createFirst' | translate"
- (onClick)="createTournament.emit()"
- severity="secondary"
- class="mt-4"
- />
- }
- </div>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 id="club-tournaments-heading" class="m-0 flex items-baseline gap-2 text-base font-semibold text-color">
+        {{ 'all.club.tournaments.title' | translate }}
+        <span class="text-sm font-normal text-muted-color tabular-nums">{{ service.tournaments().length }}</span>
+      </h2>
+      @if (canCreate()) {
+        <p-button icon="pi pi-plus" [label]="'all.club.tournaments.create' | translate" (onClick)="createTournament.emit()" />
+      }
+    </div>
+
+    @if (service.tournaments().length > 0) {
+      <p-table
+        [value]="service.tournaments()"
+        dataKey="id"
+        size="small"
+        [paginator]="service.tournaments().length > pageSize"
+        [rows]="pageSize"
+        [scrollable]="true"
+        [tableStyle]="{ 'min-width': '32rem' }"
+        ariaLabelledBy="club-tournaments-heading"
+      >
+        <ng-template #header>
+          <tr>
+            <th scope="col">{{ 'all.common.name' | translate }}</th>
+            <th scope="col">{{ 'all.club.tournaments.date' | translate }}</th>
+            <th scope="col">{{ 'all.club.tournaments.phase' | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-tournament>
+          <tr>
+            <td>
+              <div class="flex flex-wrap items-center gap-2">
+                <a
+                  class="font-medium text-color no-underline wrap-anywhere hover:underline"
+                  [routerLink]="['/tournament', tournament.slug || tournament.id]"
+                >
+                  {{ tournament.name || tournament.tournamentNumber }}
+                </a>
+                @if (tournament.official) {
+                  <p-tag severity="info" [value]="'all.club.tournaments.official' | translate" />
+                }
+              </div>
+            </td>
+            <td class="whitespace-nowrap">
+              @if (tournament.firstDay) {
+                {{ tournament.firstDay | date: 'mediumDate' }}
+              } @else {
+                <span class="text-muted-color">-</span>
+              }
+            </td>
+            <td>
+              <p-tag [value]="getPhaseLabel(tournament.phase) | translate" [severity]="getPhaseSeverity(tournament.phase)" />
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    } @else {
+      <p-message severity="secondary" icon="pi pi-calendar">{{ 'all.club.tournaments.noTournaments' | translate }}</p-message>
+    }
+  </div>
 }

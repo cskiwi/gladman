@@ -699,6 +699,31 @@
   "player": {
     "allGames": "Alle Wedstrijden",
     "competitionPlayer": "Competitiespeler",
+    "detail": {
+      "currentForm": {
+        "summary": "{{wins}}W – {{losses}}L · laatste {{count}}",
+        "title": "Huidige vorm"
+      },
+      "matchups": {
+        "empty": "Geen verliezende match-ups, goed bezig.",
+        "title": "Moeilijkste tegenstanders"
+      },
+      "seasonRecord": {
+        "longestStreak": "Langste reeks",
+        "streakWins": "{{count}} gewonnen",
+        "thisMonth": "Deze maand",
+        "title": "Seizoensrecord",
+        "winRate": "{{rate}}% W"
+      },
+      "teams": {
+        "empty": "Geen teams dit seizoen.",
+        "membership": {
+          "BACKUP": "Reserve",
+          "REGULAR": "Basis"
+        },
+        "title": "Teams"
+      }
+    },
     "edit": {
       "actions": {
         "cancel": "Annuleren",

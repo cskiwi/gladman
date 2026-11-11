@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, effect, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TeamPlayerMembership } from '@app/models';
+import { TranslateModule } from '@ngx-translate/core';
+import { AvatarModule } from 'primeng/avatar';
+import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { ChipModule } from 'primeng/chip';
+import { TagModule } from 'primeng/tag';
 import { PlayerTeamsService } from './player-teams.service';
 
 const MEMBERSHIP_ORDER: Record<string, number> = {
@@ -13,9 +16,8 @@ const MEMBERSHIP_ORDER: Record<string, number> = {
 @Component({
   selector: 'app-player-teams',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ProgressBarModule, ChipModule],
+  imports: [RouterLink, AvatarModule, CardModule, ProgressBarModule, TagModule, TranslateModule],
   templateUrl: './player-teams.component.html',
-  styleUrl: './player-teams.component.scss',
 })
 export class PlayerTeamsComponent {
   private readonly teamsService = new PlayerTeamsService();

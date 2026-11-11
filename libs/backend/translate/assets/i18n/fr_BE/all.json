@@ -699,6 +699,31 @@
   "player": {
     "allGames": "Tous les matchs",
     "competitionPlayer": "Joueur de ligue",
+    "detail": {
+      "currentForm": {
+        "summary": "{{wins}}W – {{losses}}L · {{count}} derniers",
+        "title": "Forme actuelle"
+      },
+      "matchups": {
+        "empty": "Aucun duel perdu, bien joué.",
+        "title": "Adversaires les plus difficiles"
+      },
+      "seasonRecord": {
+        "longestStreak": "Plus longue série",
+        "streakWins": "{{count}} victoires",
+        "thisMonth": "Ce mois-ci",
+        "title": "Bilan de la saison",
+        "winRate": "{{rate}}% W"
+      },
+      "teams": {
+        "empty": "Aucune équipe cette saison.",
+        "membership": {
+          "BACKUP": "Réserve",
+          "REGULAR": "Titulaire"
+        },
+        "title": "Équipes"
+      }
+    },
     "edit": {
       "actions": {
         "cancel": "Annuler",

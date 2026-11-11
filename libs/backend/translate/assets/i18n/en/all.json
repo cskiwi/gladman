@@ -699,6 +699,31 @@
   "player": {
     "allGames": "All Games",
     "competitionPlayer": "Competition Player",
+    "detail": {
+      "currentForm": {
+        "summary": "{{wins}}W – {{losses}}L · last {{count}}",
+        "title": "Current form"
+      },
+      "matchups": {
+        "empty": "No losing match-ups, nicely done.",
+        "title": "Toughest match-ups"
+      },
+      "seasonRecord": {
+        "longestStreak": "Longest streak",
+        "streakWins": "{{count}} wins",
+        "thisMonth": "This month",
+        "title": "Season record",
+        "winRate": "{{rate}}% W"
+      },
+      "teams": {
+        "empty": "No teams this season.",
+        "membership": {
+          "BACKUP": "Backup",
+          "REGULAR": "Regular"
+        },
+        "title": "Teams"
+      }
+    },
     "edit": {
       "actions": {
         "cancel": "Cancel",

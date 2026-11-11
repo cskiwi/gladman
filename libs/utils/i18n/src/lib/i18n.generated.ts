@@ -706,6 +706,31 @@ export type I18nTranslations = {
         "player": {
             "allGames": string;
             "competitionPlayer": string;
+            "detail": {
+                "currentForm": {
+                    "summary": string;
+                    "title": string;
+                };
+                "matchups": {
+                    "empty": string;
+                    "title": string;
+                };
+                "seasonRecord": {
+                    "longestStreak": string;
+                    "streakWins": string;
+                    "thisMonth": string;
+                    "title": string;
+                    "winRate": string;
+                };
+                "teams": {
+                    "empty": string;
+                    "membership": {
+                        "BACKUP": string;
+                        "REGULAR": string;
+                    };
+                    "title": string;
+                };
+            };
             "edit": {
                 "actions": {
                     "cancel": string;

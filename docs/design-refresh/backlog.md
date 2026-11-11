@@ -5,6 +5,16 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-008b Player detail sidebar cards is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits
+([brief](work-items/DR-008b-player-sidebar-cards.md)): the four legacy sidebar cards on `/players/:playerId` (current
+form, season record, toughest match-ups, teams) now use native `p-card`, shared `app-form-sequence`, native Tag/Avatar
+and localized nl/fr/en copy; their local SCSS is removed, and the season-record progress bar was dropped at the user's
+request. Lint and build pass; dark 1440px and light 375px browser-checked. Not verified: light wide, dark 375px,
+loading/empty states, fr/en, keyboard/contrast, tests. Committed. Next candidate, not started: the remaining DR-008 player detail content (hero identity row and
+page-level loading/error), then DR-012 club detail. DR-029 must wait for the unmigrated player and club pages.
+
+### Previous focus: Admin reconciliation (DR-027, DR-028)
+
 DR-027 and DR-028 parent reconciliation is Done with explicit approval (`commit`, 2026-11-11; documentation only, no application code changed). DR-028 children a-d are Done with disclosed limits; team matching stays a deferred, unmounted surface (its `/admin` tab is commented out). DR-027's only child is DR-027a; the `/admin` tab shell was unchanged and still renders correctly beside the refreshed tabs. Not verified: light mode, keyboard/contrast and tests for the admin tabs (recorded per child). Committed. Next action: reconcile DR-021 (open only because DR-021i is deferred) and choose the next candidate, DR-029 final cleanup or a Backlog audit item (DR-030 to DR-034).
 
 ### Previous focus: Cron jobs tab (DR-028d)
@@ -2501,6 +2511,7 @@ and linked from their registry rows.
 | DR-007                                                        | Shared form controls and sync feedback                                       | Backlog     |
 | DR-008                                                        | Player detail                                                                | Backlog     |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)          | Player hero actions                                                          | Done        |
+| [DR-008b](work-items/DR-008b-player-sidebar-cards.md)         | Player detail sidebar cards (form, record, match-ups, teams)                 | Done        |
 | DR-009                                                        | Player head-to-head                                                          | Backlog     |
 | DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
 | DR-011                                                        | Player editing                                                               | Backlog     |

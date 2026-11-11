@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input } from '@angular/core';
-import { ChipModule } from 'primeng/chip';
+import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { CardModule } from 'primeng/card';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TagModule } from 'primeng/tag';
 import { PlayerStatsService } from '../player-stats.service';
 
 @Component({
   selector: 'app-player-season-record',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ChipModule],
+  imports: [CardModule, ProgressBarModule, TagModule, TranslateModule],
   templateUrl: './player-season-record.component.html',
-  styleUrl: './player-season-record.component.scss',
 })
 export class PlayerSeasonRecordComponent {
   private readonly statsService = new PlayerStatsService();
@@ -21,9 +23,6 @@ export class PlayerSeasonRecordComponent {
   readonly thisMonth = this.statsService.thisMonthRecord;
   readonly winRate = this.statsService.winRate;
   readonly loading = this.statsService.loading;
-
-  readonly winPct = computed(() => (this.totalGames() ? (this.wins() / this.totalGames()) * 100 : 0));
-  readonly lossPct = computed(() => (this.totalGames() ? (this.losses() / this.totalGames()) * 100 : 0));
 
   constructor() {
     effect(() => {

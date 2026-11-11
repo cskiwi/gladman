@@ -1,28 +1,32 @@
-<div class="t-eyebrow">Season record</div>
-<div class="flex items-baseline justify-between">
- <span class="t-stat-lg">{{ wins() }}<span class="text-muted-color text-base font-medium mx-1">/ {{ totalGames() }}</span></span>
- <p-chip [label]="winRate() + '% W'" styleClass="g-chip--win" />
-</div>
-<div class="record-bar">
- <div class="record-bar__seg record-bar__seg--win" [style.width.%]="winPct()"></div>
- <div class="record-bar__seg record-bar__seg--loss" [style.width.%]="lossPct()"></div>
-</div>
-<div class="flex gap-4 text-sm">
- <span class="flex items-center gap-2 text-muted-color">
- <span class="legend-dot legend-dot--win"></span>{{ wins() }} W
- </span>
- <span class="flex items-center gap-2 text-muted-color">
- <span class="legend-dot legend-dot--loss"></span>{{ losses() }} L
- </span>
-</div>
-<hr class="border-surface" />
-<div class="flex justify-between">
- <div class="flex flex-col gap-1">
- <span class="t-eyebrow">Longest streak</span>
- <span class="text-sm font-semibold">{{ longestStreak() }} wins</span>
- </div>
- <div class="flex flex-col gap-1 text-right">
- <span class="t-eyebrow">This month</span>
- <span class="text-sm font-semibold t-mono">{{ thisMonth().wins }}–{{ thisMonth().losses }}</span>
- </div>
-</div>
+<p-card [header]="'all.player.detail.seasonRecord.title' | translate">
+  @if (totalGames()) {
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <span class="text-3xl font-semibold">
+          {{ wins() }}<span class="text-lg font-normal text-muted-color"> / {{ totalGames() }}</span>
+        </span>
+        <p-tag severity="success" [value]="'all.player.detail.seasonRecord.winRate' | translate: { rate: winRate() }" />
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <p-tag severity="success" [value]="wins() + ' W'" />
+        <p-tag severity="danger" [value]="losses() + ' L'" />
+      </div>
+      <div class="flex justify-between gap-3">
+        <div>
+          <div class="text-sm text-muted-color">{{ 'all.player.detail.seasonRecord.longestStreak' | translate }}</div>
+          <div class="font-semibold">
+            {{ 'all.player.detail.seasonRecord.streakWins' | translate: { count: longestStreak() } }}
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-sm text-muted-color">{{ 'all.player.detail.seasonRecord.thisMonth' | translate }}</div>
+          <div class="font-semibold">{{ thisMonth().wins }}–{{ thisMonth().losses }}</div>
+        </div>
+      </div>
+    </div>
+  } @else if (loading()) {
+    <p-progressbar mode="indeterminate" />
+  } @else {
+    <p class="text-muted-color">{{ 'all.player.noGames' | translate }}</p>
+  }
+</p-card>

@@ -1,4 +1,5 @@
-import { inject, Injectable, signal, computed } from '@angular/core';
+import { inject, Injectable, signal, computed, effect, untracked } from '@angular/core';
+import { AuthService } from '@app/frontend-modules-auth/service';
 import { Apollo, gql } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 
@@ -74,6 +75,7 @@ const UPDATE_CRON_JOB = gql`
 @Injectable()
 export class CronJobsTabService {
   private readonly apollo = inject(Apollo);
+  private readonly auth = inject(AuthService);
 
   private _cronJobs = signal<CronJobModel[]>([]);
   private _loading = signal(true);
@@ -82,7 +84,12 @@ export class CronJobsTabService {
   loading = computed(() => this._loading());
 
   constructor() {
-    this.loadCronJobs();
+    // Wait for authentication; querying earlier (e.g. on page reload) yields "Forbidden resource"
+    effect(() => {
+      if (this.auth.loggedIn()) {
+        untracked(() => this.loadCronJobs());
+      }
+    });
   }
 
   loadCronJobs(): void {

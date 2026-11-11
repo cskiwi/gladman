@@ -6,9 +6,11 @@ import { delay } from 'rxjs';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -27,9 +29,11 @@ import { OverviewTabService } from './overview-tab.service';
     CommonModule,
     FormsModule,
     ButtonModule,
+    CardModule,
     ConfirmDialogModule,
     DialogModule,
     InputTextModule,
+    ProgressBarModule,
     SkeletonModule,
     TableModule,
     TagModule,

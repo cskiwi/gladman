@@ -30,10 +30,9 @@
   </div>
 
   <!-- Queue Statistics -->
-  <div class="rounded-border border border-surface p-4">
-    <h3 class="text-lg font-semibold text-color mb-3">{{ 'all.sync.dashboard.queue.title' | translate }}</h3>
+  <p-card [header]="'all.sync.dashboard.queue.title' | translate">
     @if (loadingStats()) {
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         @for (i of [1, 2, 3, 4]; track i) {
           <div class="text-center">
             <p-skeleton width="4rem" height="2rem" class="mx-auto mb-2" />
@@ -42,30 +41,29 @@
         }
       </div>
     } @else {
-      <div class="grid grid-cols-4 gap-4">
-        <div class="text-center p-3 rounded-border border-surface border">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="text-center">
           <div class="text-2xl font-bold text-primary">{{ queueStats()?.waiting || 0 }}</div>
           <div class="text-sm text-muted-color">{{ 'all.sync.dashboard.queue.status.waiting' | translate }}</div>
         </div>
-        <div class="text-center p-3 rounded-border border-surface border">
+        <div class="text-center">
           <div class="text-2xl font-bold text-primary-emphasis">{{ queueStats()?.active || 0 }}</div>
           <div class="text-sm text-muted-color">{{ 'all.sync.dashboard.queue.status.active' | translate }}</div>
         </div>
-        <div class="text-center p-3 rounded-border border-surface border">
+        <div class="text-center">
           <div class="text-2xl font-bold text-color">{{ queueStats()?.completed || 0 }}</div>
           <div class="text-sm text-muted-color">{{ 'all.sync.dashboard.queue.status.completed' | translate }}</div>
         </div>
-        <div class="text-center p-3 rounded-border border-surface border">
+        <div class="text-center">
           <div class="text-2xl font-bold text-color-emphasis">{{ queueStats()?.failed || 0 }}</div>
           <div class="text-sm text-muted-color">{{ 'all.sync.dashboard.queue.status.failed' | translate }}</div>
         </div>
       </div>
     }
-  </div>
+  </p-card>
 
   <!-- Recent Jobs -->
-  <div class="rounded-border border border-surface p-4">
-    <h3 class="text-lg font-semibold text-color mb-3">{{ 'all.sync.dashboard.jobs.title' | translate }}</h3>
+  <p-card [header]="'all.sync.dashboard.jobs.title' | translate">
     <div class="mb-3">
       <input
         pInputText
@@ -76,7 +74,7 @@
         class="w-full"
       />
     </div>
-    <p-table [value]="displayJobs()" [loading]="loadingJobs()" [paginator]="true" [rows]="20" responsiveLayout="scroll">
+    <p-table [value]="displayJobs()" [loading]="loadingJobs()" [paginator]="true" [rows]="20">
       <ng-template #header>
         <tr>
           <th style="width: 3rem"></th>
@@ -110,10 +108,7 @@
           <td>
             @if (job.status === 'active') {
               <div class="flex items-center gap-2">
-                <div class="w-20 bg-emphasis rounded-border h-2">
-                  <div class="bg-primary h-2 rounded-border" [style.width.%]="job.progress"></div>
-                </div>
-                <span class="text-xs text-color">{{ job.progress }}%</span>
+                <p-progressbar class="w-24" [value]="job.progress" />
               </div>
             } @else {
               <span class="text-sm text-muted-color">-</span>
@@ -155,7 +150,7 @@
         </tr>
       </ng-template>
     </p-table>
-  </div>
+  </p-card>
 
   <!-- Job Details Dialog -->
   <p-dialog

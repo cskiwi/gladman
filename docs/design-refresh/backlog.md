@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-028a Sync overview section is in Review ([brief](work-items/DR-028a-sync-overview.md)): native Cards, ProgressBar and responsive stats grid on `/admin?tab=1`. Lint and build pass; dark 800px and 375px checked. Not verified: light, active-job bar, retry/details, keyboard/contrast, tests. Not committed. Next candidate: DR-028b ranking tab.
+
+### Previous focus: Admin search indexing (DR-027a)
+
 DR-027a Admin search-indexing tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-027a-admin-search-indexing.md)): native Card titles, form layout and ProgressBar on the `/admin` Indexering tab; no indexing is run. Sync tab stays DR-028. Parent DR-021 remains In progress only because DR-021i is a deferred future item; reconcile it separately. Lint and build pass; dark 800px and light 375px checked, no indexing run. Next candidate, not started: DR-028 (Synchronisatie tab, scope one child first); DR-027 stays open until reconciled.
 
 ### Previous focus: Live displays aggregate (DR-026)
@@ -2601,7 +2605,8 @@ and linked from their registry rows.
 | [DR-026d](work-items/DR-026d-live-kiosk.md)                   | Live kiosk display                                                           | Done        |
 | DR-027                                                        | Global admin and search indexing                                             | In progress |
 | [DR-027a](work-items/DR-027a-admin-search-indexing.md)        | Admin search-indexing tab Cards and form                                     | Done        |
-| DR-028                                                        | Sync administration and team matching                                        | Backlog     |
+| DR-028                                                        | Sync administration and team matching                                        | In progress |
+| [DR-028a](work-items/DR-028a-sync-overview.md)                | Sync overview section Cards and progress bar                                 | Review      |
 | DR-029                                                        | Legacy styling retirement and final regression                               | Backlog     |
 | DR-030                                                        | Shared header overflow at 320px                                              | Backlog     |
 | DR-031                                                        | Native FloatLabel focused-label contrast audit                               | Backlog     |

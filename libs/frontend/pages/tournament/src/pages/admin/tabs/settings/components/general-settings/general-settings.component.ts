@@ -7,11 +7,12 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
   selector: 'app-general-settings',
   standalone: true,
-  imports: [ReactiveFormsModule, TranslateModule, ButtonModule, InputTextModule, DatePickerModule, CheckboxModule, MessageModule],
+  imports: [ReactiveFormsModule, TranslateModule, ButtonModule, InputTextModule, DatePickerModule, CheckboxModule, MessageModule, PanelModule],
   templateUrl: './general-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

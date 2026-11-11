@@ -1,9 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { TournamentEvent } from '@app/models';
 import { TournamentPhase } from '@app/models-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
+import { PanelModule } from 'primeng/panel';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { StepperModule } from 'primeng/stepper';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -17,7 +18,7 @@ interface PhaseStep {
 @Component({
   selector: 'app-phase-stepper',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ButtonModule, StepperModule, TooltipModule],
+  imports: [TranslateModule, ButtonModule, PanelModule, ProgressBarModule, StepperModule, TooltipModule],
   templateUrl: './phase-stepper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -79,6 +80,10 @@ export class PhaseStepperComponent {
     const phase = this.tournament()?.phase;
     return this.phaseSteps.findIndex((s) => s.phase === phase);
   });
+
+  currentStep = computed(() => this.phaseSteps[this.currentPhaseIndex()] ?? null);
+
+  progress = computed(() => ((this.currentPhaseIndex() + 1) / this.phaseSteps.length) * 100);
 
   // Can advance to next phase
   canAdvance = computed(() => {

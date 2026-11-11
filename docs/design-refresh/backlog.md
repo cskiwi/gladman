@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-026 Tournament live displays and kiosk is Done with explicit approval (`commit`, 2026-11-11; documentation only). All four children (DR-026a courts, b results, c upcoming, d kiosk) are Done with disclosed limits, which stay unchecked in their briefs: keyboard/contrast and tests for every display, dark/375px/populated gaps per brief, announcements, and kiosk view cycling. `/tournament/:id/live` still redirects to `courts`. No application code changed. Next action: pick the next candidate from the backlog (DR-027 global administration `/admin`, scope one child first).
+
+### Previous focus: Live kiosk (DR-026d)
+
 DR-026d Live kiosk display is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits: [brief](work-items/DR-026d-live-kiosk.md). Hard-coded slate/rose/emerald palette replaced by semantic colors and native `p-card`/`p-tag`/`p-message`; cycling, clock and stats kept. Lint and build pass; light/dark wide empty state browser-checked. Not verified: populated views, announcements, 375px, keyboard/contrast, tests. Next candidate, not started: reconcile parent DR-026.
 
 ### Previous focus: Live upcoming (DR-026c)
@@ -2586,7 +2590,7 @@ and linked from their registry rows.
 | [DR-025a](work-items/DR-025a-settings-phase-general.md)       | Settings phase stepper and general settings                                  | Done        |
 | [DR-025b](work-items/DR-025b-settings-sub-events.md)          | Settings sub-events table and dialog                                         | Done        |
 | [DR-025c](work-items/DR-025c-settings-confirmations.md)       | Settings confirmations and shared error feedback                             | Done        |
-| [DR-026](work-items/DR-026a-live-courts.md)                   | Tournament live displays and kiosk; children a (courts) active               | In progress |
+| [DR-026](work-items/DR-026a-live-courts.md)                   | Tournament live displays and kiosk; children a-d Done with limits            | Done        |
 | [DR-026a](work-items/DR-026a-live-courts.md)                  | Live courts display and shared live header                                   | Done        |
 | [DR-026b](work-items/DR-026b-live-results.md)                 | Live results display                                                         | Done        |
 | [DR-026c](work-items/DR-026c-live-upcoming.md)                | Live upcoming display                                                        | Done        |

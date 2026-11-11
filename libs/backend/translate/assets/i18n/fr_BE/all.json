@@ -67,6 +67,10 @@
         "teamFilter": "Filtrer par équipe",
         "teams": "Équipes"
       },
+      "schedule": {
+        "empty": "Aucune rencontre jouée ou prévue pour les équipes de cette saison.",
+        "error": "Le programme n’a pas pu être chargé."
+      },
       "season": "Saison {{season}}",
       "share": "Partager",
       "sidebar": {

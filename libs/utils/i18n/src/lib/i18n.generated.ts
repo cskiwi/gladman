@@ -74,6 +74,10 @@ export type I18nTranslations = {
                     "teamFilter": string;
                     "teams": string;
                 };
+                "schedule": {
+                    "empty": string;
+                    "error": string;
+                };
                 "season": string;
                 "share": string;
                 "sidebar": {

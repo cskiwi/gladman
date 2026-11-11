@@ -67,6 +67,10 @@
         "teamFilter": "Filter by team",
         "teams": "Teams"
       },
+      "schedule": {
+        "empty": "No matches played or scheduled for this season’s teams yet.",
+        "error": "The schedule could not be loaded."
+      },
       "season": "Season {{season}}",
       "share": "Share",
       "sidebar": {

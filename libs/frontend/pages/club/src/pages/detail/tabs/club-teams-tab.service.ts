@@ -89,7 +89,7 @@ export class ClubTeamsTabService {
   });
 
   // Public selectors
-  teams = computed(() => this.teamsResource.value() || []);
+  teams = computed(() => (this.teamsResource.hasValue() ? this.teamsResource.value() : []));
   loading = computed(() => this.teamsResource.isLoading());
   error = computed(() => this.teamsResource.error()?.message || null);
 

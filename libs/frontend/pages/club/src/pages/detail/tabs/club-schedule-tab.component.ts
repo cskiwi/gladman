@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 import { SkeletonModule } from 'primeng/skeleton';
 import { EncounterCardComponent } from '@app/frontend-components/games/encounter-card';
 import { ClubTeamsTabService } from './club-teams-tab.service';
@@ -10,7 +10,7 @@ import { ClubScheduleTabService } from './club-schedule-tab.service';
   selector: 'app-club-schedule-tab',
   standalone: true,
   providers: [ClubTeamsTabService, ClubScheduleTabService],
-  imports: [TranslateModule, CardModule, SkeletonModule, EncounterCardComponent],
+  imports: [TranslateModule, MessageModule, SkeletonModule, EncounterCardComponent],
   templateUrl: './club-schedule-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -18,11 +18,15 @@ export class ClubScheduleTabComponent {
   private readonly teamsService = inject(ClubTeamsTabService);
   readonly scheduleService = inject(ClubScheduleTabService);
 
+  readonly skeletonColumns = [1, 2];
+  readonly skeletonRows = [1, 2, 3];
+
   clubId = input.required<string>();
   season = input.required<number>();
 
   teamIds = computed(() => this.teamsService.teams().map((team) => team.id));
   loading = computed(() => this.teamsService.loading() || this.scheduleService.loading());
+  error = computed(() => this.teamsService.error() || this.scheduleService.error());
   playedEncounters = computed(() => this.scheduleService.playedEncounters());
   upcomingEncounters = computed(() => this.scheduleService.upcomingEncounters());
 

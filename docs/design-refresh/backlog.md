@@ -5,6 +5,10 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-012f Club schedule tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012f-club-schedule-tab.md)): the "Programma" tab of `/clubs/:clubId` (`app-club-schedule-tab`) now follows the player profile pattern (plain h2 with a tabular count above the shared encounter cards, no outer Card so borders are not doubled, no green/blue palette icons), `xl` viewport columns, native `p-message` error/no-teams/empty states, semantic skeletons and nl/fr/en copy under `all.club.detail.schedule.*`; `hasValue()` guards in the schedule and teams services let the error state render. Lint and build pass; browser-checked dark wide and dark 390px after review rework (no overflow; light not re-checked). Not verified: loading/error/empty in the browser, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012g club tournaments tab. DR-012 stays open until DR-012g is done.
+
+### Previous focus: Club player roster tab (DR-012e)
+
 DR-012e Club player roster tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012e-club-player-roster-tab.md)): the `/clubs/:clubId` "Spelerslijst" tab replaces the per-player card grid with one native `p-card` holding a count, search `p-iconfield`, team `p-multiselect` and a sortable, paginated `p-table` (avatar, name link, member id, team tags linking to team pages, own-row highlight), native `p-message` error/empty/filtered-empty states, nl/fr/en copy under `all.club.detail.players.*`, and no SCSS. Lint and build pass; browser-checked dark 1024px, light wide and light 390px with search, team filter and paginator reset. Not verified: own-row highlight, loading/error in the browser, keyboard/contrast, fr/en, tests. Committed. Next candidate, not started: DR-012f club schedule tab. DR-012 stays open until DR-012e to DR-012g are done.
 
 ### Previous focus: Club teams tab (DR-012d)
@@ -2556,7 +2560,7 @@ and linked from their registry rows.
 | [DR-012c](work-items/DR-012c-club-sidebar-cards.md)           | Club sidebar cards (upcoming fixtures, top performers)                       | Done        |
 | [DR-012d](work-items/DR-012d-club-teams-tab.md)               | Club teams tab (`app-team-card`, filter bar)                                 | Done        |
 | [DR-012e](work-items/DR-012e-club-player-roster-tab.md)       | Club player roster tab                                                       | Done        |
-| DR-012f                                                       | Club schedule tab                                                            | Backlog     |
+| [DR-012f](work-items/DR-012f-club-schedule-tab.md)            | Club schedule tab                                                            | Done        |
 | DR-012g                                                       | Club tournaments tab                                                         | Backlog     |
 | DR-013                                                        | Club team builder                                                            | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |

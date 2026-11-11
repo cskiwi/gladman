@@ -67,6 +67,10 @@
         "teamFilter": "Filteren op team",
         "teams": "Teams"
       },
+      "schedule": {
+        "empty": "Nog geen wedstrijden gespeeld of gepland voor de teams van dit seizoen.",
+        "error": "Het programma kon niet geladen worden."
+      },
       "season": "Seizoen {{season}}",
       "share": "Delen",
       "sidebar": {

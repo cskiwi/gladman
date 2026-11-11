@@ -98,7 +98,7 @@ export class ClubScheduleTabService {
 
   // Public selectors
   encounters = computed(() => {
-    const baseEncounters = this.encountersResource.value() ?? [];
+    const baseEncounters = this.encountersResource.hasValue() ? this.encountersResource.value() : [];
     const gamesData = this.encounterGames();
 
     return baseEncounters

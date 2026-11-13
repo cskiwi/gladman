@@ -116,7 +116,7 @@
     </app-hero>
 
     <!-- Main Content Tabs -->
-    <div class="grid grid-cols-1 min-[1100px]:grid-cols-[1fr_320px] gap-5 items-start">
+    <div class="grid grid-cols-1 gap-5 items-start" [class]="sidebarHidden() ? '' : 'min-[1100px]:grid-cols-[1fr_320px]'">
       <div class="min-w-0">
         <p-tabs value="0">
           <p-tablist>
@@ -142,6 +142,22 @@
                 {{ 'all.club.teamBuilder.tab' | translate }}
               </p-tab>
             }
+
+            <!-- Toggle for the sidebar column that sits right next to this tab bar -->
+            <div class="ml-auto flex items-center pl-2 pr-1">
+              <p-button
+                [icon]="sidebarHidden() ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'"
+                [text]="true"
+                [rounded]="true"
+                severity="secondary"
+                size="small"
+                [ariaLabel]="(sidebarHidden() ? 'all.club.detail.sidebar.show' : 'all.club.detail.sidebar.hide') | translate"
+                [pTooltip]="(sidebarHidden() ? 'all.club.detail.sidebar.show' : 'all.club.detail.sidebar.hide') | translate"
+                tooltipPosition="left"
+                [attr.aria-pressed]="sidebarHidden()"
+                (onClick)="toggleSidebar()"
+              />
+            </div>
           </p-tablist>
 
           <p-tabpanels>
@@ -189,10 +205,12 @@
       </div>
 
       <!-- ============ SIDEBAR (right) ============ -->
-      <aside class="flex flex-col gap-5 min-[1100px]:sticky min-[1100px]:top-4">
-        <app-club-schedule-card [clubId]="club.slug" [season]="currentSeason()" />
-        <app-club-top-performers-card [clubId]="club.slug" [season]="currentSeason()" />
-      </aside>
+      @if (!sidebarHidden()) {
+        <aside class="flex flex-col gap-5 min-[1100px]:sticky min-[1100px]:top-4">
+          <app-club-schedule-card [clubId]="club.slug" [season]="currentSeason()" />
+          <app-club-top-performers-card [clubId]="club.slug" [season]="currentSeason()" />
+        </aside>
+      }
     </div>
   }
 } @else {

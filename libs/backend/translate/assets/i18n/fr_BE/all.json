@@ -74,6 +74,8 @@
       "season": "Saison {{season}}",
       "share": "Partager",
       "sidebar": {
+        "hide": "Masquer les prochains matchs et les meilleurs joueurs",
+        "show": "Afficher les prochains matchs et les meilleurs joueurs",
         "topPerformers": {
           "empty": "Pas encore de statistiques de saison.",
           "title": "Meilleurs joueurs"

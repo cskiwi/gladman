@@ -74,6 +74,8 @@
       "season": "Seizoen {{season}}",
       "share": "Delen",
       "sidebar": {
+        "hide": "Komende wedstrijden en beste spelers verbergen",
+        "show": "Komende wedstrijden en beste spelers tonen",
         "topPerformers": {
           "empty": "Nog geen seizoensstatistieken.",
           "title": "Beste spelers"

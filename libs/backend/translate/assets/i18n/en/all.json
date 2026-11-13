@@ -74,6 +74,8 @@
       "season": "Season {{season}}",
       "share": "Share",
       "sidebar": {
+        "hide": "Hide upcoming fixtures and top performers",
+        "show": "Show upcoming fixtures and top performers",
         "topPerformers": {
           "empty": "No season stats yet.",
           "title": "Top performers"

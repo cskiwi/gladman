@@ -81,6 +81,8 @@ export type I18nTranslations = {
                 "season": string;
                 "share": string;
                 "sidebar": {
+                    "hide": string;
+                    "show": string;
                     "topPerformers": {
                         "empty": string;
                         "title": string;

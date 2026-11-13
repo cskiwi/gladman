@@ -1,4 +1,4 @@
-﻿import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+﻿import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TabsModule } from 'primeng/tabs';
 import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 import { TeamEditComponent } from '../../components/team-edit/team-edit.component';
 import { ClubScheduleCardComponent } from '../../components/club-schedule-card';
 import { ClubTopPerformersCardComponent } from '../../components/club-top-performers-card';
@@ -28,6 +29,8 @@ import {
   ClubPlayersTabComponent,
   ClubTeamBuilderTabComponent,
 } from './tabs';
+
+const SIDEBAR_HIDDEN_KEY = 'club-detail.sidebar-hidden';
 
 @Component({
   selector: 'app-page-detail',
@@ -44,6 +47,7 @@ import {
     CardModule,
     TabsModule,
     TagModule,
+    TooltipModule,
     HeroComponent,
     HeroAvatarComponent,
     HeroTitleComponent,
@@ -101,6 +105,9 @@ export class PageDetailComponent {
   error = this.dataService.error;
   loading = this.dataService.loading;
 
+  /** Whether the right-hand sidebar (upcoming fixtures + top performers) is hidden. Persisted per browser. */
+  readonly sidebarHidden = signal(this.readSidebarHidden());
+
   private readonly auth = inject(AuthService);
 
   // Form control getters
@@ -109,6 +116,24 @@ export class PageDetailComponent {
   }
 
   private readonly dialogService = inject(DialogService);
+
+  toggleSidebar(): void {
+    const hidden = !this.sidebarHidden();
+    this.sidebarHidden.set(hidden);
+    try {
+      localStorage.setItem(SIDEBAR_HIDDEN_KEY, String(hidden));
+    } catch {
+      // storage unavailable (private mode, SSR) – keep the in-memory state only
+    }
+  }
+
+  private readSidebarHidden(): boolean {
+    try {
+      return localStorage.getItem(SIDEBAR_HIDDEN_KEY) === 'true';
+    } catch {
+      return false;
+    }
+  }
 
   canEditTeam(team: Team): boolean {
     return this.auth.hasAnyPermission(['edit-any:team', 'edit-any:club', `${team.id}_edit:team`]);

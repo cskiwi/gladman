@@ -17,7 +17,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { AuthInterceptor } from '@app/frontend-modules-auth/interceptor';
 import { provideGraphQL } from '@app/frontend-modules-graphql';
 import { SEO_CONFIG } from '@app/frontend-modules-seo';
-import { langulageInitializer, provideTranslation } from '@app/frontend-modules-translation';
+import { langulageInitializer, providePrimeNgAriaTranslations, provideTranslation } from '@app/frontend-modules-translation';
 import { BASE_URL } from '@app/frontend-utils';
 import { AuthModule } from '@auth0/auth0-angular';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
@@ -68,7 +68,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withViewTransitions()),
     provideAnimationsAsync(),
     providePrimeNG({
-      license: 'eyJpZCI6ImE0YzRkYTVkLTZmNTctNDhjYi1iNzUwLWEwNDhmODQ5YWJmOCIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODQ4MTIxOTUsImV4cCI6MTgxNjM0ODE5NX0.kNI9JX7AY2aEOayUcRrbohSLebTg_g5F7JeDoQbIHxPwMMgwR0o_f87NQbA1plyUbvig7j7g5UawPPRKTSfuBQ',
+      license:
+        'eyJpZCI6ImE0YzRkYTVkLTZmNTctNDhjYi1iNzUwLWEwNDhmODQ5YWJmOCIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODQ4MTIxOTUsImV4cCI6MTgxNjM0ODE5NX0.kNI9JX7AY2aEOayUcRrbohSLebTg_g5F7JeDoQbIHxPwMMgwR0o_f87NQbA1plyUbvig7j7g5UawPPRKTSfuBQ',
       overlayAppendTo: 'body',
       theme: {
         preset: BadmanPreset,
@@ -77,6 +78,7 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    providePrimeNgAriaTranslations(),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',

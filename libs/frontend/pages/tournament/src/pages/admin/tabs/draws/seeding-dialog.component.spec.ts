@@ -47,7 +47,7 @@ describe('Draw seeding dialog', () => {
   }
 
   function trigger(): HTMLButtonElement {
-    return required<HTMLButtonElement>('[data-testid="draw"] p-button button');
+    return required<HTMLButtonElement>('[data-testid="draw"] button.p-button');
   }
 
   async function open() {
@@ -57,7 +57,7 @@ describe('Draw seeding dialog', () => {
   }
 
   function cancel(): HTMLButtonElement {
-    return required<HTMLButtonElement>('[role="dialog"] form p-button button');
+    return required<HTMLButtonElement>('[role="dialog"] form button.p-button');
   }
 
   function submit(): HTMLButtonElement {
@@ -130,7 +130,7 @@ describe('Draw seeding dialog', () => {
     expect(dialog().querySelector('form')?.getAttribute('aria-busy')).toBe('true');
     expect(cancel().disabled).toBe(true);
     expect(submit().disabled).toBe(true);
-    expect(submit().querySelector('[data-pc-section="loadingicon"]')).not.toBeNull();
+    expect(submit().querySelector('.pi-spinner')).not.toBeNull();
     expect(dialog().querySelector('.p-dialog-close-button')).toBeNull();
     required('[role="dialog"] [role="combobox"]').dispatchEvent(new MouseEvent('click', { bubbles: true }));
     fixture.detectChanges();

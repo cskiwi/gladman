@@ -4,7 +4,7 @@
 @let isUpcoming = variant() === 'upcoming';
 
 @if (isUpcoming) {
-  <p-card class="block overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+  <p-card class="block overflow-hidden card-flush">
     <article class="grid grid-cols-1 sm:grid-cols-[72px_minmax(0,1fr)]">
       <div
         class="flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r"
@@ -59,7 +59,7 @@
     </article>
   </p-card>
 } @else {
-  <p-card class="block overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+  <p-card class="block overflow-hidden card-flush">
     @let home = enc.homeScore ?? 0;
     @let away = enc.awayScore ?? 0;
     <article class="grid grid-cols-1 sm:grid-cols-[72px_minmax(0,1fr)]">
@@ -164,7 +164,7 @@
                 @let gRes = getGameResult(game);
                 @let homeWin = game.winner === 1;
                 @let awayWin = game.winner === 2;
-                <p-card class="block" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+                <p-card class="block card-flush">
                   <article class="grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
                     <div
                       class="flex items-center gap-2 border-b border-surface px-3 py-3 text-muted-color sm:flex-col sm:justify-center sm:border-b-0 sm:border-r"

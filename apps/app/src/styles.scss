@@ -17,7 +17,12 @@
 
 html {
   font-size: 0.875rem; /* 0.875 of 16px = 14px */
-  font-family: 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    'Space Grotesk',
+    system-ui,
+    -apple-system,
+    sans-serif;
   height: 100%;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -93,4 +98,10 @@ small {
 
 .p-toolbar-end {
   justify-content: flex-end;
+}
+
+// Full-bleed card: the card content manages its own spacing
+.p-card.card-flush > .p-card-body {
+  padding: 0;
+  gap: 0;
 }

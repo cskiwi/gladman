@@ -18,7 +18,10 @@
         <span class="text-sm font-normal text-muted-color tabular-nums">{{ service.tournaments().length }}</span>
       </h2>
       @if (canCreate()) {
-        <p-button icon="pi pi-plus" [label]="'all.club.tournaments.create' | translate" (onClick)="createTournament.emit()" />
+        <button pButton type="button" (click)="createTournament.emit()">
+          <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.club.tournaments.create' | translate }}</span>
+        </button>
       }
     </div>
 

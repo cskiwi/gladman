@@ -2,52 +2,44 @@
   <header class="g-topbar sticky top-0 z-50 border-b border-surface">
     <div class="g-topbar__inner flex items-center gap-4 min-h-16 px-4 md:px-6 max-w-[1440px] mx-auto">
       @if (!isDesktop) {
-      <button
-        type="button"
-        class="g-icon-button"
-        (click)="toggleSidebar()"
-        [attr.aria-label]="'all.navigation.openMenu' | translate"
-      >
-        <i class="pi pi-bars"></i>
-      </button>
+        <button type="button" class="g-icon-button" (click)="toggleSidebar()" [attr.aria-label]="'all.navigation.openMenu' | translate">
+          <i class="pi pi-bars"></i>
+        </button>
       }
 
-      <a
-        class="g-logo flex items-center gap-2.5 no-underline cursor-pointer font-bold text-lg tracking-wide text-color"
-        [routerLink]="['/']"
-      >
+      <a class="g-logo flex items-center gap-2.5 no-underline cursor-pointer font-bold text-lg tracking-wide text-color" [routerLink]="['/']">
         <span class="g-logo__mark" aria-hidden="true"></span>
         <span>GLADMAN</span>
       </a>
 
       @if (isDesktop) {
-      <nav class="g-nav flex gap-1" [attr.aria-label]="'all.navigation.primary' | translate">
-        @if (user()?.slug) {
-        <a
-          class="inline-flex items-center min-h-16 px-3 text-sm font-medium text-muted-color no-underline transition-colors duration-150 hover:text-color"
-          [routerLink]="['/players', user()?.slug]"
-          routerLinkActive="is-active"
-        >
-          {{ 'all.players.my-profile' | translate }}
-        </a>
-        }
-        @for (club of clubs(); track club.club.slug) {
-        <a
-          class="inline-flex items-center min-h-16 px-3 text-sm font-medium text-muted-color no-underline transition-colors duration-150 hover:text-color"
-          [routerLink]="['/clubs', club.club.slug]"
-          routerLinkActive="is-active"
-        >
-          {{ club.club.name || ('all.players.my-club' | translate) }}
-        </a>
-        }
-      </nav>
+        <nav class="g-nav flex gap-1" [attr.aria-label]="'all.navigation.primary' | translate">
+          @if (user()?.slug) {
+            <a
+              class="inline-flex items-center min-h-16 px-3 text-sm font-medium text-muted-color no-underline transition-colors duration-150 hover:text-color"
+              [routerLink]="['/players', user()?.slug]"
+              routerLinkActive="is-active"
+            >
+              {{ 'all.players.my-profile' | translate }}
+            </a>
+          }
+          @for (club of clubs(); track club.club.slug) {
+            <a
+              class="inline-flex items-center min-h-16 px-3 text-sm font-medium text-muted-color no-underline transition-colors duration-150 hover:text-color"
+              [routerLink]="['/clubs', club.club.slug]"
+              routerLinkActive="is-active"
+            >
+              {{ club.club.name || ('all.players.my-club' | translate) }}
+            </a>
+          }
+        </nav>
       }
 
       <div class="flex-1"></div>
 
       <div class="g-topbar__tools flex items-center gap-1">
         @if (isDesktop) {
-        <app-search />
+          <app-search />
         }
         <button
           type="button"
@@ -57,70 +49,51 @@
         >
           <i class="pi pi-bell"></i>
         </button>
-        <button
-          type="button"
-          class="g-icon-button"
-          (click)="toggleTheme()"
-          [attr.aria-label]="themeToggleLabel()"
-          [title]="themeToggleLabel()"
-        >
+        <button type="button" class="g-icon-button" (click)="toggleTheme()" [attr.aria-label]="themeToggleLabel()" [title]="themeToggleLabel()">
           <i [class]="themeToggleIcon()"></i>
         </button>
         @if (user()?.firstName) {
-        <p-menu #menu [model]="userMenuItems()" [popup]="true" appendTo="body" />
-        <button
-          type="button"
-          class="g-avatar size-9 rounded-full inline-flex items-center justify-center font-bold text-xs cursor-pointer border-0"
-          (click)="menu.toggle($event)"
-          [attr.aria-label]="'all.navigation.account' | translate"
-        >
-          {{ user()?.firstName?.charAt(0) }}{{ user()?.lastName?.charAt(0) }}
-        </button>
+          <p-menu #menu [model]="userMenuItems()" [popup]="true" appendTo="body" />
+          <button
+            type="button"
+            class="g-avatar size-9 rounded-full inline-flex items-center justify-center font-bold text-xs cursor-pointer border-0"
+            (click)="menu.toggle($event)"
+            [attr.aria-label]="'all.navigation.account' | translate"
+          >
+            {{ user()?.firstName?.charAt(0) }}{{ user()?.lastName?.charAt(0) }}
+          </button>
         } @else {
-        <p-button [label]="'all.navigation.login' | translate" [outlined]="true" size="small" (click)="login()" />
+          <button pButton type="button" [outlined]="true" size="small" (click)="login()">
+            <span pButtonLabel>{{ 'all.navigation.login' | translate }}</span>
+          </button>
         }
       </div>
     </div>
 
     @if (!isDesktop) {
-    <div class="px-4 pb-3">
-      <app-search />
-    </div>
+      <div class="px-4 pb-3">
+        <app-search />
+      </div>
     }
   </header>
 
   @if (!isDesktop) {
-  <p-drawer
-    [(visible)]="sidebarVisible"
-    position="left"
-    [header]="'all.navigation.menu' | translate"
-    styleClass="w-full sm:w-80"
-  >
-    <nav class="flex flex-col gap-1" [attr.aria-label]="'all.navigation.primary' | translate">
-      @if (user()?.slug) {
-      <a
-        [routerLink]="['/players', user()?.slug]"
-        class="g-drawer-link"
-        routerLinkActive="is-active"
-        (click)="closeSidebar()"
-      >
-        <i class="pi pi-user" aria-hidden="true"></i>
-        {{ 'all.players.my-profile' | translate }}
-      </a>
-      }
-      @for (club of clubs(); track club.club.slug) {
-      <a
-        [routerLink]="['/clubs', club.club.slug]"
-        class="g-drawer-link"
-        routerLinkActive="is-active"
-        (click)="closeSidebar()"
-      >
-        <i class="pi pi-building" aria-hidden="true"></i>
-        {{ club.club.name || ('all.players.my-club' | translate) }}
-      </a>
-      }
-    </nav>
-  </p-drawer>
+    <p-drawer [(visible)]="sidebarVisible" position="left" [header]="'all.navigation.menu' | translate" styleClass="w-full sm:w-80">
+      <nav class="flex flex-col gap-1" [attr.aria-label]="'all.navigation.primary' | translate">
+        @if (user()?.slug) {
+          <a [routerLink]="['/players', user()?.slug]" class="g-drawer-link" routerLinkActive="is-active" (click)="closeSidebar()">
+            <i class="pi pi-user" aria-hidden="true"></i>
+            {{ 'all.players.my-profile' | translate }}
+          </a>
+        }
+        @for (club of clubs(); track club.club.slug) {
+          <a [routerLink]="['/clubs', club.club.slug]" class="g-drawer-link" routerLinkActive="is-active" (click)="closeSidebar()">
+            <i class="pi pi-building" aria-hidden="true"></i>
+            {{ club.club.name || ('all.players.my-club' | translate) }}
+          </a>
+        }
+      </nav>
+    </p-drawer>
   }
 
   <main class="flex-1 w-full max-w-[1440px] mx-auto p-4 md:p-6">
@@ -134,12 +107,9 @@
           <span class="font-semibold text-base">{{ message.summary | translate }}</span>
         </div>
         <div class="font-medium text-lg my-4">{{ message.detail | translate }}</div>
-        <p-button
-          [label]="'all.system.update.refresh' | translate"
-          [size]="'small'"
-          [outlined]="true"
-          (click)="refreshApp()"
-        />
+        <button pButton type="button" [size]="'small'" [outlined]="true" (click)="refreshApp()">
+          <span pButtonLabel>{{ 'all.system.update.refresh' | translate }}</span>
+        </button>
       </div>
     </ng-template>
   </p-toast>

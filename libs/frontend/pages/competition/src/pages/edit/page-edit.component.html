@@ -1,10 +1,12 @@
 @if (!loading()) {
   @if (this.competition(); as competition) {
     <!-- Breadcrumb -->
-    <app-breadcrumb [items]="[
-      { label: competition.name, routerLink: ['/', 'competition', competition.slug] },
-      { label: ('all.competition.edit.title' | translate) },
-    ]" />
+    <app-breadcrumb
+      [items]="[
+        { label: competition.name, routerLink: ['/', 'competition', competition.slug] },
+        { label: ('all.competition.edit.title' | translate) },
+      ]"
+    />
 
     <!-- Header -->
     <header class="flex items-start justify-between flex-wrap gap-4 mb-6">
@@ -13,34 +15,27 @@
         <h1 class="edit-title m-0">{{ 'all.competition.edit.title' | translate }}</h1>
       </div>
       <div class="flex gap-2 flex-wrap">
-        <p-button
-          [label]="'all.competition.edit.actions.cancel' | translate"
-          icon="pi pi-times"
-          severity="secondary"
-          [outlined]="true"
-          size="small"
-          (click)="cancel()"
-        />
-        <p-button
-          [label]="'all.competition.edit.actions.save-current' | translate"
-          icon="pi pi-check"
-          [outlined]="true"
-          size="small"
-          (click)="saveCurrentTab()"
-        />
-        <p-button
-          [label]="'all.competition.edit.actions.save-all' | translate"
-          icon="pi pi-save"
-          size="small"
-          (click)="saveAll()"
-          [disabled]="!hasUnsavedChanges"
-        />
+        <button pButton type="button" severity="secondary" [outlined]="true" size="small" (click)="cancel()">
+          <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.competition.edit.actions.cancel' | translate }}</span>
+        </button>
+        <button pButton type="button" [outlined]="true" size="small" (click)="saveCurrentTab()">
+          <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.competition.edit.actions.save-current' | translate }}</span>
+        </button>
+        <button pButton type="button" size="small" (click)="saveAll()" [disabled]="!hasUnsavedChanges">
+          <i pButtonIcon class="pi pi-save" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.competition.edit.actions.save-all' | translate }}</span>
+        </button>
       </div>
     </header>
 
     <!-- Unsaved changes indicator -->
     @if (hasUnsavedChanges) {
-      <div class="mb-4 p-3 rounded-lg flex items-center gap-2" style="background: var(--g-pending-muted, var(--p-yellow-100)); color: var(--g-pending, var(--p-yellow-700))">
+      <div
+        class="mb-4 p-3 rounded-lg flex items-center gap-2"
+        style="background: var(--g-pending-muted, var(--p-yellow-100)); color: var(--g-pending, var(--p-yellow-700))"
+      >
         <i class="pi pi-exclamation-triangle"></i>
         <span class="font-medium text-sm">{{ 'all.competition.edit.messages.unsaved-changes' | translate }}</span>
       </div>

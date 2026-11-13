@@ -144,7 +144,9 @@ describe('Scheduling read feedback', () => {
   it('preserves empty/populated/updating action gates and dispatches each handler once', async () => {
     await settle();
     const actions = () =>
-      fixture.nativeElement.querySelectorAll('[data-testid="schedule-controls"] p-button button') as NodeListOf<HTMLButtonElement>;
+      fixture.nativeElement.querySelectorAll(
+        '[data-testid="schedule-controls"] button.p-button:not([aria-expanded])',
+      ) as NodeListOf<HTMLButtonElement>;
     expect(Array.from(actions(), (button) => button.disabled)).toEqual([false, true, true, false]);
     query.mockReturnValue(
       of({
@@ -234,7 +236,7 @@ describe('Scheduling read feedback', () => {
     expect(query.mock.lastCall?.[0].variables.slots.where[0].startTime).toEqual({ between: localDayRange(date) });
     const controls: HTMLElement = fixture.nativeElement.querySelector('[data-testid="schedule-controls"]');
     expect(controls.querySelector('[role="combobox"]')?.textContent?.trim()).toBe('Mon, Nov 9');
-    const refresh = controls.querySelectorAll<HTMLButtonElement>('p-button button')[3];
+    const refresh = controls.querySelectorAll<HTMLButtonElement>('button.p-button')[3];
     refresh.click();
     await settle();
     expect(query.mock.lastCall?.[0].variables.slots.where[0].startTime).toEqual({ between: localDayRange(date) });
@@ -301,7 +303,7 @@ describe('Scheduling read feedback', () => {
     expect(fixture.nativeElement.querySelector('[data-testid="schedule-controls"]')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('all.tournament.admin.schedule.noSlots');
     expect(fixture.componentInstance.stats().totalSlots).toBe(0);
-    const retry: HTMLButtonElement = fixture.nativeElement.querySelector('p-button button');
+    const retry: HTMLButtonElement = fixture.nativeElement.querySelector('button.p-button');
     expect(retry.textContent).toContain('all.button.refresh');
     retry.click();
     await settle();

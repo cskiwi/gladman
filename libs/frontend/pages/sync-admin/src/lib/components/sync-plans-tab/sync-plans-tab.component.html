@@ -58,23 +58,30 @@
             </label>
           </div>
 
-          <p-button
-            [label]="'all.sync.dashboard.scheduling.scheduleSync' | translate"
-            severity="primary"
-            icon="pi pi-sync"
-            [disabled]="selectedCount() === 0"
-            [loading]="actionLoading()"
-            (onClick)="scheduleSyncForSelected()"
-          />
+          <button pButton type="button" severity="primary" [disabled]="selectedCount() === 0 || actionLoading()" (click)="scheduleSyncForSelected()">
+            @if (actionLoading()) {
+              <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+            } @else {
+              <i pButtonIcon class="pi pi-sync" aria-hidden="true"></i>
+            }
+            <span pButtonLabel>{{ 'all.sync.dashboard.scheduling.scheduleSync' | translate }}</span>
+          </button>
 
-          <p-button
-            icon="pi pi-calendar-plus"
-            [label]="'all.sync.dashboard.actions.rankingSync' | translate"
+          <button
+            pButton
+            type="button"
             severity="secondary"
-            [loading]="actionLoading()"
-            (onClick)="openRankingSyncDialog()"
+            (click)="openRankingSyncDialog()"
             [pTooltip]="'all.sync.dashboard.actions.rankingSyncTooltip' | translate"
-          />
+            [disabled]="actionLoading()"
+          >
+            @if (actionLoading()) {
+              <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+            } @else {
+              <i pButtonIcon class="pi pi-calendar-plus" aria-hidden="true"></i>
+            }
+            <span pButtonLabel>{{ 'all.sync.dashboard.actions.rankingSync' | translate }}</span>
+          </button>
         </div>
 
         <span class="text-muted-color text-sm">
@@ -105,13 +112,9 @@
           <td>
             <div [ngStyle]="getIndentStyle(item.level)">
               @if (item.hasChildren) {
-                <p-button
-                  [icon]="item.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-                  size="small"
-                  severity="secondary"
-                  [text]="true"
-                  (onClick)="toggleExpansion(item.id)"
-                />
+                <button pButton type="button" iconOnly size="small" severity="secondary" [text]="true" (click)="toggleExpansion(item.id)">
+                  <i pButtonIcon [class]="item.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-hidden="true"></i>
+                </button>
               }
             </div>
           </td>
@@ -171,19 +174,17 @@
         <p-datepicker [(ngModel)]="rankingStartDateValue" [showIcon]="true" dateFormat="dd/mm/yy" [showClear]="true" appendTo="body" />
       </div>
       <div class="flex justify-end gap-2">
-        <p-button
-          [label]="'all.common.cancel' | translate"
-          severity="secondary"
-          [outlined]="true"
-          [disabled]="actionLoading()"
-          (onClick)="rankingDialogVisible = false"
-        />
-        <p-button
-          icon="pi pi-calendar-plus"
-          [label]="'all.sync.dashboard.scheduling.scheduleSync' | translate"
-          [loading]="actionLoading()"
-          (onClick)="scheduleRankingSync()"
-        />
+        <button pButton type="button" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (click)="rankingDialogVisible = false">
+          <span pButtonLabel>{{ 'all.common.cancel' | translate }}</span>
+        </button>
+        <button pButton type="button" (click)="scheduleRankingSync()" [disabled]="actionLoading()">
+          @if (actionLoading()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-calendar-plus" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'all.sync.dashboard.scheduling.scheduleSync' | translate }}</span>
+        </button>
       </div>
     </div>
   </p-dialog>

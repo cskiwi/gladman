@@ -7,8 +7,12 @@
   </div>
   @if (extras()) {
   <div actions>
-    <p-button label="Follow" (onClick)="activate()" />
-    <p-button label="Compare players" />
+    <button pButton type="button" (click)="activate()">
+      <span pButtonLabel>Follow</span>
+    </button>
+    <button pButton type="button">
+      <span pButtonLabel>Compare players</span>
+    </button>
   </div>
   <div stats data-testid="stats">Ranking statistics</div>
   }
@@ -21,14 +25,18 @@
   } @if (extras()) {
   <span subTitle data-testid="metadata">Player context</span>
   } @if (extras()) {
-  <p-button actions label="Edit player" (onClick)="activate()" />
+  <button pButton type="button" actions (click)="activate()">
+    <span pButtonLabel>Edit player</span>
+  </button>
   }
   <span title>{{ title() }}</span>
 </app-page-header>
 } @case ('section') {
 <app-section-header [title]="title()">
   <span badge>3</span>
-  <p-button action label="View all" (onClick)="activate()" />
+  <button pButton type="button" action (click)="activate()">
+    <span pButtonLabel>View all</span>
+  </button>
 </app-section-header>
 } @case ('breadcrumb') {
 <app-breadcrumb [items]="[{ label: title() }]" />

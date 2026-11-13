@@ -73,14 +73,14 @@ describe('RecentGamesPlayerComponent indicators', () => {
     expect(section.querySelectorAll('p-card')).toHaveLength(3);
     expect(section.querySelectorAll('p-skeleton[aria-hidden="true"]')).toHaveLength(15);
     expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(1);
-    expect(fixture.nativeElement.querySelector('p-button button').disabled).toBe(true);
+    expect(fixture.nativeElement.querySelector('button.p-button').disabled).toBe(true);
     expect(fixture.debugElement.query(By.directive(SelectButton))).not.toBeNull();
 
     loadingMore.set(false);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('[aria-busy]')).toBeNull();
     expect(fixture.nativeElement.querySelectorAll('article')).toHaveLength(1);
-    expect(fixture.nativeElement.querySelector('p-button button').disabled).toBe(false);
+    expect(fixture.nativeElement.querySelector('button.p-button').disabled).toBe(false);
   });
 
   it('uses the same compact card, visible date rail and content grid as upcoming games', () => {
@@ -95,7 +95,7 @@ describe('RecentGamesPlayerComponent indicators', () => {
 
     const card = fixture.nativeElement.querySelector('p-card');
     expect(card.classList.contains('border-surface')).toBe(false);
-    expect(card.querySelector('.p-card-body').classList.contains('p-0!')).toBe(true);
+    expect(card.classList.contains('card-flush')).toBe(true);
     expect(card.querySelector('article').classList.contains('sm:grid-cols-[72px_minmax(0,1fr)_auto]')).toBe(true);
     const date = card.querySelector('time');
     expect(date.getAttribute('datetime')).toBe('2026-10-17');

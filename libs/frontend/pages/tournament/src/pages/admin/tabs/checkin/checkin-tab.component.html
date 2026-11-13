@@ -1,15 +1,19 @@
 <div class="space-y-6">
   <p-panel class="block min-w-0" data-testid="checkin-summary" [header]="'all.tournament.admin.checkin.title' | translate">
     <ng-template #icons>
-      <p-button
-        icon="pi pi-refresh"
-        [ariaLabel]="'all.button.refresh' | translate"
+      <button
+        pButton
+        type="button"
+        iconOnly
+        [attr.aria-label]="'all.button.refresh' | translate"
         [pTooltip]="'all.button.refresh' | translate"
         severity="secondary"
         size="small"
         [text]="true"
-        (onClick)="refetch()"
-      />
+        (click)="refetch()"
+      >
+        <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+      </button>
     </ng-template>
     @if (loading()) {
       <div aria-busy="true">
@@ -74,16 +78,22 @@
         </p-iconfield>
       </div>
 
-      <p-button
-        icon="pi pi-play"
-        [label]="'all.tournament.admin.checkin.initialize' | translate"
+      <button
+        pButton
+        type="button"
         severity="secondary"
         [outlined]="true"
-        (onClick)="initializeCheckIns()"
-        [loading]="updating()"
+        (click)="initializeCheckIns()"
         [disabled]="loading() || !!error() || updating()"
         fluid
-      />
+      >
+        @if (updating()) {
+          <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+        } @else {
+          <i pButtonIcon class="pi pi-play" aria-hidden="true"></i>
+        }
+        <span pButtonLabel>{{ 'all.tournament.admin.checkin.initialize' | translate }}</span>
+      </button>
     </div>
   </p-panel>
 
@@ -101,37 +111,45 @@
           }
         </h2>
         <div class="flex flex-wrap items-center gap-2">
-          <p-button
+          <button
+            pButton
+            type="button"
+            iconOnly
             size="small"
             severity="secondary"
             [text]="true"
-            icon="pi pi-check-square"
-            [ariaLabel]="('all.tournament.admin.checkin.selectAll' | translate) + ': ' + ('all.tournament.admin.checkin.pending' | translate)"
+            [attr.aria-label]="('all.tournament.admin.checkin.selectAll' | translate) + ': ' + ('all.tournament.admin.checkin.pending' | translate)"
             [pTooltip]="('all.tournament.admin.checkin.selectAll' | translate) + ': ' + ('all.tournament.admin.checkin.pending' | translate)"
-            (onClick)="selectAllPending()"
+            (click)="selectAllPending()"
             [disabled]="loading() || !!error() || updating() || !hasPendingCheckIns()"
-          />
-          <p-button
+          >
+            <i pButtonIcon class="pi pi-check-square" aria-hidden="true"></i>
+          </button>
+          <button
+            pButton
+            type="button"
+            iconOnly
             size="small"
             severity="secondary"
             [text]="true"
-            icon="pi pi-times"
-            [ariaLabel]="'all.tournament.admin.checkin.clearSelection' | translate"
+            [attr.aria-label]="'all.tournament.admin.checkin.clearSelection' | translate"
             [pTooltip]="'all.tournament.admin.checkin.clearSelection' | translate"
-            (onClick)="clearSelection()"
+            (click)="clearSelection()"
             [disabled]="updating() || selectedCheckIns().length === 0"
-          />
+          >
+            <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+          </button>
 
           @if (selectedCheckIns().length > 0) {
-            <p-button
-              size="small"
-              icon="pi pi-check"
-              [label]="'all.tournament.admin.checkin.bulkCheckIn' | translate"
-              (onClick)="bulkCheckIn()"
-              [loading]="updating()"
-              [disabled]="loading() || !!error() || updating()"
-              [badge]="selectedCheckIns().length.toString()"
-            />
+            <button pButton type="button" size="small" (click)="bulkCheckIn()" [disabled]="loading() || !!error() || updating()">
+              @if (updating()) {
+                <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+              } @else {
+                <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+              }
+              <span pButtonLabel>{{ 'all.tournament.admin.checkin.bulkCheckIn' | translate }}</span>
+              <p-badge [value]="selectedCheckIns().length.toString()" severity="secondary" />
+            </button>
           }
         </div>
       </div>
@@ -218,41 +236,62 @@
             <td>
               <div class="flex gap-1">
                 @if (record.status === 'PENDING') {
-                  <p-button
-                    icon="pi pi-check"
+                  <button
+                    pButton
+                    type="button"
+                    iconOnly
                     severity="success"
                     [text]="true"
                     size="small"
-                    [ariaLabel]="('all.tournament.admin.checkin.checkIn' | translate) + ': ' + getPlayerName(record)"
+                    [attr.aria-label]="('all.tournament.admin.checkin.checkIn' | translate) + ': ' + getPlayerName(record)"
                     [pTooltip]="'all.tournament.admin.checkin.checkIn' | translate"
-                    (onClick)="checkIn(record)"
-                    [loading]="updating()"
+                    (click)="checkIn(record)"
                     [disabled]="updating() || !record.enrollment?.id"
-                  />
-                  <p-button
-                    icon="pi pi-times"
+                  >
+                    @if (updating()) {
+                      <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                    } @else {
+                      <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+                    }
+                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    iconOnly
                     severity="danger"
                     [text]="true"
                     size="small"
-                    [ariaLabel]="('all.tournament.admin.checkin.markNoShow' | translate) + ': ' + getPlayerName(record)"
+                    [attr.aria-label]="('all.tournament.admin.checkin.markNoShow' | translate) + ': ' + getPlayerName(record)"
                     [pTooltip]="'all.tournament.admin.checkin.markNoShow' | translate"
-                    (onClick)="markNoShow(record)"
-                    [loading]="updating()"
+                    (click)="markNoShow(record)"
                     [disabled]="updating() || !record.enrollment?.id"
-                  />
+                  >
+                    @if (updating()) {
+                      <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                    } @else {
+                      <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+                    }
+                  </button>
                 }
                 @if (record.status === 'CHECKED_IN' || record.status === 'NO_SHOW') {
-                  <p-button
-                    icon="pi pi-undo"
+                  <button
+                    pButton
+                    type="button"
+                    iconOnly
                     severity="secondary"
                     [text]="true"
                     size="small"
-                    [ariaLabel]="('all.tournament.admin.checkin.undo' | translate) + ': ' + getPlayerName(record)"
+                    [attr.aria-label]="('all.tournament.admin.checkin.undo' | translate) + ': ' + getPlayerName(record)"
                     [pTooltip]="'all.tournament.admin.checkin.undo' | translate"
-                    (onClick)="undoCheckIn(record)"
-                    [loading]="updating()"
+                    (click)="undoCheckIn(record)"
                     [disabled]="updating()"
-                  />
+                  >
+                    @if (updating()) {
+                      <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                    } @else {
+                      <i pButtonIcon class="pi pi-undo" aria-hidden="true"></i>
+                    }
+                  </button>
                 }
               </div>
             </td>

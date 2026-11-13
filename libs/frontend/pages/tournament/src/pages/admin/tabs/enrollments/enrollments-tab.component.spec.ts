@@ -55,9 +55,9 @@ describe('Manual enrollment dialog and creation', () => {
 
   it('mounts a named native form with two visible actions and a disabled submit until a player is selected', () => {
     const form: HTMLFormElement = fixture.nativeElement.querySelector('#manual-enrollment-form');
-    expect(form.querySelectorAll('p-button')).toHaveLength(2);
-    expect(form.querySelector('p-button:last-child button')?.getAttribute('type')).toBe('submit');
-    expect(form.querySelector('p-button:last-child button')?.hasAttribute('disabled')).toBe(true);
+    expect(form.querySelectorAll('button.p-button')).toHaveLength(2);
+    expect(form.querySelector('button.p-button:last-child')?.getAttribute('type')).toBe('submit');
+    expect(form.querySelector('button.p-button:last-child')?.hasAttribute('disabled')).toBe(true);
     expect(form.querySelector('p-autocomplete input')?.id).toBe('manual-player');
     expect(form.querySelector('p-autocomplete input')?.getAttribute('aria-labelledby')).toBe('manual-player-label');
     expect(form.querySelector('textarea')?.classList.contains('p-textarea')).toBe(true);
@@ -67,7 +67,7 @@ describe('Manual enrollment dialog and creation', () => {
   it('restores focus to the mounted Add action after hiding the dialog', async () => {
     fixture.componentInstance.restoreManualEnrollmentFocus();
     await settle();
-    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('[data-testid="enrollment-table"] p-button button'));
+    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('[data-testid="enrollment-table"] button.p-button'));
     expect(mutate).not.toHaveBeenCalled();
   });
 
@@ -77,7 +77,7 @@ describe('Manual enrollment dialog and creation', () => {
     fixture.componentInstance.manualEnrollmentForm.controls.notes.setValue(' Safe notes ');
     await settle();
     const form: HTMLFormElement = fixture.nativeElement.querySelector('#manual-enrollment-form');
-    (form.querySelector('p-button:last-child button') as HTMLButtonElement).click();
+    (form.querySelector('button.p-button:last-child') as HTMLButtonElement).click();
     await settle();
     expect(print(mutate.mock.lastCall[0].mutation)).toContain('adminEnrollPlayer');
     expect(mutate.mock.lastCall[0].variables.input).toEqual({
@@ -392,7 +392,7 @@ describe('Enrollment-management filters', () => {
     fixture.componentInstance.searchControl.setValue('PLAYER');
     await settle();
     query.mockClear();
-    const refresh: HTMLButtonElement = fixture.nativeElement.querySelector('[data-testid="enrollment-filters"] p-button button');
+    const refresh: HTMLButtonElement = fixture.nativeElement.querySelector('[data-testid="enrollment-filters"] button.p-button');
     refresh.click();
     await settle();
     expect(query).toHaveBeenCalledTimes(1);
@@ -409,7 +409,7 @@ describe('Enrollment-management filters', () => {
     expect(fixture.componentInstance.selectedSubEvent()).toBeNull();
     expect(ids()).toEqual([]);
     expect(query).not.toHaveBeenCalled();
-    expect(fixture.nativeElement.querySelector('[data-testid="enrollment-filters"] p-button button').disabled).toBe(true);
+    expect(fixture.nativeElement.querySelector('[data-testid="enrollment-filters"] button.p-button').disabled).toBe(true);
     expect(fixture.nativeElement.querySelector('p-table')).toBeNull();
   });
 
@@ -453,7 +453,7 @@ describe('Enrollment-management filters', () => {
     expect(panel.querySelector('p-message')?.textContent).toContain(message);
     expect(panel.querySelector('p-table')).toBeNull();
     expect(panel.textContent).not.toContain('all.tournament.admin.enrollments.noEnrollments');
-    fixture.nativeElement.querySelector('[data-testid="enrollment-filters"] p-button button').click();
+    fixture.nativeElement.querySelector('[data-testid="enrollment-filters"] button.p-button').click();
     await settle();
     expect(fixture.componentInstance.error()).toBeNull();
     expect(ids()).toEqual(['player', 'guest', 'partner']);
@@ -566,7 +566,7 @@ describe('Enrollment-management filters', () => {
       const control = filters.querySelector(`[role="combobox"][aria-labelledby="admin-enrollment-${name}-label"]`);
       expect(control?.id).toBe(`admin-enrollment-${name}`);
     }
-    expect(filters.querySelector('p-button button')?.textContent?.trim()).toBe(asset.button.refresh);
+    expect(filters.querySelector('button.p-button')?.textContent?.trim()).toBe(asset.button.refresh);
     expect(filters.querySelectorAll('p-select')[1]?.textContent).toContain(asset.tournament.admin.enrollments.allStatuses);
     expect(fixture.componentInstance.statusOptions()).toHaveLength(6);
     expect(fixture.componentInstance.statusOptions().map((option) => option.label)).toEqual([
@@ -574,7 +574,7 @@ describe('Enrollment-management filters', () => {
     ]);
     expect(filters.querySelector('[style]:not(.p-panel-content-container)')).toBeNull();
     const panel: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"]');
-    expect(panel.querySelector('p-button button')?.textContent?.trim()).toBe(asset.button.add);
+    expect(panel.querySelector('button.p-button')?.textContent?.trim()).toBe(asset.button.add);
     expect(panel.querySelector('thead')?.textContent).not.toContain('all.');
     expect(panel.querySelector('thead th:nth-child(3)')?.textContent?.trim()).not.toBe('');
     expect(panel.querySelector('p-tag')?.textContent?.trim()).toBe(asset.tournament.admin.enrollments.confirmed);

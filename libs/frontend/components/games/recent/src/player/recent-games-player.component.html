@@ -30,7 +30,7 @@
       @let myCol = ownTeam === 2 ? 2 : 1;
       @let oppCol = ownTeam === 2 ? 1 : 2;
 
-      <p-card class="block mt-3 overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+      <p-card class="block mt-3 overflow-hidden card-flush">
         <article class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
           <time
             class="col-start-1 row-start-1 flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:row-span-2 sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r"
@@ -225,25 +225,27 @@
     <!-- Infinite scroll sentinel for large screens -->
     @if (!isMobile() && hasMore() && games().length > 0) {
       <div #scrollSentinel class="h-1"></div>
-      <p-button
-        [label]="'all.game.common.loadMore' | translate"
-        [loading]="loadingMore()"
-        (onClick)="loadMore()"
-        [outlined]="true"
-        icon="pi pi-plus"
-      />
+      <button pButton type="button" (click)="loadMore()" [outlined]="true" [disabled]="loadingMore()">
+        @if (loadingMore()) {
+          <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+        } @else {
+          <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+        }
+        <span pButtonLabel>{{ 'all.game.common.loadMore' | translate }}</span>
+      </button>
     }
 
     <!-- Load more button for mobile -->
     @if (isMobile() && hasMore() && games().length > 0) {
       <div class="flex justify-center mt-4">
-        <p-button
-          [label]="'all.game.common.loadMore' | translate"
-          [loading]="loadingMore()"
-          (onClick)="loadMore()"
-          [outlined]="true"
-          icon="pi pi-plus"
-        />
+        <button pButton type="button" (click)="loadMore()" [outlined]="true" [disabled]="loadingMore()">
+          @if (loadingMore()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'all.game.common.loadMore' | translate }}</span>
+        </button>
       </div>
     }
 
@@ -259,7 +261,7 @@
   <ng-template #loadingGames let-placeholders>
     <section aria-busy="true" [attr.aria-labelledby]="recentGamesTitle.id" class="flex flex-col gap-3 mt-3">
       @for (placeholder of placeholders; track placeholder) {
-        <p-card class="block overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+        <p-card class="block overflow-hidden card-flush">
           <div class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
             <div
               class="col-span-2 flex items-center px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:justify-center sm:border-b-0 sm:border-r"

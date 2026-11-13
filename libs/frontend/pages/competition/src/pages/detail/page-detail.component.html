@@ -46,7 +46,10 @@
       <!-- Actions -->
       <div actions class="flex items-center gap-2 flex-wrap justify-end">
         @if (canEdit()) {
-          <p-button icon="pi pi-pencil" [label]="'all.competition.edit.button' | translate" [outlined]="true" size="small" [routerLink]="['edit']" />
+          <button pButton type="button" [outlined]="true" size="small" [routerLink]="['edit']">
+            <i pButtonIcon class="pi pi-pencil" aria-hidden="true"></i>
+            <span pButtonLabel>{{ 'all.competition.edit.button' | translate }}</span>
+          </button>
         }
         @if (competition.visualCode) {
           <a

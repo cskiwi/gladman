@@ -283,7 +283,7 @@ export class EnrollmentsTabComponent {
 
   restoreManualEnrollmentFocus(): void {
     this.closeManualEnrollmentDialog();
-    this.manualEnrollmentTrigger()?.nativeElement.querySelector('button')?.focus();
+    this.manualEnrollmentTrigger()?.nativeElement.focus();
   }
 
   async createManualEnrollment(): Promise<void> {

@@ -66,28 +66,41 @@
 
           <td class="text-right">
             @if (system.rankingSystem === 'VISUAL') {
-              <p-button
-                icon="pi pi-sync"
-                label="Sync now"
+              <button
+                pButton
+                type="button"
                 size="small"
                 severity="secondary"
                 [outlined]="true"
-                [loading]="actionLoading()"
-                (onClick)="openRankingSyncDialog()"
+                (click)="openRankingSyncDialog()"
                 pTooltip="Sync BBF rating from external API"
-              />
+                [disabled]="actionLoading()"
+              >
+                @if (actionLoading()) {
+                  <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                } @else {
+                  <i pButtonIcon class="pi pi-sync" aria-hidden="true"></i>
+                }
+                <span pButtonLabel>Sync now</span>
+              </button>
             } @else {
-              <p-button
-                icon="pi pi-calculator"
-                label="Calculate"
+              <button
+                pButton
+                type="button"
                 size="small"
                 severity="secondary"
                 [outlined]="true"
-                [disabled]="system.runCurrently"
-                [loading]="actionLoading()"
-                (onClick)="openCalcDialog(system)"
+                [disabled]="system.runCurrently || actionLoading()"
+                (click)="openCalcDialog(system)"
                 [pTooltip]="system.runCurrently ? 'Queue ranking calculation' : 'System is inactive'"
-              />
+              >
+                @if (actionLoading()) {
+                  <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                } @else {
+                  <i pButtonIcon class="pi pi-calculator" aria-hidden="true"></i>
+                }
+                <span pButtonLabel>Calculate</span>
+              </button>
             }
           </td>
         </tr>
@@ -145,8 +158,17 @@
   </div>
 
   <ng-template pTemplate="footer">
-    <p-button label="Cancel" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (onClick)="calcDialogOpen = false" />
-    <p-button icon="pi pi-play" label="Queue calculation" [loading]="actionLoading()" (onClick)="triggerCalc()" />
+    <button pButton type="button" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (click)="calcDialogOpen = false">
+      <span pButtonLabel>Cancel</span>
+    </button>
+    <button pButton type="button" (click)="triggerCalc()" [disabled]="actionLoading()">
+      @if (actionLoading()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-play" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>Queue calculation</span>
+    </button>
   </ng-template>
 </p-dialog>
 
@@ -177,7 +199,16 @@
   </div>
 
   <ng-template pTemplate="footer">
-    <p-button label="Cancel" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (onClick)="rankingSyncDialogOpen = false" />
-    <p-button icon="pi pi-sync" label="Start sync" [loading]="actionLoading()" (onClick)="triggerRankingSync()" />
+    <button pButton type="button" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (click)="rankingSyncDialogOpen = false">
+      <span pButtonLabel>Cancel</span>
+    </button>
+    <button pButton type="button" (click)="triggerRankingSync()" [disabled]="actionLoading()">
+      @if (actionLoading()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-sync" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>Start sync</span>
+    </button>
   </ng-template>
 </p-dialog>

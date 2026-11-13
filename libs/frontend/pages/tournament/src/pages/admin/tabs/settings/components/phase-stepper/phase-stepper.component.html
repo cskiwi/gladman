@@ -40,21 +40,17 @@
   }
 
   <div class="flex flex-wrap gap-3 justify-center mt-4">
-    <p-button
-      [label]="'all.tournament.admin.settings.previousPhase' | translate"
-      icon="pi pi-arrow-left"
-      severity="secondary"
-      [outlined]="true"
-      [disabled]="!canGoBack() || updating()"
-      (onClick)="goBackPhase()"
-    />
-    <p-button
-      [label]="'all.tournament.admin.settings.nextPhase' | translate"
-      icon="pi pi-arrow-right"
-      iconPos="right"
-      [disabled]="!canAdvance() || updating()"
-      [loading]="updating()"
-      (onClick)="advancePhase()"
-    />
+    <button pButton type="button" severity="secondary" [outlined]="true" [disabled]="!canGoBack() || updating()" (click)="goBackPhase()">
+      <i pButtonIcon class="pi pi-arrow-left" aria-hidden="true"></i>
+      <span pButtonLabel>{{ 'all.tournament.admin.settings.previousPhase' | translate }}</span>
+    </button>
+    <button pButton type="button" [disabled]="!canAdvance() || updating()" (click)="advancePhase()">
+      <span pButtonLabel>{{ 'all.tournament.admin.settings.nextPhase' | translate }}</span>
+      @if (updating()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-arrow-right" aria-hidden="true"></i>
+      }
+    </button>
   </div>
 </p-panel>

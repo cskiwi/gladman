@@ -68,23 +68,17 @@
     }
 
     <div class="grid sm:grid-cols-2 gap-3">
-      <p-button
-        [label]="'all.button.close' | translate"
-        severity="secondary"
-        variant="outlined"
-        type="button"
-        [disabled]="updating()"
-        (onClick)="close()"
-        fluid
-      />
-      <p-button
-        [label]="'all.tournament.admin.schedule.runScheduler' | translate"
-        icon="pi pi-bolt"
-        type="submit"
-        [disabled]="form.invalid"
-        [loading]="updating()"
-        fluid
-      />
+      <button pButton severity="secondary" variant="outlined" type="button" [disabled]="updating()" (click)="close()" fluid>
+        <span pButtonLabel>{{ 'all.button.close' | translate }}</span>
+      </button>
+      <button pButton type="submit" [disabled]="form.invalid || updating()" fluid>
+        @if (updating()) {
+          <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+        } @else {
+          <i pButtonIcon class="pi pi-bolt" aria-hidden="true"></i>
+        }
+        <span pButtonLabel>{{ 'all.tournament.admin.schedule.runScheduler' | translate }}</span>
+      </button>
     </div>
   </form>
 </p-dialog>

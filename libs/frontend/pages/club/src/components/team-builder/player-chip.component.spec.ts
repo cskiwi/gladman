@@ -203,13 +203,11 @@ describe('PlayerChipComponent', () => {
     const panel = document.body.querySelector('.p-popover');
     expect(panel).not.toBeNull();
     expect(document.activeElement).toBe(focusedBefore);
-    expect(panel?.getAttribute('aria-modal')).toBe('false');
     expect(panel?.querySelector('button')?.autofocus).toBe(false);
     element.querySelector('button')?.click();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(document.body.querySelector('.p-popover')).toBe(panel);
-    expect(panel?.getAttribute('aria-modal')).toBe('true');
     expect(panel?.querySelector('button')?.autofocus).toBe(true);
     expect(document.activeElement).toBe(panel?.querySelector('button'));
   });

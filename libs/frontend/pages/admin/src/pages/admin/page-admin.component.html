@@ -51,31 +51,24 @@
 
               <!-- Quick Actions -->
               <div class="flex gap-2 pt-2">
-                <p-button
-                  [label]="'all.admin.panel.searchIndex.selectAll' | translate"
-                  [outlined]="true"
-                  size="small"
-                  type="button"
-                  (click)="selectAll()"
-                />
-                <p-button
-                  [label]="'all.admin.panel.searchIndex.selectNone' | translate"
-                  [outlined]="true"
-                  size="small"
-                  type="button"
-                  (click)="selectNone()"
-                />
+                <button pButton [outlined]="true" size="small" type="button" (click)="selectAll()">
+                  <span pButtonLabel>{{ 'all.admin.panel.searchIndex.selectAll' | translate }}</span>
+                </button>
+                <button pButton [outlined]="true" size="small" type="button" (click)="selectNone()">
+                  <span pButtonLabel>{{ 'all.admin.panel.searchIndex.selectNone' | translate }}</span>
+                </button>
               </div>
 
               <!-- Submit Button -->
               <div class="pt-4">
-                <p-button
-                  [label]="'all.admin.panel.searchIndex.startIndexing' | translate"
-                  icon="pi pi-refresh"
-                  type="submit"
-                  [loading]="loading()"
-                  [disabled]="loading()"
-                />
+                <button pButton type="submit" [disabled]="loading()">
+                  @if (loading()) {
+                    <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                  } @else {
+                    <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+                  }
+                  <span pButtonLabel>{{ 'all.admin.panel.searchIndex.startIndexing' | translate }}</span>
+                </button>
               </div>
 
               <!-- Loading Indicator -->

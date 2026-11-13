@@ -58,8 +58,15 @@
       </div>
 
       <div class="flex justify-end gap-2">
-        <p-button [label]="'Cancel' | translate" severity="secondary" [text]="true" (onClick)="closeGameSyncDialog()" />
-        <p-button [label]="'Sync Games' | translate" [loading]="loading()" (onClick)="executeGameSync()" />
+        <button pButton type="button" severity="secondary" [text]="true" (click)="closeGameSyncDialog()">
+          <span pButtonLabel>{{ 'Cancel' | translate }}</span>
+        </button>
+        <button pButton type="button" (click)="executeGameSync()" [disabled]="loading()">
+          @if (loading()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'Sync Games' | translate }}</span>
+        </button>
       </div>
     </div>
   }

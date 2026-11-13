@@ -113,26 +113,34 @@
         @if (onAddPlayerToTeam() || onRemovePlayerFromTeam()) {
           <td class="text-center">
             @if (membership.isGameOnly && onAddPlayerToTeam(); as addFn) {
-              <p-button
-                icon="pi pi-user-plus"
+              <button
+                pButton
+                type="button"
+                iconOnly
                 severity="success"
                 [text]="true"
                 size="small"
                 [pTooltip]="'all.team.edit.add-to-team' | translate"
                 tooltipPosition="top"
-                (onClick)="addFn(membership.player.id)"
-              />
+                (click)="addFn(membership.player.id)"
+              >
+                <i pButtonIcon class="pi pi-user-plus" aria-hidden="true"></i>
+              </button>
             }
             @if (!membership.isGameOnly && onRemovePlayerFromTeam(); as removeFn) {
-              <p-button
-                icon="pi pi-user-minus"
+              <button
+                pButton
+                type="button"
+                iconOnly
                 severity="danger"
                 [text]="true"
                 size="small"
                 [pTooltip]="'all.team.edit.remove-from-team' | translate"
                 tooltipPosition="top"
-                (onClick)="removeFn(membership.id)"
-              />
+                (click)="removeFn(membership.id)"
+              >
+                <i pButtonIcon class="pi pi-user-minus" aria-hidden="true"></i>
+              </button>
             }
           </td>
         }

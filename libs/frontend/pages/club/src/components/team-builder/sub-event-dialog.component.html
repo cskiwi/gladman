@@ -36,7 +36,11 @@
   </fieldset>
 
   <div class="flex justify-end gap-2">
-    <p-button [label]="'all.button.cancel' | translate" severity="secondary" [text]="true" (onClick)="cancel()" />
-    <p-button [label]="'all.button.apply' | translate" (onClick)="apply()" />
+    <button pButton type="button" severity="secondary" [text]="true" (click)="cancel()">
+      <span pButtonLabel>{{ 'all.button.cancel' | translate }}</span>
+    </button>
+    <button pButton type="button" (click)="apply()">
+      <span pButtonLabel>{{ 'all.button.apply' | translate }}</span>
+    </button>
   </div>
 </div>

@@ -6,6 +6,7 @@ import { TournamentEvent } from '@app/models';
 import { CheckInStatus } from '@app/models-enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
@@ -30,6 +31,7 @@ import { CheckInStats, CheckInWithDetails, CheckinTabService } from './checkin-t
     TranslateModule,
     PanelModule,
     SkeletonModule,
+    BadgeModule,
     ButtonModule,
     TableModule,
     TagModule,

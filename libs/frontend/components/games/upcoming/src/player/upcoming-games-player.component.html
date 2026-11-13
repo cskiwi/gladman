@@ -5,7 +5,7 @@
 
   @if (!loading()) {
     @for (game of visibleGames(); track game.id) {
-      <p-card class="block mt-3 overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+      <p-card class="block mt-3 overflow-hidden card-flush">
         <article class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
           <div
             class="col-span-2 row-start-1 flex items-baseline gap-2 px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:flex-col sm:items-center sm:justify-center sm:gap-1 sm:px-3 sm:py-4 sm:border-b-0 sm:border-r"
@@ -107,19 +107,16 @@
 
     @if (hasMoreGames()) {
       <div class="upcoming-games__expand flex justify-center mt-4">
-        <p-button
-          [label]="(expanded() ? 'all.common.viewLess' : 'all.common.viewAll') | translate"
-          [icon]="expanded() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
-          variant="outlined"
-          severity="secondary"
-          (onClick)="toggleGames()"
-        />
+        <button pButton type="button" variant="outlined" severity="secondary" (click)="toggleGames()">
+          <i pButtonIcon [class]="expanded() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" aria-hidden="true"></i>
+          <span pButtonLabel>{{ (expanded() ? 'all.common.viewLess' : 'all.common.viewAll') | translate }}</span>
+        </button>
       </div>
     }
   } @else {
     <div class="flex flex-col gap-3 mt-3">
       @for (i of [1, 2, 3]; track i) {
-        <p-card class="block overflow-hidden" [pt]="{ body: { class: 'p-0! gap-0!' } }">
+        <p-card class="block overflow-hidden card-flush">
           <div class="grid grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[72px_minmax(0,1fr)_auto]">
             <div
               class="col-span-2 flex items-center gap-2 px-4 py-3 border-b border-surface sm:col-span-1 sm:row-span-2 sm:flex-col sm:justify-center sm:gap-1 sm:border-b-0 sm:border-r"

@@ -50,15 +50,26 @@
 
   <!-- Action Buttons -->
   <div class="flex gap-4 mb-6">
-    <p-button label="Run Auto-Matching" icon="pi pi-cog" [loading]="autoMatchingLoading()" (onClick)="runAutoMatching()" severity="info" />
-    <p-button
-      label="Bulk Approve High Confidence"
-      icon="pi pi-check"
-      [loading]="bulkApproveLoading()"
-      (onClick)="bulkApproveHighConfidence()"
-      severity="success"
-    />
-    <p-button label="Export Unmatched" icon="pi pi-download" (onClick)="exportUnmatched()" severity="secondary" />
+    <button pButton type="button" (click)="runAutoMatching()" severity="info" [disabled]="autoMatchingLoading()">
+      @if (autoMatchingLoading()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-cog" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>Run Auto-Matching</span>
+    </button>
+    <button pButton type="button" (click)="bulkApproveHighConfidence()" severity="success" [disabled]="bulkApproveLoading()">
+      @if (bulkApproveLoading()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>Bulk Approve High Confidence</span>
+    </button>
+    <button pButton type="button" (click)="exportUnmatched()" severity="secondary">
+      <i pButtonIcon class="pi pi-download" aria-hidden="true"></i>
+      <span pButtonLabel>Export Unmatched</span>
+    </button>
   </div>
 
   <!-- Tabs for Unmatched and Matched Teams -->
@@ -146,17 +157,25 @@
               </td>
               <td>
                 <div class="flex gap-1">
-                  <p-button icon="pi pi-eye" size="small" (onClick)="reviewTeam(team)" pTooltip="Review Matches" />
+                  <button pButton type="button" iconOnly size="small" (click)="reviewTeam(team)" pTooltip="Review Matches">
+                    <i pButtonIcon class="pi pi-eye" aria-hidden="true"></i>
+                  </button>
                   @if (team.suggestions && team.suggestions.length > 0) {
-                    <p-button
-                      icon="pi pi-check"
+                    <button
+                      pButton
+                      type="button"
+                      iconOnly
                       size="small"
                       severity="success"
-                      (onClick)="quickMatch(team, team.suggestions[0])"
+                      (click)="quickMatch(team, team.suggestions[0])"
                       pTooltip="Quick Match"
-                    />
+                    >
+                      <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+                    </button>
                   }
-                  <p-button icon="pi pi-times" size="small" severity="secondary" (onClick)="skipTeam(team)" pTooltip="Skip" />
+                  <button pButton type="button" iconOnly size="small" severity="secondary" (click)="skipTeam(team)" pTooltip="Skip">
+                    <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -228,7 +247,9 @@
                 </div>
               </td>
               <td>
-                <p-button icon="pi pi-times" size="small" severity="danger" (onClick)="unmatchTeam(match)" pTooltip="Unmatch" />
+                <button pButton type="button" iconOnly size="small" severity="danger" (click)="unmatchTeam(match)" pTooltip="Unmatch">
+                  <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+                </button>
               </td>
             </tr>
           </ng-template>
@@ -284,15 +305,21 @@
             </div>
           </td>
           <td>
-            <p-button label="Match" size="small" (onClick)="matchTeamInDialog(selectedTeam()!, suggestion)" />
+            <button pButton type="button" size="small" (click)="matchTeamInDialog(selectedTeam()!, suggestion)">
+              <span pButtonLabel>Match</span>
+            </button>
           </td>
         </tr>
       </ng-template>
     </p-table>
 
     <div class="flex justify-end gap-2 mt-4">
-      <p-button label="Create New Team" severity="secondary" (onClick)="createNewTeam(selectedTeam()!)" />
-      <p-button label="Skip for Now" severity="secondary" (onClick)="closeReviewDialog()" />
+      <button pButton type="button" severity="secondary" (click)="createNewTeam(selectedTeam()!)">
+        <span pButtonLabel>Create New Team</span>
+      </button>
+      <button pButton type="button" severity="secondary" (click)="closeReviewDialog()">
+        <span pButtonLabel>Skip for Now</span>
+      </button>
     </div>
   }
 </p-dialog>

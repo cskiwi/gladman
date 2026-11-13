@@ -2,31 +2,22 @@
 <div class="flex flex-wrap items-center gap-4 px-4 py-3 bg-highlight border-b border-surface">
   <!-- Simulation -->
   <div class="flex flex-wrap items-center gap-2">
-    <p-button
-      icon="pi pi-sliders-h"
-      [label]="'all.ranking.breakdown.simulation' | translate"
-      [text]="true"
-      [badge]="hasOverrides() ? '!' : ''"
-      badgeSeverity="warn"
-      size="small"
-      (onClick)="simulationPopover.toggle($event)"
-    />
-    <p-button
-      icon="pi pi-plus"
-      [label]="'all.ranking.breakdown.add-game.title' | translate"
-      [text]="true"
-      size="small"
-      (onClick)="openAddGameDialog()"
-    />
+    <button pButton type="button" [text]="true" size="small" (click)="simulationPopover.toggle($event)">
+      <i pButtonIcon class="pi pi-sliders-h" aria-hidden="true"></i>
+      <span pButtonLabel>{{ 'all.ranking.breakdown.simulation' | translate }}</span>
+      @if (hasOverrides()) {
+        <p-badge value="!" severity="warn" />
+      }
+    </button>
+    <button pButton type="button" [text]="true" size="small" (click)="openAddGameDialog()">
+      <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+      <span pButtonLabel>{{ 'all.ranking.breakdown.add-game.title' | translate }}</span>
+    </button>
     @if (hasOverrides()) {
-      <p-button
-        icon="pi pi-refresh"
-        [label]="'all.ranking.breakdown.reset-overrides' | translate"
-        severity="warn"
-        [text]="true"
-        size="small"
-        (onClick)="restoreAllGames()"
-      />
+      <button pButton type="button" severity="warn" [text]="true" size="small" (click)="restoreAllGames()">
+        <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+        <span pButtonLabel>{{ 'all.ranking.breakdown.reset-overrides' | translate }}</span>
+      </button>
       @if (excludedCount() > 0) {
         <span class="text-xs text-muted-color">
           {{ 'all.ranking.breakdown.games-excluded' | translate: { count: excludedCount() } }}
@@ -440,6 +431,9 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button [label]="'all.ranking.breakdown.add-game.add' | translate" icon="pi pi-plus" (onClick)="addSimulatedGame()" />
+    <button pButton type="button" (click)="addSimulatedGame()">
+      <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+      <span pButtonLabel>{{ 'all.ranking.breakdown.add-game.add' | translate }}</span>
+    </button>
   </ng-template>
 </p-dialog>

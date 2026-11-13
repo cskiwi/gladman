@@ -47,8 +47,14 @@
           [ariaLabel]="'all.common.selectSeason' | translate"
           size="small"
         />
-        <p-button icon="pi pi-share-alt" [outlined]="true" [label]="'all.club.detail.share' | translate" size="small" />
-        <p-button icon="pi pi-bookmark" [label]="'all.club.detail.follow' | translate" size="small" />
+        <button pButton type="button" [outlined]="true" size="small">
+          <i pButtonIcon class="pi pi-share-alt" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.club.detail.share' | translate }}</span>
+        </button>
+        <button pButton type="button" size="small">
+          <i pButtonIcon class="pi pi-bookmark" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.club.detail.follow' | translate }}</span>
+        </button>
       </div>
 
       <!-- Stats strip -->
@@ -148,18 +154,22 @@
 
             <!-- Toggle for the sidebar column that sits right next to this tab bar -->
             <div class="ml-auto flex items-center pl-2 pr-1">
-              <p-button
-                [icon]="sidebarHidden() ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'"
+              <button
+                pButton
+                type="button"
+                iconOnly
                 [text]="true"
                 [rounded]="true"
                 severity="secondary"
                 size="small"
-                [ariaLabel]="(sidebarHidden() ? 'all.club.detail.sidebar.show' : 'all.club.detail.sidebar.hide') | translate"
+                [attr.aria-label]="(sidebarHidden() ? 'all.club.detail.sidebar.show' : 'all.club.detail.sidebar.hide') | translate"
                 [pTooltip]="(sidebarHidden() ? 'all.club.detail.sidebar.show' : 'all.club.detail.sidebar.hide') | translate"
                 tooltipPosition="left"
                 [attr.aria-pressed]="sidebarHidden()"
-                (onClick)="toggleSidebar()"
-              />
+                (click)="toggleSidebar()"
+              >
+                <i pButtonIcon [class]="sidebarHidden() ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'" aria-hidden="true"></i>
+              </button>
             </div>
           </p-tablist>
 

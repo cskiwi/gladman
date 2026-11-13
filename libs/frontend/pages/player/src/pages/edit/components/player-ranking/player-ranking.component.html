@@ -2,7 +2,10 @@
   <p-progressbar mode="indeterminate" />
 } @else {
   <div>
-    <p-button [label]="'all.ranking.edit.add' | translate" icon="pi pi-plus" [outlined]="true" (onClick)="openEditDialog()" />
+    <button pButton type="button" [outlined]="true" (click)="openEditDialog()">
+      <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+      <span pButtonLabel>{{ 'all.ranking.edit.add' | translate }}</span>
+    </button>
   </div>
   <div class="flex flex-col gap-4">
     <p-accordion [multiple]="true" [value]="['0']">
@@ -133,13 +136,21 @@
   <ng-template pTemplate="footer">
     <div class="flex justify-between">
       @if (!isNewPlace()) {
-        <p-button [label]="'all.button.delete' | translate" severity="danger" [outlined]="true" icon="pi pi-trash" (onClick)="onDelete()" />
+        <button pButton type="button" severity="danger" [outlined]="true" (click)="onDelete()">
+          <i pButtonIcon class="pi pi-trash" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.button.delete' | translate }}</span>
+        </button>
       } @else {
         <span></span>
       }
       <div class="flex gap-2">
-        <p-button [label]="'all.button.close' | translate" severity="secondary" [outlined]="true" (onClick)="dialogVisible.set(false)" />
-        <p-button [label]="'all.button.save' | translate" icon="pi pi-check" (onClick)="onSave()" />
+        <button pButton type="button" severity="secondary" [outlined]="true" (click)="dialogVisible.set(false)">
+          <span pButtonLabel>{{ 'all.button.close' | translate }}</span>
+        </button>
+        <button pButton type="button" (click)="onSave()">
+          <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.button.save' | translate }}</span>
+        </button>
       </div>
     </div>
   </ng-template>

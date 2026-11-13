@@ -26,17 +26,27 @@
 
       <!-- Actions -->
       <div actions class="flex items-center gap-2 flex-wrap justify-end">
-        <p-button icon="pi pi-user-plus" [outlined]="true" [label]="'all.player.detail.follow' | translate" size="small" (onClick)="toggleFollow()" />
-        <p-button icon="pi pi-users" [routerLink]="['head-to-head']" [label]="'all.head-to-head.title' | translate" size="small" />
+        <button pButton type="button" [outlined]="true" size="small" (click)="toggleFollow()">
+          <i pButtonIcon class="pi pi-user-plus" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.player.detail.follow' | translate }}</span>
+        </button>
+        <button pButton type="button" [routerLink]="['head-to-head']" size="small">
+          <i pButtonIcon class="pi pi-users" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.head-to-head.title' | translate }}</span>
+        </button>
         <p-menu #menu [model]="editMenuItems()" [popup]="true" />
-        <p-button
-          icon="pi pi-ellipsis-v"
+        <button
+          pButton
+          type="button"
+          iconOnly
           [outlined]="true"
-          [ariaLabel]="'all.common.actions' | translate"
+          [attr.aria-label]="'all.common.actions' | translate"
           [title]="'all.common.actions' | translate"
           (click)="menu.toggle($event)"
           size="small"
-        />
+        >
+          <i pButtonIcon class="pi pi-ellipsis-v" aria-hidden="true"></i>
+        </button>
       </div>
 
       <!-- Rank panel -->

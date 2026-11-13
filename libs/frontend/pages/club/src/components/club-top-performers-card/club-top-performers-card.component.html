@@ -3,15 +3,42 @@
     <p-progressbar mode="indeterminate" />
   } @else if (rows().length > 0) {
     <ol class="m-0 flex list-none flex-col gap-3 p-0">
-      @for (p of rows(); track p.id) {
+      @for (player of rows(); track player.id) {
         <li class="flex items-center gap-3">
-          <div class="flex min-w-0 flex-1 flex-col">
-            <a class="truncate font-semibold text-color no-underline hover:underline" [routerLink]="['/players', p.slug]">
-              {{ p.fullName }}
+          <div class="flex min-w-0 flex-1 flex-col gap-1">
+            <a class="font-semibold text-color no-underline wrap-anywhere hover:underline" [routerLink]="['/players', player.slug]">
+              {{ player.fullName }}
             </a>
-            <span class="text-sm tabular-nums text-muted-color">{{ p.wins }}–{{ p.losses }}</span>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 text-sm tabular-nums text-muted-color">
+              @for (discipline of player.disciplines; track discipline.code) {
+                <span>
+                  <span aria-hidden="true">{{ discipline.code }}: {{ discipline.wins }}/{{ discipline.total }}</span>
+                  <span class="sr-only">
+                    {{ discipline.label | translate }}, {{ 'all.games.wins' | translate }} / {{ 'all.competition.played' | translate }}:
+                    {{ discipline.wins }}/{{ discipline.total }}.
+                  </span>
+                </span>
+              }
+            </div>
           </div>
-          <p-tag [severity]="p.winRatePct >= 50 ? 'success' : 'danger'" [value]="p.winRatePct + '%'" />
+          <p-tag
+            [severity]="player.winRatePct >= 50 ? 'success' : 'danger'"
+            [pTooltip]="'all.club.detail.stats.winRate' | translate: { rate: player.winRatePct }"
+            tooltipPosition="top"
+            tooltipEvent="both"
+            appendTo="body"
+            [autoHide]="false"
+            [pTooltipPT]="{ root: { id: 'club-performer-rate-' + player.id } }"
+            [attr.aria-describedby]="'club-performer-rate-' + player.id"
+            tabindex="0"
+          >
+            <span class="whitespace-nowrap tabular-nums">
+              <span class="sr-only">{{ 'all.games.wins' | translate }}:</span>
+              {{ player.wins }}<span aria-hidden="true">–</span>
+              <span class="sr-only">, {{ 'all.games.losses' | translate }}:</span>
+              {{ player.losses }}
+            </span>
+          </p-tag>
         </li>
       }
     </ol>

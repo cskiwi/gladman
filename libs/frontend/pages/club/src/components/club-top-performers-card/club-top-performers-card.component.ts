@@ -6,6 +6,7 @@ import { Apollo, gql } from 'apollo-angular';
 import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 import { lastValueFrom } from 'rxjs';
 
 export interface ClubTopPerformerRow {
@@ -17,12 +18,15 @@ export interface ClubTopPerformerRow {
   wins: number;
   total: number;
   winRate: number;
+  singles: { wins: number; total: number };
+  doubles: { wins: number; total: number };
+  mixed: { wins: number; total: number };
 }
 
 @Component({
   selector: 'app-club-top-performers-card',
   standalone: true,
-  imports: [RouterLink, CardModule, ProgressBarModule, TagModule, TranslateModule],
+  imports: [RouterLink, CardModule, ProgressBarModule, TagModule, TooltipModule, TranslateModule],
   templateUrl: './club-top-performers-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -54,6 +58,18 @@ export class ClubTopPerformersCardComponent {
                     wins
                     total
                     winRate
+                    singles {
+                      wins
+                      total
+                    }
+                    doubles {
+                      wins
+                      total
+                    }
+                    mixed {
+                      wins
+                      total
+                    }
                     player {
                       id
                       slug
@@ -89,6 +105,11 @@ export class ClubTopPerformersCardComponent {
       losses: Math.max(0, r.total - r.wins),
       total: r.total,
       winRatePct: Math.round(r.winRate * 100),
+      disciplines: [
+        { code: 'S', label: 'all.tournament.gameTypes.singles', ...r.singles },
+        { code: 'D', label: 'all.tournament.gameTypes.doubles', ...r.doubles },
+        { code: 'MX', label: 'all.tournament.gameTypes.mixed', ...r.mixed },
+      ],
     })),
   );
 

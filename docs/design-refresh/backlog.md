@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-060 [Club aside layout rework](work-items/DR-060-club-aside-layout.md) is Done with explicit approval
+(`Approve and commit DR-060 with disclosed limits`, 2026-11-13).
+The latest feedback is implemented: S/D/MX wins / games played beneath each performer, using additive fields
+on the existing season-filtered aggregation, with no extra per-player queries or ranking changes.
+The second pass follows the mounted player profile: compact date-rail matchups and a performer list with trailing
+native result Tags, not a Table. The user approved Upcoming (`Upcomming: perfect`) and requested moving performer
+percentages to tooltips; implemented with native hover/focus tooltips, Escape dismissal and explicit description IDs.
+Page/sidebar toggle, translations and shared theme are unchanged; no shared wrapper was warranted.
+Literal class tokens 62 → 78; the increase supports date-rail alignment and accessible discipline metadata.
+Club and GraphQL lint/build pass (19 tasks); backend tests pass (4 suites / 42 tests, including two new regressions).
+All three club test suites fail before execution
+on the existing missing `zone.js` setup (DR-059). Dutch loaded views checked in light/dark at 1440px and 390px:
+no page/aside overflow, exact discipline ratios and unplayed `0/0` verified.
+Player/result Tab order, hover/focus/Escape, mobile tooltip bounds and sampled contrast checks also pass.
+The API and frontend proxy are responsive after the backend restart; live records match the displayed ratios.
+Not verified: loading/empty/error states, synthetic unusually long/missing data, fr/en browser, full accessibility
+and SSR/hydration. No operational mutations. DR-061 records an inherited wide sticky-header overlap.
+DR-062 records the native Tooltip's missing generated description association; this slice explicitly supplies it.
+Approval accepts these disclosed limits without changing unchecked checks into passes and authorizes the scoped commit.
+Next candidate/action: scope DR-013c team cards before implementation; not started.
+
+### Previous focus: Builder toolbar, layout and player pools (DR-013b)
+
 DR-013b [Builder toolbar, layout and player pools](work-items/DR-013b-builder-layout-pools.md) is Done with explicit
 approval (`Approve and commit DR-013b with disclosed limits`, 2026-11-13).
 Implemented on `/clubs/smash-for-fun` → Ploegopstelling, 2026-11-13: native Toolbar/Panel surfaces, responsive
@@ -2756,12 +2779,30 @@ and linked from their registry rows.
 | DR-057                                                        | Native PrimeNG paginator aria-labels stay English in nl/fr                   | Backlog     |
 | DR-058                                                        | Native InputNumber spinner icon contrast audit                               | Backlog     |
 | DR-059                                                        | Club Jest setup requires missing zone.js                                     | Backlog     |
+| [DR-060](work-items/DR-060-club-aside-layout.md)              | Club aside layout rework                                                     | Done        |
+| DR-061                                                        | Club aside sticky offset beneath fixed header                                | Backlog     |
+| DR-062                                                        | Native Tooltip description association audit                                 | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-062: Native Tooltip description association
+
+- DR-060 browser checks on PrimeNG 22 find that a visible native Tooltip has no generated `id` and its target
+  has no `aria-describedby`, despite the documented accessibility contract.
+- DR-060 uses the documented `pTooltipPT.root.id` plus a matching target `aria-describedby` and verifies the
+  description resolves on keyboard focus. No dependency or global changes.
+- Audit other mounted Tooltip consumers separately before deciding on a shared/upstream repair.
+
+### DR-061: Club aside sticky offset
+
+- DR-060 wide browser captures expose the inherited `min-[1100px]:sticky min-[1100px]:top-4` club aside:
+  scrolling it to the viewport top can place the first Card title behind the fixed application header.
+- Scope and verify a page-chrome offset repair separately; preserve the independently implemented sidebar toggle
+  and animation. DR-060 changes only the contents of its two Cards.
 
 ### DR-058: Native InputNumber spinner contrast
 

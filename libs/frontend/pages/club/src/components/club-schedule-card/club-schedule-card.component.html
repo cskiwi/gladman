@@ -4,16 +4,23 @@
   } @else if (items().length > 0) {
     <ul class="m-0 flex list-none flex-col p-0">
       @for (enc of items(); track enc.id) {
-        <li class="flex items-center gap-4 border-b border-surface py-3 first:pt-0 last:border-b-0 last:pb-0">
+        <li class="flex gap-3 border-b border-surface py-3 first:pt-0 last:border-b-0 last:pb-0">
           @if (enc.date) {
-            <div class="flex w-14 shrink-0 flex-col items-center gap-1 text-center">
-              <time class="text-lg font-bold leading-none tabular-nums" [attr.datetime]="enc.date">{{ enc.date | date: 'HH:mm' }}</time>
-              <time class="text-xs tabular-nums text-muted-color" [attr.datetime]="enc.date">{{ enc.date | date: 'dd/MM' }}</time>
+            <div class="flex w-16 shrink-0 flex-col items-center justify-center gap-1 border-r border-surface pr-3 tabular-nums">
+              <time class="font-semibold" [attr.datetime]="enc.date">{{ enc.date | date: 'dd/MM' }}</time>
+              <time class="text-xs text-muted-color" [attr.datetime]="enc.date">{{ enc.date | date: 'HH:mm' }}</time>
             </div>
           }
-          <div class="flex min-w-0 flex-1 flex-col gap-0.5 font-semibold">
-            <span class="break-words">{{ enc.homeTeam?.name || '—' }}</span>
-            <span class="break-words text-muted-color">{{ enc.awayTeam?.name || '—' }}</span>
+          <div class="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2 gap-y-1 self-center text-sm font-semibold">
+            <span class="wrap-anywhere">
+              <span class="sr-only">{{ 'all.game.location.home' | translate }}:</span>
+              {{ enc.homeTeam?.name || '—' }}
+            </span>
+            <span class="font-normal text-muted-color" aria-hidden="true">vs</span>
+            <span class="wrap-anywhere">
+              <span class="sr-only">{{ 'all.game.location.away' | translate }}:</span>
+              {{ enc.awayTeam?.name || '—' }}
+            </span>
           </div>
         </li>
       }

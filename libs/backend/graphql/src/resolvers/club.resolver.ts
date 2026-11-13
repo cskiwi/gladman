@@ -1,5 +1,15 @@
 import { AllowAnonymous, PermGuard, User } from '@app/backend-authorization';
-import { ClubPlayerMembership, Club, Team, Player, TournamentEvent, CompetitionEncounter, Game, GamePlayerMembership, TeamPlayerMembership } from '@app/models';
+import {
+  ClubPlayerMembership,
+  Club,
+  Team,
+  Player,
+  TournamentEvent,
+  CompetitionEncounter,
+  Game,
+  GamePlayerMembership,
+  TeamPlayerMembership,
+} from '@app/models';
 import { IsUUID } from '@app/utils';
 import { ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Field, ID, Int, ObjectType, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
@@ -23,6 +33,15 @@ class ClubSeasonRecord {
   declare winRate: number;
 }
 
+@ObjectType('ClubDisciplineRecord')
+class ClubDisciplineRecord {
+  @Field(() => Int)
+  declare wins: number;
+
+  @Field(() => Int)
+  declare total: number;
+}
+
 @ObjectType('ClubTopPerformer')
 class ClubTopPerformer {
   @Field(() => Player)
@@ -36,6 +55,15 @@ class ClubTopPerformer {
 
   @Field(() => Number, { description: 'Win percentage 0-1' })
   declare winRate: number;
+
+  @Field(() => ClubDisciplineRecord)
+  declare singles: ClubDisciplineRecord;
+
+  @Field(() => ClubDisciplineRecord)
+  declare doubles: ClubDisciplineRecord;
+
+  @Field(() => ClubDisciplineRecord)
+  declare mixed: ClubDisciplineRecord;
 }
 
 @Resolver(() => Club)
@@ -161,10 +189,7 @@ export class ClubResolver {
    * reference date (Sept 1 of season year). Otherwise, today.
    */
   @ResolveField(() => Int)
-  async memberCount(
-    @Parent() { id }: Club,
-    @Args('season', { type: () => Int, nullable: true }) season?: number,
-  ): Promise<number> {
+  async memberCount(@Parent() { id }: Club, @Args('season', { type: () => Int, nullable: true }) season?: number): Promise<number> {
     const refDate = season ? new Date(`${season}-09-01`) : new Date();
     const refIso = refDate.toISOString();
 
@@ -181,10 +206,7 @@ export class ClubResolver {
    * Wins/losses are derived from `homeScore` vs `awayScore`.
    */
   @ResolveField(() => ClubSeasonRecord)
-  async seasonRecord(
-    @Parent() { id }: Club,
-    @Args('season', { type: () => Int, nullable: true }) season?: number,
-  ): Promise<ClubSeasonRecord> {
+  async seasonRecord(@Parent() { id }: Club, @Args('season', { type: () => Int, nullable: true }) season?: number): Promise<ClubSeasonRecord> {
     const teamIdsQb = Team.createQueryBuilder('t').select('t.id', 'id').where('t.clubId = :clubId', { clubId: id });
     if (season != null) {
       teamIdsQb.andWhere('t.season = :season', { season });
@@ -320,6 +342,12 @@ export class ClubResolver {
       .select('gpm."playerId"', 'playerId')
       .addSelect('COUNT(*)', 'total')
       .addSelect('SUM(CASE WHEN gpm.team = game.winner THEN 1 ELSE 0 END)', 'wins')
+      .addSelect("SUM(CASE WHEN game.gameType = 'S' THEN 1 ELSE 0 END)", 'singlesTotal')
+      .addSelect("SUM(CASE WHEN game.gameType = 'S' AND gpm.team = game.winner THEN 1 ELSE 0 END)", 'singlesWins')
+      .addSelect("SUM(CASE WHEN game.gameType = 'D' THEN 1 ELSE 0 END)", 'doublesTotal')
+      .addSelect("SUM(CASE WHEN game.gameType = 'D' AND gpm.team = game.winner THEN 1 ELSE 0 END)", 'doublesWins')
+      .addSelect("SUM(CASE WHEN game.gameType = 'MX' THEN 1 ELSE 0 END)", 'mixedTotal')
+      .addSelect("SUM(CASE WHEN game.gameType = 'MX' AND gpm.team = game.winner THEN 1 ELSE 0 END)", 'mixedWins')
       .where('gpm."playerId" IN (:...playerIds)', { playerIds })
       .andWhere('game.winner IS NOT NULL')
       .andWhere('game.set1Team1 > 0')
@@ -327,17 +355,28 @@ export class ClubResolver {
       .groupBy('gpm."playerId"');
 
     if (seasonStart && seasonEnd) {
-      aggQb
-        .andWhere('game.playedAt >= :seasonStart', { seasonStart })
-        .andWhere('game.playedAt < :seasonEnd', { seasonEnd });
+      aggQb.andWhere('game.playedAt >= :seasonStart', { seasonStart }).andWhere('game.playedAt < :seasonEnd', { seasonEnd });
     }
 
-    const rawAgg = await aggQb.getRawMany<{ playerId: string; total: string; wins: string }>();
+    const rawAgg = await aggQb.getRawMany<{
+      playerId: string;
+      total: string;
+      wins: string;
+      singlesTotal: string;
+      singlesWins: string;
+      doublesTotal: string;
+      doublesWins: string;
+      mixedTotal: string;
+      mixedWins: string;
+    }>();
     const aggregated = rawAgg
       .map((r) => ({
         playerId: r.playerId,
         total: Number(r.total) || 0,
         wins: Number(r.wins) || 0,
+        singles: { wins: Number(r.singlesWins), total: Number(r.singlesTotal) },
+        doubles: { wins: Number(r.doublesWins), total: Number(r.doublesTotal) },
+        mixed: { wins: Number(r.mixedWins), total: Number(r.mixedTotal) },
       }))
       .filter((r) => r.total >= minG)
       .sort((a, b) => {
@@ -362,6 +401,9 @@ export class ClubResolver {
           wins: a.wins,
           total: a.total,
           winRate: a.total > 0 ? a.wins / a.total : 0,
+          singles: a.singles,
+          doubles: a.doubles,
+          mixed: a.mixed,
         } satisfies ClubTopPerformer;
       })
       .filter((v): v is ClubTopPerformer => v !== null);

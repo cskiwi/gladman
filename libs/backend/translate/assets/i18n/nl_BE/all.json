@@ -143,6 +143,13 @@
     "teamBuilder": {
       "addPlayer": "Speler toevoegen...",
       "addTeam": "Team Toevoegen",
+      "player": {
+        "cannotMeet75": "Kan niet aan 75% aanwezigheid voldoen",
+        "indicatorCount": "{{count}} spelermeldingen",
+        "lowPerformance": "Lage prestaties ({{percent}}% gewonnen)",
+        "lowPresence": "Lage aanwezigheid ({{percent}}% aanwezig)",
+        "stopping": "Stopt met competitie"
+      },
       "card": {
         "backups": "Reservespelers",
         "changeSubEvent": "Reeks wijzigen voor {{name}}: {{subEvent}}",
@@ -300,6 +307,9 @@
     "title": "Clubs Zoeken"
   },
   "common": {
+    "firstChoice": "Eerste keuze: {{choice}}",
+    "remarks": "Opmerkingen",
+    "secondChoice": "Tweede keuze: {{choice}}",
     "actions": "Acties",
     "cancel": "Annuleren",
     "error": "Fout",
@@ -819,6 +829,13 @@
     "toggleLight": "Lichte modus inschakelen"
   },
   "player": {
+    "newPlayer": "Nieuwe speler",
+    "survey": {
+      "edit": "Enquête bewerken",
+      "empty": "Geen enquêtegegevens beschikbaar",
+      "teamsWanted": "Gewenst aantal ploegen",
+      "unavailability": "Onbeschikbaarheid"
+    },
     "allGames": "Alle Wedstrijden",
     "competitionPlayer": "Competitiespeler",
     "detail": {
@@ -840,10 +857,6 @@
       },
       "teams": {
         "empty": "Geen teams dit seizoen.",
-        "membership": {
-          "BACKUP": "Reserve",
-          "REGULAR": "Basis"
-        },
         "title": "Teams"
       }
     },
@@ -955,6 +968,8 @@
     }
   },
   "ranking": {
+    "summary": "Enkel {{single}}, dubbel {{double}}, gemengd {{mix}}",
+    "summaryWithoutMixed": "Enkel {{single}}, dubbel {{double}}",
     "breakdown": {
       "add-game": {
         "add": "Wedstrijd toevoegen",
@@ -1381,6 +1396,19 @@
     }
   },
   "team": {
+    "membership": {
+      "BACKUP": {
+        "assign": "{{name}} reservespeler maken",
+        "label": "Reserve",
+        "short": "R"
+      },
+      "REGULAR": {
+        "assign": "{{name}} basisspeler maken",
+        "label": "Basis",
+        "short": "B"
+      }
+    },
+    "numbered": "Ploeg {{number}}",
     "captain": "Kapitein",
     "captain-label": "Kapitein",
     "draw-label": "Reeks",
@@ -1424,11 +1452,6 @@
         "player": "Speler",
         "title": "Teamleden",
         "type": "Type"
-      },
-      "membershipType": {
-        "backup": "Reserve",
-        "base": "Basis",
-        "regular": "Regulier"
       },
       "name": {
         "label": "Teamnaam",

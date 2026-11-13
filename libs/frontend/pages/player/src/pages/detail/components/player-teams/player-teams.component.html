@@ -18,7 +18,7 @@
             </div>
             <p-tag
               [severity]="tpm.membershipType === 'REGULAR' ? 'info' : 'secondary'"
-              [value]="'all.player.detail.teams.membership.' + tpm.membershipType | translate"
+              [value]="'all.team.membership.' + tpm.membershipType + '.label' | translate"
             />
           </li>
         }

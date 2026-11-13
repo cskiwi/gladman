@@ -129,7 +129,7 @@ export class TeamEditComponent {
   membershipTypeOptions = computed(() =>
     Object.values(TeamMembershipType).map((value) => ({
       value,
-      label: this.translateService.instant(`all.team.edit.membershipType.${value.toLowerCase()}`),
+      label: this.translateService.instant(`all.team.membership.${value}.label`),
     })),
   );
 

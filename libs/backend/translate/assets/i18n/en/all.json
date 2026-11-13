@@ -143,6 +143,13 @@
     "teamBuilder": {
       "addPlayer": "Add player...",
       "addTeam": "Add Team",
+      "player": {
+        "cannotMeet75": "Cannot meet 75% availability",
+        "indicatorCount": "{{count}} player indicators",
+        "lowPerformance": "Low performance ({{percent}}% win rate)",
+        "lowPresence": "Low presence ({{percent}}% attendance)",
+        "stopping": "Stopping competition"
+      },
       "card": {
         "backups": "Backups",
         "changeSubEvent": "Change sub-event for {{name}}: {{subEvent}}",
@@ -300,6 +307,9 @@
     "title": "Search Clubs"
   },
   "common": {
+    "firstChoice": "First choice: {{choice}}",
+    "remarks": "Remarks",
+    "secondChoice": "Second choice: {{choice}}",
     "actions": "Actions",
     "cancel": "Cancel",
     "error": "Error",
@@ -819,6 +829,13 @@
     "toggleLight": "Switch to light mode"
   },
   "player": {
+    "newPlayer": "New player",
+    "survey": {
+      "edit": "Edit survey",
+      "empty": "No survey data available",
+      "teamsWanted": "Teams wanted",
+      "unavailability": "Unavailability"
+    },
     "allGames": "All Games",
     "competitionPlayer": "Competition Player",
     "detail": {
@@ -840,10 +857,6 @@
       },
       "teams": {
         "empty": "No teams this season.",
-        "membership": {
-          "BACKUP": "Backup",
-          "REGULAR": "Regular"
-        },
         "title": "Teams"
       }
     },
@@ -955,6 +968,8 @@
     }
   },
   "ranking": {
+    "summary": "Singles {{single}}, doubles {{double}}, mixed {{mix}}",
+    "summaryWithoutMixed": "Singles {{single}}, doubles {{double}}",
     "breakdown": {
       "add-game": {
         "add": "Add game",
@@ -1381,6 +1396,19 @@
     }
   },
   "team": {
+    "membership": {
+      "BACKUP": {
+        "assign": "Make {{name}} a reserve player",
+        "label": "Reserve",
+        "short": "R"
+      },
+      "REGULAR": {
+        "assign": "Make {{name}} a base player",
+        "label": "Base",
+        "short": "B"
+      }
+    },
+    "numbered": "Team {{number}}",
     "captain": "Captain",
     "captain-label": "Captain",
     "draw-label": "Draw",
@@ -1424,11 +1452,6 @@
         "player": "Player",
         "title": "Team Members",
         "type": "Type"
-      },
-      "membershipType": {
-        "backup": "Backup",
-        "base": "Base",
-        "regular": "Regular"
       },
       "name": {
         "label": "Team Name",

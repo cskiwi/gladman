@@ -56,7 +56,18 @@ Lint/build pass; eight related tests pass with the existing temporary zoneless o
 still fails on DR-059. Dutch light/dark wide/narrow views fit without horizontal overflow.
 Native Message contrast failures remain DR-034; remaining verification limits are recorded in the child.
 The user explicitly approved completion and a scoped commit on 2026-11-13, preserving all unchecked criteria.
-Next candidate/action: scope DR-013d player chips before implementation; not started.
+[DR-013d](DR-013d-builder-player-chips.md) implements the shared player-chip presentation and is approved.
+Native semantic Tags/Buttons, one combined indicator, shared common/domain translations and keyboard-accessible
+details replace palette icons and hover-only access. Hover/click share one native Popover and exact positioning:
+hover preserves focus; clicking pins it with focus containment and conditional autofocus. Membership is Basis (B)
+or Reserve in Dutch, shared with existing team-edit/table and player-profile consumers.
+Existing presentational separation, ranks, surveys and outputs remain.
+Club/player lint/build pass; 13 related tests pass with the temporary zoneless override (DR-059 remains open).
+Dutch light/dark wide/narrow card rows and keyboard details/edit-opening/Cancel pass; populated pools, rich/long
+browser states, live mutations, fr/en browser, full accessibility and SSR remain disclosed limits in the child.
+The final eight-case browser matrix preserves hover/click panel identity and geometry, including upward flipping.
+The user explicitly approved completion and a scoped commit on 2026-11-13, preserving all unchecked criteria.
+Next action after this slice's scoped commit: scope DR-013e survey import before implementation; not started.
 DR-013g must check dialog dismissal: Enter opens it from the new keyboard-accessible action, but Escape does not
 dismiss the existing dialog; Cancel closes it without applying a change. Do not repair this in the card slice.
 

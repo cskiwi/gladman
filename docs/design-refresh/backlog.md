@@ -5,6 +5,37 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013d [Builder player chips](work-items/DR-013d-builder-player-chips.md) is Done with explicit approval
+(`Approve and commit DR-013d with disclosed limits`, 2026-11-13), after implementing feedback.
+Combined row indicators, equal padding, shared Basis (B)/Reserve labels and membership hover/focus explanation.
+Hover and click share one native Popover, so direction and geometry cannot disagree; hover does not move focus,
+while clicking pins the same panel with focus containment. Conditional autofocus fixes a browser-only focus issue.
+The existing presentational chip serves both mounted pools and team cards on
+`/clubs/smash-for-fun` -> Ploegopstelling; the current dataset has 72 card chips and empty pools.
+Native warning Tags, named detail/membership Buttons, shared warning metadata and nl/fr/en common/domain copy.
+Membership translations are shared with team edit/table and player-profile consumers; removed old duplicate keys.
+Numbered teams, remarks, choices, rank summaries and survey labels live outside the builder namespace.
+Only five builder-specific indicator/availability keys remain. Double-click editing and exact outputs remain.
+Native FocusTrap, initial focus and Escape focus return cover gaps in the installed Popover (follow-up DR-063).
+Ranks, survey values and output payloads preserved; dialogs, service logic, CDK parents and shared theme unchanged.
+Literal class tokens 168 -> 54. Club/player lint/build pass (14 tasks); 13 tests in five suites pass with the existing
+temporary zoneless setup override. Default tests still fail before execution on missing `zone.js` (DR-059).
+Dutch light/dark at 1440px and 390px: no horizontal overflow in all 72 rows. Detail opening, Tab/Shift+Tab
+containment, Escape return, narrow popover bounds and edit-dialog opening/Cancel checked without mutations.
+Final eight-case theme/width/anchor matrix preserves DOM panel identity and rectangle within 1px:
+normal panels open below, near-bottom panels above, identically after clicking. Pointer crossing/close pass.
+Mounted chips show B with Basis tooltip; the migrated player profile renders Basis.
+Sampled name/rank/membership contrast passes (4.87:1 light / 6.65:1 dark); warning icon passes (4.52/9.36:1).
+Membership uses secondary severity: the initial success-outline trial failed light text contrast (DR-033).
+Not verified: populated pools in the browser, unusually long/missing data layout, rich survey browser states,
+fr/en browser, live membership/drag/drop/save, full accessibility/contrast and SSR/hydration.
+API/proxy recovered after translation restarts. No operational mutations.
+Approval accepts the disclosed limits without changing unchecked checks into passes and authorizes the scoped commit.
+Keep DR-013 open. Exact next candidate/action: scope DR-013e survey import before implementation; not started.
+No push is authorized.
+
+### Previous focus: Builder team cards (DR-013c)
+
 DR-013c [Builder team cards](work-items/DR-013c-builder-team-cards.md) is Done with explicit approval
 (`Approve and commit DR-013c with disclosed limits`, 2026-11-13), after inline-field feedback.
 The pencil sits beside its sub-event label, not in the header or after the right-aligned value.
@@ -2650,7 +2681,7 @@ and linked from their registry rows.
 | [DR-013a](work-items/DR-013a-builder-settings.md)             | Team-builder settings dialog                                                 | Done        |
 | [DR-013b](work-items/DR-013b-builder-layout-pools.md)         | Builder toolbar, layout and player pools                                     | Done        |
 | [DR-013c](work-items/DR-013c-builder-team-cards.md)           | Builder team cards                                                           | Done        |
-| DR-013d                                                       | Builder player chips                                                         | Backlog     |
+| [DR-013d](work-items/DR-013d-builder-player-chips.md)         | Builder player chips                                                         | Done        |
 | DR-013e                                                       | Survey import dialog                                                         | Backlog     |
 | DR-013f                                                       | Survey edit dialog                                                           | Backlog     |
 | DR-013g                                                       | Sub-event dialog                                                             | Backlog     |
@@ -2809,12 +2840,24 @@ and linked from their registry rows.
 | [DR-060](work-items/DR-060-club-aside-layout.md)              | Club aside layout rework                                                     | Done        |
 | DR-061                                                        | Club aside sticky offset beneath fixed header                                | Backlog     |
 | DR-062                                                        | Native Tooltip description association audit                                 | Backlog     |
+| DR-063                                                        | Native Popover keyboard and trigger association audit                        | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-063: Native Popover keyboard and trigger association
+
+- DR-013d checks find that installed PrimeNG 22 Popover source has a modal dialog role and document Escape
+  handling, but no focus trap, trigger expanded/controls association or automatic trigger-focus restoration.
+  Its initial-focus helper only selects an explicit `[autofocus]` element. The generated documentation
+  describes broader automatic behavior; verify the installed implementation and real browser, not docs alone.
+- DR-013d supplies native FocusTrap, explicit initial focus, trigger expanded/haspopup and Escape return within
+  the player chip. Those paths pass browser checks. No global or unrelated Popover changes are included.
+- Audit other mounted consumers separately, including trigger relationships and keyboard dismissal.
+  Do not assume their behavior is broken merely because they share the native component.
 
 ### DR-013h: Builder validation, notification and confirmation localization
 

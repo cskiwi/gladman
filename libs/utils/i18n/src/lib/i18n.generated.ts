@@ -150,6 +150,13 @@ export type I18nTranslations = {
             "teamBuilder": {
                 "addPlayer": string;
                 "addTeam": string;
+                "player": {
+                    "cannotMeet75": string;
+                    "indicatorCount": string;
+                    "lowPerformance": string;
+                    "lowPresence": string;
+                    "stopping": string;
+                };
                 "card": {
                     "backups": string;
                     "changeSubEvent": string;
@@ -307,6 +314,9 @@ export type I18nTranslations = {
             "title": string;
         };
         "common": {
+            "firstChoice": string;
+            "remarks": string;
+            "secondChoice": string;
             "actions": string;
             "cancel": string;
             "error": string;
@@ -826,6 +836,13 @@ export type I18nTranslations = {
             "toggleLight": string;
         };
         "player": {
+            "newPlayer": string;
+            "survey": {
+                "edit": string;
+                "empty": string;
+                "teamsWanted": string;
+                "unavailability": string;
+            };
             "allGames": string;
             "competitionPlayer": string;
             "detail": {
@@ -847,10 +864,6 @@ export type I18nTranslations = {
                 };
                 "teams": {
                     "empty": string;
-                    "membership": {
-                        "BACKUP": string;
-                        "REGULAR": string;
-                    };
                     "title": string;
                 };
             };
@@ -962,6 +975,8 @@ export type I18nTranslations = {
             };
         };
         "ranking": {
+            "summary": string;
+            "summaryWithoutMixed": string;
             "breakdown": {
                 "add-game": {
                     "add": string;
@@ -1388,6 +1403,19 @@ export type I18nTranslations = {
             };
         };
         "team": {
+            "membership": {
+                "BACKUP": {
+                    "assign": string;
+                    "label": string;
+                    "short": string;
+                };
+                "REGULAR": {
+                    "assign": string;
+                    "label": string;
+                    "short": string;
+                };
+            };
+            "numbered": string;
             "captain": string;
             "captain-label": string;
             "draw-label": string;
@@ -1431,11 +1459,6 @@ export type I18nTranslations = {
                     "player": string;
                     "title": string;
                     "type": string;
-                };
-                "membershipType": {
-                    "backup": string;
-                    "base": string;
-                    "regular": string;
                 };
                 "name": {
                     "label": string;

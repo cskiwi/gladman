@@ -143,6 +143,13 @@
     "teamBuilder": {
       "addPlayer": "Ajouter un joueur...",
       "addTeam": "Ajouter une Équipe",
+      "player": {
+        "cannotMeet75": "Ne peut pas assurer 75 % de présence",
+        "indicatorCount": "{{count}} indications du joueur",
+        "lowPerformance": "Faibles performances ({{percent}} % de victoires)",
+        "lowPresence": "Faible présence ({{percent}} % de présence)",
+        "stopping": "Arrête la compétition"
+      },
       "card": {
         "backups": "Remplaçants",
         "changeSubEvent": "Changer la série de {{name}} : {{subEvent}}",
@@ -300,6 +307,9 @@
     "title": "Recherche de clubs"
   },
   "common": {
+    "firstChoice": "Premier choix : {{choice}}",
+    "remarks": "Remarques",
+    "secondChoice": "Deuxième choix : {{choice}}",
     "actions": "Actions",
     "cancel": "Annuler",
     "error": "Erreur",
@@ -819,6 +829,13 @@
     "toggleLight": "Passer au mode clair"
   },
   "player": {
+    "newPlayer": "Nouveau joueur",
+    "survey": {
+      "edit": "Modifier le questionnaire",
+      "empty": "Aucune donnée de questionnaire disponible",
+      "teamsWanted": "Nombre d'équipes souhaité",
+      "unavailability": "Indisponibilité"
+    },
     "allGames": "Tous les matchs",
     "competitionPlayer": "Joueur de ligue",
     "detail": {
@@ -840,10 +857,6 @@
       },
       "teams": {
         "empty": "Aucune équipe cette saison.",
-        "membership": {
-          "BACKUP": "Réserve",
-          "REGULAR": "Titulaire"
-        },
         "title": "Équipes"
       }
     },
@@ -955,6 +968,8 @@
     }
   },
   "ranking": {
+    "summary": "Simple {{single}}, double {{double}}, mixte {{mix}}",
+    "summaryWithoutMixed": "Simple {{single}}, double {{double}}",
     "breakdown": {
       "add-game": {
         "add": "Ajouter un concours",
@@ -1381,6 +1396,19 @@
     }
   },
   "team": {
+    "membership": {
+      "BACKUP": {
+        "assign": "Définir {{name}} comme remplaçant",
+        "label": "Réserve",
+        "short": "R"
+      },
+      "REGULAR": {
+        "assign": "Définir {{name}} comme titulaire",
+        "label": "Titulaire",
+        "short": "T"
+      }
+    },
+    "numbered": "Équipe {{number}}",
     "captain": "Capitaine",
     "captain-label": "Capitaine",
     "draw-label": "Série",
@@ -1424,11 +1452,6 @@
         "player": "Joueur",
         "title": "Membres de l'équipe",
         "type": "Type"
-      },
-      "membershipType": {
-        "backup": "Réservé",
-        "base": "De base",
-        "regular": "Régulière"
       },
       "name": {
         "label": "Nom de l'équipe",

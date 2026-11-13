@@ -21,7 +21,7 @@
         </th>
         <th pSortableColumn="isBase">
           <div class="flex items-center gap-2">
-            {{ 'all.team.edit.membershipType.base' | translate }}
+            {{ 'all.team.membership.REGULAR.label' | translate }}
             <p-sorticon field="isBase" />
           </div>
         </th>
@@ -87,7 +87,7 @@
           @if (membership.isBase) {
             <p-tag
               severity="success"
-              [value]="'all.team.edit.membershipType.base' | translate"
+              [value]="'all.team.membership.REGULAR.label' | translate"
               [pTooltip]="'all.team.base-player-tooltip' | translate"
               tooltipPosition="top"
             />

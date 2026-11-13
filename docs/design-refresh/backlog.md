@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013e [Survey import dialog](work-items/DR-013e-builder-survey-import.md) is Done with explicit approval
+(`Approve and commit DR-013e with disclosed limits`, 2026-11-13).
+Implemented on `/clubs/smash-for-fun?tab=team-builder` -> Enquête Importeren: native local validated upload,
+responsive Dialog/Table, named actions, localized nl/fr/en confidence/empty/error states, Cancel in every step,
+native focus on step/row changes and post-destruction trigger return. Native narrow suggestion chooser fits the viewport.
+Literal class tokens 60 -> 18; no new CSS, shared theme or parser/matcher/persistence algorithm changes.
+Club lint/build pass (12 tasks); six builder suites / 18 tests pass with the temporary existing zoneless setup.
+Default tests still fail before execution on missing `zone.js` (DR-059).
+Dutch light/dark at 390px/1440px: upload/review fit, long names scroll inside Table; synthetic invalid/malformed
+file, retry, create/undo, named search, keyboard manual selection, focus wrap and Escape return checked.
+No import confirmation, player creation or team save. API recovered after translation restart.
+Not verified: fr/en browser, full accessibility/contrast, SSR/hydration, production workbook formats and live confirmation.
+Approval accepts these limits without changing unchecked checks into passes and authorizes the scoped commit.
+Exact next action: scope DR-013f survey edit before implementation; not started.
+Keep parent DR-013 open. No push is authorized.
+
+### Previous focus: Builder player chips (DR-013d)
+
 DR-013d [Builder player chips](work-items/DR-013d-builder-player-chips.md) is Done with explicit approval
 (`Approve and commit DR-013d with disclosed limits`, 2026-11-13), after implementing feedback.
 Combined row indicators, equal padding, shared Basis (B)/Reserve labels and membership hover/focus explanation.
@@ -2682,7 +2700,7 @@ and linked from their registry rows.
 | [DR-013b](work-items/DR-013b-builder-layout-pools.md)         | Builder toolbar, layout and player pools                                     | Done        |
 | [DR-013c](work-items/DR-013c-builder-team-cards.md)           | Builder team cards                                                           | Done        |
 | [DR-013d](work-items/DR-013d-builder-player-chips.md)         | Builder player chips                                                         | Done        |
-| DR-013e                                                       | Survey import dialog                                                         | Backlog     |
+| [DR-013e](work-items/DR-013e-builder-survey-import.md)        | Survey import dialog                                                         | Done        |
 | DR-013f                                                       | Survey edit dialog                                                           | Backlog     |
 | DR-013g                                                       | Sub-event dialog                                                             | Backlog     |
 | DR-013h                                                       | Builder validation, notification and confirmation localization               | Backlog     |

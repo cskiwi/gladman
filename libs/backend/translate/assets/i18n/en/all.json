@@ -191,6 +191,17 @@
       },
       "dropToRemove": "Drop here to remove",
       "import": {
+        "cancelCreate": "Cancel creation of {{name}}",
+        "confidenceLevels": {
+          "high": "High",
+          "medium": "Medium",
+          "low": "Low",
+          "none": "Unmatched"
+        },
+        "empty": "No survey responses found. Cancel and choose another file.",
+        "failed": "The survey could not be processed. Check the Excel file and try again.",
+        "fileHint": "Excel files (.xlsx, .xls), up to 10 MB. Review matches before confirming.",
+        "selectPlayer": "Select a player for {{name}}",
         "cancel": "Cancel",
         "chooseFile": "Choose File",
         "confidence": "Confidence",

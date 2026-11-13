@@ -191,6 +191,17 @@
       },
       "dropToRemove": "Sleep hier om te verwijderen",
       "import": {
+        "cancelCreate": "Aanmaken van {{name}} annuleren",
+        "confidenceLevels": {
+          "high": "Hoog",
+          "medium": "Gemiddeld",
+          "low": "Laag",
+          "none": "Niet gematcht"
+        },
+        "empty": "Geen enquêteresultaten gevonden. Annuleer en kies een ander bestand.",
+        "failed": "De enquête kon niet worden verwerkt. Controleer het Excel-bestand en probeer opnieuw.",
+        "fileHint": "Excel-bestanden (.xlsx, .xls), maximaal 10 MB. Controleer de matches voordat je bevestigt.",
+        "selectPlayer": "Speler selecteren voor {{name}}",
         "cancel": "Annuleren",
         "chooseFile": "Bestand Kiezen",
         "confidence": "Betrouwbaarheid",

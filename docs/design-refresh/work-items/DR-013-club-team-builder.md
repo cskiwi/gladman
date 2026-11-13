@@ -36,7 +36,7 @@ Source and browser confirmed the tab and Settings action are mounted on `/clubs/
 on 2026-11-13. The existing builder already separates its service from presentational team cards/player chips.
 Reuse that separation; do not extract one-to-one wrappers for native PrimeNG fields.
 DR-013b localized the toolbar/pools. DR-013c localizes card-owned labels and removes card-owned palette colors.
-Player chips and dialogs still contain English and palette colors; those remain in their respective children.
+DR-013d has migrated player chips. Remaining dialogs are handled in their respective children.
 Service-generated validation and notification text is separate follow-up DR-013h.
 
 DR-013a implements native fluid fields, label/help associations, Divider, responsive dialog sizing and the existing
@@ -67,9 +67,19 @@ Dutch light/dark wide/narrow card rows and keyboard details/edit-opening/Cancel 
 browser states, live mutations, fr/en browser, full accessibility and SSR remain disclosed limits in the child.
 The final eight-case browser matrix preserves hover/click panel identity and geometry, including upward flipping.
 The user explicitly approved completion and a scoped commit on 2026-11-13, preserving all unchecked criteria.
-Next action after this slice's scoped commit: scope DR-013e survey import before implementation; not started.
+DR-013e [survey import](DR-013e-builder-survey-import.md) is implemented and approved with disclosed limits.
+Native validated local upload, responsive Dialog/Table, named controls and localized nl/fr/en states replace
+custom button styles, inline sizing and palette text. Focus follows native step/row controls and returns to the
+import trigger after destruction. Native narrow suggestions use the responsive bottom chooser.
+Club lint/build pass; 18 related tests pass with the temporary zoneless override. Dutch light/dark wide/narrow
+layout and local interactions checked; no live confirmation/mutation. Remaining limits are in the child.
+The user explicitly approved `Approve and commit DR-013e with disclosed limits` on 2026-11-13.
+All unchecked verification limits remain disclosed in the child. Approval authorizes its scoped commit.
+Next action after this slice's commit: scope DR-013f survey edit before implementation; not started.
 DR-013g must check dialog dismissal: Enter opens it from the new keyboard-accessible action, but Escape does not
 dismiss the existing dialog; Cancel closes it without applying a change. Do not repair this in the card slice.
+DR-013e confirmed native Dialog requires both `closable` and `closeOnEscape`, and does not restore trigger focus.
+Check these recorded findings when scoping DR-013g rather than changing the other dialogs in the import slice.
 
 - [ ] Complete and review all required children.
 - [ ] Verify the integrated builder without operational mutations.

@@ -198,6 +198,17 @@ export type I18nTranslations = {
                 };
                 "dropToRemove": string;
                 "import": {
+                    "cancelCreate": string;
+                    "confidenceLevels": {
+                        "high": string;
+                        "medium": string;
+                        "low": string;
+                        "none": string;
+                    };
+                    "empty": string;
+                    "failed": string;
+                    "fileHint": string;
+                    "selectPlayer": string;
                     "cancel": string;
                     "chooseFile": string;
                     "confidence": string;

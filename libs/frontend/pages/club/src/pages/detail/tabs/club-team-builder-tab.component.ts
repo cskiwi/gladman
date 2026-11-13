@@ -125,15 +125,27 @@ export class ClubTeamBuilderTabComponent {
     });
   }
 
-  openImportDialog() {
+  openImportDialog(event: MouseEvent) {
+    const trigger = event.currentTarget;
     const ref = this.dialogService.open(ImportSurveyDialogComponent, {
-      header: 'Import Player Survey',
+      header: this.translate.instant('all.club.teamBuilder.import.title'),
       width: '800px',
+      breakpoints: { '960px': '90vw', '640px': '95vw' },
+      modal: true,
+      closeOnEscape: true,
+      closable: true,
+      closeAriaLabel: this.translate.instant('all.common.cancel'),
       data: {
         systemId: this.service.systemId(),
         clubPlayers: this.service.getClubPlayers(),
         clubId: this.clubId(),
       },
+    });
+
+    ref?.onDestroy.subscribe(() => {
+      if (trigger instanceof HTMLElement && trigger.isConnected) {
+        trigger.focus();
+      }
     });
 
     ref?.onClose.subscribe(async (results: MatchResult[] | null) => {

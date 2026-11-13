@@ -191,6 +191,17 @@
       },
       "dropToRemove": "Déposez ici pour supprimer",
       "import": {
+        "cancelCreate": "Annuler la création de {{name}}",
+        "confidenceLevels": {
+          "high": "Élevée",
+          "medium": "Moyenne",
+          "low": "Faible",
+          "none": "Non apparié"
+        },
+        "empty": "Aucune réponse trouvée. Annulez et choisissez un autre fichier.",
+        "failed": "Impossible de traiter l'enquête. Vérifiez le fichier Excel et réessayez.",
+        "fileHint": "Fichiers Excel (.xlsx, .xls), jusqu'à 10 Mo. Vérifiez les correspondances avant de confirmer.",
+        "selectPlayer": "Sélectionner un joueur pour {{name}}",
         "cancel": "Annuler",
         "chooseFile": "Choisir un Fichier",
         "confidence": "Confiance",

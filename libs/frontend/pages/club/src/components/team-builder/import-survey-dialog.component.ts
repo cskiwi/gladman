@@ -9,11 +9,12 @@ import { TagModule } from 'primeng/tag';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { FileUploadModule } from 'primeng/fileupload';
-import type { FileSelectEvent } from 'primeng/fileupload';
+import type { FileUploadHandlerEvent } from 'primeng/fileupload';
+import { MessageModule } from 'primeng/message';
+import { AutoFocus } from 'primeng/autofocus';
 import { ExcelParserService } from '../../pages/detail/tabs/team-builder/services/excel-parser.service';
 import { Player } from '@app/models';
 import { MatchResult, PlayerMatcherService } from '../../pages/detail/tabs/team-builder/services/player-matcher.service';
-import { SurveyResponse } from '../../pages/detail/tabs/team-builder/types/survey-response';
 
 @Component({
   selector: 'app-import-survey-dialog',
@@ -28,6 +29,8 @@ import { SurveyResponse } from '../../pages/detail/tabs/team-builder/types/surve
     AutoCompleteModule,
     ProgressBarModule,
     FileUploadModule,
+    MessageModule,
+    AutoFocus,
   ],
   providers: [ExcelParserService, PlayerMatcherService],
   templateUrl: './import-survey-dialog.component.html',
@@ -46,12 +49,15 @@ export class ImportSurveyDialogComponent {
   loading = signal(false);
   matchResults = signal<MatchResult[]>([]);
   playerSuggestions = signal<Player[]>([]);
+  importError = signal(false);
+  focusedResult = signal<MatchResult | null>(null);
 
-  async onFileSelected(event: FileSelectEvent) {
+  async onFileSelected(event: FileUploadHandlerEvent) {
     const file = event.files?.[0];
     if (!file) return;
 
     this.loading.set(true);
+    this.importError.set(false);
     this.step.set('matching');
 
     try {
@@ -61,6 +67,7 @@ export class ImportSurveyDialogComponent {
       this.step.set('review');
     } catch (err) {
       console.error('Failed to parse/match survey', err);
+      this.importError.set(true);
       this.step.set('upload');
     } finally {
       this.loading.set(false);
@@ -73,6 +80,7 @@ export class ImportSurveyDialogComponent {
   }
 
   onPlayerSelected(result: MatchResult, player: Player) {
+    this.focusedResult.set(result);
     result.player = player;
     result.confidence = 'high';
     result.editing = false;
@@ -97,7 +105,14 @@ export class ImportSurveyDialogComponent {
   }
 
   toggleCreateNew(result: MatchResult) {
+    this.focusedResult.set(result);
     result.createNew = !result.createNew;
+    this.matchResults.set([...this.matchResults()]);
+  }
+
+  startEditing(result: MatchResult) {
+    this.focusedResult.set(result);
+    result.editing = true;
     this.matchResults.set([...this.matchResults()]);
   }
 

@@ -7,6 +7,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ClubTeamBuilderTabComponent } from './club-team-builder-tab.component';
 import { ClubTeamBuilderTabService } from './club-team-builder-tab.service';
 import { TeamBuilderPlayer } from './team-builder/types/team-builder.types';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 describe('ClubTeamBuilderTabComponent pools and controls', () => {
   const prefix = 'all.club.teamBuilder.controls.';
@@ -42,6 +43,8 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
       restorePlayer: jest.fn(),
       movePlayer: jest.fn(),
       removePlayer: jest.fn(),
+      systemId: signal('example-system'),
+      getClubPlayers: jest.fn().mockReturnValue([]),
     };
     await TestBed.configureTestingModule({
       imports: [ClubTeamBuilderTabComponent, TranslateModule.forRoot()],
@@ -114,5 +117,19 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
     await fixture.whenStable();
     expect(lists[0].queryAll(By.directive(CdkDrag))).toHaveLength(0);
     expect(element.textContent).toContain(prefix + 'noSearchResults');
+  });
+
+  it('restores focus to the import trigger after the modal is destroyed', async () => {
+    const { fixture, element } = await render();
+    const ref = new DynamicDialogRef();
+    jest.spyOn(fixture.debugElement.injector.get(DialogService), 'open').mockReturnValue(ref);
+    const trigger = [...element.querySelectorAll('button')].find((button) => button.textContent?.includes('all.club.teamBuilder.import.title'));
+    if (!trigger) throw new Error('Missing import trigger');
+    const focus = jest.spyOn(trigger, 'focus');
+    trigger.click();
+    ref.close(null);
+    expect(focus).not.toHaveBeenCalled();
+    ref.destroy();
+    expect(focus).toHaveBeenCalledTimes(1);
   });
 });

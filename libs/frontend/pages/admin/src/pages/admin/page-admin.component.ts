@@ -25,9 +25,7 @@ export enum IndexType {
 
 const INDEX_ALL_MUTATION = gql`
   mutation IndexAll($input: IndexInput) {
-    indexAll(input: $input) {
-      message
-    }
+    indexAll(input: $input)
   }
 `;
 
@@ -167,12 +165,12 @@ export class PageAdminComponent implements OnInit {
         }),
       );
 
-      const data = result?.data as { indexAll?: { message?: string } };
-      if (data?.indexAll?.message) {
+      const data = result?.data as { indexAll?: boolean };
+      if (data?.indexAll) {
         this.messageService.add({
           severity: 'success',
           summary: 'Indexing Complete',
-          detail: data.indexAll.message,
+          detail: 'Indexing completed',
         });
       }
     } catch (error) {

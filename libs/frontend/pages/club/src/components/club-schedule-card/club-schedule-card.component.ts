@@ -34,32 +34,55 @@ export class ClubScheduleCardComponent {
     loader: async ({ params, abortSignal }) => {
       if (!params.clubId || params.season == null) return [];
       try {
-        const result = await lastValueFrom(
-          this.apollo.query<{ club: { upcomingEncounters: ClubUpcomingEncounterRow[] } | null }>({
+        const context = { signal: abortSignal };
+        const teamsResult = await lastValueFrom(
+          this.apollo.query<{ club: { teams: { id: string }[] } | null }>({
             query: gql`
-              query ClubUpcomingEncounters($id: ID!, $take: Int!, $season: Int!) {
+              query ClubUpcomingTeams($id: ID!, $season: Float!) {
                 club(id: $id) {
                   id
-                  upcomingEncounters(take: $take, season: $season) {
+                  teams(args: { where: [{ season: { eq: $season } }] }) {
                     id
-                    date
-                    homeTeam {
-                      id
-                      name
-                    }
-                    awayTeam {
-                      id
-                      name
-                    }
                   }
                 }
               }
             `,
-            variables: { id: params.clubId, take: params.take, season: params.season },
-            context: { signal: abortSignal },
+            variables: { id: params.clubId, season: params.season },
+            context,
           }),
         );
-        return result.data?.club?.upcomingEncounters ?? [];
+        const teamIds = (teamsResult.data?.club?.teams ?? []).map((t) => t.id);
+        if (teamIds.length === 0) return [];
+
+        const result = await lastValueFrom(
+          this.apollo.query<{ competitionEncounters: ClubUpcomingEncounterRow[] }>({
+            query: gql`
+              query ClubUpcomingEncounters($teamIds: [String!]!, $now: DateTime!, $take: Int!) {
+                competitionEncounters(
+                  args: {
+                    where: [{ homeTeamId: { in: $teamIds }, date: { gt: $now } }, { awayTeamId: { in: $teamIds }, date: { gt: $now } }]
+                    order: { date: ASC }
+                    take: $take
+                  }
+                ) {
+                  id
+                  date
+                  homeTeam {
+                    id
+                    name
+                  }
+                  awayTeam {
+                    id
+                    name
+                  }
+                }
+              }
+            `,
+            variables: { teamIds, now: new Date().toISOString(), take: Math.max(1, Math.min(params.take ?? 5, 20)) },
+            context,
+          }),
+        );
+        return result.data?.competitionEncounters ?? [];
       } catch (err) {
         console.warn('Club schedule card query failed', err as HttpErrorResponse);
         return [];

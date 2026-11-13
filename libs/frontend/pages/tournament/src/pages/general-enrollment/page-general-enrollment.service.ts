@@ -22,13 +22,10 @@ export interface SubEventWithCalculations extends TournamentSubEvent {
   _isEnrollmentOpen: boolean; // check enrollmentPhase and dates
   _isAlreadyEnrolled: boolean; // check if in user's enrollments
   _isEligible: boolean; // all eligibility checks combined
+  _waitingListCount: number; // enrollments with status WAITING_LIST
 }
 
-// Using field resolvers on TournamentSubEvent:
-// - enrollmentEligibility: Eligibility check computed on backend
-// - availableSpots: Capacity info computed on backend
-// - isEnrollmentOpen: Open status computed on backend
-// - waitingListCount: Waiting list count computed on backend
+// Only native entity data is queried; the waiting list size is derived client-side from enrollment rows.
 
 // GraphQL Queries and Mutations
 const GET_MY_RANKING = gql`
@@ -65,13 +62,11 @@ const GET_AVAILABLE_SUB_EVENTS = gql`
       maxLevel
       maxEntries
       currentEnrollmentCount
-      confirmedEnrollmentCount
       enrollmentPhase
       enrollmentOpenDate
       enrollmentCloseDate
       waitingListEnabled
       requiresApproval
-      waitingListCount
     }
   }
 `;
@@ -159,6 +154,16 @@ const SUBMIT_CART = gql`
   }
 `;
 
+/** Groups enrollment rows by sub-event, counting only those on the waiting list. */
+export function countWaitingList(enrollments?: ReadonlyArray<{ tournamentSubEventId?: string; status?: string }> | null): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const enrollment of enrollments ?? []) {
+    if (enrollment.status !== 'WAITING_LIST' || !enrollment.tournamentSubEventId) continue;
+    counts.set(enrollment.tournamentSubEventId, (counts.get(enrollment.tournamentSubEventId) ?? 0) + 1);
+  }
+  return counts;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -167,6 +172,7 @@ export class PageGeneralEnrollmentService {
   private readonly _tournamentId = signal<string | null>(null);
   private readonly _availableSubEvents = signal<TournamentSubEvent[]>([]);
   private readonly _userEnrollments = signal<Set<string>>(new Set()); // Set of subEventIds user is enrolled in
+  private readonly _waitingListCounts = signal<Map<string, number>>(new Map()); // subEventId -> WAITING_LIST enrollments
   private readonly _cartItems = signal<Map<string, CartItem>>(new Map());
   private readonly _cartId = signal<string | null>(null);
   private readonly _filters = signal({
@@ -315,6 +321,7 @@ export class PageGeneralEnrollmentService {
           _isEnrollmentOpen: this.isEnrollmentOpen(subEvent),
           _isAlreadyEnrolled: subEvent.id ? this.isAlreadyEnrolled(subEvent.id) : false,
           _isEligible: this.isEligible(subEvent),
+          _waitingListCount: subEvent.id ? (this._waitingListCounts().get(subEvent.id) ?? 0) : 0,
         }) as SubEventWithCalculations,
     );
   });
@@ -476,6 +483,7 @@ export class PageGeneralEnrollmentService {
         next: (result) => {
           const enrolledSubEventIds = new Set(result.data?.tournamentEnrollments?.map((e) => e.tournamentSubEventId) || []);
           this._userEnrollments.set(enrolledSubEventIds);
+          this._waitingListCounts.set(countWaitingList(result.data?.tournamentEnrollments));
         },
         error: (error) => {
           console.error('Failed to load user enrollments:', error);

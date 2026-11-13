@@ -6,7 +6,6 @@ export class PlayerUpdateInput extends PartialType(
   OmitType(Player, [
     'createdAt',
     'updatedAt',
-    'permissions',
     'rankingLastPlaces',
     'rankingPlaces',
     'rankingPoints',

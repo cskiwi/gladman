@@ -1,4 +1,4 @@
-import { Field, ID, Int, ObjectType, GraphQLISODateTime } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import {
   BaseEntity,
   Column,
@@ -169,18 +169,6 @@ export class TournamentSubEvent extends BaseEntity {
   @WhereField({ nullable: true })
   @Column({ nullable: true, type: 'text' })
   declare enrollmentNotes?: string;
-
-  // ===================================================================
-  // GraphQL field resolvers (computed on backend, not stored in DB)
-  // Only for data that requires database count queries
-  // ===================================================================
-
-  /**
-   * Current waiting list count - resolved by field resolver
-   * Requires database count query
-   */
-  @Field(() => Int, { nullable: true })
-  waitingListCount?: number;
 
   // @Field(() => [EventEntry], { nullable: true })
   // @OneToMany(() => EventEntry, (eventEntry) => eventEntry.subEventTournament, { cascade: true, onDelete: 'CASCADE' })

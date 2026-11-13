@@ -2,11 +2,12 @@ import { inject, Injectable, signal, computed, effect, untracked } from '@angula
 import { AuthService } from '@app/frontend-modules-auth/service';
 import { Apollo, gql } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
+import { computeNextRun, isCronJobRunning } from './cron-jobs-tab.util';
 
 export interface CronJobMetaModel {
   jobName?: string;
   queueName?: string;
-  arguments?: string;
+  arguments?: Record<string, unknown>;
 }
 
 export interface CronJobModel {
@@ -24,6 +25,17 @@ export interface CronJobModel {
   updatedAt: string;
 }
 
+/** Native CronJob columns as returned by GraphQL; `nextRun` and `running` are derived client-side. */
+type CronJobRow = Omit<CronJobModel, 'nextRun' | 'running'>;
+
+function toCronJobModel(row: CronJobRow): CronJobModel {
+  return {
+    ...row,
+    nextRun: computeNextRun(row.cronTime) ?? undefined,
+    running: isCronJobRunning(row),
+  };
+}
+
 const GET_CRON_JOBS = gql`
   query GetCronJobs {
     cronJobs {
@@ -31,14 +43,8 @@ const GET_CRON_JOBS = gql`
       name
       type
       cronTime
-      meta {
-        jobName
-        queueName
-        arguments
-      }
+      meta
       lastRun
-      nextRun
-      running
       active
       amount
       createdAt
@@ -52,9 +58,8 @@ const TRIGGER_CRON_JOB = gql`
     triggerCronJob(id: $id, year: $year) {
       id
       name
+      cronTime
       lastRun
-      nextRun
-      running
       amount
     }
   }
@@ -67,7 +72,6 @@ const UPDATE_CRON_JOB = gql`
       name
       cronTime
       active
-      nextRun
     }
   }
 `;
@@ -96,11 +100,11 @@ export class CronJobsTabService {
   loadCronJobs(): void {
     this._loading.set(true);
     this.apollo
-      .query<{ cronJobs: CronJobModel[] }>({
+      .query<{ cronJobs: CronJobRow[] }>({
         query: GET_CRON_JOBS,
         fetchPolicy: 'network-only',
       })
-      .pipe(map((result) => result.data?.cronJobs ?? []))
+      .pipe(map((result) => (result.data?.cronJobs ?? []).map(toCronJobModel)))
       .subscribe({
         next: (jobs) => {
           this._cronJobs.set(jobs);
@@ -115,19 +119,19 @@ export class CronJobsTabService {
 
   triggerCronJob(id: string, year?: number): Observable<CronJobModel> {
     return this.apollo
-      .mutate<{ triggerCronJob: CronJobModel }>({
+      .mutate<{ triggerCronJob: CronJobRow }>({
         mutation: TRIGGER_CRON_JOB,
         variables: { id, year },
       })
-      .pipe(map((result) => result.data!.triggerCronJob));
+      .pipe(map((result) => toCronJobModel(result.data!.triggerCronJob)));
   }
 
   updateCronJob(id: string, input: { cronTime?: string; active?: boolean }): Observable<CronJobModel> {
     return this.apollo
-      .mutate<{ updateCronJob: CronJobModel }>({
+      .mutate<{ updateCronJob: CronJobRow }>({
         mutation: UPDATE_CRON_JOB,
         variables: { id, input },
       })
-      .pipe(map((result) => result.data!.updateCronJob));
+      .pipe(map((result) => toCronJobModel(result.data!.updateCronJob)));
   }
 }

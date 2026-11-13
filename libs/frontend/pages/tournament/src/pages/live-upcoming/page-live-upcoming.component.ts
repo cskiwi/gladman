@@ -45,11 +45,15 @@ interface UpcomingQuery {
       }[];
     }[];
   };
-  tournamentScheduleCourts: { id: string; name?: string }[];
+  memberships: { locationId: string }[];
+}
+
+interface CourtsQuery {
+  courts: { id: string; name?: string }[];
 }
 
 const UPCOMING_QUERY = gql`
-  query TournamentLiveUpcoming($id: ID!) {
+  query TournamentLiveUpcoming($id: ID!, $memberships: LocationEventMembershipArgs) {
     tournamentEvent(id: $id) {
       id
       name
@@ -78,7 +82,16 @@ const UPCOMING_QUERY = gql`
         }
       }
     }
-    tournamentScheduleCourts(tournamentEventId: $id) {
+    memberships: locationEventMemberships(args: $memberships) {
+      id
+      locationId
+    }
+  }
+`;
+
+const COURTS_QUERY = gql`
+  query TournamentLiveCourts($args: CourtArgs) {
+    courts(args: $args) {
       id
       name
     }
@@ -115,12 +128,18 @@ export class PageLiveUpcomingComponent implements OnDestroy {
       const { data } = await lastValueFrom(
         this.apollo.query<UpcomingQuery>({
           query: UPCOMING_QUERY,
-          variables: { id },
+          variables: { id, memberships: { where: [{ eventId: { eq: id }, isActive: { eq: true } }] } },
           fetchPolicy: 'network-only',
           context: { signal: abortSignal },
         }),
       );
-      return data ? { name: data.tournamentEvent.name, games: this.toUpcomingGames(data) } : { games: [] };
+      if (!data) {
+        return { games: [] };
+      }
+      // Courts of every active venue assigned to this tournament.
+      const locationIds = [...new Set(data.memberships.map((membership) => membership.locationId))];
+      const courts = locationIds.length > 0 ? await this.loadCourts(locationIds, abortSignal) : [];
+      return { name: data.tournamentEvent.name, games: this.toUpcomingGames(data, courts) };
     },
   });
 
@@ -157,9 +176,21 @@ export class PageLiveUpcomingComponent implements OnDestroy {
     this.liveService.disconnect();
   }
 
+  private async loadCourts(locationIds: string[], abortSignal: AbortSignal): Promise<CourtsQuery['courts']> {
+    const { data } = await lastValueFrom(
+      this.apollo.query<CourtsQuery>({
+        query: COURTS_QUERY,
+        variables: { args: { where: [{ locationId: { in: locationIds } }], order: { name: 'ASC' } } },
+        fetchPolicy: 'network-only',
+        context: { signal: abortSignal },
+      }),
+    );
+    return data?.courts ?? [];
+  }
+
   /** Unfinished games, soonest first; unscheduled games go last in draw order. */
-  private toUpcomingGames(data: UpcomingQuery): UpcomingGame[] {
-    const courts = new Map(data.tournamentScheduleCourts.map((court) => [court.id, court.name]));
+  private toUpcomingGames(data: UpcomingQuery, courtList: CourtsQuery['courts']): UpcomingGame[] {
+    const courts = new Map(courtList.map((court) => [court.id, court.name]));
     return (data.tournamentEvent.tournamentSubEvents ?? [])
       .flatMap((subEvent) =>
         (subEvent.drawTournaments ?? []).flatMap((draw) =>

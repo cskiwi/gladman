@@ -14,67 +14,43 @@ import { lastValueFrom } from 'rxjs';
 
 const TRIGGER_EVENT_SYNC_MUTATION = gql`
   mutation TriggerEventSync($eventId: ID!, $includeSubComponents: Boolean!) {
-    triggerEventSync(eventId: $eventId, includeSubComponents: $includeSubComponents) {
-      message
-      success
-    }
+    triggerEventSync(eventId: $eventId, includeSubComponents: $includeSubComponents)
   }
 `;
 
 const TRIGGER_SUB_EVENT_SYNC_MUTATION = gql`
   mutation TriggerSubEventSync($subEventId: ID!, $includeSubComponents: Boolean!) {
-    triggerSubEventSync(subEventId: $subEventId, includeSubComponents: $includeSubComponents) {
-      message
-      success
-    }
+    triggerSubEventSync(subEventId: $subEventId, includeSubComponents: $includeSubComponents)
   }
 `;
 
 const TRIGGER_DRAW_SYNC_MUTATION = gql`
   mutation TriggerDrawSync($drawId: ID!, $includeSubComponents: Boolean!) {
-    triggerDrawSync(drawId: $drawId, includeSubComponents: $includeSubComponents) {
-      message
-      success
-    }
+    triggerDrawSync(drawId: $drawId, includeSubComponents: $includeSubComponents)
   }
 `;
 
 const TRIGGER_GAME_SYNC_MUTATION = gql`
   mutation TriggerGameSync($drawId: ID!, $matchCodes: [String!]) {
-    triggerGameSync(drawId: $drawId, matchCodes: $matchCodes) {
-      message
-      success
-    }
+    triggerGameSync(drawId: $drawId, matchCodes: $matchCodes)
   }
 `;
 
 const CLEAR_EVENT_CACHE_MUTATION = gql`
   mutation ClearEventCache($eventId: ID!, $includeChildren: Boolean!) {
-    clearTournamentApiCache(eventId: $eventId, includeChildren: $includeChildren) {
-      success
-      message
-      keysRemoved
-    }
+    clearTournamentApiCache(eventId: $eventId, includeChildren: $includeChildren)
   }
 `;
 
 const CLEAR_SUB_EVENT_CACHE_MUTATION = gql`
   mutation ClearSubEventCache($subEventId: ID!, $includeChildren: Boolean!) {
-    clearSubEventApiCache(subEventId: $subEventId, includeChildren: $includeChildren) {
-      success
-      message
-      keysRemoved
-    }
+    clearSubEventApiCache(subEventId: $subEventId, includeChildren: $includeChildren)
   }
 `;
 
 const CLEAR_DRAW_CACHE_MUTATION = gql`
   mutation ClearDrawCache($drawId: ID!, $includeChildren: Boolean!) {
-    clearDrawApiCache(drawId: $drawId, includeChildren: $includeChildren) {
-      success
-      message
-      keysRemoved
-    }
+    clearDrawApiCache(drawId: $drawId, includeChildren: $includeChildren)
   }
 `;
 
@@ -221,8 +197,8 @@ export class SyncButtonComponent {
 
     this.loading.set(true);
     try {
-      const result = await lastValueFrom(
-        this.apollo.mutate<{ triggerEventSync: { message: string; success: boolean } }>({
+      await lastValueFrom(
+        this.apollo.mutate<{ triggerEventSync: boolean }>({
           mutation: TRIGGER_EVENT_SYNC_MUTATION,
           variables: {
             eventId: cfg.eventId,
@@ -234,7 +210,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: result.data?.triggerEventSync.message || `Event sync started for ${cfg.eventName}`,
+        detail: `Event sync queued successfully for ${cfg.eventId}`,
       });
     } catch (e: unknown) {
       this.messageService.add({
@@ -253,8 +229,8 @@ export class SyncButtonComponent {
 
     this.loading.set(true);
     try {
-      const result = await lastValueFrom(
-        this.apollo.mutate<{ triggerSubEventSync: { message: string; success: boolean } }>({
+      await lastValueFrom(
+        this.apollo.mutate<{ triggerSubEventSync: boolean }>({
           mutation: TRIGGER_SUB_EVENT_SYNC_MUTATION,
           variables: {
             subEventId: cfg.subEventId,
@@ -266,7 +242,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: result.data?.triggerSubEventSync.message || `Sub-event sync started for ${cfg.subEventName}`,
+        detail: `Sub-event sync queued successfully for ${cfg.subEventId}`,
       });
     } catch (e: unknown) {
       this.messageService.add({
@@ -285,8 +261,8 @@ export class SyncButtonComponent {
 
     this.loading.set(true);
     try {
-      const result = await lastValueFrom(
-        this.apollo.mutate<{ triggerDrawSync: { message: string; success: boolean } }>({
+      await lastValueFrom(
+        this.apollo.mutate<{ triggerDrawSync: boolean }>({
           mutation: TRIGGER_DRAW_SYNC_MUTATION,
           variables: {
             drawId: cfg.drawId,
@@ -298,7 +274,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: result.data?.triggerDrawSync.message || `Draw sync started for ${cfg.drawName}`,
+        detail: `Draw sync queued successfully for ${cfg.drawId}`,
       });
     } catch (e: unknown) {
       this.messageService.add({
@@ -317,8 +293,8 @@ export class SyncButtonComponent {
 
     this.loading.set(true);
     try {
-      const result = await lastValueFrom(
-        this.apollo.mutate<{ triggerGameSync: { message: string; success: boolean } }>({
+      await lastValueFrom(
+        this.apollo.mutate<{ triggerGameSync: boolean }>({
           mutation: TRIGGER_GAME_SYNC_MUTATION,
           variables: {
             drawId: cfg.drawId,
@@ -330,7 +306,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: result.data?.triggerGameSync.message || 'Game sync started',
+        detail: 'Game sync queued successfully',
       });
     } catch (e: unknown) {
       this.messageService.add({
@@ -377,24 +353,23 @@ export class SyncButtonComponent {
     this.loading.set(true);
     try {
       const result = await lastValueFrom(
-        this.apollo.mutate<Record<string, { success: boolean; message: string; keysRemoved: number }>>({
+        this.apollo.mutate<Record<string, boolean>>({
           mutation,
           variables,
         }),
       );
 
-      const response = result.data?.[resultKey];
-      if (response?.success) {
+      if (result.data?.[resultKey]) {
         this.messageService.add({
           severity: 'success',
           summary: 'Cache Cleared',
-          detail: response.message,
+          detail: 'Cleared cached API entries',
         });
       } else {
         this.messageService.add({
           severity: 'warn',
           summary: 'Cache Clear',
-          detail: response?.message || 'No cache entries found',
+          detail: 'No cache entries found',
         });
       }
     } catch (e: unknown) {
@@ -426,8 +401,8 @@ export class SyncButtonComponent {
     try {
       const matchCodesArray = this.matchCodes ? this.matchCodes.split(',').map((code) => code.trim()) : undefined;
 
-      const result = await lastValueFrom(
-        this.apollo.mutate<{ triggerGameSync: { message: string; success: boolean } }>({
+      await lastValueFrom(
+        this.apollo.mutate<{ triggerGameSync: boolean }>({
           mutation: TRIGGER_GAME_SYNC_MUTATION,
           variables: {
             drawId: cfg.drawId,
@@ -439,7 +414,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: result.data?.triggerGameSync.message || 'Specific game sync started',
+        detail: 'Game sync queued successfully',
       });
 
       this.closeGameSyncDialog();

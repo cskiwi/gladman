@@ -2,7 +2,7 @@ import { PermGuard, User } from '@app/backend-authorization';
 import { TournamentDraw, TournamentSubEvent, Game, Entry, TournamentEnrollment, Player } from '@app/models';
 import { EnrollmentStatus, GameType } from '@app/models-enum';
 import { BadRequestException, ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { TournamentDrawArgs, GameArgs, EntryArgs } from '../../../args';
 import {
   GenerateEntriesFromEnrollmentsInput,
@@ -531,13 +531,6 @@ export class TournamentDrawResolver {
     }
 
     return Entry.find(args);
-  }
-
-  @ResolveField(() => Int, { description: 'Number of entries in this draw' })
-  async entryCount(@Parent() { id }: TournamentDraw): Promise<number> {
-    return Entry.count({
-      where: { drawId: id },
-    });
   }
 
   // ============ HELPER METHODS ============

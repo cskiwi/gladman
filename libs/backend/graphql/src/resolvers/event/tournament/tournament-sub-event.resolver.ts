@@ -1,11 +1,9 @@
 import { PermGuard, User } from '@app/backend-authorization';
 import { TournamentSubEvent, TournamentDraw, TournamentEvent, TournamentEnrollment, Entry, Player } from '@app/models';
-import { EnrollmentStatus } from '@app/models-enum';
 import { ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { TournamentSubEventArgs, TournamentDrawArgs, TournamentEnrollmentArgs, EntryArgs } from '../../../args';
 import { TournamentSubEventNewInput, TournamentSubEventUpdateInput } from '../../../inputs';
-import { IsNull } from 'typeorm';
 
 @Resolver(() => TournamentSubEvent)
 export class TournamentSubEventResolver {
@@ -29,7 +27,7 @@ export class TournamentSubEventResolver {
     @Args('args', { type: () => TournamentSubEventArgs, nullable: true })
     inputArgs?: InstanceType<typeof TournamentSubEventArgs>,
   ): Promise<TournamentSubEvent[]> {
-    const args = TournamentSubEventArgs.toFindOneOptions(inputArgs);
+    const args = TournamentSubEventArgs.toFindManyOptions(inputArgs);
     return TournamentSubEvent.find(args);
   }
 
@@ -91,36 +89,6 @@ export class TournamentSubEventResolver {
     return TournamentEnrollment.find(args);
   }
 
-  @ResolveField(() => Int, { description: 'Count of confirmed enrollments' })
-  async confirmedEnrollmentCount(@Parent() { id }: TournamentSubEvent): Promise<number> {
-    return TournamentEnrollment.count({
-      where: {
-        tournamentSubEventId: id,
-        status: EnrollmentStatus.CONFIRMED,
-      },
-    });
-  }
-
-  @ResolveField(() => Int, { description: 'Count of pending enrollments (waiting for partner)' })
-  async pendingEnrollmentCount(@Parent() { id }: TournamentSubEvent): Promise<number> {
-    return TournamentEnrollment.count({
-      where: {
-        tournamentSubEventId: id,
-        status: EnrollmentStatus.PENDING,
-      },
-    });
-  }
-
-  @ResolveField(() => Int, { description: 'Count of players on waiting list' })
-  async waitingListCount(@Parent() { id }: TournamentSubEvent): Promise<number> {
-    return TournamentEnrollment.count({
-      where: {
-        tournamentSubEventId: id,
-        status: EnrollmentStatus.WAITING_LIST,
-      },
-    });
-  }
-
   @ResolveField(() => [Entry], { nullable: true, description: 'All entries for this sub-event' })
   async entries(
     @Parent() { id }: TournamentSubEvent,
@@ -139,33 +107,6 @@ export class TournamentSubEventResolver {
     }
 
     return Entry.find(args);
-  }
-
-  @ResolveField(() => [Entry], { nullable: true, description: 'Entries not yet assigned to any draw' })
-  async unassignedEntries(@Parent() { id }: TournamentSubEvent): Promise<Entry[]> {
-    return Entry.find({
-      where: {
-        subEventId: id,
-        drawId: IsNull(),
-      },
-    });
-  }
-
-  @ResolveField(() => Int, { description: 'Total number of entries' })
-  async entryCount(@Parent() { id }: TournamentSubEvent): Promise<number> {
-    return Entry.count({
-      where: { subEventId: id },
-    });
-  }
-
-  @ResolveField(() => Int, { description: 'Number of entries not yet assigned to a draw' })
-  async unassignedEntryCount(@Parent() { id }: TournamentSubEvent): Promise<number> {
-    return Entry.count({
-      where: {
-        subEventId: id,
-        drawId: IsNull(),
-      },
-    });
   }
 
   // ============ MUTATIONS ============

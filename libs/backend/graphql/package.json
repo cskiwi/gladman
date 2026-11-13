@@ -6,8 +6,6 @@
     "@apollo/server": "^5.2.0",
     "@app/backend-authorization": "*",
     "@app/backend-sync": "*",
-    "@app/backend-ranking": "*",
-    "cron": "^4.3.1",
     "@nestjs/apollo": "^13.1.0",
     "@nestjs/common": "^11.1.5",
     "@nestjs/config": "^4.0.3",

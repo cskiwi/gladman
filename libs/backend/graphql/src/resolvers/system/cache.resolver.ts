@@ -2,19 +2,7 @@ import { PermGuard, User } from '@app/backend-authorization';
 import { TournamentApiClient } from '@app/backend-tournament-api';
 import { Player, TournamentEvent, TournamentSubEvent, TournamentDraw, CompetitionEvent, CompetitionSubEvent, CompetitionDraw } from '@app/models';
 import { ForbiddenException, Logger, UseGuards } from '@nestjs/common';
-import { Args, Field, ID, Int, Mutation, ObjectType, Resolver } from '@nestjs/graphql';
-
-@ObjectType('CacheClearResponse')
-class CacheClearResponse {
-  @Field()
-  success!: boolean;
-
-  @Field()
-  message!: string;
-
-  @Field(() => Int)
-  keysRemoved!: number;
-}
+import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
 
 @Resolver()
 export class CacheResolver {
@@ -22,13 +10,13 @@ export class CacheResolver {
 
   constructor(private readonly tournamentApiClient: TournamentApiClient) {}
 
-  @Mutation(() => CacheClearResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async clearTournamentApiCache(
     @User() user: Player,
     @Args('eventId', { type: () => ID }) eventId: string,
     @Args('includeChildren', { type: () => Boolean, defaultValue: true }) includeChildren: boolean,
-  ): Promise<CacheClearResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to clear cache');
     }
@@ -39,7 +27,8 @@ export class CacheResolver {
     const event = tournamentEvent || competitionEvent;
 
     if (!event?.visualCode) {
-      return { success: false, message: `Event not found or has no visualCode: ${eventId}`, keysRemoved: 0 };
+      this.logger.warn(`Event not found or has no visualCode: ${eventId}`);
+      return false;
     }
 
     let keysRemoved: number;
@@ -51,20 +40,16 @@ export class CacheResolver {
 
     this.logger.log(`Cache cleared for event ${event.visualCode} (includeChildren: ${includeChildren}): ${keysRemoved} keys removed`);
 
-    return {
-      success: true,
-      message: `Cleared ${keysRemoved} cached API entries for ${event.visualCode}`,
-      keysRemoved,
-    };
+    return true;
   }
 
-  @Mutation(() => CacheClearResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async clearSubEventApiCache(
     @User() user: Player,
     @Args('subEventId', { type: () => ID }) subEventId: string,
     @Args('includeChildren', { type: () => Boolean, defaultValue: true }) includeChildren: boolean,
-  ): Promise<CacheClearResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to clear cache');
     }
@@ -83,13 +68,15 @@ export class CacheResolver {
 
     const subEvent = tournamentSubEvent || competitionSubEvent;
     if (!subEvent?.visualCode) {
-      return { success: false, message: `Sub-event not found or has no visualCode: ${subEventId}`, keysRemoved: 0 };
+      this.logger.warn(`Sub-event not found or has no visualCode: ${subEventId}`);
+      return false;
     }
 
     const parentVisualCode = tournamentSubEvent?.tournamentEvent?.visualCode || competitionSubEvent?.competitionEvent?.visualCode;
 
     if (!parentVisualCode) {
-      return { success: false, message: `Parent event not found for sub-event: ${subEventId}`, keysRemoved: 0 };
+      this.logger.warn(`Parent event not found for sub-event: ${subEventId}`);
+      return false;
     }
 
     const pattern = includeChildren
@@ -99,20 +86,16 @@ export class CacheResolver {
     const keysRemoved = await this.tournamentApiClient.clearCacheByPattern(pattern);
     this.logger.log(`Cache cleared for sub-event ${subEvent.visualCode} (includeChildren: ${includeChildren}): ${keysRemoved} keys removed`);
 
-    return {
-      success: true,
-      message: `Cleared ${keysRemoved} cached API entries for sub-event ${subEvent.visualCode}`,
-      keysRemoved,
-    };
+    return true;
   }
 
-  @Mutation(() => CacheClearResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async clearDrawApiCache(
     @User() user: Player,
     @Args('drawId', { type: () => ID }) drawId: string,
     @Args('includeChildren', { type: () => Boolean, defaultValue: true }) includeChildren: boolean,
-  ): Promise<CacheClearResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to clear cache');
     }
@@ -123,7 +106,8 @@ export class CacheResolver {
 
     const draw = tournamentDraw || competitionDraw;
     if (!draw?.visualCode) {
-      return { success: false, message: `Draw not found or has no visualCode: ${drawId}`, keysRemoved: 0 };
+      this.logger.warn(`Draw not found or has no visualCode: ${drawId}`);
+      return false;
     }
 
     const pattern = includeChildren ? `tournament-api:*/Draw/${draw.visualCode}*` : `tournament-api:*/Draw/${draw.visualCode}`;
@@ -131,10 +115,6 @@ export class CacheResolver {
     const keysRemoved = await this.tournamentApiClient.clearCacheByPattern(pattern);
     this.logger.log(`Cache cleared for draw ${draw.visualCode} (includeChildren: ${includeChildren}): ${keysRemoved} keys removed`);
 
-    return {
-      success: true,
-      message: `Cleared ${keysRemoved} cached API entries for draw ${draw.visualCode}`,
-      keysRemoved,
-    };
+    return true;
   }
 }

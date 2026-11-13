@@ -97,7 +97,6 @@ export const {
   RoleNewInputArgs,
   RoleUpdateInputArgs,
   RuleArgs,
-  SearchArgs,
   ServiceArgs,
   SettingArgs,
   StandingArgs,

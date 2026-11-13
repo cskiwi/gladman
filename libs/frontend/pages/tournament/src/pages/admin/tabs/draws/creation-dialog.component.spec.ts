@@ -11,7 +11,7 @@ describe('Draw creation dialog', () => {
   let query: jest.Mock;
   let mutate: jest.Mock;
   const draw = { id: 'safe-draw', name: 'Safe draw', type: 'KO' };
-  const response = { data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: [] } } };
+  const response = { data: { tournamentSubEvent: { entries: [], drawTournaments: [] } } };
 
   beforeEach(async () => {
     query = jest.fn(() => of(response));

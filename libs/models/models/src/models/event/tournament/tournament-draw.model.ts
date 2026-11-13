@@ -1,4 +1,4 @@
-import { SortableField, WhereField } from '@app/utils';
+import { SortableField, WhereField, WhereObject } from '@app/utils';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import {
   BaseEntity,
@@ -74,6 +74,7 @@ export class TournamentDraw extends BaseEntity {
   @Column({ type: 'int', default: 0 })
   declare fallers: number;
 
+  @WhereObject(() => TournamentSubEvent, { nullable: true })
   @Field(() => TournamentSubEvent, { nullable: true })
   @ManyToOne(() => TournamentSubEvent, (tournamentSubEvent) => tournamentSubEvent.drawTournaments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'subeventId' })

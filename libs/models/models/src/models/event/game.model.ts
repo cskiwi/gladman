@@ -149,6 +149,7 @@ export class Game extends BaseEntity {
   @OneToMany(() => RankingPoint, (rankingPoint) => rankingPoint.game)
   declare rankingPoints: Relation<RankingPoint[]>;
 
+  @WhereObject(() => TournamentDraw, { nullable: true })
   @Field(() => TournamentDraw, { nullable: true })
   @ManyToOne(() => TournamentDraw, (tournamentDraw) => tournamentDraw.games, {
     nullable: true,

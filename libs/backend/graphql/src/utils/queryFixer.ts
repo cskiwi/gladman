@@ -1,4 +1,20 @@
-import { Between, FindOptionsWhere, ILike, In, IsNull, LessThan, LessThanOrEqual, Like, MoreThan, MoreThanOrEqual, Not, Raw } from 'typeorm';
+import {
+  And,
+  Between,
+  Equal,
+  FindOperator,
+  FindOptionsWhere,
+  ILike,
+  In,
+  IsNull,
+  LessThan,
+  LessThanOrEqual,
+  Like,
+  MoreThan,
+  MoreThanOrEqual,
+  Not,
+  Raw,
+} from 'typeorm';
 
 export interface GraphQLWhereInput<T> {
   OR?: GraphQLWhereInput<T>[];
@@ -35,7 +51,7 @@ export class GraphQLWhereConverter {
       where.AND.forEach((condition) => {
         const result = this.convert<T>(condition);
         const resultObj = Array.isArray(result) ? result[0] : result;
-        Object.assign(merged, resultObj);
+        this.mergeAnd(merged, resultObj as Record<string, any>);
       });
       return merged as FindOptionsWhere<T>;
     }
@@ -55,6 +71,35 @@ export class GraphQLWhereConverter {
     return result as FindOptionsWhere<T>;
   }
 
+  /**
+   * Merge an AND condition into the accumulated where object. Conditions on the same field are
+   * combined with `And(...)` (instead of overwriting), nested relation objects are merged recursively.
+   */
+  private static mergeAnd(target: Record<string, any>, source: Record<string, any>): void {
+    for (const [key, value] of Object.entries(source ?? {})) {
+      if (!(key in target)) {
+        target[key] = value;
+        continue;
+      }
+
+      const existing = target[key];
+      if (this.isRelationObject(existing) && this.isRelationObject(value)) {
+        this.mergeAnd(existing, value);
+        continue;
+      }
+
+      target[key] = And(this.toOperator(existing), this.toOperator(value));
+    }
+  }
+
+  private static isRelationObject(value: unknown): value is Record<string, any> {
+    return !!value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof FindOperator) && !(value instanceof Date);
+  }
+
+  private static toOperator(value: unknown): FindOperator<any> {
+    return value instanceof FindOperator ? value : Equal(value);
+  }
+
   private static convertValue(value: any): any {
     // Simple value (string, number, boolean, null)
     if (value === null || typeof value !== 'object' || Array.isArray(value)) {
@@ -69,11 +114,13 @@ export class GraphQLWhereConverter {
       return this.convertOperator(keys[0], value[keys[0]]);
     }
 
-    // Multiple operators on same field
-    if (keys.every((key) => typedOperators.includes(key))) {
-      // For now, just take the first operator
-      const firstKey = keys[0];
-      return this.convertOperator(firstKey, value[firstKey]);
+    // Multiple operators on same field (e.g. { gte: a, lt: b }) are combined with AND
+    if (keys.length > 1 && keys.every((key) => typedOperators.includes(key))) {
+      const operators = keys.map((key) => {
+        const converted = this.convertOperator(key, value[key]);
+        return converted instanceof FindOperator ? converted : Equal(converted);
+      });
+      return And(...operators);
     }
 
     // Check if nested object contains AND/OR logical operators (relation with complex query)

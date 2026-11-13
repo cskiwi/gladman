@@ -1,7 +1,6 @@
 import { Player, TournamentEnrollment, TournamentEvent, TournamentSubEvent } from '@app/models';
 import { EnrollmentStatus, GameType, TournamentPhase } from '@app/models-enum';
 import { validate } from 'class-validator';
-import { Brackets, DataSource, SelectQueryBuilder } from 'typeorm';
 import { AdminEnrollPlayerInput } from '../../../inputs/tournament-enrollment.input';
 import { TournamentEnrollmentResolver } from './tournament-enrollment.resolver';
 
@@ -33,58 +32,6 @@ describe('Administrator manual player enrollment', () => {
     jest.spyOn(TournamentEnrollment, 'count').mockResolvedValue(0);
     save = jest.spyOn(TournamentEnrollment.prototype, 'save').mockImplementation(async function (this: TournamentEnrollment) {
       return this;
-    });
-  });
-
-  describe('Manual enrollment name search', () => {
-    afterEach(() => jest.restoreAllMocks());
-
-    it.each(['Latomme Glenn', 'Glenn Latomme', 'Latomme', 'Herssens', 'Shane Herssens', 'Herssens Shane', '  Herssens   Shane  '])(
-      'requires every word in %s while accepting either name order',
-      async (search) => {
-        const builder = new SelectQueryBuilder<Player>(new DataSource({ type: 'postgres' }));
-        jest.spyOn(Player, 'createQueryBuilder').mockReturnValue(builder);
-        const groups: Brackets[] = [];
-        jest.spyOn(builder, 'andWhere').mockImplementation((condition) => {
-          if (condition instanceof Brackets) groups.push(condition);
-          return builder;
-        });
-        jest.spyOn(builder, 'orderBy').mockReturnValue(builder);
-        jest.spyOn(builder, 'addOrderBy').mockReturnValue(builder);
-        jest.spyOn(builder, 'take').mockReturnValue(builder);
-        jest.spyOn(builder, 'getMany').mockResolvedValue([]);
-        await new TournamentEnrollmentResolver().manualEnrollmentPlayers(search);
-        const words = search.trim().split(/\s+/);
-        expect(groups).toHaveLength(words.length);
-        for (const [index, group] of groups.entries()) {
-          const predicates: Array<{ sql: string; pattern: string }> = [];
-          jest.spyOn(builder, 'where').mockImplementation((sql, parameters) => {
-            predicates.push({ sql: String(sql), pattern: parameters?.[`word${index}`] });
-            return builder;
-          });
-          jest.spyOn(builder, 'orWhere').mockImplementation((sql, parameters) => {
-            predicates.push({ sql: String(sql), pattern: parameters?.[`word${index}`] });
-            return builder;
-          });
-          group.whereFactory(builder);
-          expect(predicates).toEqual(
-            ['firstName', 'lastName', 'memberId'].map((field) => ({
-              sql: `player.${field} ILIKE :word${index}`,
-              pattern: `%${words[index]}%`,
-            })),
-          );
-        }
-        expect(builder.take).toHaveBeenCalledWith(20);
-        expect(builder.addOrderBy).toHaveBeenCalledWith('player.id', 'ASC');
-      },
-    );
-
-    it('does not query for short input and rejects excessive input explicitly', async () => {
-      const query = jest.spyOn(Player, 'createQueryBuilder');
-      const resolver = new TournamentEnrollmentResolver();
-      expect(await resolver.manualEnrollmentPlayers(' a ')).toEqual([]);
-      await expect(resolver.manualEnrollmentPlayers('x'.repeat(101))).rejects.toThrow('100 characters');
-      expect(query).not.toHaveBeenCalled();
     });
   });
 

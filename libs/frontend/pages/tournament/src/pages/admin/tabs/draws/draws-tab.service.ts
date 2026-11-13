@@ -34,7 +34,6 @@ export class DrawsTabService {
         this.apollo.query<{
           tournamentSubEvent: TournamentSubEvent & {
             entries: Entry[];
-            unassignedEntries: Entry[];
             drawTournaments: TournamentDraw[];
           };
         }>({
@@ -61,28 +60,11 @@ export class DrawsTabService {
                     fullName
                   }
                 }
-                unassignedEntries {
-                  id
-                  seed
-                  player1 {
-                    id
-                    firstName
-                    lastName
-                    fullName
-                  }
-                  player2 {
-                    id
-                    firstName
-                    lastName
-                    fullName
-                  }
-                }
                 drawTournaments {
                   id
                   name
                   type
                   size
-                  entryCount
                   entries {
                     id
                     seed
@@ -110,12 +92,13 @@ export class DrawsTabService {
       );
 
       const subEvent = result.data?.tournamentSubEvent;
-      if (!Array.isArray(subEvent?.entries) || !Array.isArray(subEvent?.unassignedEntries) || !Array.isArray(subEvent?.drawTournaments)) {
+      if (!Array.isArray(subEvent?.entries) || !Array.isArray(subEvent?.drawTournaments)) {
         throw new Error(this.translate.instant('all.error.genericTitle'));
       }
       return {
         entries: subEvent.entries,
-        unassignedEntries: subEvent.unassignedEntries,
+        // Entries without a draw are the unassigned ones
+        unassignedEntries: subEvent.entries.filter((entry) => !entry.drawId),
         draws: subEvent.drawTournaments,
       };
     },

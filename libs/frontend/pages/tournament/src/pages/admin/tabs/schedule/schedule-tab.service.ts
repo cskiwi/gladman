@@ -6,20 +6,9 @@ import { ScheduleSlotStatus, ScheduleStrategy } from '@app/models-enum';
 import { TranslateService } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
+import { deriveScheduleResult, localDayRange, ScheduleResult } from './schedule-result.util';
 
-export interface ScheduleConflict {
-  gameId: string;
-  playerId: string;
-  playerName: string;
-  conflictingGameIds: string[];
-  message: string;
-}
-
-export interface ScheduleResult {
-  scheduledCount: number;
-  skippedCount: number;
-  conflicts: ScheduleConflict[];
-}
+export type { ScheduleConflict, ScheduleResult } from './schedule-result.util';
 
 export interface ScheduleVenue {
   id: string;
@@ -96,15 +85,21 @@ export class ScheduleTabService {
         return { slots: [], courts: [], unscheduledGames: [] };
       }
 
+      const eventId = params.tournamentEventId;
+      const slotWhere: Record<string, unknown> = { tournamentEventId: { eq: eventId } };
+      if (params.date) {
+        slotWhere['startTime'] = { between: localDayRange(params.date) };
+      }
+
       const result = await lastValueFrom(
         this.apollo.query<{
-          tournamentSchedule: TournamentScheduleSlot[];
+          slots: TournamentScheduleSlot[];
           unscheduledGames: Game[];
-          tournamentScheduleCourts: Court[];
+          memberships: { locationId: string }[];
         }>({
           query: gql`
-            query TournamentScheduleData($tournamentEventId: ID!, $date: DateTime) {
-              tournamentSchedule(tournamentEventId: $tournamentEventId, date: $date) {
+            query TournamentScheduleData($slots: TournamentScheduleSlotArgs, $games: GameArgs, $memberships: LocationEventMembershipArgs) {
+              slots: tournamentScheduleSlots(args: $slots) {
                 id
                 courtId
                 startTime
@@ -139,7 +134,7 @@ export class ScheduleTabService {
                   }
                 }
               }
-              unscheduledGames(tournamentEventId: $tournamentEventId) {
+              unscheduledGames: games(args: $games) {
                 id
                 round
                 order
@@ -161,15 +156,16 @@ export class ScheduleTabService {
                   }
                 }
               }
-              tournamentScheduleCourts(tournamentEventId: $tournamentEventId) {
+              memberships: locationEventMemberships(args: $memberships) {
                 id
-                name
+                locationId
               }
             }
           `,
           variables: {
-            tournamentEventId: params.tournamentEventId,
-            date: params.date ?? undefined,
+            slots: { where: [slotWhere], order: { startTime: 'ASC', order: 'ASC' } },
+            games: unscheduledGamesArgs(eventId),
+            memberships: { where: [{ eventId: { eq: eventId }, isActive: { eq: true } }] },
           },
           context: { signal: abortSignal },
           fetchPolicy: 'network-only',
@@ -177,16 +173,42 @@ export class ScheduleTabService {
       );
 
       const data = result.data;
-      if (!Array.isArray(data?.tournamentSchedule) || !Array.isArray(data?.tournamentScheduleCourts) || !Array.isArray(data?.unscheduledGames)) {
+      if (!Array.isArray(data?.slots) || !Array.isArray(data?.memberships) || !Array.isArray(data?.unscheduledGames)) {
         throw new Error(this.translate.instant('all.error.genericTitle'));
       }
+
+      // Courts of every active venue assigned to this tournament.
+      const locationIds = [...new Set(data.memberships.map((membership) => membership.locationId))];
+      const courts = locationIds.length > 0 ? await this.loadCourts(locationIds, abortSignal) : [];
       return {
-        slots: data.tournamentSchedule,
-        courts: data.tournamentScheduleCourts,
+        slots: data.slots,
+        courts,
         unscheduledGames: data.unscheduledGames,
       };
     },
   });
+
+  private async loadCourts(locationIds: string[], abortSignal?: AbortSignal): Promise<Court[]> {
+    const result = await lastValueFrom(
+      this.apollo.query<{ courts: Court[] }>({
+        query: gql`
+          query TournamentScheduleCourts($args: CourtArgs) {
+            courts(args: $args) {
+              id
+              name
+            }
+          }
+        `,
+        variables: { args: { where: [{ locationId: { in: locationIds } }], order: { name: 'ASC' } } },
+        context: { signal: abortSignal },
+        fetchPolicy: 'network-only',
+      }),
+    );
+    if (!Array.isArray(result.data?.courts)) {
+      throw new Error(this.translate.instant('all.error.genericTitle'));
+    }
+    return result.data.courts;
+  }
 
   // Public selectors
   slots = computed(() => (this.scheduleResource.hasValue() ? this.scheduleResource.value().slots : []));
@@ -479,20 +501,22 @@ export class ScheduleTabService {
     this.updateError.set(null);
 
     try {
+      // Unscheduled games before the run: the run summary is derived from them and the returned slots.
+      const before = await lastValueFrom(
+        this.apollo.query<{ games: Game[] }>({
+          query: UNSCHEDULED_GAMES_QUERY,
+          variables: { args: unscheduledGamesArgs(tournamentEventId) },
+          fetchPolicy: 'network-only',
+        }),
+      );
+
       const result = await lastValueFrom(
-        this.apollo.mutate<{ scheduleGames: ScheduleResult }>({
+        this.apollo.mutate<{ scheduleGames: Pick<TournamentScheduleSlot, 'id' | 'gameId'>[] }>({
           mutation: gql`
             mutation ScheduleGames($input: ScheduleGamesInput!) {
               scheduleGames(input: $input) {
-                scheduledCount
-                skippedCount
-                conflicts {
-                  gameId
-                  playerId
-                  playerName
-                  conflictingGameIds
-                  message
-                }
+                id
+                gameId
               }
             }
           `,
@@ -508,8 +532,21 @@ export class ScheduleTabService {
       );
 
       if (result.data?.scheduleGames) {
+        const left = await lastValueFrom(
+          this.apollo.query<{ available: number }>({
+            query: gql`
+              query ScheduleAvailableSlots($args: TournamentScheduleSlotArgs) {
+                available: tournamentScheduleSlotsCount(args: $args)
+              }
+            `,
+            variables: {
+              args: { where: [{ tournamentEventId: { eq: tournamentEventId }, status: { eq: ScheduleSlotStatus.AVAILABLE } }] },
+            },
+            fetchPolicy: 'network-only',
+          }),
+        );
         this.refetch();
-        return result.data.scheduleGames;
+        return deriveScheduleResult(before.data?.games ?? [], result.data.scheduleGames, left.data?.available ?? 0);
       }
       return null;
     } catch (err) {
@@ -551,4 +588,32 @@ export class ScheduleTabService {
 
 function compareCourtNames(a: { name: string }, b: { name: string }): number {
   return a.name.localeCompare(b.name, undefined, { numeric: true });
+}
+
+const UNSCHEDULED_GAMES_QUERY = gql`
+  query ScheduleUnscheduledGames($args: GameArgs) {
+    games(args: $args) {
+      id
+      gamePlayerMemberships {
+        gamePlayer {
+          id
+          fullName
+        }
+      }
+    }
+  }
+`;
+
+/** Tournament games without a schedule slot, in draw order (round, then order). */
+function unscheduledGamesArgs(tournamentEventId: string) {
+  return {
+    where: [
+      {
+        linkType: { eq: 'tournament' },
+        scheduleSlotId: { isNull: true },
+        tournamentDraw: { tournamentSubEvent: { eventId: { eq: tournamentEventId } } },
+      },
+    ],
+    order: { round: 'ASC', order: 'ASC' },
+  };
 }

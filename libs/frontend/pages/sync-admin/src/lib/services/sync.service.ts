@@ -1,43 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Apollo, gql } from 'apollo-angular';
 import { CompetitionEvent, TournamentEvent } from '@app/models';
-import { RankingSystemSyncInfo, SyncJob, SyncStatus, SyncTriggerResponse } from '../models/sync.models';
+import { RankingSystemSyncInfo, SyncJob, SyncStatus } from '../models/sync.models';
 
 // ===== Queries =====
-
-const GET_SYNC_STATUS = gql`
-  query GetSyncStatus {
-    syncStatus {
-      status
-      timestamp
-      queues {
-        waiting
-        active
-        completed
-        failed
-      }
-    }
-  }
-`;
-
-const GET_SYNC_JOBS = gql`
-  query GetSyncJobs($limit: Int, $status: String) {
-    syncJobs(limit: $limit, status: $status) {
-      id
-      name
-      data
-      progress
-      processedOn
-      finishedOn
-      failedReason
-      status
-      timestamp
-      parentId
-    }
-  }
-`;
 
 // Competition event queries at different depths
 const GET_COMPETITION_EVENTS_LEVEL_EVENT = gql`
@@ -213,28 +182,19 @@ const GET_TOURNAMENT_EVENTS_LEVEL_DRAW = gql`
 
 const TRIGGER_DISCOVERY_SYNC = gql`
   mutation TriggerDiscoverySync {
-    triggerDiscoverySync {
-      message
-      success
-    }
+    triggerDiscoverySync
   }
 `;
 
 const TRIGGER_RANKING_SYNC = gql`
   mutation TriggerRankingSync($startDate: String) {
-    triggerRankingSync(startDate: $startDate) {
-      message
-      success
-    }
+    triggerRankingSync(startDate: $startDate)
   }
 `;
 
 const TRIGGER_RANKING_CALC = gql`
   mutation TriggerRankingCalc($systemId: ID!, $startDate: String, $stopDate: String) {
-    triggerRankingCalc(systemId: $systemId, startDate: $startDate, stopDate: $stopDate) {
-      message
-      success
-    }
+    triggerRankingCalc(systemId: $systemId, startDate: $startDate, stopDate: $stopDate)
   }
 `;
 
@@ -257,55 +217,37 @@ const GET_RANKING_SYSTEMS = gql`
 
 const CLEAR_ALL_JOBS = gql`
   mutation ClearAllJobs {
-    clearAllJobs {
-      message
-      success
-    }
+    clearAllJobs
   }
 `;
 
 const CLEAR_COMPLETED_JOBS = gql`
   mutation ClearCompletedJobs {
-    clearCompletedJobs {
-      message
-      success
-    }
+    clearCompletedJobs
   }
 `;
 
 const TRIGGER_EVENTS_SYNC = gql`
   mutation TriggerEventsSync($eventIds: [ID!]!, $includeSubComponents: Boolean!) {
-    triggerEventsSync(eventId: $eventIds, includeSubComponents: $includeSubComponents) {
-      message
-      success
-    }
+    triggerEventsSync(eventId: $eventIds, includeSubComponents: $includeSubComponents)
   }
 `;
 
 const TRIGGER_SUB_EVENTS_SYNC = gql`
   mutation TriggerSubEventsSync($subEventIds: [ID!]!, $includeSubComponents: Boolean!) {
-    triggerSubEventsSync(subEventIds: $subEventIds, includeSubComponents: $includeSubComponents) {
-      message
-      success
-    }
+    triggerSubEventsSync(subEventIds: $subEventIds, includeSubComponents: $includeSubComponents)
   }
 `;
 
 const TRIGGER_DRAWS_SYNC = gql`
   mutation TriggerDrawsSync($drawIds: [ID!]!, $includeSubComponents: Boolean!) {
-    triggerDrawsSync(drawIds: $drawIds, includeSubComponents: $includeSubComponents) {
-      message
-      success
-    }
+    triggerDrawsSync(drawIds: $drawIds, includeSubComponents: $includeSubComponents)
   }
 `;
 
 const TRIGGER_ENCOUNTERS_SYNC = gql`
   mutation TriggerEncountersSync($encounterIds: [ID!]!) {
-    triggerEncountersSync(encounterIds: $encounterIds) {
-      message
-      success
-    }
+    triggerEncountersSync(encounterIds: $encounterIds)
   }
 `;
 
@@ -329,22 +271,22 @@ const TOURNAMENT_QUERIES = {
 })
 export class SyncApiService {
   private apollo = inject(Apollo);
+  private http = inject(HttpClient);
 
   getStatus(): Observable<SyncStatus> {
-    return this.apollo
-      .query<{ syncStatus: SyncStatus }>({
-        query: GET_SYNC_STATUS,
-      })
-      .pipe(map((result) => result.data?.syncStatus ?? ({} as SyncStatus)));
+    return this.http.get<SyncStatus>('/api/v1/sync/status').pipe(map((result) => result ?? ({} as SyncStatus)));
   }
 
   getRecentJobs(limit?: number | null, status?: string): Observable<SyncJob[]> {
-    return this.apollo
-      .query<{ syncJobs: SyncJob[] }>({
-        query: GET_SYNC_JOBS,
-        variables: { limit, status },
-      })
-      .pipe(map((result) => result.data?.syncJobs ?? []));
+    let params = new HttpParams();
+    if (limit !== undefined && limit !== null) {
+      params = params.set('limit', limit);
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
+
+    return this.http.get<SyncJob[]>('/api/v1/sync/jobs', { params }).pipe(map((result) => result ?? []));
   }
 
   getCompetitionEvents(args: Record<string, unknown>, syncLevel: 'event' | 'subEvent' | 'draw' | 'encounter'): Observable<CompetitionEvent[]> {
@@ -367,30 +309,30 @@ export class SyncApiService {
       .pipe(map((result) => result.data?.tournamentEvents ?? []));
   }
 
-  triggerDiscoverySync(): Observable<SyncTriggerResponse> {
+  triggerDiscoverySync(): Observable<boolean> {
     return this.apollo
-      .mutate<{ triggerDiscoverySync: SyncTriggerResponse }>({
+      .mutate<{ triggerDiscoverySync: boolean }>({
         mutation: TRIGGER_DISCOVERY_SYNC,
       })
-      .pipe(map((result) => result.data?.triggerDiscoverySync ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.triggerDiscoverySync ?? false));
   }
 
-  triggerRankingSync(startDate?: string): Observable<SyncTriggerResponse> {
+  triggerRankingSync(startDate?: string): Observable<boolean> {
     return this.apollo
-      .mutate<{ triggerRankingSync: SyncTriggerResponse }>({
+      .mutate<{ triggerRankingSync: boolean }>({
         mutation: TRIGGER_RANKING_SYNC,
         variables: { startDate },
       })
-      .pipe(map((result) => result.data?.triggerRankingSync ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.triggerRankingSync ?? false));
   }
 
-  triggerRankingCalc(systemId: string, startDate?: string, stopDate?: string): Observable<SyncTriggerResponse> {
+  triggerRankingCalc(systemId: string, startDate?: string, stopDate?: string): Observable<boolean> {
     return this.apollo
-      .mutate<{ triggerRankingCalc: SyncTriggerResponse }>({
+      .mutate<{ triggerRankingCalc: boolean }>({
         mutation: TRIGGER_RANKING_CALC,
         variables: { systemId, startDate, stopDate },
       })
-      .pipe(map((result) => result.data?.triggerRankingCalc ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.triggerRankingCalc ?? false));
   }
 
   getRankingSystems(): Observable<RankingSystemSyncInfo[]> {
@@ -402,55 +344,55 @@ export class SyncApiService {
       .pipe(map((result) => result.data?.rankingSystems ?? []));
   }
 
-  clearAllJobs(): Observable<SyncTriggerResponse> {
+  clearAllJobs(): Observable<boolean> {
     return this.apollo
-      .mutate<{ clearAllJobs: SyncTriggerResponse }>({
+      .mutate<{ clearAllJobs: boolean }>({
         mutation: CLEAR_ALL_JOBS,
       })
-      .pipe(map((result) => result.data?.clearAllJobs ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.clearAllJobs ?? false));
   }
 
-  clearCompletedJobs(): Observable<SyncTriggerResponse> {
+  clearCompletedJobs(): Observable<number> {
     return this.apollo
-      .mutate<{ clearCompletedJobs: SyncTriggerResponse }>({
+      .mutate<{ clearCompletedJobs: number }>({
         mutation: CLEAR_COMPLETED_JOBS,
       })
-      .pipe(map((result) => result.data?.clearCompletedJobs ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.clearCompletedJobs ?? 0));
   }
 
-  triggerEventsSync(eventIds: string[], includeSubComponents: boolean): Observable<SyncTriggerResponse> {
+  triggerEventsSync(eventIds: string[], includeSubComponents: boolean): Observable<boolean> {
     return this.apollo
-      .mutate<{ triggerEventsSync: SyncTriggerResponse }>({
+      .mutate<{ triggerEventsSync: boolean }>({
         mutation: TRIGGER_EVENTS_SYNC,
         variables: { eventIds, includeSubComponents },
       })
-      .pipe(map((result) => result.data?.triggerEventsSync ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.triggerEventsSync ?? false));
   }
 
-  triggerSubEventsSync(subEventIds: string[], includeSubComponents: boolean): Observable<SyncTriggerResponse> {
+  triggerSubEventsSync(subEventIds: string[], includeSubComponents: boolean): Observable<boolean> {
     return this.apollo
-      .mutate<{ triggerSubEventsSync: SyncTriggerResponse }>({
+      .mutate<{ triggerSubEventsSync: boolean }>({
         mutation: TRIGGER_SUB_EVENTS_SYNC,
         variables: { subEventIds, includeSubComponents },
       })
-      .pipe(map((result) => result.data?.triggerSubEventsSync ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.triggerSubEventsSync ?? false));
   }
 
-  triggerDrawsSync(drawIds: string[], includeSubComponents: boolean): Observable<SyncTriggerResponse> {
+  triggerDrawsSync(drawIds: string[], includeSubComponents: boolean): Observable<boolean> {
     return this.apollo
-      .mutate<{ triggerDrawsSync: SyncTriggerResponse }>({
+      .mutate<{ triggerDrawsSync: boolean }>({
         mutation: TRIGGER_DRAWS_SYNC,
         variables: { drawIds, includeSubComponents },
       })
-      .pipe(map((result) => result.data?.triggerDrawsSync ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.triggerDrawsSync ?? false));
   }
 
-  triggerEncountersSync(encounterIds: string[]): Observable<SyncTriggerResponse> {
+  triggerEncountersSync(encounterIds: string[]): Observable<boolean> {
     return this.apollo
-      .mutate<{ triggerEncountersSync: SyncTriggerResponse }>({
+      .mutate<{ triggerEncountersSync: boolean }>({
         mutation: TRIGGER_ENCOUNTERS_SYNC,
         variables: { encounterIds },
       })
-      .pipe(map((result) => result.data?.triggerEncountersSync ?? ({} as SyncTriggerResponse)));
+      .pipe(map((result) => result.data?.triggerEncountersSync ?? false));
   }
 }

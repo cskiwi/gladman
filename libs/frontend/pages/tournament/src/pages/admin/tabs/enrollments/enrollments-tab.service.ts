@@ -6,6 +6,15 @@ import { EnrollmentStatus } from '@app/models-enum';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  MANUAL_PLAYER_SEARCH_LIMIT,
+  MANUAL_PLAYER_SEARCH_MAX_LENGTH,
+  MANUAL_PLAYER_SEARCH_MIN_LENGTH,
+  MANUAL_PLAYER_SEARCH_SERVER_WORDS,
+  buildPlayerSearchWhere,
+  matchesSearchWords,
+  searchWords,
+} from './enrollments-tab.util';
 
 export type ManualEnrollmentPlayer = Pick<Player, 'id' | 'fullName' | 'memberId'>;
 export type ManualEnrollmentInput = {
@@ -36,25 +45,41 @@ export class EnrollmentsTabService {
 
   /** Search the mounted application's player API, returning selectable identities. */
   async searchPlayers(search: string): Promise<ManualEnrollmentPlayer[]> {
+    const query = search.trim();
+    if (query.length > MANUAL_PLAYER_SEARCH_MAX_LENGTH) {
+      throw new Error(`Player search must not exceed ${MANUAL_PLAYER_SEARCH_MAX_LENGTH} characters`);
+    }
+    if (query.length < MANUAL_PLAYER_SEARCH_MIN_LENGTH) return [];
+    const words = searchWords(query);
+    const needsClientFilter = words.length > MANUAL_PLAYER_SEARCH_SERVER_WORDS;
     const result = await lastValueFrom(
-      this.apollo.query<{ manualEnrollmentPlayers: ManualEnrollmentPlayer[] }>({
+      this.apollo.query<{ players: ManualEnrollmentPlayer[] }>({
         query: gql`
-          query ManualEnrollmentPlayers($search: String!) {
-            manualEnrollmentPlayers(search: $search) {
+          query ManualEnrollmentPlayers($args: PlayerArgs) {
+            players(args: $args) {
               id
               fullName
+              firstName
+              lastName
               memberId
             }
           }
         `,
-        variables: { search: search.trim() },
+        variables: {
+          args: {
+            where: buildPlayerSearchWhere(words),
+            order: { lastName: 'ASC', firstName: 'ASC' },
+            take: needsClientFilter ? 200 : MANUAL_PLAYER_SEARCH_LIMIT,
+          },
+        },
         fetchPolicy: 'network-only',
       }),
     );
-    if (!Array.isArray(result.data?.manualEnrollmentPlayers)) {
+    if (!Array.isArray(result.data?.players)) {
       throw new Error(this.translate.instant('all.tournament.admin.enrollments.playerSearchNoData'));
     }
-    return result.data.manualEnrollmentPlayers;
+    const players = needsClientFilter ? result.data.players.filter((player) => matchesSearchWords(player, words)) : result.data.players;
+    return players.slice(0, MANUAL_PLAYER_SEARCH_LIMIT);
   }
 
   /** Create an enrollment, reporting failures rather than closing the dialog as success. */
@@ -108,10 +133,10 @@ export class EnrollmentsTabService {
       }
 
       const result = await lastValueFrom(
-        this.apollo.query<{ subEventEnrollments: TournamentEnrollment[] }>({
+        this.apollo.query<{ tournamentEnrollments: TournamentEnrollment[] }>({
           query: gql`
-            query SubEventEnrollments($subEventId: ID!, $status: EnrollmentStatus) {
-              subEventEnrollments(subEventId: $subEventId, status: $status) {
+            query SubEventEnrollments($args: TournamentEnrollmentArgs) {
+              tournamentEnrollments(args: $args) {
                 id
                 status
                 waitingListPosition
@@ -144,18 +169,20 @@ export class EnrollmentsTabService {
             }
           `,
           variables: {
-            subEventId: params.subEventId,
-            status: params.status || undefined,
+            args: {
+              where: [{ tournamentSubEventId: { eq: params.subEventId }, ...(params.status ? { status: { eq: params.status } } : {}) }],
+              order: { createdAt: 'ASC' },
+            },
           },
           context: { signal: abortSignal },
           fetchPolicy: 'network-only',
         }),
       );
 
-      if (!Array.isArray(result.data?.subEventEnrollments)) {
+      if (!Array.isArray(result.data?.tournamentEnrollments)) {
         throw new Error(this.translate.instant('all.tournament.admin.enrollments.queryNoData'));
       }
-      return result.data.subEventEnrollments;
+      return result.data.tournamentEnrollments;
     },
   });
 

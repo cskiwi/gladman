@@ -7,14 +7,9 @@ import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 import { getSeason } from '@app/utils/comp';
 import { sortTeams } from '@app/utils/sorts';
+import { ClubSeasonRecord, computeSeasonRecord, getMembershipReferenceDate } from './club-stats.util';
 
-export interface ClubSeasonRecord {
-  wins: number;
-  losses: number;
-  draws: number;
-  total: number;
-  winRate: number;
-}
+export type { ClubSeasonRecord };
 
 export interface ClubNextHomeMatch {
   id: string;
@@ -66,7 +61,6 @@ export class DetailService {
                   clubId
                   state
                   country
-                  distinctSeasons
                 }
               }
             `,
@@ -94,44 +88,137 @@ export class DetailService {
         return null;
       }
       try {
-        const result = await lastValueFrom(
-          this.apollo.query<{ club: ClubStatsPayload | null }>({
+        const context = { signal: abortSignal };
+        const teamsResult = await lastValueFrom(
+          this.apollo.query<{ club: { id: string; teams: { id: string }[] } | null }>({
             query: gql`
-              query ClubStats($id: ID!, $season: Int!) {
+              query ClubStatsTeams($id: ID!, $season: Float!) {
                 club(id: $id) {
                   id
-                  memberCount(season: $season)
-                  seasonRecord(season: $season) {
-                    wins
-                    losses
-                    draws
-                    total
-                    winRate
-                  }
-                  nextHomeMatch(season: $season) {
+                  teams(args: { where: [{ season: { eq: $season } }] }) {
                     id
-                    date
-                    homeTeam {
-                      id
-                      name
-                    }
-                    awayTeam {
-                      id
-                      name
-                    }
                   }
                 }
               }
             `,
             variables: { id: params.clubId, season: params.season },
-            context: { signal: abortSignal },
+            context,
           }),
         );
-        return result.data?.club ?? null;
+        const club = teamsResult.data?.club;
+        if (!club) return null;
+        const teamIds = (club.teams ?? []).map((t) => t.id);
+        const ref = getMembershipReferenceDate(params.season);
+
+        const membersPromise = lastValueFrom(
+          this.apollo.query<{ clubPlayerMembershipsCount: number }>({
+            query: gql`
+              query ClubStatsMembers($clubId: String!, $ref: DateTime!) {
+                clubPlayerMembershipsCount(
+                  args: {
+                    where: [
+                      { clubId: { eq: $clubId }, start: { lte: $ref }, end: { isNull: true } }
+                      { clubId: { eq: $clubId }, start: { lte: $ref }, end: { gt: $ref } }
+                    ]
+                  }
+                )
+              }
+            `,
+            variables: { clubId: club.id, ref },
+            context,
+          }),
+        );
+
+        const encountersPromise =
+          teamIds.length === 0
+            ? Promise.resolve(null)
+            : lastValueFrom(
+                this.apollo.query<{
+                  played: { homeTeamId: string | null; homeScore: number | null; awayScore: number | null }[];
+                  next: ClubNextHomeMatch[];
+                }>({
+                  query: gql`
+                    query ClubStatsEncounters($teamIds: [String!]!, $now: DateTime!) {
+                      played: competitionEncounters(
+                        args: {
+                          where: [
+                            { homeTeamId: { in: $teamIds }, homeScore: { isNull: false }, awayScore: { isNull: false } }
+                            { awayTeamId: { in: $teamIds }, homeScore: { isNull: false }, awayScore: { isNull: false } }
+                          ]
+                        }
+                      ) {
+                        id
+                        homeTeamId
+                        homeScore
+                        awayScore
+                      }
+                      next: competitionEncounters(
+                        args: { where: [{ homeTeamId: { in: $teamIds }, date: { gt: $now } }], order: { date: ASC }, take: 1 }
+                      ) {
+                        id
+                        date
+                        homeTeam {
+                          id
+                          name
+                        }
+                        awayTeam {
+                          id
+                          name
+                        }
+                      }
+                    }
+                  `,
+                  variables: { teamIds, now: new Date().toISOString() },
+                  context,
+                }),
+              );
+
+        const [members, encounters] = await Promise.all([membersPromise, encountersPromise]);
+
+        return {
+          id: club.id,
+          memberCount: members.data?.clubPlayerMembershipsCount ?? 0,
+          seasonRecord: computeSeasonRecord(encounters?.data?.played ?? [], teamIds),
+          nextHomeMatch: encounters?.data?.next?.[0] ?? null,
+        } satisfies ClubStatsPayload;
       } catch (err) {
         // Stats are non-critical — log but don't surface as page error.
         console.warn('Club stats query failed', err);
         return null;
+      }
+    },
+  });
+
+  // Distinct seasons in which the club has teams (newest first), derived from the native `teams` relation.
+  private seasonsResource = resource({
+    params: this.filterSignal,
+    loader: async ({ params, abortSignal }) => {
+      if (!params.clubId) {
+        return [] as number[];
+      }
+      try {
+        const result = await lastValueFrom(
+          this.apollo.query<{ club: { teams: { season: number | null }[] } | null }>({
+            query: gql`
+              query ClubSeasons($id: ID!) {
+                club(id: $id) {
+                  id
+                  teams(args: { order: { season: DESC } }) {
+                    id
+                    season
+                  }
+                }
+              }
+            `,
+            variables: { id: params.clubId },
+            context: { signal: abortSignal },
+          }),
+        );
+        const seasons = (result.data?.club?.teams ?? []).map((t) => t.season).filter((v): v is number => v != null);
+        return [...new Set(seasons)].sort((x, y) => y - x);
+      } catch (err) {
+        console.warn('Club seasons query failed', err);
+        return [] as number[];
       }
     },
   });
@@ -228,8 +315,7 @@ export class DetailService {
   // Season management
   currentSeason = computed(() => this.filterSignal().season || getSeason());
   availableSeasons = computed(() => {
-    const club = this.club();
-    const dbSeasons = [...(club?.distinctSeasons || [])];
+    const dbSeasons = [...(this.seasonsResource.value() || [])];
     const currentSeason = getSeason();
 
     // If we have seasons from database, use them, otherwise fallback to default range

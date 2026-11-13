@@ -1,9 +1,19 @@
 import { Team, TeamPlayerMembership, Player } from '@app/models';
-import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { TeamArgs, PlayerArgs } from '../args';
+import { AllowAnonymous } from '@app/backend-authorization';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { TeamArgs, TeamPlayerMembershipArgs, PlayerArgs } from '../args';
 
 @Resolver(() => TeamPlayerMembership)
 export class TeamPlayerMembershipResolver {
+  @Query(() => [TeamPlayerMembership])
+  @AllowAnonymous()
+  async teamPlayerMemberships(
+    @Args('args', { type: () => TeamPlayerMembershipArgs, nullable: true })
+    inputArgs?: InstanceType<typeof TeamPlayerMembershipArgs>,
+  ): Promise<TeamPlayerMembership[]> {
+    return TeamPlayerMembership.find(TeamPlayerMembershipArgs.toFindManyOptions(inputArgs));
+  }
+
   @ResolveField(() => Team, { nullable: true })
   async team(
     @Parent() { teamId }: TeamPlayerMembership,

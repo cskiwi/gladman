@@ -25,6 +25,7 @@ describe('General enrollment chrome', () => {
     _isEnrollmentOpen: true,
     _isAlreadyEnrolled: false,
     _isEligible: true,
+    _waitingListCount: 0,
   });
   let service: ReturnType<typeof createService>;
 

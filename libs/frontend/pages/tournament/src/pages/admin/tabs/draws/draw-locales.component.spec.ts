@@ -35,7 +35,6 @@ describe.each(locales)('Mounted draw locales: %s', (locale) => {
         data: {
           tournamentSubEvent: {
             entries: [entry],
-            unassignedEntries: [entry],
             drawTournaments: [
               draw,
               { ...draw, id: 'safe-poule', type: 'POULE' },

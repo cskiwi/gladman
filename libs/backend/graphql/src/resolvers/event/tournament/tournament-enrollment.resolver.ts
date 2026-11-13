@@ -1,9 +1,8 @@
 import { AllowAnonymous, PermGuard, User } from '@app/backend-authorization';
-import { Player, TournamentEnrollment, TournamentSubEvent, TournamentEvent } from '@app/models';
+import { Player, TournamentEnrollment, TournamentSubEvent } from '@app/models';
 import { EnrollmentStatus, TournamentPhase, GameType } from '@app/models-enum';
 import { BadRequestException, ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver, registerEnumType } from '@nestjs/graphql';
-import { Brackets, IsNull, Not } from 'typeorm';
+import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver, registerEnumType } from '@nestjs/graphql';
 import { AdminEnrollPlayerInput, EnrollPlayerInput, EnrollGuestInput, UpdateEnrollmentInput } from '../../../inputs';
 import { TournamentEnrollmentArgs } from '../../../args';
 
@@ -16,31 +15,6 @@ registerEnumType(EnrollmentStatus, {
 @Resolver(() => TournamentEnrollment)
 export class TournamentEnrollmentResolver {
   // ============ QUERIES ============
-
-  /** Match every name/member-number word regardless of first/last-name order. */
-  @Query(() => [Player], { description: 'Find members for manual tournament enrollment' })
-  @UseGuards(PermGuard)
-  async manualEnrollmentPlayers(@Args('search') search: string): Promise<Player[]> {
-    const query = search.trim();
-    if (query.length > 100) {
-      throw new BadRequestException('Player search must not exceed 100 characters');
-    }
-    if (query.length < 2) return [];
-    const players = Player.createQueryBuilder('player');
-    query.split(/\s+/).forEach((word, index) => {
-      players.andWhere(
-        new Brackets((where) => {
-          const parameter = `word${index}`;
-          const pattern = `%${word.replace(/[%_\\]/g, '\\$&')}%`;
-          where
-            .where(`player.firstName ILIKE :${parameter}`, { [parameter]: pattern })
-            .orWhere(`player.lastName ILIKE :${parameter}`, { [parameter]: pattern })
-            .orWhere(`player.memberId ILIKE :${parameter}`, { [parameter]: pattern });
-        }),
-      );
-    });
-    return players.orderBy('player.lastName', 'ASC').addOrderBy('player.firstName', 'ASC').addOrderBy('player.id', 'ASC').take(20).getMany();
-  }
 
   @Query(() => TournamentEnrollment)
   @AllowAnonymous()
@@ -64,86 +38,6 @@ export class TournamentEnrollmentResolver {
   ): Promise<TournamentEnrollment[]> {
     const args = TournamentEnrollmentArgs.toFindManyOptions(inputArgs);
     return TournamentEnrollment.find(args);
-  }
-
-  @Query(() => [TournamentEnrollment], { description: 'Get current user enrollments for a tournament' })
-  @UseGuards(PermGuard)
-  async myTournamentEnrollments(
-    @User() user: Player,
-    @Args('tournamentEventId', { type: () => ID }) tournamentEventId: string,
-  ): Promise<TournamentEnrollment[]> {
-    // Find all sub-events for this tournament
-    const subEvents = await TournamentSubEvent.find({
-      where: { eventId: tournamentEventId },
-    });
-
-    if (subEvents.length === 0) {
-      return [];
-    }
-
-    const subEventIds = subEvents.map((se) => se.id);
-
-    // Find enrollments for current user in these sub-events
-    return TournamentEnrollment.createQueryBuilder('enrollment')
-      .where('enrollment.tournamentSubEventId IN (:...subEventIds)', { subEventIds })
-      .andWhere('enrollment.playerId = :playerId', { playerId: user.id })
-      .getMany();
-  }
-
-  @Query(() => [TournamentEnrollment], { description: 'Get enrollments for a specific sub-event' })
-  @AllowAnonymous()
-  async subEventEnrollments(
-    @Args('subEventId', { type: () => ID }) subEventId: string,
-    @Args('status', { type: () => EnrollmentStatus, nullable: true }) status?: EnrollmentStatus,
-  ): Promise<TournamentEnrollment[]> {
-    const where: any = { tournamentSubEventId: subEventId };
-    if (status) {
-      where.status = status;
-    }
-
-    return TournamentEnrollment.find({
-      where,
-      order: { createdAt: 'ASC' },
-    });
-  }
-
-  @Query(() => [TournamentEnrollment], { description: 'Get waiting list for a sub-event' })
-  @AllowAnonymous()
-  async waitingList(@Args('subEventId', { type: () => ID }) subEventId: string): Promise<TournamentEnrollment[]> {
-    return TournamentEnrollment.find({
-      where: {
-        tournamentSubEventId: subEventId,
-        status: EnrollmentStatus.WAITING_LIST,
-      },
-      order: { waitingListPosition: 'ASC' },
-    });
-  }
-
-  @Query(() => [TournamentEnrollment], { description: 'Get players looking for a partner in a sub-event' })
-  @AllowAnonymous()
-  async lookingForPartner(@Args('subEventId', { type: () => ID }) subEventId: string): Promise<TournamentEnrollment[]> {
-    // Get the sub-event to check if it's doubles
-    const subEvent = await TournamentSubEvent.findOne({
-      where: { id: subEventId },
-    });
-
-    if (!subEvent) {
-      throw new NotFoundException(`Sub-event with ID ${subEventId} not found`);
-    }
-
-    // Only return looking-for-partner for doubles events
-    if (subEvent.gameType === GameType.S) {
-      return [];
-    }
-
-    return TournamentEnrollment.find({
-      where: {
-        tournamentSubEventId: subEventId,
-        status: EnrollmentStatus.PENDING,
-        confirmedPartnerId: IsNull(),
-      },
-      order: { createdAt: 'ASC' },
-    });
   }
 
   // ============ MUTATIONS ============

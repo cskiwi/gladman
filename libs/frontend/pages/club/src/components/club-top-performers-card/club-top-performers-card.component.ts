@@ -8,6 +8,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { lastValueFrom } from 'rxjs';
+import { aggregateTopPerformers, ClubTopPerformerGameRow, getSeasonWindow } from './club-top-performers.util';
 
 export interface ClubTopPerformerRow {
   player: {
@@ -45,50 +46,91 @@ export class ClubTopPerformersCardComponent {
       take: this.take(),
       minGames: this.minGames(),
     }),
-    loader: async ({ params, abortSignal }) => {
+    loader: async ({ params, abortSignal }): Promise<ClubTopPerformerRow[]> => {
       if (!params.clubId || params.season == null) return [];
       try {
-        const result = await lastValueFrom(
-          this.apollo.query<{ club: { topPerformers: ClubTopPerformerRow[] } | null }>({
+        const context = { signal: abortSignal };
+
+        // 1. Players that belong to the club's teams in this season.
+        const teamsResult = await lastValueFrom(
+          this.apollo.query<{
+            club: { teams: { teamPlayerMemberships: { playerId: string; player: ClubTopPerformerRow['player'] | null }[] }[] } | null;
+          }>({
             query: gql`
-              query ClubTopPerformers($id: ID!, $season: Int!, $take: Int!, $minGames: Int!) {
+              query ClubTopPerformersPlayers($id: ID!, $season: Float!) {
                 club(id: $id) {
                   id
-                  topPerformers(season: $season, take: $take, minGames: $minGames) {
-                    wins
-                    total
-                    winRate
-                    singles {
-                      wins
-                      total
-                    }
-                    doubles {
-                      wins
-                      total
-                    }
-                    mixed {
-                      wins
-                      total
-                    }
-                    player {
+                  teams(args: { where: [{ season: { eq: $season } }] }) {
+                    id
+                    teamPlayerMemberships {
                       id
-                      slug
-                      fullName
+                      playerId
+                      player {
+                        id
+                        slug
+                        fullName
+                      }
                     }
                   }
                 }
               }
             `,
-            variables: {
-              id: params.clubId,
-              season: params.season,
-              take: params.take,
-              minGames: params.minGames,
-            },
-            context: { signal: abortSignal },
+            variables: { id: params.clubId, season: params.season },
+            context,
           }),
         );
-        return result.data?.club?.topPerformers ?? [];
+        const memberships = (teamsResult.data?.club?.teams ?? []).flatMap((t) => t.teamPlayerMemberships ?? []);
+        const playerMap = new Map(memberships.filter((m) => m.player).map((m) => [m.playerId, m.player as ClubTopPerformerRow['player']]));
+        const playerIds = [...new Set(memberships.map((m) => m.playerId).filter(Boolean))];
+        if (playerIds.length === 0) return [];
+
+        // 2. Completed games of those players within the season window.
+        const window = getSeasonWindow(params.season);
+        const gamesResult = await lastValueFrom(
+          this.apollo.query<{ gamePlayerMemberships: ClubTopPerformerGameRow[] }>({
+            query: gql`
+              query ClubTopPerformersGames($playerIds: [String!]!, $start: DateTime!, $end: DateTime!) {
+                gamePlayerMemberships(
+                  args: {
+                    where: [
+                      {
+                        playerId: { in: $playerIds }
+                        game: { winner: { isNull: false }, set1Team1: { gt: 0 }, set1Team2: { gt: 0 }, playedAt: { gte: $start, lt: $end } }
+                      }
+                    ]
+                  }
+                ) {
+                  id
+                  playerId
+                  team
+                  game {
+                    id
+                    winner
+                    gameType
+                    playedAt
+                  }
+                }
+              }
+            `,
+            variables: { playerIds, start: new Date(window.start).toISOString(), end: new Date(window.end).toISOString() },
+            context,
+          }),
+        );
+
+        const stats = aggregateTopPerformers(gamesResult.data?.gamePlayerMemberships ?? [], {
+          take: params.take,
+          minGames: params.minGames,
+          endExclusive: new Date(window.end).toISOString(),
+        });
+        if (stats.length === 0) return [];
+
+        return stats
+          .map((s) => {
+            const player = playerMap.get(s.playerId);
+            if (!player) return null;
+            return { player, wins: s.wins, total: s.total, winRate: s.winRate, singles: s.singles, doubles: s.doubles, mixed: s.mixed };
+          })
+          .filter((v): v is ClubTopPerformerRow => v !== null);
       } catch (err) {
         console.warn('Top performers card query failed', err as HttpErrorResponse);
         return [];

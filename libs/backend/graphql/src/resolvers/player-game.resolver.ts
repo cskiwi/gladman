@@ -1,18 +1,33 @@
 import { Game, GamePlayerMembership, Player } from '@app/models';
-import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { GameArgs, PlayerArgs } from '../args';
+import { AllowAnonymous } from '@app/backend-authorization';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { GameArgs, GamePlayerMembershipArgs, PlayerArgs } from '../args';
 
 @Resolver(() => GamePlayerMembership)
 export class GamePlayerMembershipResolver {
+  @Query(() => [GamePlayerMembership])
+  @AllowAnonymous()
+  async gamePlayerMemberships(
+    @Args('args', { type: () => GamePlayerMembershipArgs, nullable: true })
+    inputArgs?: InstanceType<typeof GamePlayerMembershipArgs>,
+  ): Promise<GamePlayerMembership[]> {
+    return GamePlayerMembership.find(GamePlayerMembershipArgs.toFindManyOptions(inputArgs));
+  }
+
   @ResolveField(() => Game, { nullable: true })
   async game(
-    @Parent() { gameId }: GamePlayerMembership,
+    @Parent() { gameId, game }: GamePlayerMembership,
     @Args('args', {
       type: () => GameArgs,
       nullable: true,
     })
     inputArgs?: InstanceType<typeof GameArgs>,
   ) {
+    // Reuse the relation when the parent query already joined it (avoids N+1)
+    if (game && !inputArgs?.where?.length) {
+      return game;
+    }
+
     const args = GameArgs.toFindOneOptions(inputArgs);
 
     if (args.where?.length > 0) {

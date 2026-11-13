@@ -16,37 +16,20 @@ describe('Registered check-in resolver behavior', () => {
 
   afterEach(() => jest.restoreAllMocks());
 
-  it('reads only the requested tournament and optional status with the existing ordering', async () => {
-    const find = jest.spyOn(TournamentCheckIn, 'find').mockResolvedValue([]);
-    expect(await resolver.tournamentCheckInList('safe-tournament', CheckInStatus.PENDING)).toEqual([]);
-    expect(find).toHaveBeenCalledWith({
-      where: { tournamentEventId: 'safe-tournament', status: CheckInStatus.PENDING },
-      order: { createdAt: 'DESC' },
+  it('returns only the successfully checked-in rows from a bulk check-in', async () => {
+    const existing = Object.assign(new TournamentCheckIn(), { id: 'safe-existing', status: CheckInStatus.CHECKED_IN });
+    jest
+      .spyOn(TournamentCheckIn, 'findOne')
+      .mockResolvedValueOnce(existing)
+      .mockResolvedValueOnce(null)
+      .mockRejectedValueOnce(new Error('Safe database failure'));
+    jest.spyOn(TournamentCheckIn.prototype, 'save').mockImplementation(async function (this: TournamentCheckIn) {
+      return this;
     });
-    await resolver.tournamentCheckInList('safe-tournament');
-    expect(find.mock.lastCall?.[0]?.where).toEqual({ tournamentEventId: 'safe-tournament' });
-  });
-
-  it.each([
-    [0, 0, 0, 0, 0],
-    [12, 4, 7, 1, 100 / 3],
-  ])('preserves aggregate counts and handles a zero denominator (%s total)', async (total, checkedIn, pending, noShow, rate) => {
-    const count = jest.spyOn(TournamentCheckIn, 'count');
-    [total, checkedIn, pending, noShow].forEach((value) => count.mockResolvedValueOnce(value));
-    const result = await resolver.checkInStats('safe-tournament');
-    expect(result).toMatchObject({ total, checkedIn, pending, noShow });
-    expect(result.checkInRate).toBeCloseTo(rate, 10);
-    expect(count.mock.calls.map(([options]) => options?.where)).toEqual([
-      { tournamentEventId: 'safe-tournament' },
-      { tournamentEventId: 'safe-tournament', status: CheckInStatus.CHECKED_IN },
-      { tournamentEventId: 'safe-tournament', status: CheckInStatus.PENDING },
-      { tournamentEventId: 'safe-tournament', status: CheckInStatus.NO_SHOW },
-    ]);
-  });
-
-  it('propagates database read failures rather than returning empty success', async () => {
-    jest.spyOn(TournamentCheckIn, 'find').mockRejectedValue(new Error('Safe database failure'));
-    await expect(resolver.tournamentCheckInList('safe-tournament')).rejects.toThrow('Safe database failure');
+    const result = await resolver.bulkCheckIn(actor, { tournamentEventId: 'safe-tournament', enrollmentIds: ['safe-a', 'safe-b', 'safe-c'] });
+    expect(result).toHaveLength(2);
+    expect(result[0]).toBe(existing);
+    expect(result[1]).toMatchObject({ enrollmentId: 'safe-b', status: CheckInStatus.CHECKED_IN, checkedInById: 'safe-actor' });
   });
 
   it('returns an array for initialization without duplicate records; all persistence is mocked', async () => {

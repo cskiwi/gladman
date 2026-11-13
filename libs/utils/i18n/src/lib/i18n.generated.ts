@@ -849,8 +849,11 @@ export type I18nTranslations = {
         "player": {
             "newPlayer": string;
             "survey": {
+                "canMeet75": string;
                 "edit": string;
                 "empty": string;
+                "firstChoice": string;
+                "secondChoice": string;
                 "teamsWanted": string;
                 "unavailability": string;
             };

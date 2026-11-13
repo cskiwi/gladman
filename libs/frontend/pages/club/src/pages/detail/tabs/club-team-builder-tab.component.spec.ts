@@ -132,4 +132,31 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
     ref.destroy();
     expect(focus).toHaveBeenCalledTimes(1);
   });
+
+  it('opens a dismissible survey modal and restores the chip trigger only after destruction', async () => {
+    const { fixture, element } = await render();
+    const ref = new DynamicDialogRef();
+    const open = jest.spyOn(fixture.debugElement.injector.get(DialogService), 'open').mockReturnValue(ref);
+    const trigger = element.querySelector<HTMLButtonElement>('app-player-chip button');
+    if (!trigger) throw new Error('Missing player trigger');
+    trigger.focus();
+    const focus = jest.spyOn(trigger, 'focus');
+    fixture.componentInstance.openEditSurveyDialog(player);
+    expect(open).toHaveBeenCalledWith(
+      expect.any(Function),
+      expect.objectContaining({
+        header: 'all.player.survey.edit',
+        breakpoints: { '640px': '95vw' },
+        modal: true,
+        closeOnEscape: true,
+        closable: true,
+        closeAriaLabel: 'all.button.cancel',
+        data: { player },
+      }),
+    );
+    ref.close(null);
+    expect(focus).not.toHaveBeenCalled();
+    ref.destroy();
+    expect(focus).toHaveBeenCalledTimes(1);
+  });
 });

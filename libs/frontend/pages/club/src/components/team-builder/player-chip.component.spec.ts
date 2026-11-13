@@ -138,8 +138,11 @@ describe('PlayerChipComponent', () => {
     expect(overlay?.querySelectorAll('p-tag[severity="danger"]')).toHaveLength(2);
     const edit = jest.fn();
     fixture.componentInstance.playerClicked.subscribe(edit);
+    let focusAtEdit: Element | null = null;
+    fixture.componentInstance.playerClicked.subscribe(() => (focusAtEdit = document.activeElement));
     overlay?.querySelector('button')?.click();
     expect(edit).toHaveBeenCalledWith(player);
+    expect(focusAtEdit).toBe(element.querySelector('button'));
     expect(element.querySelectorAll('p-tag[role="img"]')).toHaveLength(1);
   });
 

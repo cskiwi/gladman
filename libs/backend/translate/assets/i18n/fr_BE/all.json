@@ -842,8 +842,11 @@
   "player": {
     "newPlayer": "Nouveau joueur",
     "survey": {
+      "canMeet75": "Peut jouer 75 % des rencontres",
       "edit": "Modifier le questionnaire",
       "empty": "Aucune donnée de questionnaire disponible",
+      "firstChoice": "Premier choix",
+      "secondChoice": "Deuxième choix",
       "teamsWanted": "Nombre d'équipes souhaité",
       "unavailability": "Indisponibilité"
     },

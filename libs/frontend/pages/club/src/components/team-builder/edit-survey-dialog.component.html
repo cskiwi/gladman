@@ -1,94 +1,59 @@
-<div class="flex flex-col gap-4">
-  <!-- Player info header -->
-  <div class="flex items-center gap-2 p-3 rounded-border bg-emphasis">
-    <i class="pi pi-user text-lg"></i>
-    <span class="font-bold text-lg">{{ player.fullName }}</span>
-    <div class="flex gap-1 text-sm text-muted-color ml-auto">
-      <span>{{ ranking().single }}</span>
-      <span>-</span>
-      <span>{{ ranking().double }}</span>
-      <span>-</span>
-      <span>{{ ranking().mix }}</span>
+<p-fluid>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span class="font-semibold break-words min-w-0">{{ player.fullName }}</span>
+      <span class="text-sm text-muted-color" role="img" [attr.aria-label]="'all.ranking.summary' | translate: ranking()">
+        {{ ranking().single }} - {{ ranking().double }} - {{ ranking().mix }}
+      </span>
     </div>
-  </div>
 
-  <!-- Stopping competition -->
-  <div class="flex items-center gap-2">
-    <p-checkbox [(ngModel)]="stoppingCompetition" [binary]="true" inputId="stopping" />
-    <label for="stopping" class="font-semibold text-red-500">Stopping competition</label>
-  </div>
+    <div class="flex items-center gap-2">
+      <p-checkbox [(ngModel)]="stoppingCompetition" [binary]="true" inputId="survey-stopping" />
+      <label for="survey-stopping">{{ 'all.club.teamBuilder.player.stopping' | translate }}</label>
+    </div>
 
-  <!-- General preferences -->
-  <div class="grid grid-cols-2 gap-3">
-    <div class="flex flex-col gap-1">
-      <label class="text-sm font-semibold text-muted-color">Teams wanted</label>
-      <p-inputnumber [(ngModel)]="desiredTeamCount" [min]="0" [showButtons]="true" styleClass="w-full" />
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="flex flex-col gap-2">
+        <label for="survey-team-count">{{ 'all.player.survey.teamsWanted' | translate }}</label>
+        <p-inputnumber inputId="survey-team-count" [(ngModel)]="desiredTeamCount" [min]="0" [showButtons]="true" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="survey-play-day">{{ 'all.team.preferred-day' | translate }}</label>
+        <input id="survey-play-day" type="text" pInputText [(ngModel)]="preferredPlayDay" />
+      </div>
     </div>
-    <div class="flex flex-col gap-1">
-      <label class="text-sm font-semibold text-muted-color">Preferred play day</label>
-      <input type="text" pInputText [(ngModel)]="preferredPlayDay" class="w-full" />
-    </div>
-  </div>
 
-  <!-- Team 1 preferences -->
-  <div class="flex flex-col gap-2">
-    <span class="text-sm font-bold">Team 1 preferences</span>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">1st choice</label>
-        <input type="text" pInputText [(ngModel)]="team1Choice1" class="w-full" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">2nd choice</label>
-        <input type="text" pInputText [(ngModel)]="team1Choice2" class="w-full" />
-      </div>
-    </div>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">Can meet 75%</label>
-        <input type="text" pInputText [(ngModel)]="canMeet75PercentTeam1" class="w-full" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">Unavailability periods</label>
-        <input type="text" pInputText [(ngModel)]="unavailabilityPeriodsTeam1" class="w-full" />
-      </div>
-    </div>
-  </div>
+    @for (team of teamPreferences; track team.number) {
+      <p-panel [header]="'all.team.numbered' | translate: { number: team.number }">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex flex-col gap-2">
+            <label [for]="'survey-' + team.firstChoice">{{ 'all.player.survey.firstChoice' | translate }}</label>
+            <input [id]="'survey-' + team.firstChoice" type="text" pInputText [(ngModel)]="this[team.firstChoice]" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label [for]="'survey-' + team.secondChoice">{{ 'all.player.survey.secondChoice' | translate }}</label>
+            <input [id]="'survey-' + team.secondChoice" type="text" pInputText [(ngModel)]="this[team.secondChoice]" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label [for]="'survey-' + team.availability">{{ 'all.player.survey.canMeet75' | translate }}</label>
+            <input [id]="'survey-' + team.availability" type="text" pInputText [(ngModel)]="this[team.availability]" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label [for]="'survey-' + team.unavailability">{{ 'all.player.survey.unavailability' | translate }}</label>
+            <input [id]="'survey-' + team.unavailability" type="text" pInputText [(ngModel)]="this[team.unavailability]" />
+          </div>
+        </div>
+      </p-panel>
+    }
 
-  <!-- Team 2 preferences -->
-  <div class="flex flex-col gap-2">
-    <span class="text-sm font-bold">Team 2 preferences</span>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">1st choice</label>
-        <input type="text" pInputText [(ngModel)]="team2Choice1" class="w-full" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">2nd choice</label>
-        <input type="text" pInputText [(ngModel)]="team2Choice2" class="w-full" />
-      </div>
+    <div class="flex flex-col gap-2">
+      <label for="survey-comments">{{ 'all.common.remarks' | translate }}</label>
+      <textarea id="survey-comments" pTextarea [(ngModel)]="comments" [rows]="3" [autoResize]="true"></textarea>
     </div>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">Can meet 75%</label>
-        <input type="text" pInputText [(ngModel)]="canMeet75PercentTeam2" class="w-full" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <label class="text-sm text-muted-color">Unavailability periods</label>
-        <input type="text" pInputText [(ngModel)]="unavailabilityPeriodsTeam2" class="w-full" />
-      </div>
+
+    <div class="flex flex-wrap justify-end gap-2">
+      <p-button [label]="'all.button.cancel' | translate" severity="secondary" [fluid]="false" (onClick)="cancel()" />
+      <p-button [label]="'all.button.save' | translate" icon="pi pi-check" [fluid]="false" (onClick)="save()" />
     </div>
   </div>
-
-  <!-- Comments -->
-  <div class="flex flex-col gap-1">
-    <label class="text-sm font-semibold text-muted-color">Comments / Remarks</label>
-    <textarea pTextarea [(ngModel)]="comments" [rows]="3" class="w-full" [autoResize]="true"></textarea>
-  </div>
-
-  <!-- Actions -->
-  <div class="flex justify-end gap-2 pt-2 border-t border-surface">
-    <p-button label="Cancel" severity="secondary" [text]="true" (onClick)="cancel()" />
-    <p-button label="Save" icon="pi pi-check" (onClick)="save()" />
-  </div>
-</div>
+</p-fluid>

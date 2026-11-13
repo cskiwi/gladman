@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DOCUMENT, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDropList, CdkDrag, CdkDragDrop, CdkDropListGroup } from '@angular/cdk/drag-drop';
@@ -74,6 +74,7 @@ export class ClubTeamBuilderTabComponent {
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
+  private readonly document = inject(DOCUMENT);
 
   clubId = input.required<string>();
   season = input.required<number>();
@@ -163,10 +164,22 @@ export class ClubTeamBuilderTabComponent {
   }
 
   openEditSurveyDialog(player: TeamBuilderPlayer) {
+    const trigger = this.document.activeElement;
     const ref = this.dialogService.open(EditSurveyDialogComponent, {
-      header: `Edit Survey — ${player.fullName}`,
+      header: this.translate.instant('all.player.survey.edit'),
       width: '600px',
+      breakpoints: { '640px': '95vw' },
+      modal: true,
+      closeOnEscape: true,
+      closable: true,
+      closeAriaLabel: this.translate.instant('all.button.cancel'),
       data: { player },
+    });
+
+    ref?.onDestroy.subscribe(() => {
+      if (trigger instanceof HTMLElement && trigger.isConnected) {
+        trigger.focus();
+      }
     });
 
     ref?.onClose.subscribe((updatedSurvey: SurveyResponse | null) => {

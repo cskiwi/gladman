@@ -1,6 +1,6 @@
 <div
   class="flex flex-wrap items-center gap-1 p-1 rounded-border border border-surface cursor-grab"
-  (dblclick)="popover.hide(); playerClicked.emit(player()); $event.stopPropagation()"
+  (dblclick)="popover.hide(); detailsButton.focus(); playerClicked.emit(player()); $event.stopPropagation()"
 >
   <div
     #detailsTarget
@@ -150,7 +150,7 @@
       [autofocus]="detailsInteractive()"
       severity="secondary"
       size="small"
-      (click)="popover.hide(); playerClicked.emit(player())"
+      (click)="popover.hide(); detailsButton.focus(); playerClicked.emit(player())"
     >
       <i pButtonIcon class="pi pi-pencil" aria-hidden="true"></i>
       <span pButtonLabel>{{ 'all.player.survey.edit' | translate }}</span>

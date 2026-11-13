@@ -75,7 +75,16 @@ Club lint/build pass; 18 related tests pass with the temporary zoneless override
 layout and local interactions checked; no live confirmation/mutation. Remaining limits are in the child.
 The user explicitly approved `Approve and commit DR-013e with disclosed limits` on 2026-11-13.
 All unchecked verification limits remain disclosed in the child. Approval authorizes its scoped commit.
-Next action after this slice's commit: scope DR-013f survey edit before implementation; not started.
+[DR-013f](DR-013f-builder-survey-edit.md) implements the native responsive survey editor and is approved.
+Fluid/Panel, associated labels, shared nl/fr/en copy and one typed preference-group loop replace duplicated markup.
+Exact payloads remain; chip edit paths focus the persistent trigger before opening and the caller restores it
+after modal destruction. This bounded shared-chip focus change is checked by tests and the mounted team-card flow.
+Club lint/build pass; seven builder suites / 22 tests pass with the temporary zoneless override (DR-059 remains).
+Dutch light/dark wide/narrow layout, labels, keyboard opening, focus wrap, Escape/Cancel and discard/reopen checked.
+No live save. Full accessibility/contrast, fr/en browser, populated imported-survey browser states, long identity
+and SSR/hydration remain unchecked. The user explicitly approved
+`Approve and commit DR-013f with disclosed limits` on 2026-11-13; approval authorizes its scoped commit.
+Keep this parent open. Exact next action: scope DR-013g sub-event dialog before implementation; not started.
 DR-013g must check dialog dismissal: Enter opens it from the new keyboard-accessible action, but Escape does not
 dismiss the existing dialog; Cancel closes it without applying a change. Do not repair this in the card slice.
 DR-013e confirmed native Dialog requires both `closable` and `closeOnEscape`, and does not restore trigger focus.

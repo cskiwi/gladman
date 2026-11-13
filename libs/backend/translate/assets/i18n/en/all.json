@@ -842,8 +842,11 @@
   "player": {
     "newPlayer": "New player",
     "survey": {
+      "canMeet75": "Can attend 75% of matches",
       "edit": "Edit survey",
       "empty": "No survey data available",
+      "firstChoice": "First choice",
+      "secondChoice": "Second choice",
       "teamsWanted": "Teams wanted",
       "unavailability": "Unavailability"
     },

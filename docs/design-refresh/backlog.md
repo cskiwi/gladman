@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013f [Survey edit dialog](work-items/DR-013f-builder-survey-edit.md) is Done with explicit approval
+(`Approve and commit DR-013f with disclosed limits`, 2026-11-13).
+Implemented on `/clubs/smash-for-fun?tab=team-builder` -> player details -> Enquête bewerken:
+native Fluid/Panel, responsive labelled fields, localized nl/fr/en copy and one typed team-preference rendering loop.
+Survey payloads and service/persistence algorithms unchanged. Only the existing chip edit paths additionally focus
+their persistent details trigger so the modal can restore it after destruction; output payload remains unchanged.
+Literal class tokens 123 -> 49. Club lint/build pass (12 tasks); all seven builder suites / 22 tests pass
+with the temporary existing zoneless setup. Default tests fail before execution on missing `zone.js` (DR-059).
+Dutch light/dark at 390px/1440px fit with no horizontal overflow. All 12 fields have labels; native team regions,
+initial focus, keyboard opening, numeric adjustment, Tab/Shift+Tab wrap, Escape/Cancel and trigger return checked.
+Long synthetic choice/remarks fit; dismissal/reopening discards edits. API and frontend proxy recovered.
+No live survey/team save. Not verified: populated imported surveys in browser, unusually long player identity,
+fr/en browser, full accessibility/contrast and SSR/hydration. Inherited contrast work stays DR-032/033/058.
+Approval accepts these limits without changing unchecked checks into passes and authorizes the scoped commit.
+Keep parent DR-013 open. Exact next action: scope DR-013g sub-event dialog before implementation; not started.
+No push is authorized.
+
+### Previous focus: Survey import dialog (DR-013e)
+
 DR-013e [Survey import dialog](work-items/DR-013e-builder-survey-import.md) is Done with explicit approval
 (`Approve and commit DR-013e with disclosed limits`, 2026-11-13).
 Implemented on `/clubs/smash-for-fun?tab=team-builder` -> Enquête Importeren: native local validated upload,
@@ -2701,7 +2720,7 @@ and linked from their registry rows.
 | [DR-013c](work-items/DR-013c-builder-team-cards.md)           | Builder team cards                                                           | Done        |
 | [DR-013d](work-items/DR-013d-builder-player-chips.md)         | Builder player chips                                                         | Done        |
 | [DR-013e](work-items/DR-013e-builder-survey-import.md)        | Survey import dialog                                                         | Done        |
-| DR-013f                                                       | Survey edit dialog                                                           | Backlog     |
+| [DR-013f](work-items/DR-013f-builder-survey-edit.md)          | Survey edit dialog                                                           | Done        |
 | DR-013g                                                       | Sub-event dialog                                                             | Backlog     |
 | DR-013h                                                       | Builder validation, notification and confirmation localization               | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |

@@ -8,13 +8,26 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
+import { FluidModule } from 'primeng/fluid';
+import { PanelModule } from 'primeng/panel';
 import { SurveyResponse } from '../../pages/detail/tabs/team-builder/types/survey-response';
 import { TeamBuilderPlayer } from '../../pages/detail/tabs/team-builder/types/team-builder.types';
 
 @Component({
   selector: 'app-edit-survey-dialog',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ButtonModule, InputTextModule, TextareaModule, InputNumberModule, CheckboxModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    ButtonModule,
+    InputTextModule,
+    TextareaModule,
+    InputNumberModule,
+    CheckboxModule,
+    FluidModule,
+    PanelModule,
+  ],
   templateUrl: './edit-survey-dialog.component.html',
 })
 export class EditSurveyDialogComponent implements OnInit {
@@ -22,6 +35,23 @@ export class EditSurveyDialogComponent implements OnInit {
   private readonly config = inject(DynamicDialogConfig);
 
   readonly player: TeamBuilderPlayer = this.config.data?.player;
+
+  readonly teamPreferences = [
+    {
+      number: 1,
+      firstChoice: 'team1Choice1',
+      secondChoice: 'team1Choice2',
+      availability: 'canMeet75PercentTeam1',
+      unavailability: 'unavailabilityPeriodsTeam1',
+    },
+    {
+      number: 2,
+      firstChoice: 'team2Choice1',
+      secondChoice: 'team2Choice2',
+      availability: 'canMeet75PercentTeam2',
+      unavailability: 'unavailabilityPeriodsTeam2',
+    },
+  ] as const;
 
   // Editable survey fields
   desiredTeamCount = 1;

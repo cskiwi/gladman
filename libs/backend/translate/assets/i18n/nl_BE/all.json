@@ -842,8 +842,11 @@
   "player": {
     "newPlayer": "Nieuwe speler",
     "survey": {
+      "canMeet75": "Kan 75% van de wedstrijden spelen",
       "edit": "Enquête bewerken",
       "empty": "Geen enquêtegegevens beschikbaar",
+      "firstChoice": "Eerste keuze",
+      "secondChoice": "Tweede keuze",
       "teamsWanted": "Gewenst aantal ploegen",
       "unavailability": "Onbeschikbaarheid"
     },

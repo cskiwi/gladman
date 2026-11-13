@@ -131,7 +131,7 @@ describe('Enrollment cart presentation', () => {
   it('locks all actions during submission, including direct handlers, and restores them afterwards', async () => {
     const { fixture, component, element, remove, clear, submit } = await mount([single], true);
     expect(element.querySelector('p-card')?.getAttribute('aria-busy')).toBe('true');
-    expect(element.querySelector('.p-button-loading')).not.toBeNull();
+    expect(element.querySelector('button .pi-spinner')).not.toBeNull();
     element.querySelectorAll<HTMLButtonElement>('button').forEach((button) => {
       expect(button.disabled).toBe(true);
       button.click();
@@ -144,7 +144,7 @@ describe('Enrollment cart presentation', () => {
     expect(submit).not.toHaveBeenCalled();
     fixture.componentRef.setInput('isSubmitting', false);
     fixture.detectChanges();
-    expect(element.querySelector('.p-button-loading')).toBeNull();
+    expect(element.querySelector('button .pi-spinner')).toBeNull();
     element.querySelectorAll<HTMLButtonElement>('button').forEach((button) => expect(button.disabled).toBe(false));
     element.querySelector<HTMLButtonElement>('button')?.click();
     expect(remove).toHaveBeenCalledWith(single.subEventId);

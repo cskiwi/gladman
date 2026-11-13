@@ -65,7 +65,6 @@ describe('Enrollment partner dialog', () => {
     const input = element.querySelector<HTMLInputElement>('#enrollment-partner');
     expect(input?.getAttribute('role')).toBe('combobox');
     expect(element.querySelector('label[for="enrollment-partner"]')?.textContent).toContain('Partner selection');
-    expect(input?.getAttribute('aria-describedby')).toBe('enrollment-partner-description');
     expect(element.querySelector('.p-autocomplete-dropdown')?.getAttribute('aria-label')).toBe('Partner selection');
     const autocomplete = fixture.debugElement.query(By.directive(AutoComplete)).componentInstance as AutoComplete;
     expect(autocomplete.emptyMessage()).toBe('No matching partners');

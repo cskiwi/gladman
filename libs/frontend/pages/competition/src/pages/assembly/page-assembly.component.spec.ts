@@ -14,7 +14,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { AutoComplete } from 'primeng/autocomplete';
 import { MessageService } from 'primeng/api';
-import { Button } from 'primeng/button';
+import { ButtonDirective } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Dialog } from 'primeng/dialog';
 import { Menu } from 'primeng/menu';
@@ -231,13 +231,13 @@ describe('Assembly page heading and filters', () => {
   it('preserves download wiring and its busy disabled state', async () => {
     await mount();
     const download = jest.spyOn(component, 'download').mockResolvedValue();
-    const button = harness.fixture.debugElement.query(By.directive(Button));
-    button.triggerEventHandler('onClick', {});
+    const button = harness.fixture.debugElement.query(By.directive(ButtonDirective));
+    button.triggerEventHandler('click', {});
     expect(download).toHaveBeenCalledTimes(1);
     component.pdfLoading.set(true);
     await settle();
-    expect(button.injector.get(Button).loading()).toBe(true);
-    expect(button.injector.get(Button).disabled()).toBe(true);
+    expect(button.nativeElement.querySelector('.pi-spinner')).not.toBeNull();
+    expect(button.nativeElement.disabled).toBe(true);
   });
 
   it('preserves authenticated save visibility and menu wiring without saving', async () => {
@@ -247,9 +247,9 @@ describe('Assembly page heading and filters', () => {
     await settle();
     const menu = harness.fixture.debugElement.query(By.directive(Menu));
     expect(menu).toBeTruthy();
-    expect(harness.fixture.debugElement.queryAll(By.directive(Button))[1].injector.get(Button).ariaLabel()).toBe('Save');
+    expect(harness.fixture.debugElement.queryAll(By.directive(ButtonDirective))[1].nativeElement.getAttribute('aria-label')).toBe('Save');
     const toggle = jest.spyOn(menu.injector.get(Menu), 'toggle').mockImplementation();
-    harness.fixture.debugElement.queryAll(By.directive(Button))[1].triggerEventHandler('onClick', new MouseEvent('click'));
+    harness.fixture.debugElement.queryAll(By.directive(ButtonDirective))[1].triggerEventHandler('click', new MouseEvent('click'));
     expect(toggle).toHaveBeenCalledTimes(1);
     const save = jest.spyOn(component, 'save').mockResolvedValue();
     component.saveMenuItems()[0].command();

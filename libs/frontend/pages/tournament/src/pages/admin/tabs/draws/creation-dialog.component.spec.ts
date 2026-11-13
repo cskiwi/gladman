@@ -42,7 +42,7 @@ describe('Draw creation dialog', () => {
 
   function trigger(emptyList = false): HTMLButtonElement {
     return required<HTMLButtonElement>(
-      emptyList ? '[data-testid="empty-draw-list"] button' : '[data-testid="draw-filters"] p-button:nth-child(2) button',
+      emptyList ? '[data-testid="empty-draw-list"] button' : '[data-testid="draw-filters"] button.p-button:nth-child(2)',
     );
   }
 
@@ -53,7 +53,7 @@ describe('Draw creation dialog', () => {
   }
 
   function cancel(): HTMLButtonElement {
-    return required<HTMLButtonElement>('[role="dialog"] form p-button button');
+    return required<HTMLButtonElement>('[role="dialog"] form button.p-button');
   }
 
   function submit(): HTMLButtonElement {
@@ -144,7 +144,7 @@ describe('Draw creation dialog', () => {
     expect(required<HTMLInputElement>('#drawName').readOnly).toBe(true);
     expect(cancel().disabled).toBe(true);
     expect(submit().disabled).toBe(true);
-    expect(submit().querySelector('[data-pc-section="loadingicon"]')).not.toBeNull();
+    expect(submit().querySelector('.pi-spinner')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('.p-dialog-close-button, .p-select-clear-icon')).toBeNull();
     required('#drawType').dispatchEvent(new MouseEvent('click', { bubbles: true }));
     fixture.detectChanges();

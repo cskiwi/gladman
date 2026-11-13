@@ -47,7 +47,7 @@ describe('Draw lists and actions', () => {
   }
 
   function actions(index = 0): HTMLButtonElement[] {
-    return Array.from(panels()[index].querySelectorAll('p-button button'));
+    return Array.from(panels()[index].querySelectorAll('button.p-button'));
   }
 
   it('uses named native Panels and a scrolling Table with identity, capacity and original seed order', async () => {
@@ -166,7 +166,7 @@ describe('Draw lists and actions', () => {
     fixture.detectChanges();
     expect(actions().every((button) => button.disabled)).toBe(true);
     expect(actions(1).every((button) => button.disabled)).toBe(true);
-    expect(actions()[3].querySelector('[data-pc-section="loadingicon"]')).not.toBeNull();
+    expect(actions()[3].querySelector('.pi-spinner')).not.toBeNull();
     pending.next({ data: { removeEntryFromDraw: entries[0] } });
     pending.complete();
     await settle();
@@ -303,7 +303,7 @@ describe('Unassigned entry selection and assignment', () => {
   }
 
   function actions(): HTMLButtonElement[] {
-    return Array.from(panel().querySelectorAll('p-button button'));
+    return Array.from(panel().querySelectorAll('button.p-button'));
   }
 
   function checkboxes(): HTMLInputElement[] {
@@ -554,7 +554,7 @@ describe('Draw selection and read prerequisite', () => {
   }
 
   function filterActions(): HTMLButtonElement[] {
-    return Array.from(fixture.nativeElement.querySelectorAll('[data-testid="draw-filters"] p-button button'));
+    return Array.from(fixture.nativeElement.querySelectorAll('[data-testid="draw-filters"] button.p-button'));
   }
 
   it('uses a native filter Panel and fluid named selector without nested cards or custom surfaces', async () => {
@@ -620,7 +620,7 @@ describe('Draw selection and read prerequisite', () => {
     fixture.componentInstance.updating.set(true);
     await settle();
     expect(filterActions().map((button) => button.disabled)).toEqual([true, false, false]);
-    expect(filterActions()[0].querySelector('[data-pc-section="loadingicon"]')).not.toBeNull();
+    expect(filterActions()[0].querySelector('.pi-spinner')).not.toBeNull();
     fixture.componentInstance.updating.set(false);
     await settle();
     expect(filterActions().every((button) => !button.disabled)).toBe(true);

@@ -1,10 +1,6 @@
-<p-button
-  [label]="'all.settings.languages.' + this.current | translate"
-  icon="pi pi-globe"
-  [text]="true"
-  (click)="menuRef.toggle($event)"
-  #menuButton
->
-</p-button>
+<button pButton type="button" [text]="true" (click)="menuRef.toggle($event)" #menuButton>
+  <i pButtonIcon class="pi pi-globe" aria-hidden="true"></i>
+  <span pButtonLabel>{{ 'all.settings.languages.' + this.current | translate }}</span>
+</button>
 
 <p-menu #menuRef [model]="menuItems" [popup]="true"></p-menu>

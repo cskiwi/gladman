@@ -68,15 +68,14 @@
         </p-iconfield>
       </div>
 
-      <p-button
-        icon="pi pi-refresh"
-        [label]="'all.button.refresh' | translate"
-        severity="secondary"
-        [outlined]="true"
-        (onClick)="refetch()"
-        [loading]="loading()"
-        [disabled]="!selectedSubEvent()"
-      />
+      <button pButton type="button" severity="secondary" [outlined]="true" (click)="refetch()" [disabled]="!selectedSubEvent() || loading()">
+        @if (loading()) {
+          <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+        } @else {
+          <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+        }
+        <span pButtonLabel>{{ 'all.button.refresh' | translate }}</span>
+      </button>
     </div>
   </p-panel>
 
@@ -93,13 +92,10 @@
     <section class="min-w-0" data-testid="enrollment-table" aria-labelledby="admin-enrollment-table-title" [attr.aria-busy]="loading()">
       <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
         <h3 id="admin-enrollment-table-title" class="text-lg font-semibold wrap-anywhere m-0">{{ selectedSubEvent()!.name }}</h3>
-        <p-button
-          #manualEnrollmentTrigger
-          icon="pi pi-user-plus"
-          [label]="'all.button.add' | translate"
-          size="small"
-          (onClick)="openManualEnrollmentDialog()"
-        />
+        <button pButton type="button" #manualEnrollmentTrigger size="small" (click)="openManualEnrollmentDialog()">
+          <i pButtonIcon class="pi pi-user-plus" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.button.add' | translate }}</span>
+        </button>
       </div>
 
       @if (!loading() && error()) {
@@ -171,34 +167,48 @@
               <td>
                 <div class="flex gap-1 justify-center">
                   @if (enrollment.status === 'WAITING_LIST') {
-                    <p-button
-                      icon="pi pi-arrow-up"
+                    <button
+                      pButton
+                      type="button"
+                      iconOnly
                       severity="success"
                       [text]="true"
                       [rounded]="true"
                       size="small"
-                      [ariaLabel]="('all.tournament.admin.enrollments.promoteFromWaitingList' | translate) + ': ' + getPlayerName(enrollment)"
+                      [attr.aria-label]="('all.tournament.admin.enrollments.promoteFromWaitingList' | translate) + ': ' + getPlayerName(enrollment)"
                       [pTooltip]="'all.tournament.admin.enrollments.promoteFromWaitingList' | translate"
                       tooltipPosition="top"
-                      (onClick)="promoteFromWaitingList(enrollment)"
-                      [loading]="updating()"
+                      (click)="promoteFromWaitingList(enrollment)"
                       [disabled]="updating()"
-                    />
+                    >
+                      @if (updating()) {
+                        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                      } @else {
+                        <i pButtonIcon class="pi pi-arrow-up" aria-hidden="true"></i>
+                      }
+                    </button>
                   }
                   @if (enrollment.status !== 'CANCELLED' && enrollment.status !== 'WITHDRAWN') {
-                    <p-button
-                      icon="pi pi-times"
+                    <button
+                      pButton
+                      type="button"
+                      iconOnly
                       severity="danger"
                       [text]="true"
                       [rounded]="true"
                       size="small"
-                      [ariaLabel]="('all.tournament.admin.enrollments.cancel' | translate) + ': ' + getPlayerName(enrollment)"
+                      [attr.aria-label]="('all.tournament.admin.enrollments.cancel' | translate) + ': ' + getPlayerName(enrollment)"
                       [pTooltip]="'all.tournament.admin.enrollments.cancel' | translate"
                       tooltipPosition="top"
-                      (onClick)="cancelEnrollment(enrollment)"
-                      [loading]="updating()"
+                      (click)="cancelEnrollment(enrollment)"
                       [disabled]="updating()"
-                    />
+                    >
+                      @if (updating()) {
+                        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                      } @else {
+                        <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+                      }
+                    </button>
                   }
                 </div>
               </td>
@@ -329,22 +339,25 @@
         <p-message severity="error">{{ 'all.tournament.admin.enrollments.manualInvalid' | translate }}</p-message>
       }
       <div class="grid sm:grid-cols-2 gap-3 w-full">
-        <p-button
-          [label]="'all.button.cancel' | translate"
+        <button
+          pButton
+          type="button"
           severity="secondary"
           [outlined]="true"
           [fluid]="true"
           [disabled]="creating()"
-          (onClick)="closeManualEnrollmentDialog()"
-        />
-        <p-button
-          type="submit"
-          [label]="'all.tournament.admin.enrollments.addEnrollment' | translate"
-          icon="pi pi-user-plus"
-          [fluid]="true"
-          [loading]="creating()"
-          [disabled]="manualEnrollmentForm.invalid || creating() || !selectedSubEvent()"
-        />
+          (click)="closeManualEnrollmentDialog()"
+        >
+          <span pButtonLabel>{{ 'all.button.cancel' | translate }}</span>
+        </button>
+        <button pButton type="submit" [fluid]="true" [disabled]="manualEnrollmentForm.invalid || creating() || !selectedSubEvent()">
+          @if (creating()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-user-plus" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'all.tournament.admin.enrollments.addEnrollment' | translate }}</span>
+        </button>
       </div>
     </form>
   </p-dialog>

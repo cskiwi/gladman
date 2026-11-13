@@ -199,7 +199,7 @@ describe('Enrollment filters and rankings', () => {
 
   it('preserves ranked reset defaults and hides Clear after reaching them', async () => {
     const { fixture, element, component, emit } = await mount({ gender: 'F', ranking, filters: allFilters });
-    element.querySelector<HTMLButtonElement>('p-button button')?.click();
+    element.querySelector<HTMLButtonElement>('button.p-button')?.click();
     fixture.detectChanges();
     expect(emit).toHaveBeenLastCalledWith({
       eventType: ['MX', 'F'],

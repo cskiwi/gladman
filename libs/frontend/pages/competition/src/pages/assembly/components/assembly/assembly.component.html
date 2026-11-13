@@ -302,7 +302,9 @@
           @if (hasEditPermission()) {
             <p-card role="region" [attr.aria-label]="'all.button.edit' | translate" aria-describedby="assembly-change-team-description">
               <p id="assembly-change-team-description" class="mt-0">{{ 'all.competition.team-assembly.change-team' | translate }}</p>
-              <p-button [label]="'all.button.edit' | translate" [outlined]="true" severity="secondary" />
+              <button pButton type="button" [outlined]="true" severity="secondary">
+                <span pButtonLabel>{{ 'all.button.edit' | translate }}</span>
+              </button>
             </p-card>
           }
 

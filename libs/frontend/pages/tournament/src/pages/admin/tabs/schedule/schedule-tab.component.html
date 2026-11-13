@@ -6,7 +6,10 @@
 } @else if (error(); as readError) {
   <div class="flex flex-col items-start gap-4">
     <p-message severity="error">{{ readError }}</p-message>
-    <p-button icon="pi pi-refresh" [label]="'all.button.refresh' | translate" severity="secondary" (onClick)="refetch()" />
+    <button pButton type="button" severity="secondary" (click)="refetch()">
+      <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+      <span pButtonLabel>{{ 'all.button.refresh' | translate }}</span>
+    </button>
   </div>
 } @else {
   <div class="flex flex-col gap-6">
@@ -54,42 +57,56 @@
         </div>
 
         <div class="flex flex-wrap gap-2 xl:ml-auto">
-          <p-button
-            icon="pi pi-clock"
-            [label]="'all.tournament.admin.schedule.generateSlots' | translate"
+          <button pButton type="button" severity="secondary" [outlined]="true" (click)="openGenerateSlotsDialog()" [disabled]="updating()">
+            @if (updating()) {
+              <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+            } @else {
+              <i pButtonIcon class="pi pi-clock" aria-hidden="true"></i>
+            }
+            <span pButtonLabel>{{ 'all.tournament.admin.schedule.generateSlots' | translate }}</span>
+          </button>
+
+          <button
+            pButton
+            type="button"
+            (click)="openAutoScheduleDialog()"
+            [disabled]="stats().unscheduledGames === 0 || stats().available === 0 || updating()"
+          >
+            @if (updating()) {
+              <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+            } @else {
+              <i pButtonIcon class="pi pi-bolt" aria-hidden="true"></i>
+            }
+            <span pButtonLabel>{{ 'all.tournament.admin.schedule.autoSchedule' | translate }}</span>
+          </button>
+
+          <button pButton type="button" severity="success" (click)="publishSchedule()" [disabled]="stats().scheduled === 0 || updating()">
+            @if (updating()) {
+              <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+            } @else {
+              <i pButtonIcon class="pi pi-check-circle" aria-hidden="true"></i>
+            }
+            <span pButtonLabel>{{ 'all.tournament.admin.schedule.publishSchedule' | translate }}</span>
+          </button>
+
+          <button
+            pButton
+            type="button"
+            iconOnly
             severity="secondary"
             [outlined]="true"
-            (onClick)="openGenerateSlotsDialog()"
-            [loading]="updating()"
-          />
-
-          <p-button
-            icon="pi pi-bolt"
-            [label]="'all.tournament.admin.schedule.autoSchedule' | translate"
-            (onClick)="openAutoScheduleDialog()"
-            [loading]="updating()"
-            [disabled]="stats().unscheduledGames === 0 || stats().available === 0"
-          />
-
-          <p-button
-            icon="pi pi-check-circle"
-            [label]="'all.tournament.admin.schedule.publishSchedule' | translate"
-            severity="success"
-            (onClick)="publishSchedule()"
-            [loading]="updating()"
-            [disabled]="stats().scheduled === 0"
-          />
-
-          <p-button
-            icon="pi pi-refresh"
-            severity="secondary"
-            [outlined]="true"
-            [ariaLabel]="'all.button.refresh' | translate"
+            [attr.aria-label]="'all.button.refresh' | translate"
             [pTooltip]="'all.button.refresh' | translate"
             tooltipPosition="top"
-            (onClick)="refetch()"
-            [loading]="loading()"
-          />
+            (click)="refetch()"
+            [disabled]="loading()"
+          >
+            @if (loading()) {
+              <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+            } @else {
+              <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+            }
+          </button>
 
           <button
             pButton
@@ -157,13 +174,10 @@
             <div class="flex flex-col items-center gap-4 text-center">
               <i class="pi pi-calendar text-2xl text-muted-color" aria-hidden="true"></i>
               <p class="text-muted-color m-0">{{ 'all.tournament.admin.schedule.noSlots' | translate }}</p>
-              <p-button
-                [label]="'all.tournament.admin.schedule.generateSlots' | translate"
-                icon="pi pi-clock"
-                size="small"
-                [outlined]="true"
-                (onClick)="openGenerateSlotsDialog()"
-              />
+              <button pButton type="button" size="small" [outlined]="true" (click)="openGenerateSlotsDialog()">
+                <i pButtonIcon class="pi pi-clock" aria-hidden="true"></i>
+                <span pButtonLabel>{{ 'all.tournament.admin.schedule.generateSlots' | translate }}</span>
+              </button>
             </div>
           </p-panel>
         }

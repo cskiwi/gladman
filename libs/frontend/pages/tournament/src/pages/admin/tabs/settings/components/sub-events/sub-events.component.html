@@ -2,7 +2,10 @@
   <ng-template #header>
     <div class="flex flex-wrap items-center justify-between gap-3 w-full">
       <span>{{ 'all.tournament.admin.settings.subEvents' | translate }}</span>
-      <p-button [label]="'all.tournament.admin.settings.addSubEvent' | translate" icon="pi pi-plus" size="small" (click)="openAddSubEvent()" />
+      <button pButton type="button" size="small" (click)="openAddSubEvent()">
+        <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+        <span pButtonLabel>{{ 'all.tournament.admin.settings.addSubEvent' | translate }}</span>
+      </button>
     </div>
   </ng-template>
   <div class="flex flex-col gap-4 w-0 min-w-full">
@@ -158,8 +161,10 @@
             </td>
             <td>
               <div class="flex gap-1 justify-center">
-                <p-button
-                  icon="pi pi-pencil"
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   severity="secondary"
                   [text]="true"
                   [rounded]="true"
@@ -168,9 +173,13 @@
                   [attr.aria-label]="'all.button.edit' | translate"
                   tooltipPosition="top"
                   (click)="openEditSubEvent(subEvent)"
-                />
-                <p-button
-                  icon="pi pi-trash"
+                >
+                  <i pButtonIcon class="pi pi-pencil" aria-hidden="true"></i>
+                </button>
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   severity="danger"
                   [text]="true"
                   [rounded]="true"
@@ -179,7 +188,9 @@
                   [attr.aria-label]="'all.button.delete' | translate"
                   tooltipPosition="top"
                   (click)="deleteSubEvent(subEvent)"
-                />
+                >
+                  <i pButtonIcon class="pi pi-trash" aria-hidden="true"></i>
+                </button>
               </div>
             </td>
           </tr>
@@ -189,13 +200,10 @@
       <div class="flex flex-col items-center gap-3 py-8 text-center">
         <i class="pi pi-inbox text-2xl text-muted-color"></i>
         <p class="text-muted-color m-0">{{ 'all.tournament.admin.settings.noSubEvents' | translate }}</p>
-        <p-button
-          [label]="'all.tournament.admin.settings.addSubEvent' | translate"
-          icon="pi pi-plus"
-          size="small"
-          [outlined]="true"
-          (click)="openAddSubEvent()"
-        />
+        <button pButton type="button" size="small" [outlined]="true" (click)="openAddSubEvent()">
+          <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.tournament.admin.settings.addSubEvent' | translate }}</span>
+        </button>
       </div>
     }
   </div>
@@ -284,14 +292,17 @@
 
   <ng-template pTemplate="footer">
     <div class="flex gap-3 justify-end">
-      <p-button [label]="'all.button.cancel' | translate" severity="secondary" [outlined]="true" (click)="closeDialog()" />
-      <p-button
-        [label]="'all.button.save' | translate"
-        icon="pi pi-check"
-        (click)="saveSubEvent()"
-        [loading]="updating()"
-        [disabled]="subEventForm.invalid || updating()"
-      />
+      <button pButton type="button" severity="secondary" [outlined]="true" (click)="closeDialog()">
+        <span pButtonLabel>{{ 'all.button.cancel' | translate }}</span>
+      </button>
+      <button pButton type="button" (click)="saveSubEvent()" [disabled]="subEventForm.invalid || updating()">
+        @if (updating()) {
+          <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+        } @else {
+          <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+        }
+        <span pButtonLabel>{{ 'all.button.save' | translate }}</span>
+      </button>
     </div>
   </ng-template>
 </p-dialog>

@@ -84,7 +84,7 @@ describe('UpcomingGamesPlayerComponent cards', () => {
 
     const card = fixture.nativeElement.querySelector('p-card');
     expect(card.classList.contains('border-surface')).toBe(false);
-    expect(card.querySelector('.p-card-body').classList.contains('p-0!')).toBe(true);
+    expect(card.classList.contains('card-flush')).toBe(true);
     expect(card.querySelector('article').classList.contains('sm:grid-cols-[72px_minmax(0,1fr)_auto]')).toBe(true);
     expect(card.querySelector('time').getAttribute('datetime')).toBe('2026-10-17');
     expect(card.querySelector('time').classList.contains('hidden')).toBe(false);

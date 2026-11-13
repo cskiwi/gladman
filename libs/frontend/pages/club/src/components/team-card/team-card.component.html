@@ -17,15 +17,19 @@
         }
       </div>
       @if (canEdit()) {
-        <p-button
-          icon="pi pi-pencil"
+        <button
+          pButton
+          type="button"
+          iconOnly
           severity="secondary"
           variant="text"
           size="small"
           [rounded]="true"
-          [ariaLabel]="'all.club.detail.teams.edit' | translate"
-          (onClick)="onEdit($event)"
-        />
+          [attr.aria-label]="'all.club.detail.teams.edit' | translate"
+          (click)="onEdit($event)"
+        >
+          <i pButtonIcon class="pi pi-pencil" aria-hidden="true"></i>
+        </button>
       }
     </div>
   </ng-template>

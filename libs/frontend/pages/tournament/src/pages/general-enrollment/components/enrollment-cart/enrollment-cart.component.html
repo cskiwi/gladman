@@ -28,16 +28,19 @@
                 }
               </div>
             </div>
-            <p-button
+            <button
+              pButton
+              iconOnly
               type="button"
-              icon="pi pi-trash"
               severity="danger"
               [text]="true"
               size="small"
               [disabled]="isSubmitting()"
-              (onClick)="onRemoveItem(item.subEventId)"
-              [ariaLabel]="('all.enrollment.removeFromCart' | translate) + ' ' + item.subEventName"
-            />
+              (click)="onRemoveItem(item.subEventId)"
+              [attr.aria-label]="('all.enrollment.removeFromCart' | translate) + ' ' + item.subEventName"
+            >
+              <i pButtonIcon class="pi pi-trash" aria-hidden="true"></i>
+            </button>
           </div>
           @if (!last) {
             <p-divider />
@@ -56,26 +59,18 @@
   <ng-template #footer>
     @if (items().length > 0) {
       <div class="flex flex-col gap-3">
-        <p-button
-          type="button"
-          [label]="'all.enrollment.cart.clear' | translate"
-          icon="pi pi-times"
-          severity="secondary"
-          [outlined]="true"
-          [fluid]="true"
-          (onClick)="onClearCart()"
-          [disabled]="isSubmitting()"
-        />
-        <p-button
-          type="button"
-          [label]="'all.enrollment.cart.enrollNow' | translate"
-          icon="pi pi-check-circle"
-          severity="success"
-          [fluid]="true"
-          (onClick)="onSubmitCart()"
-          [disabled]="isSubmitting()"
-          [loading]="isSubmitting()"
-        />
+        <button pButton type="button" severity="secondary" [outlined]="true" [fluid]="true" (click)="onClearCart()" [disabled]="isSubmitting()">
+          <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.enrollment.cart.clear' | translate }}</span>
+        </button>
+        <button pButton type="button" severity="success" [fluid]="true" (click)="onSubmitCart()" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-check-circle" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'all.enrollment.cart.enrollNow' | translate }}</span>
+        </button>
       </div>
     }
   </ng-template>

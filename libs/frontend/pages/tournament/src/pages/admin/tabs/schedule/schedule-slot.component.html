@@ -8,17 +8,25 @@
     @case (status.AVAILABLE) {
       <div class="flex items-center justify-between gap-2">
         <span class="text-xs text-muted-color">{{ 'all.tournament.admin.schedule.dropHere' | translate }}</span>
-        <p-button
+        <button
+          pButton
+          type="button"
+          iconOnly
           size="small"
           [text]="true"
           severity="secondary"
-          icon="pi pi-ban"
-          [ariaLabel]="'all.tournament.admin.schedule.blockSlot' | translate"
+          [attr.aria-label]="'all.tournament.admin.schedule.blockSlot' | translate"
           [pTooltip]="'all.tournament.admin.schedule.blockSlot' | translate"
           tooltipPosition="top"
-          [loading]="updating()"
-          (onClick)="toggleBlock.emit()"
-        />
+          (click)="toggleBlock.emit()"
+          [disabled]="updating()"
+        >
+          @if (updating()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-ban" aria-hidden="true"></i>
+          }
+        </button>
       </div>
     }
     @case (status.SCHEDULED) {
@@ -27,17 +35,25 @@
         <div class="text-xs text-muted-color">{{ subEvent }}</div>
       }
       <div class="flex justify-end">
-        <p-button
+        <button
+          pButton
+          type="button"
+          iconOnly
           size="small"
           [text]="true"
           severity="danger"
-          icon="pi pi-times"
-          [ariaLabel]="'all.tournament.admin.schedule.removeFromSlot' | translate"
+          [attr.aria-label]="'all.tournament.admin.schedule.removeFromSlot' | translate"
           [pTooltip]="'all.tournament.admin.schedule.removeFromSlot' | translate"
           tooltipPosition="top"
-          [loading]="updating()"
-          (onClick)="remove.emit()"
-        />
+          (click)="remove.emit()"
+          [disabled]="updating()"
+        >
+          @if (updating()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+          }
+        </button>
       </div>
     }
     @case (status.IN_PROGRESS) {
@@ -51,16 +67,24 @@
     @case (status.BLOCKED) {
       <div class="flex items-center justify-between gap-2">
         <p-tag severity="danger" icon="pi pi-ban" [value]="'all.tournament.admin.schedule.blocked' | translate" />
-        <p-button
+        <button
+          pButton
+          type="button"
+          iconOnly
           size="small"
           [text]="true"
-          icon="pi pi-unlock"
-          [ariaLabel]="'all.tournament.admin.schedule.unblockSlot' | translate"
+          [attr.aria-label]="'all.tournament.admin.schedule.unblockSlot' | translate"
           [pTooltip]="'all.tournament.admin.schedule.unblockSlot' | translate"
           tooltipPosition="top"
-          [loading]="updating()"
-          (onClick)="toggleBlock.emit()"
-        />
+          (click)="toggleBlock.emit()"
+          [disabled]="updating()"
+        >
+          @if (updating()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-unlock" aria-hidden="true"></i>
+          }
+        </button>
       </div>
     }
   }

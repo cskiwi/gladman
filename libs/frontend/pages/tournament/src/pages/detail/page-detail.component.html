@@ -50,21 +50,16 @@
 
       <div actions class="flex items-center gap-2 flex-wrap justify-end">
         @if (canEdit()) {
-          <p-button
-            [routerLink]="['/', 'tournament', tournament.id, 'admin']"
-            icon="pi pi-cog"
-            [label]="'all.tournament.admin.title' | translate"
-            [outlined]="true"
-            size="small"
-          />
+          <button pButton type="button" [routerLink]="['/', 'tournament', tournament.id, 'admin']" [outlined]="true" size="small">
+            <i pButtonIcon class="pi pi-cog" aria-hidden="true"></i>
+            <span pButtonLabel>{{ 'all.tournament.admin.title' | translate }}</span>
+          </button>
         }
         @if (tournament.phase === 'ENROLLMENT_OPEN') {
-          <p-button
-            [routerLink]="['/', 'tournament', tournament.id, 'enroll']"
-            icon="pi pi-user-plus"
-            [label]="'all.enrollment.enrollNow' | translate"
-            size="small"
-          />
+          <button pButton type="button" [routerLink]="['/', 'tournament', tournament.id, 'enroll']" size="small">
+            <i pButtonIcon class="pi pi-user-plus" aria-hidden="true"></i>
+            <span pButtonLabel>{{ 'all.enrollment.enrollNow' | translate }}</span>
+          </button>
         }
         @if (tournament.visualCode) {
           <a

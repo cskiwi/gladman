@@ -1,32 +1,53 @@
 <div class="space-y-4">
   <!-- Actions bar -->
   <div class="flex justify-end gap-2">
-    <p-button
-      icon="pi pi-trash"
-      [label]="'all.sync.dashboard.actions.clearAll' | translate"
+    <button
+      pButton
+      type="button"
       severity="danger"
       [outlined]="true"
-      [loading]="actionLoading()"
-      (onClick)="clearAllJobs()"
+      (click)="clearAllJobs()"
       [pTooltip]="'all.sync.dashboard.actions.clearAllTooltip' | translate"
-    />
-    <p-button
-      icon="pi pi-check-circle"
-      [label]="'all.sync.dashboard.actions.clearCompleted' | translate"
+      [disabled]="actionLoading()"
+    >
+      @if (actionLoading()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-trash" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>{{ 'all.sync.dashboard.actions.clearAll' | translate }}</span>
+    </button>
+    <button
+      pButton
+      type="button"
       severity="warn"
       [outlined]="true"
-      [loading]="actionLoading()"
-      (onClick)="clearCompletedJobs()"
+      (click)="clearCompletedJobs()"
       [pTooltip]="'all.sync.dashboard.actions.clearCompletedTooltip' | translate"
-    />
-    <p-button
-      icon="pi pi-search"
-      [label]="'all.sync.dashboard.actions.sync' | translate"
+      [disabled]="actionLoading()"
+    >
+      @if (actionLoading()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-check-circle" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>{{ 'all.sync.dashboard.actions.clearCompleted' | translate }}</span>
+    </button>
+    <button
+      pButton
+      type="button"
       severity="secondary"
-      [loading]="actionLoading()"
-      (onClick)="triggerDiscoverySync()"
+      (click)="triggerDiscoverySync()"
       [pTooltip]="'all.sync.dashboard.actions.syncTooltip' | translate"
-    />
+      [disabled]="actionLoading()"
+    >
+      @if (actionLoading()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      } @else {
+        <i pButtonIcon class="pi pi-search" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>{{ 'all.sync.dashboard.actions.sync' | translate }}</span>
+    </button>
   </div>
 
   <!-- Queue Statistics -->
@@ -92,7 +113,9 @@
           <td>
             <div [ngStyle]="getJobIndentStyle(getJobLevel(job))">
               @if (hasChildren(job)) {
-                <p-button [icon]="getExpansionIcon(job)" size="small" severity="secondary" [text]="true" (onClick)="toggleJobExpansion(job)" />
+                <button pButton type="button" iconOnly size="small" severity="secondary" [text]="true" (click)="toggleJobExpansion(job)">
+                  <i pButtonIcon [class]="getExpansionIcon(job)" aria-hidden="true"></i>
+                </button>
               }
             </div>
           </td>
@@ -120,23 +143,31 @@
           </td>
           <td>
             <div class="flex gap-1">
-              <p-button
-                icon="pi pi-eye"
+              <button
+                pButton
+                type="button"
+                iconOnly
                 size="small"
                 severity="secondary"
                 [text]="true"
-                (onClick)="viewJobDetails(job)"
+                (click)="viewJobDetails(job)"
                 [pTooltip]="'all.sync.dashboard.jobs.viewDetails' | translate"
-              />
+              >
+                <i pButtonIcon class="pi pi-eye" aria-hidden="true"></i>
+              </button>
               @if (job.status === 'failed') {
-                <p-button
-                  icon="pi pi-refresh"
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   size="small"
                   severity="warn"
                   [text]="true"
-                  (onClick)="retryJob(job)"
+                  (click)="retryJob(job)"
                   [pTooltip]="'all.sync.dashboard.jobs.retry' | translate"
-                />
+                >
+                  <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+                </button>
               }
             </div>
           </td>

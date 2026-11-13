@@ -50,32 +50,29 @@
   @if (showMembershipToggle()) {
     @let membershipKey = 'all.team.membership.' + player().membershipType;
     @let membershipLabel = membershipKey + '.label' | translate;
-    <p-button
-      [label]="membershipKey + '.short' | translate"
+    <button
+      pButton
+      type="button"
       severity="secondary"
       size="small"
       variant="outlined"
       [pTooltip]="membershipLabel"
       tooltipEvent="both"
       tooltipPosition="top"
-      [ariaLabel]="
+      [attr.aria-label]="
         membershipLabel +
         '. ' +
         ('all.team.membership.' + (player().membershipType === 'REGULAR' ? 'BACKUP' : 'REGULAR') + '.assign' | translate: { name: player().fullName })
       "
-      (onClick)="toggleMembership(); $event.stopPropagation()"
+      (click)="toggleMembership(); $event.stopPropagation()"
       (dblclick)="$event.stopPropagation()"
-    />
+    >
+      <span pButtonLabel>{{ membershipKey + '.short' | translate }}</span>
+    </button>
   }
 </div>
 
-<p-popover
-  #popover
-  [ariaLabel]="player().fullName"
-  [focusOnShow]="detailsInteractive()"
-  [pt]="{ root: { 'aria-modal': detailsInteractive() } }"
-  (onHide)="detailsInteractive.set(false); cancelHoverClose()"
->
+<p-popover #popover [ariaLabel]="player().fullName" [focusOnShow]="detailsInteractive()" (onHide)="detailsInteractive.set(false); cancelHoverClose()">
   <div
     pFocusTrap
     [pFocusTrapDisabled]="!detailsInteractive()"

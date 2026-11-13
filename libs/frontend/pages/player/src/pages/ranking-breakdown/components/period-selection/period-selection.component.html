@@ -13,7 +13,9 @@
   </div>
 
   <div class="flex items-center gap-1">
-    <p-button icon="pi pi-calendar" [text]="true" severity="secondary" (onClick)="calendarMenu.toggle($event)" />
+    <button pButton type="button" iconOnly [text]="true" severity="secondary" (click)="calendarMenu.toggle($event)">
+      <i pButtonIcon class="pi pi-calendar" aria-hidden="true"></i>
+    </button>
 
     <p-menu #calendarMenu [popup]="true" appendTo="body">
       <ng-template pTemplate="start">
@@ -33,7 +35,9 @@
       </ng-template>
     </p-menu>
 
-    <p-button icon="pi pi-ellipsis-v" [text]="true" severity="secondary" (onClick)="quickMenu.toggle($event)" />
+    <button pButton type="button" iconOnly [text]="true" severity="secondary" (click)="quickMenu.toggle($event)">
+      <i pButtonIcon class="pi pi-ellipsis-v" aria-hidden="true"></i>
+    </button>
 
     <p-menu
       #quickMenu

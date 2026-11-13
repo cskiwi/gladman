@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Entry, TournamentDraw, TournamentEvent, TournamentSubEvent } from '@app/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -23,6 +24,7 @@ import { DrawsTabService, SeedingMethod } from './draws-tab.service';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    BadgeModule,
     ButtonModule,
     TableModule,
     TagModule,

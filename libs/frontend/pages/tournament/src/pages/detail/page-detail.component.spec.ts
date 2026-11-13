@@ -312,7 +312,7 @@ describe('Tournament detail hero', () => {
   it('offers only general enrollment to anonymous visitors when enrollment is open', async () => {
     await renderTournament({ ...createTournament(), phase: TournamentPhase.ENROLLMENT_OPEN });
     const targets = harness.routeDebugElement
-      ?.queryAll(By.css('[actions] p-button'))
+      ?.queryAll(By.css('[actions] button.p-button'))
       .map((button) => button.injector.get(RouterLink).urlTree?.toString());
     expect(targets).toEqual(['/tournament/tournament/enroll']);
     expect(element.querySelector('[actions] .pi-list')).toBeNull();
@@ -323,7 +323,7 @@ describe('Tournament detail hero', () => {
     hasAnyPermission.mockReturnValue(true);
     await renderTournament({ ...createTournament(), phase: TournamentPhase.ENROLLMENT_OPEN });
     const targets = harness.routeDebugElement
-      ?.queryAll(By.css('[actions] p-button'))
+      ?.queryAll(By.css('[actions] button.p-button'))
       .map((button) => button.injector.get(RouterLink).urlTree?.toString());
     expect(targets).toContain('/tournament/tournament/admin');
     expect(targets).toContain('/tournament/tournament/enroll');

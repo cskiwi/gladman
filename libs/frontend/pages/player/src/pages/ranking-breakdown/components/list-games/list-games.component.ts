@@ -10,6 +10,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { startWith } from 'rxjs';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { DialogModule } from 'primeng/dialog';
@@ -37,6 +38,7 @@ dayjs.extend(isSameOrAfter);
     ReactiveFormsModule,
     TranslateModule,
     TableModule,
+    BadgeModule,
     ButtonModule,
     AutoCompleteModule,
     DialogModule,

@@ -110,13 +110,10 @@
 
   @if (hasActiveFilters()) {
     <div>
-      <p-button
-        [label]="'all.enrollment.filters.clear' | translate"
-        icon="pi pi-times"
-        severity="secondary"
-        [outlined]="true"
-        (onClick)="clearFilters()"
-      />
+      <button pButton type="button" severity="secondary" [outlined]="true" (click)="clearFilters()">
+        <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+        <span pButtonLabel>{{ 'all.enrollment.filters.clear' | translate }}</span>
+      </button>
     </div>
   }
 </div>

@@ -184,22 +184,34 @@
                 />
               </td>
               <td>
-                <p-button icon="pi pi-trash" severity="danger" [text]="true" (click)="removeMembership(membership)" />
+                <button pButton type="button" iconOnly severity="danger" [text]="true" (click)="removeMembership(membership)">
+                  <i pButtonIcon class="pi pi-trash" aria-hidden="true"></i>
+                </button>
               </td>
             </tr>
           </ng-template>
         </p-table>
 
         <div class="mt-2">
-          <p-button [label]="'all.team.edit.members.add' | translate" icon="pi pi-plus" [outlined]="true" (click)="showAddMemberDialog()" />
+          <button pButton type="button" [outlined]="true" (click)="showAddMemberDialog()">
+            <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+            <span pButtonLabel>{{ 'all.team.edit.members.add' | translate }}</span>
+          </button>
         </div>
       </div>
     </div>
   </form>
 
   <div class="flex justify-end gap-2 mt-4">
-    <p-button [label]="'all.common.cancel' | translate" styleClass="p-button-text" (click)="onHide()" />
-    <p-button [label]="'all.common.save' | translate" [loading]="saving()" [disabled]="!teamForm.valid || !teamForm.dirty" (click)="onSave()" />
+    <button pButton type="button" class="p-button-text" (click)="onHide()">
+      <span pButtonLabel>{{ 'all.common.cancel' | translate }}</span>
+    </button>
+    <button pButton type="button" [disabled]="!teamForm.valid || !teamForm.dirty || saving()" (click)="onSave()">
+      @if (saving()) {
+        <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+      }
+      <span pButtonLabel>{{ 'all.common.save' | translate }}</span>
+    </button>
   </div>
 </div>
 
@@ -258,8 +270,12 @@
 
   <ng-template pTemplate="footer">
     <div class="flex gap-2">
-      <p-button [label]="'all.common.cancel' | translate" styleClass="p-button-text" (click)="cancelAddMember()" />
-      <p-button [label]="'all.common.save' | translate" [disabled]="!selectedPlayerToAdd()" (click)="addMember()" />
+      <button pButton type="button" class="p-button-text" (click)="cancelAddMember()">
+        <span pButtonLabel>{{ 'all.common.cancel' | translate }}</span>
+      </button>
+      <button pButton type="button" [disabled]="!selectedPlayerToAdd()" (click)="addMember()">
+        <span pButtonLabel>{{ 'all.common.save' | translate }}</span>
+      </button>
     </div>
   </ng-template>
 </p-dialog>

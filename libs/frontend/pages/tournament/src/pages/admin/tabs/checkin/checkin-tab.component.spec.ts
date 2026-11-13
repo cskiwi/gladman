@@ -123,7 +123,7 @@ describe('Check-in summary, filters and table', () => {
     expect(summary().querySelector('p-message')?.textContent).toContain('Safe read failure');
     expect(summary().querySelector('dl')).toBeNull();
     expect(fixture.componentInstance.checkIns()).toEqual([]);
-    const refresh: HTMLButtonElement | null = summary().querySelector('p-button button');
+    const refresh: HTMLButtonElement | null = summary().querySelector('button.p-button');
     expect(refresh?.getAttribute('aria-label')).toBe('all.button.refresh');
     refresh?.focus();
     refresh?.click();

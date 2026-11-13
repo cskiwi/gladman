@@ -37,34 +37,42 @@
       </div>
 
       <div class="flex gap-2 flex-wrap">
-        <p-button
-          icon="pi pi-cog"
-          [label]="'all.tournament.admin.draws.generateEntries' | translate"
+        <button
+          pButton
+          type="button"
           severity="secondary"
           [outlined]="true"
-          (onClick)="generateEntries()"
-          [loading]="updating()"
-          [disabled]="!selectedSubEvent() || loading() || !!error()"
-        />
+          (click)="generateEntries()"
+          [disabled]="!selectedSubEvent() || loading() || !!error() || updating()"
+        >
+          @if (updating()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-cog" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'all.tournament.admin.draws.generateEntries' | translate }}</span>
+        </button>
 
-        <p-button
-          icon="pi pi-plus"
-          [label]="'all.tournament.admin.draws.createDraw' | translate"
-          (onClick)="openCreateDrawDialog($event)"
-          [disabled]="!selectedSubEvent() || loading() || !!error()"
-        />
+        <button pButton type="button" (click)="openCreateDrawDialog($event)" [disabled]="!selectedSubEvent() || loading() || !!error()">
+          <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.tournament.admin.draws.createDraw' | translate }}</span>
+        </button>
 
-        <p-button
-          icon="pi pi-refresh"
+        <button
+          pButton
+          type="button"
+          iconOnly
           severity="secondary"
           [outlined]="true"
-          [ariaLabel]="'all.button.refresh' | translate"
+          [attr.aria-label]="'all.button.refresh' | translate"
           [pTooltip]="'all.button.refresh' | translate"
           tooltipPosition="top"
-          (onClick)="refetch()"
+          (click)="refetch()"
           [attr.aria-busy]="loading()"
           [disabled]="!selectedSubEvent()"
-        />
+        >
+          <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
   </p-panel>
@@ -89,28 +97,36 @@
       >
         <ng-template #icons>
           <div class="flex gap-2">
-            <p-button
+            <button
+              pButton
+              type="button"
+              iconOnly
               size="small"
               severity="secondary"
               [text]="true"
-              icon="pi pi-check-square"
-              [ariaLabel]="'all.tournament.admin.checkin.selectAll' | translate"
+              [attr.aria-label]="'all.tournament.admin.checkin.selectAll' | translate"
               [pTooltip]="'all.tournament.admin.checkin.selectAll' | translate"
               tooltipPosition="top"
-              (onClick)="selectAllUnassigned()"
+              (click)="selectAllUnassigned()"
               [disabled]="updating() || unassignedEntries().length === 0"
-            />
-            <p-button
+            >
+              <i pButtonIcon class="pi pi-check-square" aria-hidden="true"></i>
+            </button>
+            <button
+              pButton
+              type="button"
+              iconOnly
               size="small"
               severity="secondary"
               [text]="true"
-              icon="pi pi-times"
-              [ariaLabel]="'all.tournament.admin.checkin.clearSelection' | translate"
+              [attr.aria-label]="'all.tournament.admin.checkin.clearSelection' | translate"
               [pTooltip]="'all.tournament.admin.checkin.clearSelection' | translate"
               tooltipPosition="top"
-              (onClick)="clearSelection()"
+              (click)="clearSelection()"
               [disabled]="updating() || selectedEntries().length === 0"
-            />
+            >
+              <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+            </button>
           </div>
         </ng-template>
         @if (unassignedEntries().length > 0) {
@@ -159,14 +175,15 @@
                   fluid
                 />
               </div>
-              <p-button
-                icon="pi pi-arrow-right"
-                [label]="'all.tournament.admin.draws.assign' | translate"
-                [badge]="selectedEntries().length.toString()"
-                (onClick)="assignSelectedToDraw()"
-                [disabled]="!targetDrawId()"
-                [loading]="updating()"
-              />
+              <button pButton type="button" (click)="assignSelectedToDraw()" [disabled]="!targetDrawId() || updating()">
+                @if (updating()) {
+                  <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                } @else {
+                  <i pButtonIcon class="pi pi-arrow-right" aria-hidden="true"></i>
+                }
+                <span pButtonLabel>{{ 'all.tournament.admin.draws.assign' | translate }}</span>
+                <p-badge [value]="selectedEntries().length.toString()" severity="secondary" />
+              </button>
             </div>
           }
         } @else {
@@ -191,39 +208,51 @@
                 </p>
               </div>
               <div class="flex gap-2 flex-wrap">
-                <p-button
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   size="small"
                   [text]="true"
                   severity="secondary"
-                  icon="pi pi-sort-numeric-up"
-                  [ariaLabel]="('all.tournament.admin.draws.autoSeed' | translate) + ': ' + draw.name"
+                  [attr.aria-label]="('all.tournament.admin.draws.autoSeed' | translate) + ': ' + draw.name"
                   [pTooltip]="'all.tournament.admin.draws.autoSeed' | translate"
                   tooltipPosition="top"
-                  (onClick)="openSeedingDialog(draw, $event)"
+                  (click)="openSeedingDialog(draw, $event)"
                   [disabled]="updating() || !draw.entries?.length"
-                />
-                <p-button
+                >
+                  <i pButtonIcon class="pi pi-sort-numeric-up" aria-hidden="true"></i>
+                </button>
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   size="small"
                   [text]="true"
                   severity="secondary"
-                  icon="pi pi-eraser"
-                  [ariaLabel]="('all.tournament.admin.draws.clearSeeds' | translate) + ': ' + draw.name"
+                  [attr.aria-label]="('all.tournament.admin.draws.clearSeeds' | translate) + ': ' + draw.name"
                   [pTooltip]="'all.tournament.admin.draws.clearSeeds' | translate"
                   tooltipPosition="top"
-                  (onClick)="clearSeeds(draw)"
+                  (click)="clearSeeds(draw)"
                   [disabled]="updating() || !draw.entries?.length"
-                />
-                <p-button
+                >
+                  <i pButtonIcon class="pi pi-eraser" aria-hidden="true"></i>
+                </button>
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   size="small"
                   [text]="true"
                   severity="danger"
-                  icon="pi pi-trash"
-                  [ariaLabel]="('all.tournament.admin.draws.deleteDraw' | translate) + ': ' + draw.name"
+                  [attr.aria-label]="('all.tournament.admin.draws.deleteDraw' | translate) + ': ' + draw.name"
                   [pTooltip]="'all.tournament.admin.draws.deleteDraw' | translate"
                   tooltipPosition="top"
-                  (onClick)="deleteDraw(draw)"
+                  (click)="deleteDraw(draw)"
                   [disabled]="updating()"
-                />
+                >
+                  <i pButtonIcon class="pi pi-trash" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
             @if (draw.entries?.length) {
@@ -242,17 +271,25 @@
                     <td class="tabular-nums">{{ entry.seed || '—' }}</td>
                     <td class="wrap-anywhere">{{ getEntryName(entry) }}</td>
                     <td>
-                      <p-button
+                      <button
+                        pButton
+                        type="button"
+                        iconOnly
                         size="small"
                         [text]="true"
                         severity="danger"
-                        icon="pi pi-minus"
-                        [ariaLabel]="('all.tournament.admin.draws.removeFromDraw' | translate) + ': ' + getEntryName(entry)"
+                        [attr.aria-label]="('all.tournament.admin.draws.removeFromDraw' | translate) + ': ' + getEntryName(entry)"
                         [pTooltip]="'all.tournament.admin.draws.removeFromDraw' | translate"
                         tooltipPosition="top"
-                        (onClick)="removeFromDraw(entry)"
-                        [loading]="updating()"
-                      />
+                        (click)="removeFromDraw(entry)"
+                        [disabled]="updating()"
+                      >
+                        @if (updating()) {
+                          <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                        } @else {
+                          <i pButtonIcon class="pi pi-minus" aria-hidden="true"></i>
+                        }
+                      </button>
                     </td>
                   </tr>
                 </ng-template>
@@ -264,13 +301,10 @@
         } @empty {
           <p-panel data-testid="empty-draw-list" [header]="'all.tournament.admin.draws.drawCount' | translate">
             <p class="text-muted-color m-0 mb-4">{{ 'all.tournament.admin.draws.noDrawsYet' | translate }}</p>
-            <p-button
-              [label]="'all.tournament.admin.draws.createDraw' | translate"
-              icon="pi pi-plus"
-              size="small"
-              [outlined]="true"
-              (onClick)="openCreateDrawDialog($event)"
-            />
+            <button pButton type="button" size="small" [outlined]="true" (click)="openCreateDrawDialog($event)">
+              <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+              <span pButtonLabel>{{ 'all.tournament.admin.draws.createDraw' | translate }}</span>
+            </button>
           </p-panel>
         }
       </div>
@@ -354,22 +388,17 @@
       </div>
 
       <div class="grid sm:grid-cols-2 gap-3">
-        <p-button
-          [label]="'all.button.cancel' | translate"
-          severity="secondary"
-          [outlined]="true"
-          [fluid]="true"
-          [disabled]="updating()"
-          (onClick)="closeCreateDrawDialog()"
-        />
-        <p-button
-          type="submit"
-          [label]="'all.button.create' | translate"
-          icon="pi pi-plus"
-          [fluid]="true"
-          [disabled]="!drawForm.valid || updating() || !selectedSubEvent()"
-          [loading]="updating()"
-        />
+        <button pButton type="button" severity="secondary" [outlined]="true" [fluid]="true" [disabled]="updating()" (click)="closeCreateDrawDialog()">
+          <span pButtonLabel>{{ 'all.button.cancel' | translate }}</span>
+        </button>
+        <button pButton type="submit" [fluid]="true" [disabled]="!drawForm.valid || updating() || !selectedSubEvent()">
+          @if (updating()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'all.button.create' | translate }}</span>
+        </button>
       </div>
     </form>
   </p-dialog>
@@ -414,22 +443,17 @@
       </div>
 
       <div class="grid sm:grid-cols-2 gap-3">
-        <p-button
-          [label]="'all.button.cancel' | translate"
-          severity="secondary"
-          [outlined]="true"
-          [fluid]="true"
-          [disabled]="updating()"
-          (onClick)="closeSeedingDialog()"
-        />
-        <p-button
-          type="submit"
-          [label]="'all.tournament.admin.draws.applySeeding' | translate"
-          icon="pi pi-check"
-          [fluid]="true"
-          [disabled]="updating() || !seedingDrawId() || !seedingMethod.value"
-          [loading]="updating()"
-        />
+        <button pButton type="button" severity="secondary" [outlined]="true" [fluid]="true" [disabled]="updating()" (click)="closeSeedingDialog()">
+          <span pButtonLabel>{{ 'all.button.cancel' | translate }}</span>
+        </button>
+        <button pButton type="submit" [fluid]="true" [disabled]="updating() || !seedingDrawId() || !seedingMethod.value">
+          @if (updating()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>{{ 'all.tournament.admin.draws.applySeeding' | translate }}</span>
+        </button>
       </div>
     </form>
   </p-dialog>

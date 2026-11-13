@@ -1,7 +1,10 @@
 <div class="space-y-4">
   <p-panel>
     <div class="flex justify-end mb-4">
-      <p-button icon="pi pi-refresh" label="Refresh" severity="secondary" [outlined]="true" (onClick)="cronJobsService.loadCronJobs()" />
+      <button pButton type="button" severity="secondary" [outlined]="true" (click)="cronJobsService.loadCronJobs()">
+        <i pButtonIcon class="pi pi-refresh" aria-hidden="true"></i>
+        <span pButtonLabel>Refresh</span>
+      </button>
     </div>
 
     <p-table [value]="cronJobs()" [loading]="loading()" [tableStyle]="{ 'min-width': '60rem' }" styleClass="p-datatable-sm">
@@ -80,31 +83,47 @@
 
             <td class="text-right">
               <div class="flex justify-end gap-1">
-                <p-button
-                  icon="pi pi-play"
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   size="small"
                   severity="primary"
                   [outlined]="true"
-                  [loading]="actionLoading()"
-                  (onClick)="triggerJob(job)"
+                  (click)="triggerJob(job)"
                   pTooltip="Trigger now"
-                />
-                <p-button
-                  icon="pi pi-pencil"
+                  [disabled]="actionLoading()"
+                >
+                  @if (actionLoading()) {
+                    <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                  } @else {
+                    <i pButtonIcon class="pi pi-play" aria-hidden="true"></i>
+                  }
+                </button>
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   size="small"
                   severity="secondary"
                   [outlined]="true"
-                  (onClick)="openEditDialog(job)"
+                  (click)="openEditDialog(job)"
                   pTooltip="Edit schedule"
-                />
-                <p-button
-                  [icon]="job.active ? 'pi pi-pause' : 'pi pi-play'"
+                >
+                  <i pButtonIcon class="pi pi-pencil" aria-hidden="true"></i>
+                </button>
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   size="small"
                   [severity]="job.active ? 'warn' : 'success'"
                   [outlined]="true"
-                  (onClick)="toggleActive(job)"
+                  (click)="toggleActive(job)"
                   [pTooltip]="job.active ? 'Disable' : 'Enable'"
-                />
+                >
+                  <i pButtonIcon [class]="job.active ? 'pi pi-pause' : 'pi pi-play'" aria-hidden="true"></i>
+                </button>
               </div>
             </td>
           </tr>
@@ -138,8 +157,17 @@
       </div>
       <p class="text-xs text-muted-color m-0">Format: minute hour day-of-month month day-of-week</p>
       <div class="flex justify-end gap-2">
-        <p-button label="Cancel" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (onClick)="editDialogOpen = false" />
-        <p-button icon="pi pi-check" label="Save" [loading]="actionLoading()" (onClick)="saveEdit()" />
+        <button pButton type="button" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (click)="editDialogOpen = false">
+          <span pButtonLabel>Cancel</span>
+        </button>
+        <button pButton type="button" (click)="saveEdit()" [disabled]="actionLoading()">
+          @if (actionLoading()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>Save</span>
+        </button>
       </div>
     </div>
   </p-dialog>
@@ -159,8 +187,17 @@
         <p-inputnumber inputId="scrape-year" [(ngModel)]="scrapeYearValue" [min]="1" [max]="9999" [useGrouping]="false" [showButtons]="true" />
       </div>
       <div class="flex justify-end gap-2">
-        <p-button label="Cancel" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (onClick)="scrapeYearDialogOpen = false" />
-        <p-button icon="pi pi-play" label="Scrape year" [loading]="actionLoading()" (onClick)="triggerScrapeForYear()" />
+        <button pButton type="button" severity="secondary" [outlined]="true" [disabled]="actionLoading()" (click)="scrapeYearDialogOpen = false">
+          <span pButtonLabel>Cancel</span>
+        </button>
+        <button pButton type="button" (click)="triggerScrapeForYear()" [disabled]="actionLoading()">
+          @if (actionLoading()) {
+            <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+          } @else {
+            <i pButtonIcon class="pi pi-play" aria-hidden="true"></i>
+          }
+          <span pButtonLabel>Scrape year</span>
+        </button>
       </div>
     </div>
   </p-dialog>

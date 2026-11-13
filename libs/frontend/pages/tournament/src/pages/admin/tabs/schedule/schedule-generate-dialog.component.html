@@ -94,16 +94,17 @@
     </div>
 
     <div class="grid sm:grid-cols-2 gap-3">
-      <p-button
-        [label]="'all.button.cancel' | translate"
-        severity="secondary"
-        variant="outlined"
-        type="button"
-        [disabled]="updating()"
-        (onClick)="close()"
-        fluid
-      />
-      <p-button [label]="'all.button.generate' | translate" icon="pi pi-cog" type="submit" [disabled]="form.invalid" [loading]="updating()" fluid />
+      <button pButton severity="secondary" variant="outlined" type="button" [disabled]="updating()" (click)="close()" fluid>
+        <span pButtonLabel>{{ 'all.button.cancel' | translate }}</span>
+      </button>
+      <button pButton type="submit" [disabled]="form.invalid || updating()" fluid>
+        @if (updating()) {
+          <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+        } @else {
+          <i pButtonIcon class="pi pi-cog" aria-hidden="true"></i>
+        }
+        <span pButtonLabel>{{ 'all.button.generate' | translate }}</span>
+      </button>
     </div>
   </form>
 </p-dialog>

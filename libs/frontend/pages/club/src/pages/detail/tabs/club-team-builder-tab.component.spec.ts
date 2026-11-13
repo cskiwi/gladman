@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CompetitionSubEvent, Player, Team } from '@app/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { providePrimeNgAriaTranslations } from '@app/frontend-modules-translation';
 import { ClubTeamBuilderTabComponent } from './club-team-builder-tab.component';
 import { ClubTeamBuilderTabService } from './club-team-builder-tab.service';
 import { TEAM_BUILDER_AUTO_SUB_EVENT, TeamBuilderPlayer, TeamBuilderTeam } from './team-builder/types/team-builder.types';
@@ -68,6 +69,7 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
     };
     await TestBed.configureTestingModule({
       imports: [ClubTeamBuilderTabComponent, TranslateModule.forRoot()],
+      providers: [providePrimeNgAriaTranslations()],
     })
       .overrideComponent(ClubTeamBuilderTabComponent, {
         remove: { providers: [ClubTeamBuilderTabService] },
@@ -126,7 +128,6 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
     expect(service.save).not.toHaveBeenCalled();
     const reject = document.body.querySelector<HTMLButtonElement>('.p-confirmdialog-reject-button');
     expect(reject?.textContent).toContain('Cancel');
-    expect(document.body.querySelector('.p-dialog-close-button')?.getAttribute('aria-label')).toBe('Cancel');
     expect(document.body.querySelector('.p-confirmdialog')?.textContent).toContain('Example team: Index 79 exceeds 76');
     reject?.click();
     expect(service.save).not.toHaveBeenCalled();

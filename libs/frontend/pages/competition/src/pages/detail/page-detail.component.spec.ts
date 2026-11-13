@@ -318,8 +318,8 @@ describe('Competition detail presentation', () => {
     await harness.fixture.whenStable();
     harness.detectChanges();
     const actions = element.querySelector('[actions]');
-    expect(actions?.firstElementChild?.tagName).toBe('P-BUTTON');
-    const editLink = harness.routeDebugElement?.query(By.css('[actions] p-button')).injector.get(RouterLink);
+    expect(actions?.firstElementChild?.tagName).toBe('BUTTON');
+    const editLink = harness.routeDebugElement?.query(By.css('[actions] button.p-button')).injector.get(RouterLink);
     expect(editLink?.urlTree?.toString()).toBe('/competition/renamed-competition/edit');
     expect(actions?.querySelector('a')?.getAttribute('aria-label')).toBe('Gewijzigde competitie (toernooi.nl)');
     expect(actions?.querySelectorAll('app-sync-button')).toHaveLength(1);

@@ -14,12 +14,10 @@
     <ng-template #start>
       <div class="flex flex-wrap items-center gap-2">
         <span id="builder-toolbar-title" class="sr-only">{{ 'all.club.teamBuilder.tab' | translate }}</span>
-        <p-button
-          label="{{ 'all.club.teamBuilder.import.title' | translate }}"
-          icon="pi pi-file-excel"
-          severity="secondary"
-          (onClick)="openImportDialog($event)"
-        />
+        <button pButton type="button" severity="secondary" (click)="openImportDialog($event)">
+          <i pButtonIcon class="pi pi-file-excel" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.club.teamBuilder.import.title' | translate }}</span>
+        </button>
 
         <div class="w-full sm:w-64">
           <p-select
@@ -32,19 +30,14 @@
           />
         </div>
 
-        <p-button
-          icon="pi pi-cog"
-          [label]="'all.club.teamBuilder.settings.title' | translate"
-          severity="secondary"
-          [outlined]="true"
-          (onClick)="openSettingsDialog()"
-        />
-        <p-button
-          label="{{ 'all.club.teamBuilder.save' | translate }}"
-          icon="pi pi-save"
-          (onClick)="save()"
-          [disabled]="service.teams().length === 0"
-        />
+        <button pButton type="button" severity="secondary" [outlined]="true" (click)="openSettingsDialog()">
+          <i pButtonIcon class="pi pi-cog" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.club.teamBuilder.settings.title' | translate }}</span>
+        </button>
+        <button pButton type="button" (click)="save()" [disabled]="service.teams().length === 0">
+          <i pButtonIcon class="pi pi-save" aria-hidden="true"></i>
+          <span pButtonLabel>{{ 'all.club.teamBuilder.save' | translate }}</span>
+        </button>
       </div>
     </ng-template>
   </p-toolbar>
@@ -168,17 +161,21 @@
                 @if ((service.slotAdjustments().get(player.id) ?? 0) < -1) {
                   <span class="text-xs text-muted-color">×{{ -(service.slotAdjustments().get(player.id) ?? 0) }}</span>
                 }
-                <p-button
-                  icon="pi pi-undo"
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
                   [rounded]="true"
                   [text]="true"
                   severity="info"
                   size="small"
-                  [ariaLabel]="'all.club.teamBuilder.controls.restorePlayer' | translate: { name: player.fullName }"
+                  [attr.aria-label]="'all.club.teamBuilder.controls.restorePlayer' | translate: { name: player.fullName }"
                   [pTooltip]="'all.club.teamBuilder.controls.restoreSlot' | translate"
                   tooltipPosition="top"
-                  (onClick)="restorePlayer(player.id)"
-                />
+                  (click)="restorePlayer(player.id)"
+                >
+                  <i pButtonIcon class="pi pi-undo" aria-hidden="true"></i>
+                </button>
               </div>
             }
           </div>
@@ -206,12 +203,7 @@
     </div>
   </div>
 
-  <p-confirmdialog
-    styleClass="w-80 sm:w-160"
-    defaultFocus="reject"
-    [pt]="{ pcCloseButton: { root: { 'aria-label': 'all.button.cancel' | translate } } }"
-    (onHide)="restoreConfirmationFocus()"
-  >
+  <p-confirmdialog styleClass="w-80 sm:w-160" defaultFocus="reject" (onHide)="restoreConfirmationFocus()">
     <ng-template #message let-confirmation>
       <i [class]="confirmation.icon" aria-hidden="true"></i>
       <div class="flex min-w-0 flex-col gap-2 break-words">
@@ -223,5 +215,5 @@
       </div>
     </ng-template>
   </p-confirmdialog>
-  <p-toast [breakpoints]="{ '640px': { width: '95vw', right: '2.5vw' } }" [pt]="{ closeButton: { 'aria-label': 'all.button.close' | translate } }" />
+  <p-toast [breakpoints]="{ '640px': { width: '95vw', right: '2.5vw' } }" />
 }

@@ -141,6 +141,23 @@
     "teamBuilder": {
       "addPlayer": "Speler toevoegen...",
       "addTeam": "Team Toevoegen",
+      "controls": {
+        "allAssigned": "Alle spelers zijn toegewezen",
+        "loadedDraft": "Opgeslagen concept geladen",
+        "loading": "Ploegopstelling laden",
+        "loadingPerformance": "Prestatiegegevens laden...",
+        "noSearchResults": "Geen spelers gevonden voor je zoekopdracht",
+        "noTeams": "Nog geen teams. Importeer een enquête of voeg een team toe om te beginnen.",
+        "restorePlayer": "Eén plaats herstellen voor {{name}}",
+        "restoreSlot": "Eén plaats herstellen",
+        "searchPlayers": "Spelers zoeken",
+        "separateBackups": "Reservespelers apart",
+        "sortBy": "Spelers sorteren op",
+        "sortIndex": "Index",
+        "sortName": "Naam",
+        "validation": "{{valid}}/{{total}} geldige teams",
+        "warnings": "Waarschuwingen: {{count}}"
+      },
       "dropToRemove": "Sleep hier om te verwijderen",
       "import": {
         "cancel": "Annuleren",

@@ -141,6 +141,23 @@
     "teamBuilder": {
       "addPlayer": "Ajouter un joueur...",
       "addTeam": "Ajouter une Équipe",
+      "controls": {
+        "allAssigned": "Tous les joueurs sont assignés",
+        "loadedDraft": "Brouillon enregistré chargé",
+        "loading": "Chargement de la composition",
+        "loadingPerformance": "Chargement des performances...",
+        "noSearchResults": "Aucun joueur ne correspond à votre recherche",
+        "noTeams": "Aucune équipe. Importez une enquête ou ajoutez une équipe pour commencer.",
+        "restorePlayer": "Restaurer une place pour {{name}}",
+        "restoreSlot": "Restaurer une place",
+        "searchPlayers": "Rechercher des joueurs",
+        "separateBackups": "Séparer les remplaçants",
+        "sortBy": "Trier les joueurs par",
+        "sortIndex": "Indice",
+        "sortName": "Nom",
+        "validation": "{{valid}}/{{total}} équipes valides",
+        "warnings": "Avertissements : {{count}}"
+      },
       "dropToRemove": "Déposez ici pour supprimer",
       "import": {
         "cancel": "Annuler",

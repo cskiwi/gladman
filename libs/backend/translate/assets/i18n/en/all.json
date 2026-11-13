@@ -141,6 +141,23 @@
     "teamBuilder": {
       "addPlayer": "Add player...",
       "addTeam": "Add Team",
+      "controls": {
+        "allAssigned": "All players assigned",
+        "loadedDraft": "Loaded from saved draft",
+        "loading": "Loading team builder",
+        "loadingPerformance": "Loading performance data...",
+        "noSearchResults": "No players match your search",
+        "noTeams": "No teams yet. Import a survey or add a team to get started.",
+        "restorePlayer": "Restore one slot for {{name}}",
+        "restoreSlot": "Restore one slot",
+        "searchPlayers": "Search players",
+        "separateBackups": "Separate backups",
+        "sortBy": "Sort players by",
+        "sortIndex": "Index",
+        "sortName": "Name",
+        "validation": "{{valid}}/{{total}} valid teams",
+        "warnings": "Warnings: {{count}}"
+      },
       "dropToRemove": "Drop here to remove",
       "import": {
         "cancel": "Cancel",

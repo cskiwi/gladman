@@ -19,6 +19,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ToolbarModule } from 'primeng/toolbar';
+import { PanelModule } from 'primeng/panel';
 import { SubEventTypeEnum } from '@app/models-enum';
 import { ClubTeamBuilderTabService } from './club-team-builder-tab.service';
 import { ImportSurveyDialogComponent } from '../../../components/team-builder/import-survey-dialog.component';
@@ -57,6 +59,8 @@ import { SurveyResponse } from './team-builder/types/survey-response';
     CheckboxModule,
     SelectButtonModule,
     AutoCompleteModule,
+    ToolbarModule,
+    PanelModule,
     BuilderTeamCardComponent,
     PlayerChipComponent,
   ],
@@ -81,11 +85,6 @@ export class ClubTeamBuilderTabComponent {
   // Add player search
   playerSuggestions = signal<Player[]>([]);
   selectedPlayer: Player | null = null;
-
-  sortOptions = [
-    { label: 'Name', value: 'name' },
-    { label: 'Index', value: 'index' },
-  ];
 
   teamTypeOptions = Object.values(SubEventTypeEnum)
     .filter((v) => ['M', 'F', 'MX'].includes(v))

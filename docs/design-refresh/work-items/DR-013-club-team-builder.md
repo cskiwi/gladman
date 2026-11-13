@@ -24,8 +24,9 @@ description: 'Incremental refresh of the mounted club team-builder tab and its d
 - DR-013f: survey edit dialog.
 - DR-013g: sub-event dialog.
 
-Only [DR-013a](DR-013a-builder-settings.md) is implemented and approved with disclosed limits. Scope each remaining child and create
-its brief before implementation.
+[DR-013a](DR-013a-builder-settings.md) is implemented and approved with disclosed limits.
+[DR-013b](DR-013b-builder-layout-pools.md) implements the toolbar/layout/pools and is approved with disclosed limits.
+Scope each remaining child and create its brief before implementation.
 Keep this parent open until all required children are complete.
 
 ## Baseline and handoff
@@ -41,7 +42,12 @@ localized title. Lint/build and an isolated accessibility regression (temporary 
 Light/dark wide/narrow browser checks pass for layout; inherited contrast failures, default club test infrastructure
 and unchecked live-save/locale/SSR checks remain disclosed in its brief.
 The user approved completion and a scoped commit on 2026-11-13 with those limits accepted.
-Next action: scope DR-013b rather than starting it in this invocation.
+DR-013b adds native Toolbar/Panel surfaces, responsive stacking/sticky pools and localized accessible controls.
+Focused lint/build and two regressions with the temporary zoneless override pass; Dutch light/dark wide/narrow
+browser checks pass for layout. Default tests (DR-059), light Save contrast (DR-033), live mutation workflows,
+fr/en browser and SSR remain disclosed limits. No team-card/player-chip internals or algorithms changed.
+The user explicitly approved completion and a scoped commit on 2026-11-13, preserving all unchecked criteria.
+Next candidate: scope DR-013c team cards; it has not been started.
 
 - [ ] Complete and review all required children.
 - [ ] Verify the integrated builder without operational mutations.

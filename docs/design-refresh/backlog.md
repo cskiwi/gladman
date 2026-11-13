@@ -5,6 +5,23 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013b [Builder toolbar, layout and player pools](work-items/DR-013b-builder-layout-pools.md) is Done with explicit
+approval (`Approve and commit DR-013b with disclosed limits`, 2026-11-13).
+Implemented on `/clubs/smash-for-fun` → Ploegopstelling, 2026-11-13: native Toolbar/Panel surfaces, responsive
+stacking and sticky wide pools, localized accessible controls (nl/fr/en), native empty-team Message.
+Team-card/player-chip internals, dialogs, algorithms and shared theme unchanged. Literal class tokens 136 → 111.
+Lint/build pass; two focused regressions pass with the existing tournament zoneless setup override.
+Pre-commit repository lint also passes (34 tasks).
+Default club tests fail before execution because `zone.js` is missing (DR-059).
+Browser-checked Dutch, light/dark at 1440px and 390px with no horizontal overflow, filtering, sort/backup toggles,
+select dismissal, label focus and wide sticky pools. Light Save text still fails contrast at 3.65:1 (DR-033).
+Not checked: browser loading/error/no-team/removed-player states, real drag/drop/restore or save, full
+keyboard/contrast, fr/en browser, SSR/hydration or full application build/suite. No operational mutations.
+Approval accepts these disclosed limits without changing unchecked checks into passes and authorizes the scoped commit.
+Keep DR-013 open. Next candidate/action: scope DR-013c team cards before implementation; not started.
+
+### Previous focus: Team-builder settings dialog (DR-013a)
+
 DR-013a Team-builder settings dialog is Done with explicit approval
 (`Approve and commit DR-013a with disclosed limits`, 2026-11-13)
 ([brief](work-items/DR-013a-builder-settings.md)): six native fluid InputNumbers with associated labels/four help texts,
@@ -2582,7 +2599,7 @@ and linked from their registry rows.
 | [DR-012g](work-items/DR-012g-club-tournaments-tab.md)         | Club tournaments tab                                                         | Done        |
 | [DR-013](work-items/DR-013-club-team-builder.md)              | Club team builder                                                            | In progress |
 | [DR-013a](work-items/DR-013a-builder-settings.md)             | Team-builder settings dialog                                                 | Done        |
-| DR-013b                                                       | Builder toolbar, layout and player pools                                     | Backlog     |
+| [DR-013b](work-items/DR-013b-builder-layout-pools.md)         | Builder toolbar, layout and player pools                                     | Done        |
 | DR-013c                                                       | Builder team cards                                                           | Backlog     |
 | DR-013d                                                       | Builder player chips                                                         | Backlog     |
 | DR-013e                                                       | Survey import dialog                                                         | Backlog     |

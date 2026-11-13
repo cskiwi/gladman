@@ -148,6 +148,23 @@ export type I18nTranslations = {
             "teamBuilder": {
                 "addPlayer": string;
                 "addTeam": string;
+                "controls": {
+                    "allAssigned": string;
+                    "loadedDraft": string;
+                    "loading": string;
+                    "loadingPerformance": string;
+                    "noSearchResults": string;
+                    "noTeams": string;
+                    "restorePlayer": string;
+                    "restoreSlot": string;
+                    "searchPlayers": string;
+                    "separateBackups": string;
+                    "sortBy": string;
+                    "sortIndex": string;
+                    "sortName": string;
+                    "validation": string;
+                    "warnings": string;
+                };
                 "dropToRemove": string;
                 "import": {
                     "cancel": string;

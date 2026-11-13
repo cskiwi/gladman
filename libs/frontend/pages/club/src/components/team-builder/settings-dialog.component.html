@@ -1,41 +1,75 @@
 <div class="flex flex-col gap-4">
-  <div>
-    <label class="block text-sm font-medium mb-1">{{ 'all.club.teamBuilder.settings.presenceThreshold' | translate }}</label>
-    <p-inputnumber [(ngModel)]="presenceThreshold" [min]="0" [max]="100" suffix="%" [showButtons]="true" />
-    <small class="text-muted-color block mt-1">{{ 'all.club.teamBuilder.settings.presenceThresholdHelp' | translate }}</small>
+  <div class="flex flex-col gap-2">
+    <label for="builder-presence" class="font-medium">{{ 'all.club.teamBuilder.settings.presenceThreshold' | translate }}</label>
+    <p-inputnumber
+      inputId="builder-presence"
+      ariaDescribedBy="builder-presence-help"
+      [(ngModel)]="presenceThreshold"
+      [min]="0"
+      [max]="100"
+      suffix="%"
+      [showButtons]="true"
+      [fluid]="true"
+    />
+    <small id="builder-presence-help" class="text-muted-color">{{ 'all.club.teamBuilder.settings.presenceThresholdHelp' | translate }}</small>
   </div>
 
-  <div>
-    <label class="block text-sm font-medium mb-1">{{ 'all.club.teamBuilder.settings.performanceThreshold' | translate }}</label>
-    <p-inputnumber [(ngModel)]="performanceThreshold" [min]="0" [max]="100" suffix="%" [showButtons]="true" />
-    <small class="text-muted-color block mt-1">{{ 'all.club.teamBuilder.settings.performanceThresholdHelp' | translate }}</small>
+  <div class="flex flex-col gap-2">
+    <label for="builder-performance" class="font-medium">{{ 'all.club.teamBuilder.settings.performanceThreshold' | translate }}</label>
+    <p-inputnumber
+      inputId="builder-performance"
+      ariaDescribedBy="builder-performance-help"
+      [(ngModel)]="performanceThreshold"
+      [min]="0"
+      [max]="100"
+      suffix="%"
+      [showButtons]="true"
+      [fluid]="true"
+    />
+    <small id="builder-performance-help" class="text-muted-color">{{ 'all.club.teamBuilder.settings.performanceThresholdHelp' | translate }}</small>
   </div>
 
-  <hr class="border-surface" />
+  <p-divider />
 
-  <div>
-    <label class="block text-sm font-medium mb-1">{{ 'all.club.teamBuilder.settings.minPlayersPerTeam' | translate }}</label>
-    <p-inputnumber [(ngModel)]="minPlayersPerTeam" [min]="1" [max]="20" [showButtons]="true" />
-    <small class="text-muted-color block mt-1">{{ 'all.club.teamBuilder.settings.minPlayersPerTeamHelp' | translate }}</small>
+  <div class="flex flex-col gap-2">
+    <label for="builder-min-players" class="font-medium">{{ 'all.club.teamBuilder.settings.minPlayersPerTeam' | translate }}</label>
+    <p-inputnumber
+      inputId="builder-min-players"
+      ariaDescribedBy="builder-min-players-help"
+      [(ngModel)]="minPlayersPerTeam"
+      [min]="1"
+      [max]="20"
+      [showButtons]="true"
+      [fluid]="true"
+    />
+    <small id="builder-min-players-help" class="text-muted-color">{{ 'all.club.teamBuilder.settings.minPlayersPerTeamHelp' | translate }}</small>
   </div>
 
-  <div>
-    <label class="block text-sm font-medium mb-1">{{ 'all.club.teamBuilder.settings.minMalesPerMxTeam' | translate }}</label>
-    <p-inputnumber [(ngModel)]="minMalesPerMxTeam" [min]="0" [max]="20" [showButtons]="true" />
+  <div class="flex flex-col gap-2">
+    <label for="builder-min-males" class="font-medium">{{ 'all.club.teamBuilder.settings.minMalesPerMxTeam' | translate }}</label>
+    <p-inputnumber inputId="builder-min-males" [(ngModel)]="minMalesPerMxTeam" [min]="0" [max]="20" [showButtons]="true" [fluid]="true" />
   </div>
 
-  <div>
-    <label class="block text-sm font-medium mb-1">{{ 'all.club.teamBuilder.settings.minFemalesPerMxTeam' | translate }}</label>
-    <p-inputnumber [(ngModel)]="minFemalesPerMxTeam" [min]="0" [max]="20" [showButtons]="true" />
+  <div class="flex flex-col gap-2">
+    <label for="builder-min-females" class="font-medium">{{ 'all.club.teamBuilder.settings.minFemalesPerMxTeam' | translate }}</label>
+    <p-inputnumber inputId="builder-min-females" [(ngModel)]="minFemalesPerMxTeam" [min]="0" [max]="20" [showButtons]="true" [fluid]="true" />
   </div>
 
-  <div>
-    <label class="block text-sm font-medium mb-1">{{ 'all.club.teamBuilder.settings.maxPlayersPerTeam' | translate }}</label>
-    <p-inputnumber [(ngModel)]="maxPlayersPerTeam" [min]="1" [max]="30" [showButtons]="true" />
-    <small class="text-muted-color block mt-1">{{ 'all.club.teamBuilder.settings.maxPlayersPerTeamHelp' | translate }}</small>
+  <div class="flex flex-col gap-2">
+    <label for="builder-max-players" class="font-medium">{{ 'all.club.teamBuilder.settings.maxPlayersPerTeam' | translate }}</label>
+    <p-inputnumber
+      inputId="builder-max-players"
+      ariaDescribedBy="builder-max-players-help"
+      [(ngModel)]="maxPlayersPerTeam"
+      [min]="1"
+      [max]="30"
+      [showButtons]="true"
+      [fluid]="true"
+    />
+    <small id="builder-max-players-help" class="text-muted-color">{{ 'all.club.teamBuilder.settings.maxPlayersPerTeamHelp' | translate }}</small>
   </div>
 
-  <div class="flex justify-end gap-2 mt-2">
+  <div class="flex flex-wrap justify-end gap-2">
     <p-button [label]="'all.button.cancel' | translate" severity="secondary" (onClick)="cancel()" />
     <p-button [label]="'all.button.save' | translate" (onClick)="save()" />
   </div>

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, input, signal } fro
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDropList, CdkDrag, CdkDragDrop, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -69,6 +69,7 @@ export class ClubTeamBuilderTabComponent {
   private readonly dialogService = inject(DialogService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
+  private readonly translate = inject(TranslateService);
 
   clubId = input.required<string>();
   season = input.required<number>();
@@ -175,8 +176,9 @@ export class ClubTeamBuilderTabComponent {
 
   openSettingsDialog() {
     const ref = this.dialogService.open(SettingsDialogComponent, {
-      header: 'Team Builder Settings',
+      header: this.translate.instant('all.club.teamBuilder.settings.title'),
       width: '500px',
+      breakpoints: { '640px': '95vw' },
       data: { config: this.service.config() },
     });
 

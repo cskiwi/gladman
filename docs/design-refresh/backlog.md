@@ -5,6 +5,20 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013a Team-builder settings dialog is Done with explicit approval
+(`Approve and commit DR-013a with disclosed limits`, 2026-11-13)
+([brief](work-items/DR-013a-builder-settings.md)): six native fluid InputNumbers with associated labels/four help texts,
+native Divider, localized existing title and responsive dialog sizing. Club lint/build pass; the accessibility
+regression passes with the existing tournament zoneless setup used by a temporary test config.
+The default club test setup fails before tests because `zone.js` is missing (DR-059).
+Browser-checked Dutch, light/dark at 1440px and 390px, labels, numeric adjustment, focus containment and cancel;
+no settings/team save performed. Existing light Save contrast fails (3.65:1, DR-033), as do spinner icons
+(2.67:1 light / 2.26:1 dark, DR-058). Not checked: fr/en browser, live save or dedicated SSR/hydration.
+The approval accepts these disclosed limits without changing unchecked checks into passes and authorizes the scoped
+commit. Keep DR-013 open. Next candidate, not started: DR-013b (scope its toolbar/layout/pools before implementation).
+
+### Previous focus: Club tournaments tab (DR-012g)
+
 DR-012g Club tournaments tab is Done with explicit approval (`commit`, 2026-11-11) and disclosed limits ([brief](work-items/DR-012g-club-tournaments-tab.md)): the "Toernooien" tab of `/clubs/:clubId` (`app-club-tournaments-tab`) shows a counted heading, create button and native `p-table` (name link, official `p-tag`, localized phase tags from `all.tournament.phases.*`) directly on the tab panel with no nested Card (the same Card removal was applied to the DR-012e roster tab after review), native `p-message` error/empty states, a skeleton, nl/fr/en error copy and no SCSS; the service guards `value()` with `hasValue()`. Lint and build pass; browser-checked empty state and the table (stubbed GraphQL response, the dev DB has no club-linked tournaments) in dark wide and light 390px (before the Card removal; dark wide re-checked after). Not verified: real data, loading/error in the browser, keyboard/contrast, fr/en, tests. DR-012 parent is Done (children a-g; team builder is DR-013). Committed. Next candidate, not started: DR-013 club team builder or DR-014 club team detail; DR-029 must wait for unmigrated player/club pages.
 
 ### Previous focus: Club schedule tab (DR-012f)
@@ -2566,7 +2580,14 @@ and linked from their registry rows.
 | [DR-012e](work-items/DR-012e-club-player-roster-tab.md)       | Club player roster tab                                                       | Done        |
 | [DR-012f](work-items/DR-012f-club-schedule-tab.md)            | Club schedule tab                                                            | Done        |
 | [DR-012g](work-items/DR-012g-club-tournaments-tab.md)         | Club tournaments tab                                                         | Done        |
-| DR-013                                                        | Club team builder                                                            | Backlog     |
+| [DR-013](work-items/DR-013-club-team-builder.md)              | Club team builder                                                            | In progress |
+| [DR-013a](work-items/DR-013a-builder-settings.md)             | Team-builder settings dialog                                                 | Done        |
+| DR-013b                                                       | Builder toolbar, layout and player pools                                     | Backlog     |
+| DR-013c                                                       | Builder team cards                                                           | Backlog     |
+| DR-013d                                                       | Builder player chips                                                         | Backlog     |
+| DR-013e                                                       | Survey import dialog                                                         | Backlog     |
+| DR-013f                                                       | Survey edit dialog                                                           | Backlog     |
+| DR-013g                                                       | Sub-event dialog                                                             | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                                                  | Done        |
@@ -2716,12 +2737,31 @@ and linked from their registry rows.
 | DR-055                                                        | Admin indexing tab hard-coded English copy and toast messages                | Backlog     |
 | DR-056                                                        | Admin page dead `@if (false)` access-denied branch                           | Backlog     |
 | DR-057                                                        | Native PrimeNG paginator aria-labels stay English in nl/fr                   | Backlog     |
+| DR-058                                                        | Native InputNumber spinner icon contrast audit                               | Backlog     |
+| DR-059                                                        | Club Jest setup requires missing zone.js                                     | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-058: Native InputNumber spinner contrast
+
+- DR-013a browser checks on `/clubs/smash-for-fun` → Ploegopstelling → Instellingen find enabled native spinner
+  icons at 2.67:1 against their field background in light and 2.26:1 in dark, below the 3:1 non-text target.
+- The SVG icons inherit the native button color; no page overrides were added. Audit the shared preset/component
+  tokens and other InputNumber consumers in a separate slice; do not repair global styling in a dialog-only task.
+- The existing primary Save text also fails at 3.65:1 in light; that remains under DR-033.
+
+### DR-059: Club Jest setup alignment
+
+- DR-013a's focused test cannot start with `libs/frontend/pages/club/src/test-setup.ts`: it imports
+  `setupZoneTestEnv`, which requires the absent `zone.js`.
+- The existing tournament setup uses `setupZonelessTestEnv` and runs the new settings accessibility test successfully
+  when selected through a temporary config override. No dependency or shared test-setup changes were made.
+- Scope a separate club test-setup alignment and run the existing player-matcher tests as well as component tests.
+  Do not describe the temporary-override pass as a default-target pass.
 
 ### DR-054: Scheduling date-option stability and read focus
 

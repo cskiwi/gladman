@@ -5,12 +5,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { Divider } from 'primeng/divider';
 import { DEFAULT_TEAM_BUILDER_CONFIG, TeamBuilderConfig } from '../../pages/detail/tabs/team-builder/types/team-builder.types';
 
 @Component({
   selector: 'app-team-builder-settings-dialog',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ButtonModule, InputNumberModule],
+  imports: [CommonModule, FormsModule, TranslateModule, ButtonModule, InputNumberModule, Divider],
   templateUrl: './settings-dialog.component.html',
 })
 export class SettingsDialogComponent implements OnInit {

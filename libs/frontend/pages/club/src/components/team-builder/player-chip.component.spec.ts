@@ -27,6 +27,8 @@ describe('PlayerChipComponent', () => {
       'all.common.secondChoice': 'Second choice: {{choice}}',
       'all.team.membership.REGULAR.label': 'Base',
       'all.team.membership.BACKUP.label': 'Reserve',
+      'all.club.teamBuilder.validation.playerTooStrong': 'Too strong: {{maxLevel}}',
+      'all.club.teamBuilder.validation.overAssigned': 'Wants {{desired}}, assigned {{count}}',
     });
     translate.use('en');
     const player: TeamBuilderPlayer = Object.assign(new Player(), {
@@ -46,7 +48,7 @@ describe('PlayerChipComponent', () => {
     fixture.componentRef.setInput('player', player);
     fixture.detectChanges();
     await fixture.whenStable();
-    return { fixture, player, element: fixture.nativeElement as HTMLElement };
+    return { fixture, player, translate, element: fixture.nativeElement as HTMLElement };
   }
 
   it('uses named native buttons for details and membership without leaking membership double-clicks to editing', async () => {
@@ -94,8 +96,8 @@ describe('PlayerChipComponent', () => {
       lowPerformance: true,
       performancePercent: 10,
       presencePercent: 20,
-      levelWarning: 'Example level warning',
-      teamCountWarning: 'Example team warning',
+      levelWarning: { key: 'all.club.teamBuilder.validation.playerTooStrong', params: { maxLevel: 5 } },
+      teamCountWarning: { key: 'all.club.teamBuilder.validation.overAssigned', params: { desired: 1, count: 2 } },
       survey: {
         externalId: 'example',
         createdOn: '',
@@ -130,8 +132,8 @@ describe('PlayerChipComponent', () => {
     const overlay = document.body.querySelector('.p-popover');
     expect(overlay?.textContent).toContain('Low performance (10% win rate)');
     expect(overlay?.textContent).toContain('Low presence (20% attendance)');
-    expect(overlay?.textContent).toContain('Example level warning');
-    expect(overlay?.textContent).toContain('Example team warning');
+    expect(overlay?.textContent).toContain('Too strong: 5');
+    expect(overlay?.textContent).toContain('Wants 1, assigned 2');
     for (const value of ['Friday', 'First team', 'Second team', 'Third team', 'Fourth team', 'December', 'January', 'Example remarks']) {
       expect(overlay?.textContent).toContain(value);
     }
@@ -156,7 +158,10 @@ describe('PlayerChipComponent', () => {
   });
 
   it('uses the strongest indicator in the combined badge and omits the badge when no indicators apply', async () => {
-    const { fixture, player } = await render({ isNewPlayer: true, levelWarning: 'Example warning' });
+    const { fixture, player } = await render({
+      isNewPlayer: true,
+      levelWarning: { key: 'all.club.teamBuilder.validation.playerTooStrong', params: { maxLevel: 5 } },
+    });
     const summary = () => fixture.debugElement.query(By.directive(Tag))?.injector.get(Tag);
     expect(summary()?.severity()).toBe('warn');
     expect(summary()?.value()).toBe('2');
@@ -167,6 +172,26 @@ describe('PlayerChipComponent', () => {
     fixture.componentRef.setInput('player', Object.assign(new Player(), player, { levelWarning: undefined, isNewPlayer: false }));
     fixture.detectChanges();
     expect(summary()).toBeUndefined();
+  });
+
+  it('retranslates warning details in an open popover without replacing the player', async () => {
+    const { fixture, player, translate, element } = await render({
+      levelWarning: { key: 'all.club.teamBuilder.validation.playerTooStrong', params: { maxLevel: 5 } },
+      teamCountWarning: { key: 'all.club.teamBuilder.validation.overAssigned', params: { desired: 1, count: 2 } },
+    });
+    element.querySelector('button')?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    translate.setTranslation('nl', {
+      'all.club.teamBuilder.validation.playerTooStrong': 'Te sterk: {{maxLevel}}',
+      'all.club.teamBuilder.validation.overAssigned': 'Wenst {{desired}}, toegewezen {{count}}',
+    });
+    translate.use('nl');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(document.body.querySelector('.p-popover')?.textContent).toContain('Te sterk: 5');
+    expect(document.body.querySelector('.p-popover')?.textContent).toContain('Wenst 1, toegewezen 2');
+    expect(fixture.componentInstance.player()).toBe(player);
   });
 
   it('pins the existing hover panel for keyboard use without replacing it or moving focus on hover', async () => {

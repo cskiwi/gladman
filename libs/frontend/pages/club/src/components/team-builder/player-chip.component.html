@@ -92,7 +92,7 @@
     @for (indicator of indicators(); track indicator.key) {
       @if (indicator.key !== 'all.common.remarks') {
         <p-tag [severity]="indicator.severity" [icon]="indicator.icon">
-          <span>{{ indicator.text ?? (indicator.key | translate: indicator.params) }}</span>
+          <span>{{ indicator.key | translate: indicator.params }}</span>
         </p-tag>
       }
     }

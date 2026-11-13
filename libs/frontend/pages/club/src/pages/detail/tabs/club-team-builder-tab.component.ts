@@ -75,6 +75,7 @@ export class ClubTeamBuilderTabComponent {
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
   private readonly document = inject(DOCUMENT);
+  private confirmationTrigger: Element | null = null;
 
   clubId = input.required<string>();
   season = input.required<number>();
@@ -156,8 +157,8 @@ export class ClubTeamBuilderTabComponent {
         const createdCount = results.filter((r) => !r.player && r.createNew).length;
         this.messageService.add({
           severity: 'success',
-          summary: 'Survey imported',
-          detail: `${matchedCount} matched, ${createdCount} new players created`,
+          summary: this.translate.instant('all.club.teamBuilder.feedback.surveyImported'),
+          detail: this.translate.instant('all.club.teamBuilder.feedback.importCounts', { matched: matchedCount, created: createdCount }),
         });
       }
     });
@@ -187,8 +188,8 @@ export class ClubTeamBuilderTabComponent {
         this.service.updatePlayerSurvey(player.id, updatedSurvey);
         this.messageService.add({
           severity: 'success',
-          summary: 'Survey updated',
-          detail: `Survey data updated for ${player.fullName}`,
+          summary: this.translate.instant('all.club.teamBuilder.feedback.surveyUpdated'),
+          detail: this.translate.instant('all.club.teamBuilder.feedback.surveyUpdatedFor', { name: player.fullName }),
         });
       }
     });
@@ -211,8 +212,8 @@ export class ClubTeamBuilderTabComponent {
         this.service.updateConfig(config);
         this.messageService.add({
           severity: 'success',
-          summary: 'Settings updated',
-          detail: 'Team builder settings have been updated',
+          summary: this.translate.instant('all.club.teamBuilder.feedback.settingsUpdated'),
+          detail: this.translate.instant('all.club.teamBuilder.feedback.settingsUpdatedDetail'),
         });
       }
     });
@@ -284,10 +285,13 @@ export class ClubTeamBuilderTabComponent {
   }
 
   removeTeam(teamId: string) {
+    this.confirmationTrigger = this.document.activeElement;
     this.confirmationService.confirm({
-      message: 'Are you sure you want to remove this team? Players will be moved to the unassigned pool.',
-      header: 'Remove Team',
+      message: this.translate.instant('all.club.teamBuilder.feedback.removeMessage'),
+      header: this.translate.instant('all.club.teamBuilder.feedback.removeTitle'),
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: this.translate.instant('all.button.delete'),
+      rejectLabel: this.translate.instant('all.button.cancel'),
       accept: () => this.service.removeTeam(teamId),
     });
   }
@@ -297,27 +301,50 @@ export class ClubTeamBuilderTabComponent {
   }
 
   async save() {
+    this.confirmationTrigger = this.document.activeElement;
     const saveSummary = this.service.getSaveSummary();
     const validation = this.service.validationSummary();
 
-    let message =
-      `Save ${saveSummary.teamsUpdated} updated and ${saveSummary.teamsCreated} new team(s) ` +
-      `with ${saveSummary.totalPlayers} players for season ${this.service.nextSeason()}?`;
+    let message = this.translate.instant('all.club.teamBuilder.feedback.saveMessage', {
+      updated: saveSummary.teamsUpdated,
+      created: saveSummary.teamsCreated,
+      players: saveSummary.totalPlayers,
+      season: this.service.nextSeason(),
+    });
 
     if (saveSummary.teamsRemoved > 0) {
-      message += `\n\n${saveSummary.teamsRemoved} team(s) will be removed.`;
+      message += '\n\n' + this.translate.instant('all.club.teamBuilder.feedback.saveRemoved', { count: saveSummary.teamsRemoved });
     }
 
     if (validation.invalid > 0) {
-      message += `\n\n⚠ ${validation.invalid} team(s) have validation warnings:\n` + validation.errors.map((e) => `• ${e}`).join('\n');
+      message +=
+        '\n\n' +
+        this.translate.instant('all.club.teamBuilder.feedback.saveWarnings', { count: validation.invalid }) +
+        '\n' +
+        validation.errors
+          .map((error) => {
+            const text = this.translate.instant(error.key, error.params);
+            return `• ${error.teamName ? `${error.teamName}: ` : ''}${text}`;
+          })
+          .join('\n');
     }
 
     this.confirmationService.confirm({
       message,
-      header: 'Save Teams',
+      header: this.translate.instant('all.club.teamBuilder.save'),
       icon: validation.invalid > 0 ? 'pi pi-exclamation-triangle' : 'pi pi-save',
+      acceptLabel: this.translate.instant('all.button.save'),
+      rejectLabel: this.translate.instant('all.button.cancel'),
       accept: () => this.doSave(),
     });
+  }
+
+  /** Restores the actual trigger for every native confirmation dismissal path. */
+  restoreConfirmationFocus(): void {
+    if (this.confirmationTrigger instanceof HTMLElement && this.confirmationTrigger.isConnected) {
+      this.confirmationTrigger.focus();
+    }
+    this.confirmationTrigger = null;
   }
 
   onPlayerDroppedOnRemove(event: CdkDragDrop<string>) {
@@ -342,14 +369,14 @@ export class ClubTeamBuilderTabComponent {
     if (added) {
       this.messageService.add({
         severity: 'success',
-        summary: 'Player added',
-        detail: `${player.fullName} added to pool`,
+        summary: this.translate.instant('all.club.teamBuilder.feedback.playerAdded'),
+        detail: this.translate.instant('all.club.teamBuilder.feedback.playerAddedDetail', { name: player.fullName }),
       });
     } else {
       this.messageService.add({
         severity: 'info',
-        summary: 'Already present',
-        detail: `${player.fullName} is already in the builder`,
+        summary: this.translate.instant('all.club.teamBuilder.feedback.alreadyPresent'),
+        detail: this.translate.instant('all.club.teamBuilder.feedback.alreadyPresentDetail', { name: player.fullName }),
       });
     }
     this.selectedPlayer = null;
@@ -360,14 +387,14 @@ export class ClubTeamBuilderTabComponent {
     if (success) {
       this.messageService.add({
         severity: 'success',
-        summary: 'Saved',
-        detail: `Teams saved for season ${this.service.nextSeason()}`,
+        summary: this.translate.instant('all.club.teamBuilder.feedback.saved'),
+        detail: this.translate.instant('all.club.teamBuilder.feedback.savedDetail', { season: this.service.nextSeason() }),
       });
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to save teams',
+        summary: this.translate.instant('all.common.error'),
+        detail: this.translate.instant('all.club.teamBuilder.feedback.saveFailed'),
       });
     }
   }

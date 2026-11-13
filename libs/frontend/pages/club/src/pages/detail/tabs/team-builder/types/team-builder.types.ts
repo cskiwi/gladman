@@ -5,6 +5,23 @@ export type TeamBuilderStandingOutcome = 'PROMOTED' | 'DEMOTED' | 'UNCHANGED';
 
 export const TEAM_BUILDER_AUTO_SUB_EVENT = '__AUTO__';
 
+export interface TeamBuilderMessage {
+  key: `all.club.teamBuilder.validation.${
+    | 'minPlayers'
+    | 'minMales'
+    | 'minFemales'
+    | 'maxPlayers'
+    | 'minIndex'
+    | 'maxIndex'
+    | 'femaleInMens'
+    | 'maleInWomens'
+    | 'playersTooStrong'
+    | 'playerTooStrong'
+    | 'overAssigned'
+    | 'underAssigned'}`;
+  params: Record<string, string | number>;
+}
+
 export interface TeamBuilderConfig {
   /** Low presence threshold (percentage, 0-100) */
   presenceThreshold: number;
@@ -46,8 +63,8 @@ export interface TeamBuilderPlayer extends PlainShape<Player> {
   presencePercent: number;
   isNewPlayer: boolean;
   isStopping: boolean;
-  levelWarning?: string;
-  teamCountWarning?: string;
+  levelWarning?: TeamBuilderMessage;
+  teamCountWarning?: TeamBuilderMessage;
   assignedTeamId?: string;
   membershipType: 'REGULAR' | 'BACKUP';
 }
@@ -67,5 +84,5 @@ export interface TeamBuilderTeam extends PlainShape<Team> {
   players: TeamBuilderPlayer[];
   teamIndex: number;
   isValid: boolean;
-  validationErrors: string[];
+  validationErrors: TeamBuilderMessage[];
 }

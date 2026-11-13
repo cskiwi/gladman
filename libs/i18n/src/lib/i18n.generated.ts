@@ -67,6 +67,41 @@ export type I18nTranslations = {
             "teamBuilder": {
                 "addPlayer": string;
                 "addTeam": string;
+                "validation": {
+                    "minPlayers": string;
+                    "minMales": string;
+                    "minFemales": string;
+                    "maxPlayers": string;
+                    "minIndex": string;
+                    "maxIndex": string;
+                    "femaleInMens": string;
+                    "maleInWomens": string;
+                    "playersTooStrong": string;
+                    "playerTooStrong": string;
+                    "overAssigned": string;
+                    "underAssigned": string;
+                };
+                "feedback": {
+                    "surveyImported": string;
+                    "importCounts": string;
+                    "surveyUpdated": string;
+                    "surveyUpdatedFor": string;
+                    "settingsUpdated": string;
+                    "settingsUpdatedDetail": string;
+                    "removeTitle": string;
+                    "removeMessage": string;
+                    "saveMessage": string;
+                    "saveRemoved": string;
+                    "saveWarnings": string;
+                    "playerAdded": string;
+                    "playerAddedDetail": string;
+                    "alreadyPresent": string;
+                    "alreadyPresentDetail": string;
+                    "saved": string;
+                    "savedDetail": string;
+                    "saveFailed": string;
+                    "loadFailed": string;
+                };
                 "subEvent": {
                     "auto": string;
                     "autoHelp": string;

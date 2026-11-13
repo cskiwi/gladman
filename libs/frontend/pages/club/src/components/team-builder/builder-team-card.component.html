@@ -141,8 +141,8 @@
   @if (team().validationErrors.length > 0 && !team().isMarkedForRemoval) {
     <ng-template #footer>
       <div class="flex flex-col gap-2">
-        @for (error of team().validationErrors; track error) {
-          <p-message severity="error" size="small" icon="pi pi-exclamation-circle">{{ error }}</p-message>
+        @for (error of team().validationErrors; track error.key) {
+          <p-message severity="error" size="small" icon="pi pi-exclamation-circle">{{ error.key | translate: error.params }}</p-message>
         }
       </div>
     </ng-template>

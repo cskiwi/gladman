@@ -61,7 +61,7 @@ describe('BuilderTeamCardComponent', () => {
     fixture.componentRef.setInput('team', team);
     fixture.detectChanges();
     await fixture.whenStable();
-    return { fixture, team, element: fixture.nativeElement as HTMLElement };
+    return { fixture, team, translate, element: fixture.nativeElement as HTMLElement };
   }
 
   it('renders index boundaries and explicit severity messages without requiring a maximum', async () => {
@@ -96,7 +96,11 @@ describe('BuilderTeamCardComponent', () => {
   });
 
   it('names actions contextually, emits them and replaces the drop zone when removal is pending', async () => {
-    const { fixture, team, element } = await render({ isNew: true, isPromoted: true, validationErrors: ['Example validation'] });
+    const { fixture, team, element } = await render({
+      isNew: true,
+      isPromoted: true,
+      validationErrors: [{ key: 'all.club.teamBuilder.validation.maxIndex', params: { index: 79, max: 76 } }],
+    });
     const component = fixture.componentInstance;
     const subEvent = jest.fn();
     const removal = jest.fn();
@@ -117,14 +121,31 @@ describe('BuilderTeamCardComponent', () => {
     expect(removal).toHaveBeenCalledTimes(1);
     expect(deletion).toHaveBeenCalledTimes(1);
     expect(element.textContent).toContain(prefix + 'promoted');
-    expect(element.querySelector('.p-card-footer')?.textContent).toContain('Example validation');
+    expect(element.querySelector('.p-card-footer')?.textContent).toContain('all.club.teamBuilder.validation.maxIndex');
     fixture.componentRef.setInput('team', { ...team, isMarkedForRemoval: true });
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.directive(CdkDropList))).toBeNull();
     expect(element.textContent).toContain(prefix + 'removalPending');
-    expect(element.textContent).not.toContain('Example validation');
+    expect(element.textContent).not.toContain('all.club.teamBuilder.validation.maxIndex');
     click('Undo removal of Example team');
     expect(removal).toHaveBeenCalledTimes(2);
+  });
+
+  it('updates existing validation text on locale changes without changing the team', async () => {
+    const key = 'all.club.teamBuilder.validation.maxIndex';
+    const { fixture, team, translate, element } = await render({
+      validationErrors: [{ key, params: { index: 79, max: 76 } }],
+    });
+    translate.setTranslation('en', { [key]: 'Index {{index}} exceeds {{max}}' }, true);
+    fixture.detectChanges();
+    expect(element.querySelector('.p-card-footer')?.textContent).toContain('Index 79 exceeds 76');
+    translate.setTranslation('nl', { [key]: 'Index {{index}} overschrijdt {{max}}' });
+    translate.use('nl');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(element.querySelector('.p-card-footer')?.textContent).toContain('Index 79 overschrijdt 76');
+    expect(fixture.componentInstance.team()).toBe(team);
+    expect(team.validationErrors).toEqual([{ key, params: { index: 79, max: 76 } }]);
   });
 
   it('keeps mixed groups, sorting, drag data and player-chip events when groups are consolidated', async () => {

@@ -94,8 +94,17 @@ Long synthetic DOM labels wrap with native vertical content scrolling. No live A
 The user explicitly approved `Approve and commit DR-013g with disclosed limits` on 2026-11-13.
 DR-013g is Done with fr/en browser, full accessibility/contrast, live Apply and SSR/hydration still unchecked.
 Approval authorizes its scoped commit without claiming unperformed checks passed.
-Keep this parent open. Exact next action: scope DR-013h builder validation, notification and confirmation localization
-before implementation; not started.
+Keep this parent open. [DR-013h](DR-013h-builder-feedback.md) now implements typed validation descriptors and localized
+nl/fr/en notifications/confirmations, preserving calculations and persistence payloads. Club lint/build pass;
+nine builder suites / 33 tests pass with the existing temporary zoneless override (DR-059 remains).
+The API asset blocker is resolved after the user's refresh. Dutch light/dark at 390px/1440px, translated Card warnings,
+confirmation keyboard containment/dismissal/trigger return and Toast layout/close-label checks pass.
+No live team save/import/removal accepted; fr/en browser, full accessibility/contrast and SSR remain unchecked.
+The user explicitly approved `Approve and commit DR-013h with disclosed limits` on 2026-11-13.
+DR-013h is Done; approval accepts its remaining limits without claiming unperformed checks passed.
+This authorizes only the child's scoped commit. Keep this parent open.
+Exact next action: review the integrated builder against this parent's remaining checklist and agree any parent-level
+verification limits before closing DR-013. DR-064/065 remain Backlog. No push authorized.
 
 - [ ] Complete and review all required children.
 - [ ] Verify the integrated builder without operational mutations.

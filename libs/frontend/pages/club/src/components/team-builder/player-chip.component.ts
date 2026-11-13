@@ -12,8 +12,7 @@ interface PlayerIndicator {
   icon: string;
   severity: 'warn' | 'danger' | 'info' | 'secondary';
   key: string;
-  text?: string;
-  params?: { percent: number };
+  params?: Record<string, string | number>;
 }
 
 @Component({
@@ -67,8 +66,20 @@ export class PlayerChipComponent {
         params: { percent: p.presencePercent },
       },
       { visible: p.isNewPlayer, icon: 'pi pi-star', severity: 'info', key: 'all.player.newPlayer' },
-      { visible: !!p.levelWarning, icon: 'pi pi-ban', severity: 'warn', key: 'all.team.level-tooltip', text: p.levelWarning },
-      { visible: !!p.teamCountWarning, icon: 'pi pi-users', severity: 'warn', key: 'all.team.players', text: p.teamCountWarning },
+      {
+        visible: !!p.levelWarning,
+        icon: 'pi pi-ban',
+        severity: 'warn',
+        key: p.levelWarning?.key ?? 'all.team.level-tooltip',
+        params: p.levelWarning?.params,
+      },
+      {
+        visible: !!p.teamCountWarning,
+        icon: 'pi pi-users',
+        severity: 'warn',
+        key: p.teamCountWarning?.key ?? 'all.team.players',
+        params: p.teamCountWarning?.params,
+      },
       { visible: !!p.survey?.comments, icon: 'pi pi-comment', severity: 'secondary', key: 'all.common.remarks' },
     ];
     return indicators.filter((indicator) => indicator.visible);

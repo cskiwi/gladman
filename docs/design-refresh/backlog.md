@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013h [Builder feedback localization](work-items/DR-013h-builder-feedback.md) is Done with explicit approval
+(`Approve and commit DR-013h with disclosed limits`, 2026-11-13).
+Implemented nl/fr/en validation, warning, notification and confirmation copy on the mounted
+`/clubs/smash-for-fun?tab=team-builder`. Typed descriptors preserve render-time locale updates and context.
+Existing service/presentational separation, calculations, severities and save payloads remain; no new shared styling.
+Native ConfirmDialog supplies labelled actions, Cancel initial focus, plain-text message lines and responsive sizing;
+native Toast supplies narrow breakpoints and a localized close action. Scoped confirmation trigger-focus return added.
+Builder class tokens 111 -> 119; Card/chip unchanged at 74/54.
+Club lint/build pass (12 tasks); nine builder suites / 33 tests pass with the existing temporary zoneless override.
+Default setup still fails before execution on missing `zone.js` (DR-059). Locale key/parameter parity passes.
+The user refreshed the API; real translation endpoints and GraphQL on ports 5000/3000 now return the new assets / 200.
+Dutch light/dark at 390px/1440px: confirmation, Card warnings and Toast fit; no horizontal overflow or raw new keys.
+Cancel initial focus, Tab/Shift+Tab wrap, Escape/Cancel/close and actual trigger-focus return pass.
+Long synthetic unbroken DOM text wraps; unchanged in-memory settings Apply produces translated Toasts with zero
+GraphQL mutations during the four-case Toast check. No team save/import/removal accepted.
+Not verified: fr/en browser, live persistence, full accessibility/contrast or SSR/hydration. Default tests remain DR-059.
+Approval accepts those limits without turning unperformed checks into passes and authorizes this slice's commit.
+Exact next action: review the integrated DR-013 builder against its remaining parent checklist and agree any
+parent-level verification limits before closing it. Keep DR-013 open; do not reopen completed children.
+DR-064/065 remain Backlog. No push authorized.
+DR-064 records native ConfirmDialog input issues; DR-065 records pre-existing import failure/success feedback.
+
+### Previous focus: Sub-event dialog (DR-013g)
+
 DR-013g [Sub-event dialog](work-items/DR-013g-builder-sub-event.md) is Done with explicit approval
 (`Approve and commit DR-013g with disclosed limits`, 2026-11-13).
 Mounted consumer confirmed: `/clubs/smash-for-fun?tab=team-builder` -> team Card -> Reeks wijzigen.
@@ -2740,7 +2764,7 @@ and linked from their registry rows.
 | [DR-013e](work-items/DR-013e-builder-survey-import.md)        | Survey import dialog                                                         | Done        |
 | [DR-013f](work-items/DR-013f-builder-survey-edit.md)          | Survey edit dialog                                                           | Done        |
 | [DR-013g](work-items/DR-013g-builder-sub-event.md)            | Sub-event dialog                                                             | Done        |
-| DR-013h                                                       | Builder validation, notification and confirmation localization               | Backlog     |
+| [DR-013h](work-items/DR-013h-builder-feedback.md)             | Builder validation, notification and confirmation localization               | Done        |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                                                  | Done        |
@@ -2896,12 +2920,29 @@ and linked from their registry rows.
 | DR-061                                                        | Club aside sticky offset beneath fixed header                                | Backlog     |
 | DR-062                                                        | Native Tooltip description association audit                                 | Backlog     |
 | DR-063                                                        | Native Popover keyboard and trigger association audit                        | Backlog     |
+| DR-064                                                        | Native ConfirmDialog breakpoint and close-label input audit                  | Backlog     |
+| DR-065                                                        | Builder survey import creation-failure feedback                              | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-064: Native ConfirmDialog input audit
+
+- DR-013h source inspection finds installed PrimeNG 22 ConfirmDialog iterates the `breakpoints` signal itself
+  instead of its value, does not forward `closeAriaLabel` to the inner Dialog, and does not restore trigger focus.
+- DR-013h uses two layout width utilities, documented close-button passthrough and scoped onHide focus restoration.
+  Named close and focus return pass component/browser checks.
+  Audit other mounted consumers separately before deciding on a shared/upstream repair.
+
+### DR-065: Builder survey import creation-failure feedback
+
+- Existing `processImportResults` catches/logs player-creation failure and continues; the caller subsequently reports
+  success and computes createdCount from requested rows, not confirmed creation.
+- DR-013h only localizes that existing contract. Scope failure propagation and accurate notifications separately,
+  preserving partial-import handling and adding focused failure regressions without live player creation.
 
 ### DR-063: Native Popover keyboard and trigger association
 
@@ -2916,10 +2957,10 @@ and linked from their registry rows.
 
 ### DR-013h: Builder validation, notification and confirmation localization
 
-- DR-013c localizes card-owned labels, but the mounted builder service still produces English validation errors,
-  including `Team index 79 exceeds maximum 76` and player-count feedback, rendered verbatim in the card.
-- Scope the service-owned validation/notification/confirmation copy separately. Preserve calculations, severities
-  and mutation behavior; do not translate service output by string matching inside presentational components.
+- Implemented in [the brief](work-items/DR-013h-builder-feedback.md): typed validation descriptors and localized
+  service/caller-owned feedback replace English strings without translating by string matching.
+- Preserve calculations, severities and mutation behavior. The API asset blocker is resolved; scoped Dutch
+  light/dark narrow/wide and dismissal/focus checks pass. Approved with disclosed limits in the brief.
 
 ### DR-032/034 additional evidence: builder team cards
 

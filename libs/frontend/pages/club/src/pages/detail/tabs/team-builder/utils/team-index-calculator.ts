@@ -1,4 +1,4 @@
-import { TeamBuilderConfig, TeamBuilderPlayer, TeamBuilderTeam, DEFAULT_TEAM_BUILDER_CONFIG } from '../types/team-builder.types';
+import { TeamBuilderConfig, TeamBuilderMessage, TeamBuilderPlayer, TeamBuilderTeam, DEFAULT_TEAM_BUILDER_CONFIG } from '../types/team-builder.types';
 
 /**
  * Extract ranking values from a player's rankingLastPlaces relation.
@@ -59,15 +59,15 @@ export function getPlayerContribution(player: TeamBuilderPlayer, teamType: 'M' |
 
 /**
  * Validate a team's composition against competition rules.
- * Returns an array of error messages (empty = valid).
+ * Returns translation descriptors (empty = valid), independent of the current locale.
  */
-export function validateTeam(team: TeamBuilderTeam, config: TeamBuilderConfig = DEFAULT_TEAM_BUILDER_CONFIG): string[] {
-  const errors: string[] = [];
+export function validateTeam(team: TeamBuilderTeam, config: TeamBuilderConfig = DEFAULT_TEAM_BUILDER_CONFIG): TeamBuilderMessage[] {
+  const errors: TeamBuilderMessage[] = [];
   const regularPlayers = team.players.filter((p) => p.membershipType === 'REGULAR');
 
   // Minimum player count
   if (regularPlayers.length < config.minPlayersPerTeam) {
-    errors.push(`Need at least ${config.minPlayersPerTeam} regular players, have ${regularPlayers.length}`);
+    errors.push({ key: 'all.club.teamBuilder.validation.minPlayers', params: { min: config.minPlayersPerTeam, count: regularPlayers.length } });
   }
 
   // MX gender minimum checks
@@ -75,40 +75,40 @@ export function validateTeam(team: TeamBuilderTeam, config: TeamBuilderConfig = 
     const maleCount = regularPlayers.filter((p) => p.gender === 'M').length;
     const femaleCount = regularPlayers.filter((p) => p.gender === 'F').length;
     if (maleCount < config.minMalesPerMxTeam) {
-      errors.push(`Need at least ${config.minMalesPerMxTeam} male regular player(s), have ${maleCount}`);
+      errors.push({ key: 'all.club.teamBuilder.validation.minMales', params: { min: config.minMalesPerMxTeam, count: maleCount } });
     }
     if (femaleCount < config.minFemalesPerMxTeam) {
-      errors.push(`Need at least ${config.minFemalesPerMxTeam} female regular player(s), have ${femaleCount}`);
+      errors.push({ key: 'all.club.teamBuilder.validation.minFemales', params: { min: config.minFemalesPerMxTeam, count: femaleCount } });
     }
   }
 
   // Maximum player count (regular + backup)
   if (team.players.length > config.maxPlayersPerTeam) {
-    errors.push(`Maximum ${config.maxPlayersPerTeam} players allowed, have ${team.players.length}`);
+    errors.push({ key: 'all.club.teamBuilder.validation.maxPlayers', params: { max: config.maxPlayersPerTeam, count: team.players.length } });
   }
 
   const minAllowedIndex = team.selectedSubEvent?.minBaseIndex;
   const maxAllowedIndex = team.selectedSubEvent?.maxBaseIndex;
 
   if (minAllowedIndex != null && team.teamIndex < minAllowedIndex) {
-    errors.push(`Team index ${team.teamIndex} is below minimum ${minAllowedIndex}`);
+    errors.push({ key: 'all.club.teamBuilder.validation.minIndex', params: { index: team.teamIndex, min: minAllowedIndex } });
   }
 
   // Team index check
   if (maxAllowedIndex != null && team.teamIndex > maxAllowedIndex) {
-    errors.push(`Team index ${team.teamIndex} exceeds maximum ${maxAllowedIndex}`);
+    errors.push({ key: 'all.club.teamBuilder.validation.maxIndex', params: { index: team.teamIndex, max: maxAllowedIndex } });
   }
 
   // Gender constraints
   if (team.type === 'M') {
     const wrongGender = regularPlayers.filter((p) => p.gender === 'F');
     if (wrongGender.length > 0) {
-      errors.push(`${wrongGender.length} female player(s) in a men's team`);
+      errors.push({ key: 'all.club.teamBuilder.validation.femaleInMens', params: { count: wrongGender.length } });
     }
   } else if (team.type === 'F') {
     const wrongGender = regularPlayers.filter((p) => p.gender === 'M');
     if (wrongGender.length > 0) {
-      errors.push(`${wrongGender.length} male player(s) in a women's team`);
+      errors.push({ key: 'all.club.teamBuilder.validation.maleInWomens', params: { count: wrongGender.length } });
     }
   }
 
@@ -122,9 +122,10 @@ export function validateTeam(team: TeamBuilderTeam, config: TeamBuilderConfig = 
       return bestRanking > 0 && bestRanking < maxLevel;
     });
     if (playersTooStrong.length > 0) {
-      errors.push(
-        `${playersTooStrong.length} player(s) may be too strong for this subevent (max level: ${maxLevel}): ${playersTooStrong.map((p) => p.fullName).join(', ')}`,
-      );
+      errors.push({
+        key: 'all.club.teamBuilder.validation.playersTooStrong',
+        params: { count: playersTooStrong.length, maxLevel, names: playersTooStrong.map((p) => p.fullName).join(', ') },
+      });
     }
   }
 
@@ -148,7 +149,7 @@ export function recalculateTeam(team: TeamBuilderTeam, config: TeamBuilderConfig
       const rankings = team.type === 'MX' ? [single, double, mix] : [single, double];
       const bestRanking = Math.min(...rankings.filter((r) => r > 0));
       if (bestRanking > 0 && bestRanking < maxLevelThreshold) {
-        player.levelWarning = `Player is too strong for this subevent (max level: ${maxLevelThreshold})`;
+        player.levelWarning = { key: 'all.club.teamBuilder.validation.playerTooStrong', params: { maxLevel: maxLevelThreshold } };
       }
     }
   }

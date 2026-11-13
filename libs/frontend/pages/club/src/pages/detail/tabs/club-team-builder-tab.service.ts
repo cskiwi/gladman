@@ -9,6 +9,7 @@ import { RankingSystemService } from '@app/frontend-modules-graphql/ranking';
 import {
   TEAM_BUILDER_AUTO_SUB_EVENT,
   TeamBuilderConfig,
+  TeamBuilderMessage,
   TeamBuilderPlayer,
   TeamBuilderStandingOutcome,
   TeamBuilderTeam,
@@ -457,8 +458,8 @@ export class ClubTeamBuilderTabService {
     const activeTeams = this.teams().filter((t) => !t.isMarkedForRemoval);
     const valid = activeTeams.filter((t) => t.isValid).length;
     const invalid = activeTeams.length - valid;
-    const teamErrors = activeTeams.flatMap((t) => t.validationErrors.map((e) => `${t.name}: ${e}`));
-    const crossTeamWarnings: string[] = [];
+    const teamErrors = activeTeams.flatMap((t) => t.validationErrors.map((e) => ({ ...e, teamName: t.name })));
+    const crossTeamWarnings: (TeamBuilderMessage & { teamName?: string })[] = [];
 
     // Count REGULAR assignments per player across active teams
     const playerTeamCount = new Map<string, { name: string; count: number; desired: number }>();
@@ -481,7 +482,11 @@ export class ClubTeamBuilderTabService {
     // Over-assigned: player is REGULAR in more teams than desired
     for (const [, info] of playerTeamCount) {
       if (info.desired > 0 && info.count > info.desired) {
-        crossTeamWarnings.push(`${info.name}: wants ${info.desired} team(s), assigned to ${info.count}`);
+        crossTeamWarnings.push({
+          key: 'all.club.teamBuilder.validation.overAssigned',
+          params: { desired: info.desired, count: info.count },
+          teamName: info.name,
+        });
       }
     }
 
@@ -506,7 +511,11 @@ export class ClubTeamBuilderTabService {
       const available = Math.max(0, desired + adjustment - regularCount);
 
       if (regularCount > 0 && regularCount < desired) {
-        crossTeamWarnings.push(`${player.fullName}: wants ${desired} team(s), only assigned to ${regularCount}`);
+        crossTeamWarnings.push({
+          key: 'all.club.teamBuilder.validation.underAssigned',
+          params: { desired, count: regularCount },
+          teamName: player.fullName,
+        });
       }
     }
 
@@ -1522,7 +1531,7 @@ export class ClubTeamBuilderTabService {
       players: [],
       teamIndex: 0,
       isValid: false,
-      validationErrors: [`Need at least ${this.config().minPlayersPerTeam} regular players, have 0`],
+      validationErrors: [{ key: 'all.club.teamBuilder.validation.minPlayers', params: { min: this.config().minPlayersPerTeam, count: 0 } }],
     } as unknown as TeamBuilderTeam;
     this.teams.set([...teams, newTeam]);
   }
@@ -1764,7 +1773,13 @@ export class ClubTeamBuilderTabService {
   /**
    * Get a save summary for the confirmation dialog.
    */
-  getSaveSummary(): { teamsCreated: number; teamsUpdated: number; teamsRemoved: number; totalPlayers: number; warnings: string[] } {
+  getSaveSummary(): {
+    teamsCreated: number;
+    teamsUpdated: number;
+    teamsRemoved: number;
+    totalPlayers: number;
+    warnings: (TeamBuilderMessage & { teamName?: string })[];
+  } {
     const allTeams = this.teams();
     const activeTeams = allTeams.filter((t) => !t.isMarkedForRemoval);
     const teamsRemoved = allTeams.filter((t) => t.isMarkedForRemoval && !t.isNew).length;
@@ -1889,17 +1904,23 @@ export class ClubTeamBuilderTabService {
       const updatedPlayers = team.players.map((player) => {
         const count = playerTeamCount.get(player.id) ?? 0;
         const desired = player.survey?.desiredTeamCount;
-        let teamCountWarning: string | undefined;
+        let teamCountWarning: TeamBuilderMessage | undefined;
 
         if (desired != null && desired > 0) {
           if (count > desired) {
-            teamCountWarning = `Wants ${desired} team(s), assigned to ${count}`;
+            teamCountWarning = { key: 'all.club.teamBuilder.validation.overAssigned', params: { desired, count } };
           } else if (count > 0 && count < desired) {
-            teamCountWarning = `Wants ${desired} team(s), only assigned to ${count}`;
+            teamCountWarning = { key: 'all.club.teamBuilder.validation.underAssigned', params: { desired, count } };
           }
         }
 
-        if (player.teamCountWarning === teamCountWarning) return player;
+        const previous = player.teamCountWarning;
+        if (
+          previous?.key === teamCountWarning?.key &&
+          previous?.params['desired'] === teamCountWarning?.params['desired'] &&
+          previous?.params['count'] === teamCountWarning?.params['count']
+        )
+          return player;
         changed = true;
         return { ...player, teamCountWarning };
       });
@@ -1915,8 +1936,8 @@ export class ClubTeamBuilderTabService {
 
   private handleError(err: HttpErrorResponse): string {
     if (err.status === 404 && err.url) {
-      return 'Failed to load team builder data';
+      return 'all.club.teamBuilder.feedback.loadFailed';
     }
-    return err.statusText || 'An error occurred';
+    return err.statusText || 'all.common.error';
   }
 }

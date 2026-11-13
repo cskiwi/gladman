@@ -8,7 +8,7 @@
     </div>
   </div>
 } @else if (service.error()) {
-  <p-message severity="error">{{ service.error()! }}</p-message>
+  <p-message severity="error">{{ service.error()! | translate }}</p-message>
 } @else {
   <p-toolbar ariaLabelledBy="builder-toolbar-title">
     <ng-template #start>
@@ -206,6 +206,22 @@
     </div>
   </div>
 
-  <p-confirmdialog />
-  <p-toast />
+  <p-confirmdialog
+    styleClass="w-80 sm:w-160"
+    defaultFocus="reject"
+    [pt]="{ pcCloseButton: { root: { 'aria-label': 'all.button.cancel' | translate } } }"
+    (onHide)="restoreConfirmationFocus()"
+  >
+    <ng-template #message let-confirmation>
+      <i [class]="confirmation.icon" aria-hidden="true"></i>
+      <div class="flex min-w-0 flex-col gap-2 break-words">
+        @for (line of confirmation.message.split('\n'); track $index) {
+          @if (line) {
+            <p class="m-0">{{ line }}</p>
+          }
+        }
+      </div>
+    </ng-template>
+  </p-confirmdialog>
+  <p-toast [breakpoints]="{ '640px': { width: '95vw', right: '2.5vw' } }" [pt]="{ closeButton: { 'aria-label': 'all.button.close' | translate } }" />
 }

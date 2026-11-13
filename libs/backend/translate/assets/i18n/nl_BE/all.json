@@ -143,6 +143,28 @@
     "teamBuilder": {
       "addPlayer": "Speler toevoegen...",
       "addTeam": "Team Toevoegen",
+      "card": {
+        "backups": "Reservespelers",
+        "changeSubEvent": "Reeks wijzigen voor {{name}}: {{subEvent}}",
+        "currentSubEvent": "Huidige reeks",
+        "deleteTeam": "{{name}} verwijderen",
+        "demoted": "Gedegradeerd",
+        "dropPlayers": "Sleep spelers hierheen",
+        "females": "Vrouwen",
+        "indexRange": "Indexbereik",
+        "indexValid": "Ploegindex is toegestaan",
+        "indexWarning": "De ploegindex overschrijdt het maximum, maar is toegestaan",
+        "males": "Mannen",
+        "markRemoval": "{{name}} markeren voor verwijdering",
+        "maxLevel": "Max. niveau",
+        "newSubEvent": "Nieuwe reeks",
+        "promoted": "Gepromoveerd",
+        "removalPending": "Deze ploeg wordt verwijderd bij het opslaan",
+        "standing": "Positie",
+        "teamIndex": "Ploegindex",
+        "tooStrong": "De ploeg is te sterk voor deze reeks",
+        "undoRemoval": "Verwijdering van {{name}} ongedaan maken"
+      },
       "controls": {
         "allAssigned": "Alle spelers zijn toegewezen",
         "loadedDraft": "Opgeslagen concept geladen",

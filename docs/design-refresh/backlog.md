@@ -5,6 +5,32 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013c [Builder team cards](work-items/DR-013c-builder-team-cards.md) is Done with explicit approval
+(`Approve and commit DR-013c with disclosed limits`, 2026-11-13), after inline-field feedback.
+The pencil sits beside its sub-event label, not in the header or after the right-aligned value.
+Native index validity Tag/check restored; successful indices include localized screen-reader text.
+All five first-card labels are 24.75px apart (previous plain bottom rows: 24.5px).
+The native inline Button uses three documented scoped small-size tokens; its target is 24.5x24.75px.
+Index, sub-event, range, level and standing now share one consistently aligned label/value block;
+warnings follow the complete metadata instead of interrupting it.
+Implemented on `/clubs/smash-for-fun` -> Ploegopstelling: native Card title, visible status/index Tags,
+Messages, keyboard-accessible sub-event action, localized nl/fr/en labels and one player-group rendering loop.
+Player-chip internals, dialogs, service algorithms and shared theme unchanged. Literal class tokens 175 -> 74.
+Lint/build pass (12 tasks); eight related tests pass using the existing temporary zoneless setup override.
+Default club tests fail before execution on missing `zone.js` (DR-059).
+Dutch light/dark initially at 1440px and 390px; final alignment pass at verified 1280px and 390px:
+no horizontal overflow in any of nine cards and all value-cell right edges match. Keyboard open/Cancel checked.
+Focused lint/build and three card regressions pass again after final sizing; eight related tests also passed
+after restoring the inline action and index validity feedback. API recovered after the translation restart.
+Native Message contrast fails (DR-034); dark secondary-button focus ring is low contrast (DR-032).
+Existing sub-event dialog ignores Escape (DR-013g); service validation remains English (new DR-013h).
+Not verified: browser removal/empty/backup/long/missing states, fr/en browser, live mutations, full accessibility
+and SSR/hydration. No operational mutations.
+Approval accepts these disclosed limits without changing unchecked checks into passes and authorizes the scoped commit.
+Keep DR-013 open. Next candidate/action: scope DR-013d player chips before implementation; not started.
+
+### Previous focus: Club aside layout (DR-060)
+
 DR-060 [Club aside layout rework](work-items/DR-060-club-aside-layout.md) is Done with explicit approval
 (`Approve and commit DR-060 with disclosed limits`, 2026-11-13).
 The latest feedback is implemented: S/D/MX wins / games played beneath each performer, using additive fields
@@ -2623,11 +2649,12 @@ and linked from their registry rows.
 | [DR-013](work-items/DR-013-club-team-builder.md)              | Club team builder                                                            | In progress |
 | [DR-013a](work-items/DR-013a-builder-settings.md)             | Team-builder settings dialog                                                 | Done        |
 | [DR-013b](work-items/DR-013b-builder-layout-pools.md)         | Builder toolbar, layout and player pools                                     | Done        |
-| DR-013c                                                       | Builder team cards                                                           | Backlog     |
+| [DR-013c](work-items/DR-013c-builder-team-cards.md)           | Builder team cards                                                           | Done        |
 | DR-013d                                                       | Builder player chips                                                         | Backlog     |
 | DR-013e                                                       | Survey import dialog                                                         | Backlog     |
 | DR-013f                                                       | Survey edit dialog                                                           | Backlog     |
 | DR-013g                                                       | Sub-event dialog                                                             | Backlog     |
+| DR-013h                                                       | Builder validation, notification and confirmation localization               | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                                                  | Done        |
@@ -2788,6 +2815,21 @@ and linked from their registry rows.
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-013h: Builder validation, notification and confirmation localization
+
+- DR-013c localizes card-owned labels, but the mounted builder service still produces English validation errors,
+  including `Team index 79 exceeds maximum 76` and player-count feedback, rendered verbatim in the card.
+- Scope the service-owned validation/notification/confirmation copy separately. Preserve calculations, severities
+  and mutation behavior; do not translate service output by string matching inside presentational components.
+
+### DR-032/034 additional evidence: builder team cards
+
+- DR-013c on `/clubs/smash-for-fun` -> Ploegopstelling (2026-11-13): native warning Message text measures 2.85:1
+  in light / 7.49:1 dark; error Message text 4.44:1 light / 4.40:1 dark. Retain the shared DR-034 audit.
+- The native secondary text sub-event Button has a visible keyboard outline, but its dark outline measures
+  1.40:1 against the Card. Include secondary-button focus indicators in DR-032; no page overrides added.
+- Sampled heading/metadata/Button text, success/warning Tags and removal icon pass their normal-state targets.
 
 ### DR-062: Native Tooltip description association
 

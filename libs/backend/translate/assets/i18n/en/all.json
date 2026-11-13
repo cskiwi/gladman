@@ -143,6 +143,28 @@
     "teamBuilder": {
       "addPlayer": "Add player...",
       "addTeam": "Add Team",
+      "card": {
+        "backups": "Backups",
+        "changeSubEvent": "Change sub-event for {{name}}: {{subEvent}}",
+        "currentSubEvent": "Current sub-event",
+        "deleteTeam": "Delete {{name}}",
+        "demoted": "Demoted",
+        "dropPlayers": "Drop players here",
+        "females": "Women",
+        "indexRange": "Index range",
+        "indexValid": "Team index is allowed",
+        "indexWarning": "Team index exceeds the maximum but is allowed",
+        "males": "Men",
+        "markRemoval": "Mark {{name}} for removal",
+        "maxLevel": "Max level",
+        "newSubEvent": "New sub-event",
+        "promoted": "Promoted",
+        "removalPending": "This team will be removed on save",
+        "standing": "Standing",
+        "teamIndex": "Team index",
+        "tooStrong": "Team is too strong for this sub-event",
+        "undoRemoval": "Undo removal of {{name}}"
+      },
       "controls": {
         "allAssigned": "All players assigned",
         "loadedDraft": "Loaded from saved draft",

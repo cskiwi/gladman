@@ -6,7 +6,8 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { ProgressBar } from 'primeng/progressbar';
+import { DividerModule } from 'primeng/divider';
+import { MessageModule } from 'primeng/message';
 import { TeamBuilderPlayer, TeamBuilderTeam } from '../../pages/detail/tabs/team-builder/types/team-builder.types';
 import { getPlayerContribution } from '../../pages/detail/tabs/team-builder/utils/team-index-calculator';
 import { PlayerChipComponent } from './player-chip.component';
@@ -23,7 +24,8 @@ import { PlayerChipComponent } from './player-chip.component';
     TagModule,
     ButtonModule,
     TooltipModule,
-    ProgressBar,
+    DividerModule,
+    MessageModule,
     PlayerChipComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +73,34 @@ export class BuilderTeamCardComponent {
     };
   });
 
+  playerGroups = computed(() => {
+    const players = this.sortedPlayers();
+    const prefix = 'all.club.teamBuilder.card.';
+    if (this.team().type === 'MX') {
+      const groups = [
+        { key: 'regularMales', label: prefix + 'males', players: players.regularMales, backupStart: false },
+        { key: 'regularFemales', label: prefix + 'females', players: players.regularFemales, backupStart: false },
+      ];
+      return players.backups.length === 0
+        ? groups
+        : [
+            ...groups,
+            { key: 'backupMales', label: prefix + 'males', players: players.backupMales, backupStart: true },
+            { key: 'backupFemales', label: prefix + 'females', players: players.backupFemales, backupStart: false },
+          ];
+    }
+    return [
+      { key: 'regulars', label: '', players: players.regulars, backupStart: false },
+      ...(players.backups.length ? [{ key: 'backups', label: '', players: players.backups, backupStart: true }] : []),
+    ];
+  });
+
+  subEventLabel = computed(() => {
+    const team = this.team();
+    const original = !team.isPromoted && !team.isDemoted ? team.originalSubEvent?.name : null;
+    return team.selectedSubEvent?.name || original || '—';
+  });
+
   playerDropped = output<CdkDragDrop<string>>();
   removeTeamClicked = output<void>();
   markForRemovalClicked = output<void>();
@@ -78,13 +108,6 @@ export class BuilderTeamCardComponent {
   playerClicked = output<TeamBuilderPlayer>();
   subEventChanged = output<string>();
   subEventClicked = output<void>();
-
-  get indexPercent(): number {
-    const t = this.team();
-    const max = t.selectedSubEvent?.maxBaseIndex;
-    if (max == null || max <= 0) return 0;
-    return Math.min((t.teamIndex / max) * 100, 100);
-  }
 
   get indexSeverity(): 'success' | 'warn' | 'danger' {
     const t = this.team();
@@ -94,28 +117,6 @@ export class BuilderTeamCardComponent {
     if (max == null) return 'success';
     if (t.teamIndex > max) return 'warn';
     return 'success';
-  }
-
-  get indexProgressClass(): string {
-    switch (this.indexSeverity) {
-      case 'danger':
-        return 'team-index-danger';
-      case 'warn':
-        return 'team-index-warn';
-      default:
-        return '';
-    }
-  }
-
-  get indexBarColor(): string {
-    switch (this.indexSeverity) {
-      case 'danger':
-        return 'var(--p-red-500)';
-      case 'warn':
-        return 'var(--p-orange-500)';
-      default:
-        return 'var(--p-primary-color)';
-    }
   }
 
   get indexRangeLabel(): string {

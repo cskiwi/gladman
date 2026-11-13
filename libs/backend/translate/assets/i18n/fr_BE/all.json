@@ -143,6 +143,28 @@
     "teamBuilder": {
       "addPlayer": "Ajouter un joueur...",
       "addTeam": "Ajouter une Équipe",
+      "card": {
+        "backups": "Remplaçants",
+        "changeSubEvent": "Changer la série de {{name}} : {{subEvent}}",
+        "currentSubEvent": "Série actuelle",
+        "deleteTeam": "Supprimer {{name}}",
+        "demoted": "Reléguée",
+        "dropPlayers": "Déposez les joueurs ici",
+        "females": "Femmes",
+        "indexRange": "Plage d'indice",
+        "indexValid": "Indice d'équipe autorisé",
+        "indexWarning": "L'indice dépasse le maximum, mais reste autorisé",
+        "males": "Hommes",
+        "markRemoval": "Marquer {{name}} pour suppression",
+        "maxLevel": "Niveau max.",
+        "newSubEvent": "Nouvelle série",
+        "promoted": "Promue",
+        "removalPending": "Cette équipe sera supprimée lors de l'enregistrement",
+        "standing": "Position",
+        "teamIndex": "Indice d'équipe",
+        "tooStrong": "L'équipe est trop forte pour cette série",
+        "undoRemoval": "Annuler la suppression de {{name}}"
+      },
       "controls": {
         "allAssigned": "Tous les joueurs sont assignés",
         "loadedDraft": "Brouillon enregistré chargé",

@@ -150,6 +150,28 @@ export type I18nTranslations = {
             "teamBuilder": {
                 "addPlayer": string;
                 "addTeam": string;
+                "card": {
+                    "backups": string;
+                    "changeSubEvent": string;
+                    "currentSubEvent": string;
+                    "deleteTeam": string;
+                    "demoted": string;
+                    "dropPlayers": string;
+                    "females": string;
+                    "indexRange": string;
+                    "indexValid": string;
+                    "indexWarning": string;
+                    "males": string;
+                    "markRemoval": string;
+                    "maxLevel": string;
+                    "newSubEvent": string;
+                    "promoted": string;
+                    "removalPending": string;
+                    "standing": string;
+                    "teamIndex": string;
+                    "tooStrong": string;
+                    "undoRemoval": string;
+                };
                 "controls": {
                     "allAssigned": string;
                     "loadedDraft": string;

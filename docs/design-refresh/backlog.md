@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013 [Club team builder](work-items/DR-013-club-team-builder.md) is Done with explicit parent approval
+(`Commit and close of the team-builder  DR-013  so for the next iteration we can move to the next component`,
+2026-11-13). All required children DR-013a through DR-013h remain Done.
+Confirmed consumer: `/clubs/smash-for-fun?tab=team-builder`; clean worktree at selection.
+Found and fixed Settings Cancel losing trigger focus: restore the connected trigger only after modal destruction,
+matching the other callers. Two regressions cover connected/disconnected triggers and cancellation isolation.
+Existing smart/service and presentational Card/chip separation preserved; no new extraction, styling or translations.
+Club lint/build pass (12 tasks, cache used); nine builder suites / 35 tests pass with the temporary existing zoneless
+setup override. Default tests still fail before execution on missing `zone.js` (DR-059); no infrastructure change.
+Dutch light/dark at 390px/1440px: nine Cards / 72 chips, toolbar/pools and all five dialog paths fit with no
+horizontal overflow or raw keys. Keyboard opening/Cancel returns actual triggers in all 20 cases; Save confirmation
+initially focuses Cancel and Escape returns its trigger. Card text remains unchanged; zero GraphQL mutations observed.
+Settings focus wrap, label associations, unsaved numeric edit/discard/reopen and narrow pointer Cancel return pass.
+Sort/backup/filter controls checked and restored. API and proxy return GraphQL 200; initial viewport/theme restored.
+Not verified: live persistence, drag/drop/membership, populated pools, full loading/error/long-data matrix,
+fr/en browser, full accessibility/contrast or SSR/hydration. Inherited DR-032/033/034/058/059/063/064/065 remain separate.
+Parent approval accepts those disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Approval authorizes the scoped caller fix, tests and repository handoff commit.
+Exact next action: scope DR-014 club team detail from its mounted consumer and split it if needed before implementation.
+DR-014 remains Backlog and is not started. Do not reopen completed DR-013 children. No push authorized.
+
+### Previous focus: Builder feedback localization (DR-013h)
+
 DR-013h [Builder feedback localization](work-items/DR-013h-builder-feedback.md) is Done with explicit approval
 (`Approve and commit DR-013h with disclosed limits`, 2026-11-13).
 Implemented nl/fr/en validation, warning, notification and confirmation copy on the mounted
@@ -2756,7 +2779,7 @@ and linked from their registry rows.
 | [DR-012e](work-items/DR-012e-club-player-roster-tab.md)       | Club player roster tab                                                       | Done        |
 | [DR-012f](work-items/DR-012f-club-schedule-tab.md)            | Club schedule tab                                                            | Done        |
 | [DR-012g](work-items/DR-012g-club-tournaments-tab.md)         | Club tournaments tab                                                         | Done        |
-| [DR-013](work-items/DR-013-club-team-builder.md)              | Club team builder                                                            | In progress |
+| [DR-013](work-items/DR-013-club-team-builder.md)              | Club team builder                                                            | Done        |
 | [DR-013a](work-items/DR-013a-builder-settings.md)             | Team-builder settings dialog                                                 | Done        |
 | [DR-013b](work-items/DR-013b-builder-layout-pools.md)         | Builder toolbar, layout and player pools                                     | Done        |
 | [DR-013c](work-items/DR-013c-builder-team-cards.md)           | Builder team cards                                                           | Done        |

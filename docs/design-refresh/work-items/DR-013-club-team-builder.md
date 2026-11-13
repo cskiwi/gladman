@@ -13,6 +13,8 @@ description: 'Incremental refresh of the mounted club team-builder tab and its d
 - Preserve permissions, draft persistence, survey processing, player matching, ranking calculations,
   drag/drop, membership changes and explicit team saves.
 - Do not change global styling, backend behavior or dependencies.
+- Integrated-review repair: restore the connected Settings trigger after modal destruction, matching the other dialogs.
+  Preserve Settings values, cancellation, save callbacks and native dialog configuration; no child redesign is reopened.
 
 ## Children
 
@@ -27,8 +29,8 @@ description: 'Incremental refresh of the mounted club team-builder tab and its d
 
 [DR-013a](DR-013a-builder-settings.md) is implemented and approved with disclosed limits.
 [DR-013b](DR-013b-builder-layout-pools.md) implements the toolbar/layout/pools and is approved with disclosed limits.
-Scope each remaining child and create its brief before implementation.
-Keep this parent open until all required children are complete.
+All eight required children are now Done with explicit approval and disclosed verification limits.
+Integrated verification and parent-level review are complete with approval below; do not reopen completed children.
 
 ## Baseline and handoff
 
@@ -36,8 +38,8 @@ Source and browser confirmed the tab and Settings action are mounted on `/clubs/
 on 2026-11-13. The existing builder already separates its service from presentational team cards/player chips.
 Reuse that separation; do not extract one-to-one wrappers for native PrimeNG fields.
 DR-013b localized the toolbar/pools. DR-013c localizes card-owned labels and removes card-owned palette colors.
-DR-013d has migrated player chips. Remaining dialogs are handled in their respective children.
-Service-generated validation and notification text is separate follow-up DR-013h.
+DR-013d has migrated player chips. DR-013e/f/g have migrated the import, survey-edit and sub-event dialogs.
+DR-013h has localized service-generated validation, notifications and confirmations.
 
 DR-013a implements native fluid fields, label/help associations, Divider, responsive dialog sizing and the existing
 localized title. Lint/build and an isolated accessibility regression (temporary zoneless setup override) pass.
@@ -102,10 +104,101 @@ confirmation keyboard containment/dismissal/trigger return and Toast layout/clos
 No live team save/import/removal accepted; fr/en browser, full accessibility/contrast and SSR remain unchecked.
 The user explicitly approved `Approve and commit DR-013h with disclosed limits` on 2026-11-13.
 DR-013h is Done; approval accepts its remaining limits without claiming unperformed checks passed.
-This authorizes only the child's scoped commit. Keep this parent open.
-Exact next action: review the integrated builder against this parent's remaining checklist and agree any parent-level
-verification limits before closing DR-013. DR-064/065 remain Backlog. No push authorized.
+That approval authorized only the child's scoped commit, leaving the parent open at that point.
+The integrated review and explicit parent approval below complete that next action.
+DR-064/065 remain Backlog. No push authorized.
 
-- [ ] Complete and review all required children.
-- [ ] Verify the integrated builder without operational mutations.
-- [ ] Record any accepted verification limits before closing this parent.
+- [x] Complete and review all required children (their recorded approvals retain their disclosed limits).
+- [x] Verify the integrated builder's mounted layout and safe dialog/control interactions without operational mutations.
+- [x] Repair and regress the integrated Settings trigger-focus handoff.
+- [ ] Full loading/error/populated-pool/long-data browser matrix.
+- [ ] Live drag/drop, membership, import confirmation and settings/survey/team persistence.
+- [ ] Full accessibility/contrast, fr/en browser and dedicated SSR/hydration verification.
+- [ ] Default club test setup passes (DR-059).
+- [x] Record accepted verification limits before closing this parent (explicit approval below).
+
+## Integrated parent review: 2026-11-13
+
+### Scope and repair
+
+- Clean worktree at selection. Source and mounted DOM confirm the permission-gated team-builder tab is in use;
+  all eight required child rows are Done with approvals in their briefs.
+- Reconciled outdated parent statements that still described completed dialogs/localization as future work.
+- Retained the existing smart/service and presentational Card/chip separation. No new wrapper is warranted:
+  Cards and chips already share their rendering paths across their real consumers.
+- The initial four-case matrix found Settings Cancel did not return focus to its actual trigger. Import,
+  sub-event, survey and confirmation dismissal already restored their triggers.
+- Bounded repair in the existing builder caller: capture activeElement before opening Settings and restore it
+  on DynamicDialog destruction only if it is still a connected HTMLElement. This matches the other callers;
+  no timers, shared dialog changes, new configuration, translation or persistence changes.
+- Two focused caller regressions verify restoration occurs after destruction, not close; a disconnected trigger
+  is not focused, and cancellation never calls updateConfig. Existing settings-save callback regression still passes.
+- No template, utility or styling changes: builder/Card/chip literal class counts remain 119/74/54.
+  No new SCSS, palette colors, dependencies or styling exceptions. Children are not reopened.
+
+### Validation
+
+- PASS: repository `npx prettier --write --end-of-line lf` on all changed files and the temporary test config.
+- PASS: `npx nx run-many -t lint build -p frontend-pages-club --output-style=static`:
+  12 tasks including dependencies, cache used; existing dependency warnings remain.
+- PASS after approval: `npx nx run-many --target=lint --output-style=static`:
+  all 34 projects pass with inherited warnings.
+- FAIL before execution:
+  `npx nx run frontend-pages-club:test --runInBand --testPathPatterns=team-builder --output-style=static`:
+  all nine suites fail on missing `zone.js`, zero tests executed (DR-059).
+- PASS:
+  `npx nx run frontend-pages-club:test --runInBand --testPathPatterns=team-builder
+--jestConfig=tmp\dr013-parent-jest.config.cjs --output-style=static`:
+  nine suites / 35 tests, including the two new Settings handoff cases.
+  Initial pre-repair run passed the existing 33 tests; final run includes the repair.
+- Temporary config spreads the existing club config and changes only rootDir/setupFilesAfterEnv to the existing
+  tournament zoneless setup. Removed after verification; no repository-wide test-infrastructure change.
+- PASS: `git diff --check`.
+- NOT RUN: full application build/suite, default setup repair, full contrast/accessibility audit, fr/en browser,
+  dedicated SSR/hydration and operational persistence workflows. Existing child limits remain unchecked.
+
+### Browser evidence
+
+- Real mounted Dutch tab: nine Cards and 72 player chips; current unassigned/stopping pools are empty.
+- Final matrix: light/dark at 1440x1000 and 390x844. Zero page/Card/dialog horizontal overflow or raw translation
+  keys. All five dialog paths fit inside the viewport and initially contain focus.
+- Native dialog widths (rounded CSS pixels): wide Settings/import/sub-event/survey/confirmation =
+  500/800/500/600/560; narrow = 371/371/371/371/280.
+- All 20 keyboard paths open via actual controls. Settings/import/sub-event/survey close via footer Cancel;
+  confirmation closes via Escape with Cancel initially focused. All 20 return focus to their actual connected
+  triggers after the repair. Survey is reached through the actual chip details Popover, not a component preview.
+- The four cases preserve exact Card text before/after cancellation; a request observer sees zero GraphQL
+  mutations throughout the final matrix. No import file confirmed, player created, team removed or team saved.
+- Additional dark/wide checks: select Index then restore Name; toggle backup grouping off/on; filter the empty
+  pool and clear it. Selected states change correctly and the final Card text matches the initial text.
+- Settings: all six inputs have labels. ArrowUp changes an unsaved value; Cancel/reopen restores the original.
+  Shift+Tab from the first input wraps to Save; Tab wraps back. Cancel returns focus. Zero GraphQL mutations
+  observed throughout these extra control checks.
+- Pointer opening and footer Cancel return independently checked at light/390px after the repair.
+  Early probes hit an overly exact icon-bearing button name, duplicate header/footer Cancel names and a stale
+  snapshot reference; these failed probes are not passing pointer checks. Final probes use scoped actual controls.
+- Screenshot inspection: light/wide Settings before the repair, light/narrow toolbar/pools and Settings after
+  the repair, and dark/wide Card/pool composition. The caller-only repair does not alter appearance.
+  No screenshots or personal fixture data added to the repository.
+- A transient GraphQL request failure appeared among browser recent events during development reloads.
+  Final read-only `{ __typename }` probes return HTTP 200 / Query on both ports 3000 and 5000.
+  No backend/translation restart was needed or performed.
+- Restored initial dark theme and 1643x1272 viewport, closed dialogs, restored sort/group/filter controls and
+  left focus on Settings. Live data, team membership and assignments were not changed.
+
+### Approval, accepted limits and exact next action
+
+- Parent was moved to Review after integrated checks and before seeking approval.
+- On 2026-11-13 the user explicitly approved:
+  `Commit and close of the team-builder  DR-013  so for the next iteration we can move to the next component`.
+- Parent is now Done in the authoritative backlog. Approval accepts the disclosed limits below without claiming
+  unperformed checks passed; all corresponding checklist entries remain unchecked.
+- Inherited unresolved work remains separate: DR-032/033/034/058 contrast, DR-059 default test setup,
+  DR-063 Popover native behavior, DR-064 ConfirmDialog native inputs and DR-065 import failure reporting.
+- Accepted unverified limits: live persistence and membership/drag/drop, populated pools, complete
+  loading/error/long-data browser states, fr/en browser, full accessibility/contrast and SSR/hydration.
+  DR-059 still prevents the default test setup from executing; only the temporary zoneless run passes.
+- Approval authorizes committing only this Settings caller fix, its two regressions and repository handoff.
+  It does not authorize shared infrastructure/theme fixes, other backlog items or a push.
+- Exact next action: scope DR-014 club team detail from its mounted consumer, create its brief and split broad
+  work before selecting a single implementation slice. DR-014 remains Backlog; not started in this invocation.

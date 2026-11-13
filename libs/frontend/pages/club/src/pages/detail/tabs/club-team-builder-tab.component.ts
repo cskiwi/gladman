@@ -200,11 +200,18 @@ export class ClubTeamBuilderTabComponent {
   }
 
   openSettingsDialog() {
+    const trigger = this.document.activeElement;
     const ref = this.dialogService.open(SettingsDialogComponent, {
       header: this.translate.instant('all.club.teamBuilder.settings.title'),
       width: '500px',
       breakpoints: { '640px': '95vw' },
       data: { config: this.service.config() },
+    });
+
+    ref?.onDestroy.subscribe(() => {
+      if (trigger instanceof HTMLElement && trigger.isConnected) {
+        trigger.focus();
+      }
     });
 
     ref?.onClose.subscribe((config: TeamBuilderConfig | null) => {

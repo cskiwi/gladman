@@ -288,6 +288,23 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
     expect(element.textContent).toContain(prefix + 'noSearchResults');
   });
 
+  it.each([true, false])('restores the settings trigger only after destruction while connected=%s', async (connected) => {
+    const { fixture, service, element } = await render();
+    const ref = new DynamicDialogRef();
+    jest.spyOn(fixture.debugElement.injector.get(DialogService), 'open').mockReturnValue(ref);
+    const trigger = [...element.querySelectorAll('button')].find((button) => button.textContent?.includes('all.club.teamBuilder.settings.title'));
+    if (!trigger) throw new Error('Missing settings trigger');
+    trigger.focus();
+    const focus = jest.spyOn(trigger, 'focus');
+    trigger.click();
+    ref.close(null);
+    expect(service.updateConfig).not.toHaveBeenCalled();
+    expect(focus).not.toHaveBeenCalled();
+    if (!connected) trigger.remove();
+    ref.destroy();
+    expect(focus).toHaveBeenCalledTimes(connected ? 1 : 0);
+  });
+
   it('restores focus to the import trigger after the modal is destroyed', async () => {
     const { fixture, element } = await render();
     const ref = new DynamicDialogRef();

@@ -84,11 +84,18 @@ Dutch light/dark wide/narrow layout, labels, keyboard opening, focus wrap, Escap
 No live save. Full accessibility/contrast, fr/en browser, populated imported-survey browser states, long identity
 and SSR/hydration remain unchecked. The user explicitly approved
 `Approve and commit DR-013f with disclosed limits` on 2026-11-13; approval authorizes its scoped commit.
-Keep this parent open. Exact next action: scope DR-013g sub-event dialog before implementation; not started.
-DR-013g must check dialog dismissal: Enter opens it from the new keyboard-accessible action, but Escape does not
-dismiss the existing dialog; Cancel closes it without applying a change. Do not repair this in the card slice.
-DR-013e confirmed native Dialog requires both `closable` and `closeOnEscape`, and does not restore trigger focus.
-Check these recorded findings when scoping DR-013g rather than changing the other dialogs in the import slice.
+[DR-013g](DR-013g-builder-sub-event.md) implements native labelled RadioButtons, localized dialog copy and responsive
+modal options with Escape and post-destruction trigger restoration. It preserves grouping, metadata and exact selection
+payloads, with no service algorithm or persistence changes. Club lint/build pass; eight builder suites / 26 tests pass
+with the temporary zoneless override, while default tests remain DR-059.
+API/proxy recovered after user intervention. Mounted Dutch light/dark at 390px/1440px fit with no horizontal overflow.
+Native radio Arrow/Space selection, initial focus, focus wrap, Escape/Cancel discard and actual trigger return pass.
+Long synthetic DOM labels wrap with native vertical content scrolling. No live Apply/team save.
+The user explicitly approved `Approve and commit DR-013g with disclosed limits` on 2026-11-13.
+DR-013g is Done with fr/en browser, full accessibility/contrast, live Apply and SSR/hydration still unchecked.
+Approval authorizes its scoped commit without claiming unperformed checks passed.
+Keep this parent open. Exact next action: scope DR-013h builder validation, notification and confirmation localization
+before implementation; not started.
 
 - [ ] Complete and review all required children.
 - [ ] Verify the integrated builder without operational mutations.

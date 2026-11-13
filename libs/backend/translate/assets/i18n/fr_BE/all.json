@@ -143,6 +143,13 @@
     "teamBuilder": {
       "addPlayer": "Ajouter un joueur...",
       "addTeam": "Ajouter une Équipe",
+      "subEvent": {
+        "auto": "Automatique",
+        "autoHelp": "Déterminer automatiquement la série selon la position et l'indice d'équipe",
+        "otherGroup": "Autres séries",
+        "selection": "Sélectionner une série",
+        "title": "Changer la série de {{name}}"
+      },
       "player": {
         "cannotMeet75": "Ne peut pas assurer 75 % de présence",
         "indicatorCount": "{{count}} indications du joueur",

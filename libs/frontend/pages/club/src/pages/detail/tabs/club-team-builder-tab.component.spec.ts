@@ -2,11 +2,11 @@ import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Player } from '@app/models';
+import { CompetitionSubEvent, Player, Team } from '@app/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ClubTeamBuilderTabComponent } from './club-team-builder-tab.component';
 import { ClubTeamBuilderTabService } from './club-team-builder-tab.service';
-import { TeamBuilderPlayer } from './team-builder/types/team-builder.types';
+import { TEAM_BUILDER_AUTO_SUB_EVENT, TeamBuilderPlayer, TeamBuilderTeam } from './team-builder/types/team-builder.types';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 describe('ClubTeamBuilderTabComponent pools and controls', () => {
@@ -45,6 +45,9 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
       removePlayer: jest.fn(),
       systemId: signal('example-system'),
       getClubPlayers: jest.fn().mockReturnValue([]),
+      getSubEventOptions: jest.fn().mockReturnValue([]),
+      getAllSubEvents: jest.fn().mockReturnValue([]),
+      setTeamSubEvent: jest.fn(),
     };
     await TestBed.configureTestingModule({
       imports: [ClubTeamBuilderTabComponent, TranslateModule.forRoot()],
@@ -158,5 +161,65 @@ describe('ClubTeamBuilderTabComponent pools and controls', () => {
     expect(focus).not.toHaveBeenCalled();
     ref.destroy();
     expect(focus).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens a responsive sub-event modal, preserves manual/Auto results and restores focus after destruction', async () => {
+    const { fixture, service, element } = await render();
+    const ref = new DynamicDialogRef();
+    const open = jest.spyOn(fixture.debugElement.injector.get(DialogService), 'open').mockReturnValue(ref);
+    const team: TeamBuilderTeam = Object.assign(new Team(), {
+      id: 'example-team',
+      name: 'Example team',
+      type: 'M' as const,
+      isNew: false,
+      isPromoted: false,
+      isDemoted: false,
+      isMarkedForRemoval: false,
+      standingOutcome: 'UNCHANGED' as const,
+      subEventManuallyOverridden: true,
+      players: [],
+      teamIndex: 40,
+      isValid: true,
+      validationErrors: [],
+      selectedSubEvent: Object.assign(new CompetitionSubEvent(), { id: 'manual-division' }),
+    });
+    const trigger = element.querySelector<HTMLButtonElement>('button');
+    if (!trigger) throw new Error('Missing trigger');
+    trigger.focus();
+    const focus = jest.spyOn(trigger, 'focus');
+    fixture.componentInstance.openSubEventDialog(team);
+    expect(open).toHaveBeenLastCalledWith(
+      expect.any(Function),
+      expect.objectContaining({
+        header: 'all.club.teamBuilder.subEvent.title',
+        width: '500px',
+        breakpoints: { '640px': '95vw' },
+        modal: true,
+        closeOnEscape: true,
+        closable: true,
+        closeAriaLabel: 'all.button.cancel',
+        data: expect.objectContaining({ selectedValue: 'manual-division' }),
+      }),
+    );
+    ref.close(null);
+    expect(service.setTeamSubEvent).not.toHaveBeenCalled();
+    expect(focus).not.toHaveBeenCalled();
+    ref.close(undefined);
+    expect(service.setTeamSubEvent).not.toHaveBeenCalled();
+    ref.close('new-division');
+    ref.close(TEAM_BUILDER_AUTO_SUB_EVENT);
+    expect(service.setTeamSubEvent.mock.calls).toEqual([
+      [team.id, 'new-division'],
+      [team.id, TEAM_BUILDER_AUTO_SUB_EVENT],
+    ]);
+    ref.destroy();
+    expect(focus).toHaveBeenCalledTimes(1);
+    fixture.componentInstance.openSubEventDialog({ ...team, subEventManuallyOverridden: false });
+    expect(open).toHaveBeenLastCalledWith(
+      expect.any(Function),
+      expect.objectContaining({
+        data: expect.objectContaining({ selectedValue: TEAM_BUILDER_AUTO_SUB_EVENT }),
+      }),
+    );
   });
 });

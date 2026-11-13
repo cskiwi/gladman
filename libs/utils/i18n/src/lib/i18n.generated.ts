@@ -150,6 +150,13 @@ export type I18nTranslations = {
             "teamBuilder": {
                 "addPlayer": string;
                 "addTeam": string;
+                "subEvent": {
+                    "auto": string;
+                    "autoHelp": string;
+                    "otherGroup": string;
+                    "selection": string;
+                    "title": string;
+                };
                 "player": {
                     "cannotMeet75": string;
                     "indicatorCount": string;

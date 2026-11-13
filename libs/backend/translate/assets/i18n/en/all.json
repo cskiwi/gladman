@@ -143,6 +143,13 @@
     "teamBuilder": {
       "addPlayer": "Add player...",
       "addTeam": "Add Team",
+      "subEvent": {
+        "auto": "Automatic",
+        "autoHelp": "Determine the sub-event automatically from standing and team index",
+        "otherGroup": "Other sub-events",
+        "selection": "Select sub-event",
+        "title": "Change sub-event for {{name}}"
+      },
       "player": {
         "cannotMeet75": "Cannot meet 75% availability",
         "indicatorCount": "{{count}} player indicators",

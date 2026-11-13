@@ -143,6 +143,13 @@
     "teamBuilder": {
       "addPlayer": "Speler toevoegen...",
       "addTeam": "Team Toevoegen",
+      "subEvent": {
+        "auto": "Automatisch",
+        "autoHelp": "Bepaal de reeks automatisch op basis van positie en ploegindex",
+        "otherGroup": "Overige reeksen",
+        "selection": "Reeks selecteren",
+        "title": "Reeks wijzigen voor {{name}}"
+      },
       "player": {
         "cannotMeet75": "Kan niet aan 75% aanwezigheid voldoen",
         "indicatorCount": "{{count}} spelermeldingen",

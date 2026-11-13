@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-013g [Sub-event dialog](work-items/DR-013g-builder-sub-event.md) is Done with explicit approval
+(`Approve and commit DR-013g with disclosed limits`, 2026-11-13).
+Mounted consumer confirmed: `/clubs/smash-for-fun?tab=team-builder` -> team Card -> Reeks wijzigen.
+Implemented native labelled RadioButtons, localized nl/fr/en copy, responsive modal options and dismissal/focus return.
+Auto/manual payloads, grouping and metadata preserved by regressions; no service algorithms, team saves or global styling.
+Literal class tokens 46 -> 40. Club lint/build pass (12 tasks); eight builder suites / 26 tests pass with the existing
+temporary zoneless setup. Default tests fail before execution on missing `zone.js` (DR-059).
+API/proxy recovered after user intervention; both GraphQL endpoints return 200. Mounted Dutch light/dark at
+390px/1440px fit with no horizontal overflow. All six radios have visible associated labels; initial focus,
+Arrow/Space selection, Tab/Shift+Tab wrap, Escape/Cancel discard and actual trigger return checked.
+Long synthetic DOM label wraps and native content scrolling reaches Apply in both themes at 390px.
+Not verified: live Apply/team save, fr/en browser, full accessibility/contrast and SSR/hydration.
+Approval accepts those limits without turning unperformed checks into passes and authorizes only this slice's commit.
+Keep parent DR-013 open. Exact next action: scope DR-013h builder validation, notification and confirmation
+localization before implementation; not started. No push is authorized.
+
+### Previous focus: Survey edit dialog (DR-013f)
+
 DR-013f [Survey edit dialog](work-items/DR-013f-builder-survey-edit.md) is Done with explicit approval
 (`Approve and commit DR-013f with disclosed limits`, 2026-11-13).
 Implemented on `/clubs/smash-for-fun?tab=team-builder` -> player details -> Enquête bewerken:
@@ -2721,7 +2739,7 @@ and linked from their registry rows.
 | [DR-013d](work-items/DR-013d-builder-player-chips.md)         | Builder player chips                                                         | Done        |
 | [DR-013e](work-items/DR-013e-builder-survey-import.md)        | Survey import dialog                                                         | Done        |
 | [DR-013f](work-items/DR-013f-builder-survey-edit.md)          | Survey edit dialog                                                           | Done        |
-| DR-013g                                                       | Sub-event dialog                                                             | Backlog     |
+| [DR-013g](work-items/DR-013g-builder-sub-event.md)            | Sub-event dialog                                                             | Done        |
 | DR-013h                                                       | Builder validation, notification and confirmation localization               | Backlog     |
 | DR-014                                                        | Club team detail                                                             | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |

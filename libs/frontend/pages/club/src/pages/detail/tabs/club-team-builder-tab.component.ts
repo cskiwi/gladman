@@ -249,19 +249,31 @@ export class ClubTeamBuilderTabComponent {
   }
 
   openSubEventDialog(team: TeamBuilderTeam) {
+    const trigger = this.document.activeElement;
     const options = this.service.getSubEventOptions(team.type);
     const allSubEvents = this.service.getAllSubEvents(team.type);
     const currentValue = team.subEventManuallyOverridden ? (team.selectedSubEvent?.id ?? TEAM_BUILDER_AUTO_SUB_EVENT) : TEAM_BUILDER_AUTO_SUB_EVENT;
 
     const ref = this.dialogService.open(SubEventDialogComponent, {
-      header: `Sub-event — ${team.name}`,
+      header: this.translate.instant('all.club.teamBuilder.subEvent.title', { name: team.name }),
       width: '500px',
+      breakpoints: { '640px': '95vw' },
+      modal: true,
+      closeOnEscape: true,
+      closable: true,
+      closeAriaLabel: this.translate.instant('all.button.cancel'),
       data: {
         currentSubEvent: team.originalSubEvent,
         options,
         allSubEvents,
         selectedValue: currentValue,
       },
+    });
+
+    ref?.onDestroy.subscribe(() => {
+      if (trigger instanceof HTMLElement && trigger.isConnected) {
+        trigger.focus();
+      }
     });
 
     ref?.onClose.subscribe((selection: string | null) => {

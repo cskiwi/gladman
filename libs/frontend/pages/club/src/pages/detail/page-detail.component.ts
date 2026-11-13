@@ -1,5 +1,5 @@
 ﻿import { Component, computed, effect, inject, signal } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
@@ -9,6 +9,7 @@ import { SeoService } from '@app/frontend-modules-seo/service';
 import { Team } from '@app/models';
 import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
+import { injectQueryParams } from 'ngxtension/inject-query-params';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -67,7 +68,15 @@ export class PageDetailComponent {
   readonly dataService = new DetailService();
   private readonly seoService = inject(SeoService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly clubId = injectParams('clubId');
+  private readonly tabParam = injectQueryParams('tab');
+
+  readonly activeTab = computed(() => {
+    const tab = this.tabParam();
+    if (tab === 'team-builder') return this.canAccessTeamBuilder() ? tab : 'overview';
+    return tab && ['overview', 'players', 'schedule', 'tournaments'].includes(tab) ? tab : 'overview';
+  });
 
   // selectors
   club = this.dataService.club;
@@ -142,6 +151,15 @@ export class PageDetailComponent {
   canAccessTeamBuilder(): boolean {
     const clubId = this.clubId();
     return this.auth.hasAnyPermission(['edit-any:club', `${clubId}_edit:club`]);
+  }
+
+  onTabChange(value: string | number | undefined): void {
+    if (value === undefined) return;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab: value.toString() },
+      queryParamsHandling: 'merge',
+    });
   }
 
   canCreateTournament(): boolean {

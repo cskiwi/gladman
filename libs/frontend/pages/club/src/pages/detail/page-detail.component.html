@@ -121,26 +121,26 @@
       [class]="sidebarHidden() ? 'gap-0 min-[1100px]:grid-cols-[1fr_0px]' : 'gap-5 min-[1100px]:grid-cols-[1fr_320px]'"
     >
       <div class="min-w-0">
-        <p-tabs value="0">
+        <p-tabs [value]="activeTab()" (valueChange)="onTabChange($event)">
           <p-tablist>
-            <p-tab value="0">
+            <p-tab value="overview">
               <i class="pi pi-th-large mr-2"></i>
               {{ 'all.team.overview.title' | translate }}
             </p-tab>
-            <p-tab value="1">
+            <p-tab value="players">
               <i class="pi pi-user mr-2"></i>
               {{ 'all.club.playerRoster' | translate }}
             </p-tab>
-            <p-tab value="2">
+            <p-tab value="schedule">
               <i class="pi pi-calendar mr-2"></i>
               {{ 'all.club.schedule' | translate }}
             </p-tab>
-            <p-tab value="3">
+            <p-tab value="tournaments">
               <i class="pi pi-trophy mr-2"></i>
               {{ 'all.club.tournaments.tab' | translate }}
             </p-tab>
             @if (canAccessTeamBuilder()) {
-              <p-tab value="4">
+              <p-tab value="team-builder">
                 <i class="pi pi-sitemap mr-2"></i>
                 {{ 'all.club.teamBuilder.tab' | translate }}
               </p-tab>
@@ -165,7 +165,7 @@
 
           <p-tabpanels>
             <!-- Teams Tab -->
-            <p-tabpanel value="0">
+            <p-tabpanel value="overview">
               <app-club-teams-tab
                 [clubId]="club.slug"
                 [season]="currentSeason()"
@@ -175,21 +175,21 @@
             </p-tabpanel>
 
             <!-- Player Roster Tab -->
-            <p-tabpanel value="1">
+            <p-tabpanel value="players">
               @defer (on idle) {
                 <app-club-players-tab [clubId]="club.slug" [season]="currentSeason()" />
               }
             </p-tabpanel>
 
             <!-- Match Schedule & Results Tab -->
-            <p-tabpanel value="2">
+            <p-tabpanel value="schedule">
               @defer (on idle) {
                 <app-club-schedule-tab [clubId]="club.slug" [season]="currentSeason()" />
               }
             </p-tabpanel>
 
             <!-- Tournaments Tab -->
-            <p-tabpanel value="3">
+            <p-tabpanel value="tournaments">
               @defer (on idle) {
                 <app-club-tournaments-tab [clubId]="club.slug" [canCreate]="canCreateTournament()" (createTournament)="createTournament()" />
               }
@@ -197,7 +197,7 @@
 
             <!-- Team Builder Tab -->
             @if (canAccessTeamBuilder()) {
-              <p-tabpanel value="4">
+              <p-tabpanel value="team-builder">
                 @defer (on idle) {
                   <app-club-team-builder-tab [clubId]="club.slug" [season]="currentSeason()" />
                 }

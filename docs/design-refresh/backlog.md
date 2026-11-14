@@ -5,6 +5,23 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-015 [Competition detail integrated review](work-items/DR-015-competition-detail.md) is Done with explicit
+parent approval (`Approve DR-015 and commit with disclosed limits`, 2026-11-14).
+The mounted `/competition/pbo-competitie-2026-2027` has seven already-Done children DR-015a-g.
+Dutch populated page: 12 event Cards, 26 internal and 26 external draw links, three groups and no raw keys.
+Light/dark 390px/1440px DOM measurements fit page sections; narrow topbar overflow remains DR-066.
+Group Enter scrolling and one draw-link focus pass; dark wide screenshot inspected. No operational action activated.
+The shared sync SplitButton dropdowns have no accessible name in the mounted snapshot; follow up as DR-067.
+No application changes, shared styling, mutations or new extraction. Child checks remain historical.
+Not verified: full screenshot matrix, full accessibility/contrast, alternate locales, operational sync/edit,
+loading/error/empty states, full SSR/hydration or live navigation to external sites.
+Approval accepts those limits and the DR-066/067 follow-ups without claiming unperformed checks passed.
+Exact next action: investigate DR-018 competition editing, confirm a real mounted consumer and permission access,
+then scope one bounded form-section child before implementation. DR-018 remains Backlog and was not started.
+Do not restart completed children; no push is authorized.
+
+### Previous focus: Club team detail parent (DR-014)
+
 DR-014 [Club team detail](work-items/DR-014-club-team-detail.md) is Done with explicit parent approval
 (`Approve and commit DR-014 with disclosed limits`, 2026-11-14).
 All required children DR-014a/b/c/d are Done with recorded approval and disclosed limits.
@@ -2918,7 +2935,7 @@ and linked from their registry rows.
 | [DR-014b](work-items/DR-014b-team-hero-statistics.md)         | Team-detail hero statistics and copy (depends on DR-014a)                    | Done        |
 | [DR-014c](work-items/DR-014c-team-roster.md)                  | Team-detail roster, actions and empty state (depends on DR-014a)             | Done        |
 | [DR-014d](work-items/DR-014d-team-encounter-chrome.md)        | Team-detail encounter section chrome (depends on DR-014a)                    | Done        |
-| DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |
+| [DR-015](work-items/DR-015-competition-detail.md)             | Competition detail and sub-event presentation                                | Done        |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                                                  | Done        |
 | [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement                            | Done        |
 | [DR-015c](work-items/DR-015c-competition-draw-links.md)       | Competition draw links and empty presentation                                | Done        |
@@ -3075,12 +3092,22 @@ and linked from their registry rows.
 | DR-064                                                        | Native ConfirmDialog breakpoint and close-label input audit                  | Backlog     |
 | DR-065                                                        | Builder survey import creation-failure feedback                              | Backlog     |
 | DR-066                                                        | Narrow topbar horizontal overflow                                            | Backlog     |
+| DR-067                                                        | Shared sync SplitButton dropdown accessible name                             | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-067: Shared sync SplitButton dropdown accessible name
+
+- During DR-015 parent review, the mounted competition page exposes 13 icon-only sync dropdown buttons without
+  accessible names in the browser snapshot. Their rendered buttons have no `aria-label` or `aria-labelledby`;
+  the adjacent primary sync action has visible text.
+- Audit the shared [sync button](../../libs/frontend/components/sync/src/sync-button.component.html), native
+  SplitButton options and all mounted consumers before choosing a localized, accessible fix. Do not activate
+  sync or cache operations merely to test presentation.
 
 ### DR-066: Narrow topbar horizontal overflow
 

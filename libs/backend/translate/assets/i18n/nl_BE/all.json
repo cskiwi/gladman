@@ -1479,7 +1479,16 @@
     "draw-label": "Reeks",
     "detail": {
       "loadError": "De ploeggegevens konden niet worden geladen. Probeer het opnieuw.",
-      "loading": "Ploeggegevens laden..."
+      "loading": "Ploeggegevens laden...",
+      "stats": {
+        "roster": "Spelers",
+        "seasonRecord": "Seizoensbalans",
+        "record": "{{won}} gewonnen, {{lost}} verloren",
+        "winRate": "{{rate}}% gewonnen",
+        "encounters": "Ontmoetingen",
+        "nextEncounter": "Volgende ontmoeting",
+        "versus": "{{home}} tegen {{away}}"
+      }
     },
     "edit": {
       "abbreviation": {

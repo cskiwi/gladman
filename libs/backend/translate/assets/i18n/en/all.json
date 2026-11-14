@@ -1479,7 +1479,16 @@
     "draw-label": "Draw",
     "detail": {
       "loadError": "Unable to load the team details. Please try again.",
-      "loading": "Loading team details..."
+      "loading": "Loading team details...",
+      "stats": {
+        "roster": "Players",
+        "seasonRecord": "Season record",
+        "record": "{{won}} won, {{lost}} lost",
+        "winRate": "{{rate}}% wins",
+        "encounters": "Encounters",
+        "nextEncounter": "Next encounter",
+        "versus": "{{home}} vs {{away}}"
+      }
     },
     "edit": {
       "abbreviation": {

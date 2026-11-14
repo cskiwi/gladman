@@ -1479,7 +1479,16 @@
     "draw-label": "Série",
     "detail": {
       "loadError": "Impossible de charger les détails de l'équipe. Veuillez réessayer.",
-      "loading": "Chargement des détails de l'équipe..."
+      "loading": "Chargement des détails de l'équipe...",
+      "stats": {
+        "roster": "Joueurs",
+        "seasonRecord": "Bilan de la saison",
+        "record": "{{won}} victoires, {{lost}} défaites",
+        "winRate": "{{rate}}% de victoires",
+        "encounters": "Rencontres",
+        "nextEncounter": "Prochaine rencontre",
+        "versus": "{{home}} contre {{away}}"
+      }
     },
     "edit": {
       "abbreviation": {

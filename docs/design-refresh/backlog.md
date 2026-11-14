@@ -5,6 +5,33 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-014b [Team hero statistics](work-items/DR-014b-team-hero-statistics.md) is Done with explicit approval
+(`Approve and commit DR-014b with disclosed limits`, 2026-11-14).
+Confirmed mounted consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
+Scope: compact localized hero statistics/native severity; preserve calculations and next-encounter selection.
+Exclude roster, encounter sections, shared components/theme and operations. Clean worktree at selection.
+Implemented semantic label/value statistics, compact W/L, native Tag severity and seven localized keys.
+Existing smart/service and shared presentational hero retained; no wrapper or shared styling change.
+Stats class tokens 87 -> 62; six palette bindings removed. Outside-stats template is unchanged except formatting.
+Club lint/build pass (12 tasks / 10 cached); source translation parity and `git diff --check` pass.
+Default focused tests fail before execution on missing `zone.js` (DR-059); no infrastructure changes.
+API regenerated only nine related stats type lines; preserve this generated output.
+Initial server blocker resolved after `Servers restored; continue DR-014b verification` (2026-11-14).
+Both ports now serve new keys in nl_BE/fr_BE/en. Dutch light/dark at 390px/1440px fits with no overflow.
+Six synthetic cases per theme/width pass: zero data, ties, 50% threshold, away win, long names and undated encounter.
+Existing calculations/ordering preserved; fixtures restored and zero GraphQL mutations observed.
+Native definition-list labels/no new focus stops and sampled label/metric/success/danger contrast pass.
+Final dark narrow/light wide stats-only screenshots reviewed; native dd indentation corrected with four m-0 utilities.
+Focused lint/build after correction pass (12 tasks / 10 cached). No shared server stopped/restarted.
+Not verified: fr/en browser, full accessibility, default tests and full SSR/hydration. DatePipe's existing locale preserved.
+Initial real route/data, dark preference and browser dimensions restored.
+Approval accepts the disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Exact next action: scope DR-014c roster and create its brief before implementation; it was not started here.
+DR-014a remains Done; parent DR-014 stays open.
+Approval authorizes only DR-014b template, locale assets, generated types and repository handoff commit. No push authorized.
+
+### Previous focus: Team-detail page chrome (DR-014a)
+
 DR-014a [Team-detail page chrome](work-items/DR-014a-team-page-chrome.md) is Done with explicit approval
 (`Approve and commit DR-014a with disclosed limits`, 2026-11-14).
 Parent [DR-014](work-items/DR-014-club-team-detail.md) is split into a-d; keep it open.
@@ -2820,7 +2847,7 @@ and linked from their registry rows.
 | [DR-013h](work-items/DR-013h-builder-feedback.md)             | Builder validation, notification and confirmation localization               | Done        |
 | [DR-014](work-items/DR-014-club-team-detail.md)               | Club team detail                                                             | In progress |
 | [DR-014a](work-items/DR-014a-team-page-chrome.md)             | Team-detail identity, contacts and main loading/error                        | Done        |
-| DR-014b                                                       | Team-detail hero statistics and copy (depends on DR-014a)                    | Backlog     |
+| [DR-014b](work-items/DR-014b-team-hero-statistics.md)         | Team-detail hero statistics and copy (depends on DR-014a)                    | Done        |
 | DR-014c                                                       | Team-detail roster, actions and empty state (depends on DR-014a)             | Backlog     |
 | DR-014d                                                       | Team-detail encounter section chrome (depends on DR-014a)                    | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |

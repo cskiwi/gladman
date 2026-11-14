@@ -1487,6 +1487,15 @@ export type I18nTranslations = {
             "detail": {
                 "loadError": string;
                 "loading": string;
+                "stats": {
+                    "roster": string;
+                    "seasonRecord": string;
+                    "record": string;
+                    "winRate": string;
+                    "encounters": string;
+                    "nextEncounter": string;
+                    "versus": string;
+                };
             };
             "edit": {
                 "abbreviation": {

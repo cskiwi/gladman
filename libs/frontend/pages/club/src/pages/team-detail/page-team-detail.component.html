@@ -74,68 +74,54 @@
         </div>
 
         <!-- Stats strip -->
-        <div stats class="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-5 pt-5 border-t border-surface relative z-[1]">
-          <!-- Roster -->
-          <div class="flex flex-col gap-2">
-            <span class="t-eyebrow">Roster</span>
-            <span class="font-['Space_Grotesk',sans-serif] font-semibold text-[2.5rem] leading-none tabular-nums text-color">
-              {{ players().length }}
-            </span>
+        <dl stats class="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-5 pt-5 border-t border-surface">
+          <div class="flex flex-col gap-2 min-w-0">
+            <dt class="text-sm text-muted-color">{{ 'all.team.detail.stats.roster' | translate }}</dt>
+            <dd class="m-0 text-2xl font-semibold tabular-nums text-color">{{ players().length }}</dd>
           </div>
 
-          <!-- Season record -->
-          <div class="flex flex-col gap-2">
-            <span class="t-eyebrow">Season record</span>
-            <div class="flex items-baseline gap-2">
-              <span class="font-['Space_Grotesk',sans-serif] font-semibold text-[2.5rem] leading-none tabular-nums text-color">
-                {{ teamStats().won }}
+          <div class="flex flex-col gap-2 min-w-0">
+            <dt class="text-sm text-muted-color">{{ 'all.team.detail.stats.seasonRecord' | translate }}</dt>
+            <dd class="m-0 flex flex-col gap-1">
+              <span class="sr-only">
+                {{ 'all.team.detail.stats.record' | translate: { won: teamStats().won, lost: teamStats().lost } }}
               </span>
-              <span class="t-mono text-xs text-muted-color">– {{ teamStats().lost }}</span>
-            </div>
-            @if (teamStats().played > 0) {
-              <span
-                class="self-start inline-flex items-center px-2 py-0.5 rounded-sm t-mono text-xs font-semibold"
-                [class.text-green-600]="teamStats().winRate >= 0.5"
-                [class.dark:text-green-400]="teamStats().winRate >= 0.5"
-                [class.bg-green-500/15]="teamStats().winRate >= 0.5"
-                [class.text-red-600]="teamStats().winRate < 0.5"
-                [class.dark:text-red-400]="teamStats().winRate < 0.5"
-                [class.bg-red-500/15]="teamStats().winRate < 0.5"
-              >
-                {{ (teamStats().winRate * 100).toFixed(0) }}% wins
-              </span>
-            }
+              <span class="text-2xl font-semibold tabular-nums text-color" aria-hidden="true"> {{ teamStats().won }} – {{ teamStats().lost }} </span>
+              @if (teamStats().played > 0) {
+                <p-tag
+                  class="self-start"
+                  [severity]="teamStats().winRate >= 0.5 ? 'success' : 'danger'"
+                  [value]="'all.team.detail.stats.winRate' | translate: { rate: (teamStats().winRate * 100).toFixed(0) }"
+                />
+              }
+            </dd>
           </div>
 
-          <!-- Matches -->
-          <div class="flex flex-col gap-2">
-            <span class="t-eyebrow">Matches</span>
-            <span class="font-['Space_Grotesk',sans-serif] font-semibold text-[2.5rem] leading-none tabular-nums text-color">
-              {{ encounters().length }}
-            </span>
+          <div class="flex flex-col gap-2 min-w-0">
+            <dt class="text-sm text-muted-color">{{ 'all.team.detail.stats.encounters' | translate }}</dt>
+            <dd class="m-0 text-2xl font-semibold tabular-nums text-color">{{ encounters().length }}</dd>
           </div>
 
-          <!-- Next match -->
-          <div class="flex flex-col gap-2">
-            <span class="t-eyebrow">Next match</span>
-            @if (upcomingEncounters()[0]; as next) {
-              <div class="flex items-center gap-3">
-                <div class="flex flex-col items-center min-w-[44px]">
-                  <span class="t-mono text-base font-semibold leading-none text-color">
-                    {{ next.date | date: 'dd' }}
+          <div class="flex flex-col gap-2 min-w-0">
+            <dt class="text-sm text-muted-color">{{ 'all.team.detail.stats.nextEncounter' | translate }}</dt>
+            <dd class="m-0 text-sm">
+              @if (upcomingEncounters()[0]; as next) {
+                <div class="flex flex-col gap-1">
+                  <span class="font-semibold text-color break-words">
+                    {{ 'all.team.detail.stats.versus' | translate: { home: next.homeTeam?.name, away: next.awayTeam?.name } }}
                   </span>
-                  <span class="t-mono text-[10px] text-muted-color uppercase">{{ next.date | date: 'MMM' }}</span>
+                  @if (next.date) {
+                    <time class="text-muted-color" [attr.datetime]="next.date | date: 'yyyy-MM-ddTHH:mm:ssZZZZZ'">
+                      {{ next.date | date: 'EEE d MMM · HH:mm' }}
+                    </time>
+                  }
                 </div>
-                <div class="flex flex-col text-xs leading-tight min-w-0">
-                  <span class="font-semibold text-color truncate"> {{ next.homeTeam?.name }} vs {{ next.awayTeam?.name }} </span>
-                  <span class="t-mono text-muted-color">{{ next.date | date: 'EEE · HH:mm' }}</span>
-                </div>
-              </div>
-            } @else {
-              <span class="text-muted-color text-sm">—</span>
-            }
+              } @else {
+                <span class="text-muted-color">{{ 'all.game.upcoming.noGamesFound' | translate }}</span>
+              }
+            </dd>
           </div>
-        </div>
+        </dl>
       </app-hero>
 
       <!-- Players Section -->

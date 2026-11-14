@@ -17,21 +17,22 @@ description: 'Bounded child slices for the mounted club team-detail page.'
 
 ## Required children
 
-| ID                                     | Scope                                              | Prerequisite                                        |
-| -------------------------------------- | -------------------------------------------------- | --------------------------------------------------- |
-| [DR-014a](DR-014a-team-page-chrome.md) | Identity, contact actions, page loading/error      | Completed DR-004 shared hero                        |
-| DR-014b                                | Hero statistics and their copy                     | DR-014a complete; scope brief before implementation |
-| DR-014c                                | Mounted roster table, actions and empty state      | DR-014a complete; scope brief before implementation |
-| DR-014d                                | Upcoming/played encounter headings and empty state | DR-014a complete; preserve shared encounter Cards   |
+| ID                                         | Scope                                              | Prerequisite                                        |
+| ------------------------------------------ | -------------------------------------------------- | --------------------------------------------------- |
+| [DR-014a](DR-014a-team-page-chrome.md)     | Identity, contact actions, page loading/error      | Completed DR-004 shared hero                        |
+| [DR-014b](DR-014b-team-hero-statistics.md) | Hero statistics and their copy                     | DR-014a complete                                    |
+| DR-014c                                    | Mounted roster table, actions and empty state      | DR-014a complete; scope brief before implementation |
+| DR-014d                                    | Upcoming/played encounter headings and empty state | DR-014a complete; preserve shared encounter Cards   |
 
-Only DR-014a is selected in this invocation. Keep the parent open until all required children and parent review pass.
+DR-014a and DR-014b are complete with disclosed limits; DR-014c/d were not started.
+Keep the parent open until all required children and parent review pass.
 
 ## Baseline and discoveries
 
 - Page identity uses a clipped parallelogram crest, truncating display heading, compact bespoke level chip and
   unnamed icon-only contact links. Page error is hand-styled red text; loading uses three Skeletons.
-- Hero statistics contain English copy, oversized metrics, `t-eyebrow` and paired green/red palette utilities.
-  These remain for DR-014b, not a hidden extension of page-chrome work.
+- Hero statistics originally contained English copy, oversized metrics, `t-eyebrow` and paired palette utilities.
+  DR-014b replaces these with localized compact metrics, native Tag severity and wrapping next-encounter details.
 - Mounted roster has English headings/membership values, inline palette colors and tooltip-only mutation action
   names. Resolve these within DR-014c, without making membership mutations for visual verification.
 - Encounter lists already consume the shared `app-encounter-card`; DR-014d is section chrome, not Card internals.
@@ -58,6 +59,12 @@ DR-014a is complete with explicit approval (`Approve and commit DR-014a with dis
 Unchecked child verification limits remain accepted, not claimed as passed. The user refreshed the API on 2026-11-14:
 both endpoints now serve the new keys in all three locales; Dutch main loading/error browser states pass.
 The API regenerated only the related four type lines in the legacy generated i18n file; preserve the generated output.
-Next invocation: scope DR-014b statistics and create its brief before implementation; it was not started here.
+DR-014b implementation is scoped to the mounted hero statistics and translations; lint/build pass.
+After the user restored ports 3000/5000, Dutch light/dark/narrow/wide and synthetic stats cases pass.
+DR-014b is Done with explicit approval (`Approve and commit DR-014b with disclosed limits`, 2026-11-14).
+French/English browser, full accessibility, default tests and full SSR/hydration remain unverified.
+Approval accepts those limits without claiming the unperformed checks passed.
+Exact next action: scope DR-014c roster and create its brief before implementation.
 Keep this parent open until all required children and parent review are complete.
-Only DR-014a implementation/tests/generated keys/handoff are approved for commit. No push is authorized.
+DR-014b approval authorizes its template, locale assets, generated types and repository handoff commit only.
+No push is authorized.

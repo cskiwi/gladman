@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018a [Basic competition information](work-items/DR-018a-basic-information.md) is Done with explicit approval
+(`Approve DR-018a and commit with disclosed limits`, 2026-11-14).
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, information tab, 2026-11-14.
+Scope: name, season and type section, native labels/validation and responsive semantic presentation.
+Exclude location/contact, dates/settings, page chrome, shared selectors/theme, translations and operational saves.
+Implemented semantic heading, native fluid controls, label associations and required-error Messages.
+Basic class tokens 26 -> 23 (whole template 67 -> 64); no new colors, CSS, translations or form logic.
+Competition lint/build pass (12 tasks, 10 cached). No existing editor suite; unrelated suites not run.
+Dutch light/dark at 390px/1440px: empty/long-name sections fit, required feedback and correction pass.
+Native name/season/type keyboard order, type selection and reverse focus pass in all four cases.
+Synthetic season boundary checks pass; four after screenshots inspected. Zero observed GraphQL mutations.
+Real account is read-only; editable fixtures stubbed only the browser component, not account/backend permissions.
+Reload restores real values, read-only/pristine state and zero Messages; shared browser returned to homepage.
+Not verified: full accessibility/contrast (native InputNumber inner aria-invalid absent), alternate locales,
+live saves, automated test suites and full SSR/hydration.
+Approval accepts these limits without claiming unperformed checks passed; unchecked criteria remain.
+Existing shared selector warnings/label API remain explicit DR-018b dependencies; DR-066 stays separate.
+Existing form components already separate responsibilities; no additional smart/presentational extraction needed.
+DR-018 is now an open parent split into a-e. Only DR-018a is selected.
+Exact next action: scope DR-018b with shared-selector dependencies and create its brief before implementation.
+Keep DR-018 open and DR-018b unstarted. Approval authorizes only DR-018a and its handoff commit; no push authorized.
+
+### Previous focus: Competition detail integrated review (DR-015)
+
 DR-015 [Competition detail integrated review](work-items/DR-015-competition-detail.md) is Done with explicit
 parent approval (`Approve DR-015 and commit with disclosed limits`, 2026-11-14).
 The mounted `/competition/pbo-competitie-2026-2027` has seven already-Done children DR-015a-g.
@@ -2971,7 +2995,12 @@ and linked from their registry rows.
 | [DR-017q](work-items/DR-017q-assembly-load-feedback.md)       | Assembly load-error and unselected feedback                                  | Done        |
 | [DR-017r](work-items/DR-017r-assembly-search-card-parity.md)  | Assembly change-team Card and responsive search parity                       | Done        |
 | DR-017s                                                       | Deferred authenticated assembly Save popup                                   | Backlog     |
-| DR-018                                                        | Competition editing                                                          | Backlog     |
+| [DR-018](work-items/DR-018-competition-editing.md)            | Competition editing                                                          | In progress |
+| [DR-018a](work-items/DR-018a-basic-information.md)            | Basic competition information                                                | Done        |
+| DR-018b                                                       | Location/contact information and tab feedback                                | Backlog     |
+| DR-018c                                                       | Competition editing dates                                                    | Backlog     |
+| DR-018d                                                       | Competition editing settings                                                 | Backlog     |
+| DR-018e                                                       | Competition editing page chrome and actions                                  | Backlog     |
 | [DR-019](work-items/DR-019-tournament-browsing.md)            | Tournament detail and retired club tournaments                               | Done        |
 | [DR-019a](work-items/DR-019a-tournament-identity.md)          | Tournament complete hero parity                                              | Done        |
 | DR-019b                                                       | Reserved history: summaries/actions absorbed into DR-019a                    | Backlog     |

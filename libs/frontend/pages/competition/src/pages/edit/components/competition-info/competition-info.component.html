@@ -1,109 +1,129 @@
 <div class="space-y-6">
- <p class="text-muted-color mb-6">
- {{ 'all.competition.edit.info.description' | translate }}
- </p>
+  <p class="text-muted-color mb-6">
+    {{ 'all.competition.edit.info.description' | translate }}
+  </p>
 
- <form [formGroup]="infoForm" class="space-y-6">
- <!-- Basic Information -->
- <div class="mb-8">
- <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
- {{ 'all.competition.edit.info.basic.title' | translate }}
- </h2>
- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
- <!-- Name -->
- <div class="flex flex-col gap-1 lg:col-span-2">
- <label for="name" class="font-medium">{{ 'all.competition.edit.info.name' | translate }}</label>
- <input pInputText id="name" formControlName="name" [placeholder]="'all.competition.edit.info.name.placeholder' | translate" />
- @if (infoForm.get('name')?.errors?.['required'] && infoForm.get('name')?.touched) {
- <small class="text-red-500">{{ 'all.competition.edit.info.name.required' | translate }}</small>
- }
- </div>
+  <form [formGroup]="infoForm" class="space-y-6">
+    <section aria-labelledby="competition-info-basic-title">
+      <h2 id="competition-info-basic-title" class="text-lg font-semibold text-color mt-0 mb-4">
+        {{ 'all.competition.edit.info.basic.title' | translate }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="flex flex-col gap-2 lg:col-span-2">
+          <label for="name" class="font-medium">{{ 'all.competition.edit.info.name' | translate }}</label>
+          <input
+            pInputText
+            id="name"
+            formControlName="name"
+            required
+            fluid
+            [invalid]="infoForm.get('name')!.invalid && infoForm.get('name')!.touched"
+            [attr.aria-invalid]="infoForm.get('name')!.invalid && infoForm.get('name')!.touched"
+            [attr.aria-describedby]="
+              infoForm.get('name')!.hasError('required') && infoForm.get('name')!.touched ? 'competition-info-name-error' : null
+            "
+            [placeholder]="'all.competition.edit.info.name.placeholder' | translate"
+          />
+          @if (infoForm.get('name')!.hasError('required') && infoForm.get('name')!.touched) {
+            <p-message id="competition-info-name-error" severity="error" size="small" variant="simple">
+              {{ 'all.competition.edit.info.name.required' | translate }}
+            </p-message>
+          }
+        </div>
 
- <!-- Season -->
- <div class="flex flex-col gap-1">
- <label for="season" class="font-medium">{{ 'all.competition.edit.info.season' | translate }}</label>
- <p-inputnumber
- id="season"
- formControlName="season"
- [useGrouping]="false"
- [min]="2000"
- [max]="2100"
- [placeholder]="'all.competition.edit.info.season.placeholder' | translate"
- />
- @if (infoForm.get('season')?.errors?.['required'] && infoForm.get('season')?.touched) {
- <small class="text-red-500">{{ 'all.competition.edit.info.season.required' | translate }}</small>
- }
- </div>
+        <div class="flex flex-col gap-2">
+          <label for="season" class="font-medium">{{ 'all.competition.edit.info.season' | translate }}</label>
+          <p-inputnumber
+            inputId="season"
+            formControlName="season"
+            required
+            fluid
+            [invalid]="infoForm.get('season')!.invalid && infoForm.get('season')!.touched"
+            [ariaDescribedBy]="
+              infoForm.get('season')!.hasError('required') && infoForm.get('season')!.touched ? 'competition-info-season-error' : undefined
+            "
+            [useGrouping]="false"
+            [min]="2000"
+            [max]="2100"
+            [placeholder]="'all.competition.edit.info.season.placeholder' | translate"
+          />
+          @if (infoForm.get('season')!.hasError('required') && infoForm.get('season')!.touched) {
+            <p-message id="competition-info-season-error" severity="error" size="small" variant="simple">
+              {{ 'all.competition.edit.info.season.required' | translate }}
+            </p-message>
+          }
+        </div>
 
- <!-- Type -->
- <div class="flex flex-col gap-1">
- <label for="type" class="font-medium">{{ 'all.competition.edit.info.type' | translate }}</label>
- <p-select
- id="type"
- formControlName="type"
- [options]="typeOptions"
- optionLabel="label"
- optionValue="value"
- [placeholder]="'all.competition.edit.info.type.placeholder' | translate"
- />
- </div>
- </div>
- </div>
+        <div class="flex flex-col gap-2">
+          <label id="competition-info-type-label" for="type" class="font-medium">{{ 'all.competition.edit.info.type' | translate }}</label>
+          <p-select
+            inputId="type"
+            ariaLabelledBy="competition-info-type-label"
+            formControlName="type"
+            fluid
+            [options]="typeOptions"
+            optionLabel="label"
+            optionValue="value"
+            [placeholder]="'all.competition.edit.info.type.placeholder' | translate"
+          />
+        </div>
+      </div>
+    </section>
 
- <!-- Location Information -->
- <div class="mb-8">
- <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
- {{ 'all.competition.edit.info.location.title' | translate }}
- </h2>
- <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
- <!-- Country -->
- <div class="flex flex-col gap-1">
- <label for="country" class="font-medium">{{ 'all.competition.edit.info.country' | translate }}</label>
- <app-country-select formControlName="country" />
- </div>
+    <!-- Location Information -->
+    <div class="mb-8">
+      <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
+        {{ 'all.competition.edit.info.location.title' | translate }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Country -->
+        <div class="flex flex-col gap-1">
+          <label for="country" class="font-medium">{{ 'all.competition.edit.info.country' | translate }}</label>
+          <app-country-select formControlName="country" />
+        </div>
 
- <!-- State/Province -->
- <div class="flex flex-col gap-1">
- <label for="state" class="font-medium">{{ 'all.competition.edit.info.state' | translate }}</label>
- <app-state-select formControlName="state" [country]="selectedCountry()" />
- </div>
- </div>
- </div>
+        <!-- State/Province -->
+        <div class="flex flex-col gap-1">
+          <label for="state" class="font-medium">{{ 'all.competition.edit.info.state' | translate }}</label>
+          <app-state-select formControlName="state" [country]="selectedCountry()" />
+        </div>
+      </div>
+    </div>
 
- <!-- Contact Information -->
- <div class="mb-8">
- <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
- {{ 'all.competition.edit.info.contact.title' | translate }}
- </h2>
- <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
- <!-- Contact Email -->
- <div class="flex flex-col gap-1">
- <label for="contactEmail" class="font-medium">{{ 'all.competition.edit.info.contactEmail' | translate }}</label>
- <input
- pInputText
- id="contactEmail"
- formControlName="contactEmail"
- type="email"
- [placeholder]="'all.competition.edit.info.contactEmail.placeholder' | translate"
- />
- @if (infoForm.get('contactEmail')?.errors?.['email'] && infoForm.get('contactEmail')?.touched) {
- <small class="text-red-500">{{ 'all.competition.edit.info.contactEmail.invalid' | translate }}</small>
- }
- </div>
- </div>
- </div>
+    <!-- Contact Information -->
+    <div class="mb-8">
+      <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
+        {{ 'all.competition.edit.info.contact.title' | translate }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Contact Email -->
+        <div class="flex flex-col gap-1">
+          <label for="contactEmail" class="font-medium">{{ 'all.competition.edit.info.contactEmail' | translate }}</label>
+          <input
+            pInputText
+            id="contactEmail"
+            formControlName="contactEmail"
+            type="email"
+            [placeholder]="'all.competition.edit.info.contactEmail.placeholder' | translate"
+          />
+          @if (infoForm.get('contactEmail')?.errors?.['email'] && infoForm.get('contactEmail')?.touched) {
+            <small class="text-red-500">{{ 'all.competition.edit.info.contactEmail.invalid' | translate }}</small>
+          }
+        </div>
+      </div>
+    </div>
 
- <!-- Loading Indicator -->
- @if (saving()) {
- <div class="pt-4">
- <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
- <p class="text-sm text-muted-color mt-2">{{ 'all.competition.edit.info.messages.saving' | translate }}</p>
- </div>
- }
+    <!-- Loading Indicator -->
+    @if (saving()) {
+      <div class="pt-4">
+        <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
+        <p class="text-sm text-muted-color mt-2">{{ 'all.competition.edit.info.messages.saving' | translate }}</p>
+      </div>
+    }
 
- <!-- Error Message -->
- @if (error(); as errorMessage) {
- <p-message severity="error">{{ errorMessage }}</p-message>
- }
- </form>
+    <!-- Error Message -->
+    @if (error(); as errorMessage) {
+      <p-message severity="error">{{ errorMessage }}</p-message>
+    }
+  </form>
 </div>

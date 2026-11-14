@@ -17,14 +17,14 @@ description: 'Bounded child slices for the mounted club team-detail page.'
 
 ## Required children
 
-| ID                                         | Scope                                              | Prerequisite                                      |
-| ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------- |
-| [DR-014a](DR-014a-team-page-chrome.md)     | Identity, contact actions, page loading/error      | Completed DR-004 shared hero                      |
-| [DR-014b](DR-014b-team-hero-statistics.md) | Hero statistics and their copy                     | DR-014a complete                                  |
-| [DR-014c](DR-014c-team-roster.md)          | Mounted roster table, actions and empty state      | DR-014a complete                                  |
-| DR-014d                                    | Upcoming/played encounter headings and empty state | DR-014a complete; preserve shared encounter Cards |
+| ID                                          | Scope                                              | Prerequisite                                      |
+| ------------------------------------------- | -------------------------------------------------- | ------------------------------------------------- |
+| [DR-014a](DR-014a-team-page-chrome.md)      | Identity, contact actions, page loading/error      | Completed DR-004 shared hero                      |
+| [DR-014b](DR-014b-team-hero-statistics.md)  | Hero statistics and their copy                     | DR-014a complete                                  |
+| [DR-014c](DR-014c-team-roster.md)           | Mounted roster table, actions and empty state      | DR-014a complete                                  |
+| [DR-014d](DR-014d-team-encounter-chrome.md) | Upcoming/played encounter headings and empty state | DR-014a complete; preserve shared encounter Cards |
 
-DR-014a/b/c are complete with disclosed limits; DR-014d is not started.
+DR-014a/b/c/d are complete with disclosed limits. Parent review remains outstanding.
 Keep the parent open until all required children and parent review pass.
 
 ## Baseline and discoveries
@@ -69,7 +69,9 @@ theme/width, safe synthetic roster/error/permission and keyboard checks pass. In
 contrast remains DR-033; fr/en browser, live persistence, full accessibility/default tests/SSR remain unverified.
 DR-014c is Done with explicit approval (`Approve and commit DR-014c with disclosed limits`, 2026-11-14).
 Approval accepts those limits and the DR-033 shortfall without claiming unperformed checks passed.
-Exact next action: scope DR-014d encounter section chrome and create its brief; it was not started here.
+DR-014d has semantic headings and native empty feedback and is Done with explicit approval
+(`Approve and commit with disclosed limits`, 2026-11-14); its unchecked verification limits remain in its brief.
+Exact next action: review the integrated DR-014 team-detail page and parent checklist before parent closure.
 Keep this parent open until all required children and parent review are complete.
 DR-014b approval authorizes its template, locale assets, generated types and repository handoff commit only.
 No push is authorized.

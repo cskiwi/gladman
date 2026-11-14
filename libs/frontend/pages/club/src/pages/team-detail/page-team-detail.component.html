@@ -136,10 +136,10 @@
       <!-- Upcoming encounters -->
       @if (upcomingEncounters().length > 0) {
         <section class="flex flex-col gap-3">
-          <div class="flex items-baseline gap-2">
-            <span class="t-eyebrow">{{ 'all.game.upcoming.title' | translate }}</span>
-            <span class="t-mono text-xs text-muted-color">{{ upcomingEncounters().length }}</span>
-          </div>
+          <h2 class="m-0 flex flex-wrap items-baseline gap-2 text-base font-semibold text-color">
+            {{ 'all.game.upcoming.title' | translate }}
+            <span class="text-sm font-normal tabular-nums">{{ upcomingEncounters().length }}</span>
+          </h2>
 
           <div class="flex flex-col gap-3">
             @for (enc of upcomingEncounters(); track enc.id) {
@@ -152,10 +152,10 @@
       <!-- Played encounters -->
       @if (playedEncounters().length > 0) {
         <section class="flex flex-col gap-3">
-          <div class="flex items-baseline gap-2">
-            <span class="t-eyebrow">{{ 'all.competition.played_encounters' | translate }}</span>
-            <span class="t-mono text-xs text-muted-color">{{ playedEncounters().length }}</span>
-          </div>
+          <h2 class="m-0 flex flex-wrap items-baseline gap-2 text-base font-semibold text-color">
+            {{ 'all.competition.played_encounters' | translate }}
+            <span class="text-sm font-normal tabular-nums">{{ playedEncounters().length }}</span>
+          </h2>
 
           <div class="flex flex-col gap-3">
             @for (enc of playedEncounters(); track enc.id) {
@@ -166,11 +166,15 @@
       }
 
       @if (encounters().length === 0) {
-        <div class="text-center py-12 text-muted-color">
-          <i class="pi pi-calendar text-4xl mb-4 block"></i>
-          <h3 class="text-lg font-medium text-color mb-2">{{ 'all.competition.no_encounters' | translate }}</h3>
-          <p>{{ 'all.competition.no_encounters_description' | translate }}</p>
-        </div>
+        <p-message severity="secondary">
+          <ng-template #icon>
+            <i class="p-message-icon pi pi-calendar" aria-hidden="true"></i>
+          </ng-template>
+          <div class="flex flex-col gap-1">
+            <h2 class="m-0 text-base font-semibold">{{ 'all.competition.no_encounters' | translate }}</h2>
+            <p class="m-0">{{ 'all.competition.no_encounters_description' | translate }}</p>
+          </div>
+        </p-message>
       }
     </div>
   }

@@ -5,6 +5,20 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-014d [Team encounter section chrome](work-items/DR-014d-team-encounter-chrome.md) is Done with explicit
+approval (`Approve and commit with disclosed limits`, 2026-11-14).
+Confirmed mounted consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
+Implemented semantic upcoming/played headings and counts, and native overall-empty feedback; Card inputs unchanged.
+Club lint/build pass; focused tests fail before execution on existing missing `zone.js` (DR-059).
+Dutch real and synthetic states checked in the browser; light/dark 390px/1440px section bounds and empty Message fit.
+The shared topbar overflows the narrow viewport in this browser session; investigate separately as DR-066.
+Not verified: full visual review, fr/en browser, default tests, full accessibility or SSR/hydration.
+Approval accepts the disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Exact next action: review the integrated DR-014 team-detail page and its parent checklist before parent closure.
+Retain DR-014 as an open parent; no push authorized.
+
+### Previous focus: Team roster (DR-014c)
+
 DR-014c [Team roster](work-items/DR-014c-team-roster.md) is Done with explicit approval
 (`Approve and commit DR-014c with disclosed limits`, 2026-11-14).
 Confirmed mounted consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
@@ -2881,7 +2895,7 @@ and linked from their registry rows.
 | [DR-014a](work-items/DR-014a-team-page-chrome.md)             | Team-detail identity, contacts and main loading/error                        | Done        |
 | [DR-014b](work-items/DR-014b-team-hero-statistics.md)         | Team-detail hero statistics and copy (depends on DR-014a)                    | Done        |
 | [DR-014c](work-items/DR-014c-team-roster.md)                  | Team-detail roster, actions and empty state (depends on DR-014a)             | Done        |
-| DR-014d                                                       | Team-detail encounter section chrome (depends on DR-014a)                    | Backlog     |
+| [DR-014d](work-items/DR-014d-team-encounter-chrome.md)        | Team-detail encounter section chrome (depends on DR-014a)                    | Done        |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                                                  | Done        |
 | [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement                            | Done        |
@@ -3038,12 +3052,20 @@ and linked from their registry rows.
 | DR-063                                                        | Native Popover keyboard and trigger association audit                        | Backlog     |
 | DR-064                                                        | Native ConfirmDialog breakpoint and close-label input audit                  | Backlog     |
 | DR-065                                                        | Builder survey import creation-failure feedback                              | Backlog     |
+| DR-066                                                        | Narrow topbar horizontal overflow                                            | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-066: Narrow topbar horizontal overflow
+
+- During DR-014d checks at a 390px viewport, the document width was 375px and scroll width 424px.
+  The shared `.g-topbar__tools` ended at x=424px; the encounter sections remained within x=28..347px.
+- Investigate the mounted shell and responsive behavior separately before changing shared styling. This observation
+  was made after viewport resizing in the shared browser; reproduce on a fresh narrow load before diagnosing.
 
 ### DR-064: Native ConfirmDialog input audit
 

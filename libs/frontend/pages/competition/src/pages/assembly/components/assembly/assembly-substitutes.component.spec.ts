@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -47,6 +49,8 @@ describe('Assembly desktop substitutes container', () => {
       imports: [AssemblyComponent, TranslateModule.forRoot()],
       providers: [
         AssemblyService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         AssemblyGeneratorService,
         { provide: AuthService, useValue: { hasAnyPermission: () => false } },
         { provide: RankingSystemService, useValue: {} },

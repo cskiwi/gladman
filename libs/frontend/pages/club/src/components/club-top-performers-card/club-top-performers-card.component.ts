@@ -81,7 +81,8 @@ export class ClubTopPerformersCardComponent {
         );
         const memberships = (teamsResult.data?.club?.teams ?? []).flatMap((t) => t.teamPlayerMemberships ?? []);
         const playerMap = new Map(memberships.filter((m) => m.player).map((m) => [m.playerId, m.player as ClubTopPerformerRow['player']]));
-        const playerIds = [...new Set(memberships.map((m) => m.playerId).filter(Boolean))];
+        // Only players that can be displayed take part, so a missing player never takes a top-N spot
+        const playerIds = [...playerMap.keys()];
         if (playerIds.length === 0) return [];
 
         // 2. Completed games of those players within the season window.

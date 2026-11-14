@@ -122,12 +122,12 @@ export class Game extends BaseEntity {
   @SortableField(() => Date, { nullable: true })
   @WhereField(() => Date, { nullable: true })
   @Column({ type: 'timestamptz', nullable: true })
-  declare scheduledTime?: Date;
+  declare scheduledTime?: Date | null;
 
   @SortableField(() => Date, { nullable: true })
   @WhereField(() => Date, { nullable: true })
   @Column({ type: 'timestamptz', nullable: true })
-  declare actualStartTime?: Date;
+  declare actualStartTime?: Date | null;
 
   @SortableField(() => Date, { nullable: true })
   @WhereField(() => Date, { nullable: true })
@@ -138,7 +138,7 @@ export class Game extends BaseEntity {
   @WhereField(() => ID, { nullable: true })
   @Column({ nullable: true, type: 'uuid' })
   @Index()
-  declare scheduleSlotId?: string;
+  declare scheduleSlotId?: string | null;
 
   @Field(() => [GamePlayerMembership], { nullable: true })
   @OneToMany(() => GamePlayerMembership, (gamePlayerMembership) => gamePlayerMembership.game)

@@ -14,7 +14,8 @@
         "selectNone": "Ne rien choisir",
         "selectTypes": "Sélectionner les types à indexer",
         "startIndexing": "Début de l'indexation",
-        "title": "Indexation"
+        "title": "Indexation",
+        "completed": "Indexation terminée"
       },
       "sync": {
         "title": "Synchronisation"
@@ -1225,7 +1226,8 @@
         "tournamentSync": "Synchronisation des tournois",
         "tournamentSyncError": "Échec de la synchronisation des tournois",
         "tournamentSyncQueued": "Synchronisation du tournoi programmée avec succès",
-        "tournamentSyncTooltip": "Synchroniser les tournois en cours et à venir"
+        "tournamentSyncTooltip": "Synchroniser les tournois en cours et à venir",
+        "clearCompletedSuccessCount": "{{count}} jobs terminés supprimés (jobs avec sous-jobs échoués conservés)"
       },
       "jobs": {
         "actions": "Actions",
@@ -1442,6 +1444,13 @@
       "queued": "En attente de synchronisation",
       "synced": "Synchronisation réussie",
       "syncing": "Synchronisation en cours"
+    },
+    "button": {
+      "eventSyncQueued": "Synchronisation de l'événement planifiée pour {{id}}",
+      "subEventSyncQueued": "Synchronisation du sous-événement planifiée pour {{id}}",
+      "drawSyncQueued": "Synchronisation du tableau planifiée pour {{id}}",
+      "cacheCleared": "Cache API vidé",
+      "cacheEmpty": "Aucune entrée de cache trouvée"
     }
   },
   "system": {
@@ -1777,7 +1786,8 @@
         "waitingList": "Liste d'attente",
         "waitingListDescription": "Sur la liste d'attente",
         "withdraw": "",
-        "withdrawn": "Retiré"
+        "withdrawn": "Retiré",
+        "playerSearchTooLong": "La recherche ne peut pas dépasser {{max}} caractères"
       },
       "noPermission": "Vous n'avez pas l'autorisation de gérer ce tournoi",
       "phases": {

@@ -312,15 +312,26 @@ export class TournamentCourtResolver {
     // Store court ID before resetting
     const courtId = game.courtId;
 
-    // Reset game state
-    game.actualStartTime = undefined;
-    game.set1Team1 = undefined;
-    game.set1Team2 = undefined;
-    game.set2Team1 = undefined;
-    game.set2Team2 = undefined;
-    game.set3Team1 = undefined;
-    game.set3Team2 = undefined;
-    await game.save();
+    // Reset game state. TypeORM's save() skips undefined properties, so the columns are cleared with an
+    // explicit UPDATE ... SET NULL (otherwise the start time and scores would stay stored).
+    await Game.update(game.id, {
+      actualStartTime: null,
+      set1Team1: () => 'NULL',
+      set1Team2: () => 'NULL',
+      set2Team1: () => 'NULL',
+      set2Team2: () => 'NULL',
+      set3Team1: () => 'NULL',
+      set3Team2: () => 'NULL',
+    });
+    Object.assign(game, {
+      actualStartTime: null,
+      set1Team1: undefined,
+      set1Team2: undefined,
+      set2Team1: undefined,
+      set2Team2: undefined,
+      set3Team1: undefined,
+      set3Team2: undefined,
+    });
 
     // Reset schedule slot
     let tournamentEventId: string | undefined;

@@ -7,6 +7,7 @@ import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE,
   MANUAL_PLAYER_SEARCH_LIMIT,
   MANUAL_PLAYER_SEARCH_MAX_LENGTH,
   MANUAL_PLAYER_SEARCH_MIN_LENGTH,
@@ -47,11 +48,31 @@ export class EnrollmentsTabService {
   async searchPlayers(search: string): Promise<ManualEnrollmentPlayer[]> {
     const query = search.trim();
     if (query.length > MANUAL_PLAYER_SEARCH_MAX_LENGTH) {
-      throw new Error(`Player search must not exceed ${MANUAL_PLAYER_SEARCH_MAX_LENGTH} characters`);
+      throw new Error(this.translate.instant('all.tournament.admin.enrollments.playerSearchTooLong', { max: MANUAL_PLAYER_SEARCH_MAX_LENGTH }));
     }
     if (query.length < MANUAL_PLAYER_SEARCH_MIN_LENGTH) return [];
     const words = searchWords(query);
-    const needsClientFilter = words.length > MANUAL_PLAYER_SEARCH_SERVER_WORDS;
+    const where = buildPlayerSearchWhere(words);
+
+    if (words.length <= MANUAL_PLAYER_SEARCH_SERVER_WORDS) {
+      return this.fetchPlayerSearchPage(where, 0, MANUAL_PLAYER_SEARCH_LIMIT);
+    }
+
+    // The API filters on the first words only; page through its candidates until enough of them match every word.
+    const matches: ManualEnrollmentPlayer[] = [];
+    for (let skip = 0; matches.length < MANUAL_PLAYER_SEARCH_LIMIT; skip += MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE) {
+      const page = await this.fetchPlayerSearchPage(where, skip, MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE);
+      matches.push(...page.filter((player) => matchesSearchWords(player, words)));
+      if (page.length < MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE) break;
+    }
+    return matches.slice(0, MANUAL_PLAYER_SEARCH_LIMIT);
+  }
+
+  private async fetchPlayerSearchPage(
+    where: ReturnType<typeof buildPlayerSearchWhere>,
+    skip: number,
+    take: number,
+  ): Promise<ManualEnrollmentPlayer[]> {
     const result = await lastValueFrom(
       this.apollo.query<{ players: ManualEnrollmentPlayer[] }>({
         query: gql`
@@ -67,9 +88,10 @@ export class EnrollmentsTabService {
         `,
         variables: {
           args: {
-            where: buildPlayerSearchWhere(words),
+            where,
             order: { lastName: 'ASC', firstName: 'ASC' },
-            take: needsClientFilter ? 200 : MANUAL_PLAYER_SEARCH_LIMIT,
+            skip,
+            take,
           },
         },
         fetchPolicy: 'network-only',
@@ -78,8 +100,7 @@ export class EnrollmentsTabService {
     if (!Array.isArray(result.data?.players)) {
       throw new Error(this.translate.instant('all.tournament.admin.enrollments.playerSearchNoData'));
     }
-    const players = needsClientFilter ? result.data.players.filter((player) => matchesSearchWords(player, words)) : result.data.players;
-    return players.slice(0, MANUAL_PLAYER_SEARCH_LIMIT);
+    return result.data.players;
   }
 
   /** Create an enrollment, reporting failures rather than closing the dialog as success. */

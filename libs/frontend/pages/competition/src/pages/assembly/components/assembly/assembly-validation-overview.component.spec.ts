@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, TemplateRef, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -45,6 +47,8 @@ describe('Assembly validation overview', () => {
       imports: [ValidationOutletHost, TranslateModule.forRoot()],
       providers: [
         AssemblyService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         AssemblyGeneratorService,
         { provide: AuthService, useValue: { hasAnyPermission: () => false } },
         { provide: RankingSystemService, useValue: {} },

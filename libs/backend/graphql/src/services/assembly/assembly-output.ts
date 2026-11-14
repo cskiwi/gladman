@@ -7,6 +7,7 @@ export class PlayerRankingType {
   declare id: string;
   declare firstName?: string;
   declare lastName?: string;
+  declare gender?: 'M' | 'F';
   declare single?: number;
   declare double?: number;
   declare mix?: number;

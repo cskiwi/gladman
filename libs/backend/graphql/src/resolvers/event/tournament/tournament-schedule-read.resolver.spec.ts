@@ -10,8 +10,14 @@ describe('Scheduling read prerequisite', () => {
 
   it('reads slots through the generic args with the supplied where/order', async () => {
     const find = jest.spyOn(TournamentScheduleSlot, 'find').mockResolvedValue([]);
-    expect(await resolver.tournamentScheduleSlots(undefined)).toEqual([]);
+    const inputArgs = {
+      where: [{ tournamentEventId: { eq: 'safe-tournament' } }],
+      order: { startTime: 'ASC' },
+    } as unknown as Parameters<TournamentScheduleReadResolver['tournamentScheduleSlots']>[0];
+
+    expect(await resolver.tournamentScheduleSlots(inputArgs)).toEqual([]);
     expect(find).toHaveBeenCalledTimes(1);
+    expect(find).toHaveBeenCalledWith({ args: inputArgs });
   });
 
   it('resolves related court/game/tournament and keeps unassigned relations nullable', async () => {

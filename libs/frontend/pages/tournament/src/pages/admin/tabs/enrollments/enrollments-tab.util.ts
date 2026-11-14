@@ -4,6 +4,8 @@ export const MANUAL_PLAYER_SEARCH_MAX_LENGTH = 100;
 export const MANUAL_PLAYER_SEARCH_MIN_LENGTH = 2;
 /** Maximum number of suggestions shown. */
 export const MANUAL_PLAYER_SEARCH_LIMIT = 20;
+/** Page size used to scan candidates when words beyond the server-side limit are matched client-side. */
+export const MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE = 200;
 /** Words beyond this are matched client-side (each extra word triples the server filter). */
 export const MANUAL_PLAYER_SEARCH_SERVER_WORDS = 3;
 

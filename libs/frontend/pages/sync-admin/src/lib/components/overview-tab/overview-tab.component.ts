@@ -110,7 +110,7 @@ export class OverviewTabComponent implements OnDestroy {
               this.messageService.add({
                 severity: 'success',
                 summary: this.translateService.instant('all.common.success'),
-                detail: 'All jobs cleared successfully',
+                detail: this.translateService.instant('all.sync.dashboard.actions.clearAllSuccess'),
               });
               this.overviewService.refresh();
             },
@@ -143,7 +143,7 @@ export class OverviewTabComponent implements OnDestroy {
               this.messageService.add({
                 severity: 'success',
                 summary: this.translateService.instant('all.common.success'),
-                detail: `Cleared ${removedCount} completed jobs (kept jobs with failed children)`,
+                detail: this.translateService.instant('all.sync.dashboard.actions.clearCompletedSuccessCount', { count: removedCount }),
               });
               this.overviewService.refresh();
             },

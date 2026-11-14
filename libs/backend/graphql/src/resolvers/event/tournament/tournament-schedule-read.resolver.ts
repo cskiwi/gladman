@@ -2,7 +2,7 @@ import { Court, Game, TournamentEvent, TournamentScheduleSlot } from '@app/model
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { TournamentScheduleSlotArgs } from '../../../args';
 
-/** Provides Scheduling reads without activating its dormant operational mutations. */
+/** Scheduling reads; the slot mutations live in TournamentScheduleResolver, which extends this class. */
 @Resolver(() => TournamentScheduleSlot)
 export class TournamentScheduleReadResolver {
   /** Generic slot list: filter by tournament, court, status or start time and order via `args`. */

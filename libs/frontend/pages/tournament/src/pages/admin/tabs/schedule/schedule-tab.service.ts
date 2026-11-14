@@ -505,7 +505,7 @@ export class ScheduleTabService {
       const before = await lastValueFrom(
         this.apollo.query<{ games: Game[] }>({
           query: UNSCHEDULED_GAMES_QUERY,
-          variables: { args: unscheduledGamesArgs(tournamentEventId) },
+          variables: { args: unscheduledGamesArgs(tournamentEventId, drawIds) },
           fetchPolicy: 'network-only',
         }),
       );
@@ -531,29 +531,40 @@ export class ScheduleTabService {
         }),
       );
 
-      if (result.data?.scheduleGames) {
-        const left = await lastValueFrom(
-          this.apollo.query<{ available: number }>({
-            query: gql`
-              query ScheduleAvailableSlots($args: TournamentScheduleSlotArgs) {
-                available: tournamentScheduleSlotsCount(args: $args)
-              }
-            `,
-            variables: {
-              args: { where: [{ tournamentEventId: { eq: tournamentEventId }, status: { eq: ScheduleSlotStatus.AVAILABLE } }] },
-            },
-            fetchPolicy: 'network-only',
-          }),
-        );
-        this.refetch();
-        return deriveScheduleResult(before.data?.games ?? [], result.data.scheduleGames, left.data?.available ?? 0);
+      if (!result.data?.scheduleGames) {
+        return null;
       }
-      return null;
+
+      // The run succeeded: refresh the grid right away; the summary below is best-effort
+      this.refetch();
+      return deriveScheduleResult(before.data?.games ?? [], result.data.scheduleGames, await this.countAvailableSlots(tournamentEventId));
     } catch (err) {
       this.updateError.set(err instanceof Error ? err.message : 'Failed to auto-schedule games');
       return null;
     } finally {
       this.updating.set(false);
+    }
+  }
+
+  /** Slots still available after a scheduling run; 0 when the count cannot be loaded (summary only). */
+  private async countAvailableSlots(tournamentEventId: string): Promise<number> {
+    try {
+      const left = await lastValueFrom(
+        this.apollo.query<{ available: number }>({
+          query: gql`
+            query ScheduleAvailableSlots($args: TournamentScheduleSlotArgs) {
+              available: tournamentScheduleSlotsCount(args: $args)
+            }
+          `,
+          variables: {
+            args: { where: [{ tournamentEventId: { eq: tournamentEventId }, status: { eq: ScheduleSlotStatus.AVAILABLE } }] },
+          },
+          fetchPolicy: 'network-only',
+        }),
+      );
+      return left.data?.available ?? 0;
+    } catch {
+      return 0;
     }
   }
 
@@ -604,14 +615,18 @@ const UNSCHEDULED_GAMES_QUERY = gql`
   }
 `;
 
-/** Tournament games without a schedule slot, in draw order (round, then order). */
-function unscheduledGamesArgs(tournamentEventId: string) {
+/**
+ * Tournament games without a schedule slot, in draw order (round, then order).
+ * When `drawIds` is given (an auto-schedule run limited to some draws) only those draws are included.
+ */
+function unscheduledGamesArgs(tournamentEventId: string, drawIds?: string[]) {
   return {
     where: [
       {
         linkType: { eq: 'tournament' },
         scheduleSlotId: { isNull: true },
         tournamentDraw: { tournamentSubEvent: { eventId: { eq: tournamentEventId } } },
+        ...(drawIds?.length ? { linkId: { in: drawIds } } : {}),
       },
     ],
     order: { round: 'ASC', order: 'ASC' },

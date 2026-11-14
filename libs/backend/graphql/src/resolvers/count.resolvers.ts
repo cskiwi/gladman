@@ -38,7 +38,7 @@ import { createCountResolver } from '../utils/count-resolver';
 
 /**
  * Generic `<entity>Count(args)` root queries for public sport data.
- * Only entities whose list data is already publicly readable are registered here.
+ * Only public sport data is registered here; entities whose list query requires login pass `authenticated: true`.
  */
 export const COUNT_RESOLVERS = [
   createCountResolver({ entity: Club, args: ClubArgs, name: 'clubsCount' }),
@@ -48,7 +48,8 @@ export const COUNT_RESOLVERS = [
   createCountResolver({ entity: Entry, args: EntryArgs, name: 'entriesCount' }),
   createCountResolver({ entity: Game, args: GameArgs, name: 'gamesCount' }),
   createCountResolver({ entity: GamePlayerMembership, args: GamePlayerMembershipArgs, name: 'gamePlayerMembershipsCount' }),
-  createCountResolver({ entity: Player, args: PlayerArgs, name: 'playersCount' }),
+  // Same boundary as the `players` list query (PermGuard): player rows expose filterable personal columns
+  createCountResolver({ entity: Player, args: PlayerArgs, name: 'playersCount', authenticated: true }),
   createCountResolver({ entity: Team, args: TeamArgs, name: 'teamsCount' }),
   createCountResolver({ entity: TeamPlayerMembership, args: TeamPlayerMembershipArgs, name: 'teamPlayerMembershipsCount' }),
   createCountResolver({ entity: TournamentCheckIn, args: TournamentCheckInArgs, name: 'tournamentCheckInsCount' }),

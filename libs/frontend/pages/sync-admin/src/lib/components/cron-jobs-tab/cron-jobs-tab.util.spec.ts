@@ -13,6 +13,11 @@ describe('cron-jobs-tab.util', () => {
       expect(new Date(next as string).getTime()).toBeGreaterThan(Date.now());
     });
 
+    it('interprets the expression in the scheduler timezone (Europe/Brussels), not the browser timezone', () => {
+      // 03:00 in Brussels during winter time (UTC+1) is 02:00 UTC
+      expect(new Date(computeNextRun('0 3 * * *', new Date('2030-01-15T12:00:00.000Z')) as string).toISOString()).toBe('2030-01-16T02:00:00.000Z');
+    });
+
     it('returns null for an invalid expression', () => {
       expect(computeNextRun('not a cron')).toBeNull();
     });

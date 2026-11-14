@@ -210,7 +210,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: `Event sync queued successfully for ${cfg.eventId}`,
+        detail: this.translate.instant('all.sync.button.eventSyncQueued', { id: cfg.eventId }),
       });
     } catch (e: unknown) {
       this.messageService.add({
@@ -242,7 +242,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: `Sub-event sync queued successfully for ${cfg.subEventId}`,
+        detail: this.translate.instant('all.sync.button.subEventSyncQueued', { id: cfg.subEventId }),
       });
     } catch (e: unknown) {
       this.messageService.add({
@@ -274,7 +274,7 @@ export class SyncButtonComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: `Draw sync queued successfully for ${cfg.drawId}`,
+        detail: this.translate.instant('all.sync.button.drawSyncQueued', { id: cfg.drawId }),
       });
     } catch (e: unknown) {
       this.messageService.add({
@@ -363,13 +363,13 @@ export class SyncButtonComponent {
         this.messageService.add({
           severity: 'success',
           summary: 'Cache Cleared',
-          detail: 'Cleared cached API entries',
+          detail: this.translate.instant('all.sync.button.cacheCleared'),
         });
       } else {
         this.messageService.add({
           severity: 'warn',
           summary: 'Cache Clear',
-          detail: 'No cache entries found',
+          detail: this.translate.instant('all.sync.button.cacheEmpty'),
         });
       }
     } catch (e: unknown) {

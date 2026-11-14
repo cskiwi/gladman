@@ -5,6 +5,36 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-014a [Team-detail page chrome](work-items/DR-014a-team-page-chrome.md) is Done with explicit approval
+(`Approve and commit DR-014a with disclosed limits`, 2026-11-14).
+Parent [DR-014](work-items/DR-014-club-team-detail.md) is split into a-d; keep it open.
+Confirmed mounted consumer: `/clubs/smash-for-fun/teams/1161b779-2cbe-457c-b829-e0d756ff99bc`,
+linked from the club Teams tab. Worktree was clean at selection on 2026-11-14.
+Implemented shared hero avatar/title, native level Tag and named email/telephone anchors, ProgressBar and error Message.
+Main-resource guards prevent failed requests from throwing in the page/SEO selectors.
+Identity class tokens 105 -> 36. Existing smart/service and shared presentational separation preserved; no new wrapper.
+Statistics, roster and encounter markup are unchanged except repository formatting; unused team-encounters stays untouched.
+Club lint/build pass (12 tasks); two failed-load/recovery regressions pass with a temporary zoneless override.
+Default tests fail before execution on missing `zone.js` (DR-059); no infrastructure/dependency changes.
+Dutch loaded hero fits light/dark at 390px/1440px; real data and synthetic metadata/contact cases checked.
+Named contact Tab order/focus-visible pass; sampled text contrast passes after preserving semantic normal captain text.
+Synthetic min-zero/min-only/max-only/missing levels, missing contacts and long unbroken title fit.
+Native loading and both main-request failures render, and new team selection recovers; zero synthetic-check mutations.
+Translation blocker resolved after the user's `I refreshed the API; continue verification` on 2026-11-14:
+ports 5000/3000 now serve both new keys in nl_BE/fr_BE/en, and Dutch delayed loading / both request errors show
+translated native feedback and recover, with no raw new keys or GraphQL mutations.
+The API also regenerated only the four related type lines in `libs/utils/i18n/src/lib/i18n.generated.ts`;
+preserve this generated output. Repository formatter respects its existing `prettier-ignore` declarations.
+The verification-only frontend helper was stopped; the user's restored frontend/API remain running and were not stopped.
+Not verified: full accessibility/focus-ring contrast, fr/en browser (cookie-switch attempt stayed Dutch), live membership/contact dispatch,
+error recovery through URL navigation and full SSR/hydration.
+Approval accepts those limits without claiming unperformed checks passed; unchecked criteria remain in the brief.
+Exact next action: scope DR-014b hero statistics from the same mounted consumer and create its brief before implementation.
+DR-014b/c/d remain Backlog and were not started. DR-013 and its children remain Done.
+Approval authorizes only DR-014a implementation, tests, generated keys and repository handoff commit. No push authorized.
+
+### Previous focus: Club team builder parent (DR-013)
+
 DR-013 [Club team builder](work-items/DR-013-club-team-builder.md) is Done with explicit parent approval
 (`Commit and close of the team-builder  DR-013  so for the next iteration we can move to the next component`,
 2026-11-13). All required children DR-013a through DR-013h remain Done.
@@ -2788,7 +2818,11 @@ and linked from their registry rows.
 | [DR-013f](work-items/DR-013f-builder-survey-edit.md)          | Survey edit dialog                                                           | Done        |
 | [DR-013g](work-items/DR-013g-builder-sub-event.md)            | Sub-event dialog                                                             | Done        |
 | [DR-013h](work-items/DR-013h-builder-feedback.md)             | Builder validation, notification and confirmation localization               | Done        |
-| DR-014                                                        | Club team detail                                                             | Backlog     |
+| [DR-014](work-items/DR-014-club-team-detail.md)               | Club team detail                                                             | In progress |
+| [DR-014a](work-items/DR-014a-team-page-chrome.md)             | Team-detail identity, contacts and main loading/error                        | Done        |
+| DR-014b                                                       | Team-detail hero statistics and copy (depends on DR-014a)                    | Backlog     |
+| DR-014c                                                       | Team-detail roster, actions and empty state (depends on DR-014a)             | Backlog     |
+| DR-014d                                                       | Team-detail encounter section chrome (depends on DR-014a)                    | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                                                  | Done        |
 | [DR-015b](work-items/DR-015b-competition-group-navigation.md) | Competition navigation and local-style retirement                            | Done        |

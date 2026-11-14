@@ -1477,6 +1477,10 @@
     "captain": "Captain",
     "captain-label": "Captain",
     "draw-label": "Draw",
+    "detail": {
+      "loadError": "Unable to load the team details. Please try again.",
+      "loading": "Loading team details..."
+    },
     "edit": {
       "abbreviation": {
         "label": "Abbreviation",

@@ -204,11 +204,13 @@ export class TeamDetailService {
     },
   });
 
+  private data = computed(() => (this.dataResource.hasValue() ? this.dataResource.value() : undefined));
+
   // Public selectors
-  team = computed(() => this.dataResource.value()?.team);
+  team = computed(() => this.data()?.team);
 
   private basePlayerIds = computed(() => {
-    const entries = this.dataResource.value()?.entries ?? [];
+    const entries = this.data()?.entries ?? [];
     const ids = new Set<string>();
     for (const entry of entries) {
       for (const p of entry.meta?.competition?.players ?? []) {
@@ -219,7 +221,7 @@ export class TeamDetailService {
   });
 
   players = computed(() => {
-    const memberships = this.dataResource.value()?.team?.teamPlayerMemberships ?? [];
+    const memberships = this.data()?.team?.teamPlayerMemberships ?? [];
     const baseIds = this.basePlayerIds();
     const team = this.team();
     const encounters = this._encounters();
@@ -271,7 +273,7 @@ export class TeamDetailService {
 
   // Fallback drawId from encounters when entries have no draw info
   private fallbackDrawId = computed(() => {
-    const entries = this.dataResource.value()?.entries ?? [];
+    const entries = this.data()?.entries ?? [];
     const hasEntryWithDraw = entries.some((e) => e.competitionDraw?.competitionSubEvent?.eventId);
     if (hasEntryWithDraw) return null;
 
@@ -310,7 +312,7 @@ export class TeamDetailService {
   });
 
   entry = computed(() => {
-    const entries = this.dataResource.value()?.entries ?? [];
+    const entries = this.data()?.entries ?? [];
 
     // Prefer entry with full draw info from entries query
     const entryWithDraw = entries.find((e) => e.competitionDraw?.competitionSubEvent?.eventId);

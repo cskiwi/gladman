@@ -1477,6 +1477,10 @@
     "captain": "Kapitein",
     "captain-label": "Kapitein",
     "draw-label": "Reeks",
+    "detail": {
+      "loadError": "De ploeggegevens konden niet worden geladen. Probeer het opnieuw.",
+      "loading": "Ploeggegevens laden..."
+    },
     "edit": {
       "abbreviation": {
         "label": "Afkorting",

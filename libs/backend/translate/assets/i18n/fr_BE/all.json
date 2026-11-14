@@ -1477,6 +1477,10 @@
     "captain": "Capitaine",
     "captain-label": "Capitaine",
     "draw-label": "Série",
+    "detail": {
+      "loadError": "Impossible de charger les détails de l'équipe. Veuillez réessayer.",
+      "loading": "Chargement des détails de l'équipe..."
+    },
     "edit": {
       "abbreviation": {
         "label": "Abréviation",

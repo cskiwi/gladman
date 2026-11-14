@@ -1484,6 +1484,10 @@ export type I18nTranslations = {
             "captain": string;
             "captain-label": string;
             "draw-label": string;
+            "detail": {
+                "loadError": string;
+                "loading": string;
+            };
             "edit": {
                 "abbreviation": {
                     "label": string;

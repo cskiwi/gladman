@@ -2,13 +2,16 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@a
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EncounterCardComponent } from '@app/frontend-components/games/encounter-card';
-import { HeroComponent } from '@app/frontend-components/hero';
+import { HeroAvatarComponent, HeroComponent, HeroTitleComponent } from '@app/frontend-components/hero';
 import { BreadcrumbComponent } from '@app/frontend-components/breadcrumb';
 import { AuthService } from '@app/frontend-modules-auth/service';
 import { SeoService } from '@app/frontend-modules-seo/service';
 import { TranslateModule } from '@ngx-translate/core';
 import { injectParams } from 'ngxtension/inject-params';
-import { SkeletonModule } from 'primeng/skeleton';
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { TeamDetailService } from './page-team-detail.service';
 import { TeamPlayersTableComponent } from './components/team-players-table.component';
@@ -22,7 +25,12 @@ import { TeamPlayersTableComponent } from './components/team-players-table.compo
     DatePipe,
     EncounterCardComponent,
     HeroComponent,
-    SkeletonModule,
+    HeroAvatarComponent,
+    HeroTitleComponent,
+    ButtonModule,
+    MessageModule,
+    ProgressBarModule,
+    TagModule,
     TeamPlayersTableComponent,
     TooltipModule,
   ],

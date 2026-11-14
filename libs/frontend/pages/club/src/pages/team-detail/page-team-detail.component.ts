@@ -48,6 +48,7 @@ export class PageTeamDetailComponent {
   team = this.dataService.team;
   players = this.dataService.players;
   playerStats = this.dataService.playerStats;
+  membershipError = this.dataService.membershipError;
   entry = this.dataService.entry;
   encounters = this.dataService.encounters;
   playedEncounters = this.dataService.playedEncounters;

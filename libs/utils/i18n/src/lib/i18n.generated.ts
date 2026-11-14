@@ -1487,6 +1487,16 @@ export type I18nTranslations = {
             "detail": {
                 "loadError": string;
                 "loading": string;
+                "roster": {
+                    "membership": string;
+                    "winPercentage": string;
+                    "member": string;
+                    "gameOnly": string;
+                    "addPlayer": string;
+                    "removePlayer": string;
+                    "addError": string;
+                    "removeError": string;
+                };
                 "stats": {
                     "roster": string;
                     "seasonRecord": string;

@@ -1,150 +1,161 @@
-<section>
-  <div class="flex items-baseline gap-2 mb-4">
-    <span class="t-eyebrow">Players</span>
-    <span class="t-mono text-xs text-muted-color">{{ playerRows().length }}</span>
-  </div>
+<p-card role="region" aria-labelledby="team-roster-heading">
+  <ng-template #title>
+    <div class="flex items-baseline gap-2">
+      <h2 id="team-roster-heading" class="m-0 text-xl font-semibold">{{ 'all.team.detail.stats.roster' | translate }}</h2>
+      <span class="text-sm text-muted-color">{{ playerRows().length }}</span>
+    </div>
+  </ng-template>
 
-  <p-table [value]="playerRows()" sortMode="multiple" [multiSortMeta]="defaultSort" [tableStyle]="{ 'min-width': '40rem' }">
-    <ng-template #header>
-      <tr>
-        <th pSortableColumn="player.lastName">
-          <div class="flex items-center gap-2">
-            Player
-            <p-sorticon field="player.lastName" />
-          </div>
-        </th>
-        <th pSortableColumn="membershipType">
-          <div class="flex items-center gap-2">
-            Type
-            <p-sorticon field="membershipType" />
-          </div>
-        </th>
-        <th pSortableColumn="isBase">
-          <div class="flex items-center gap-2">
-            {{ 'all.team.membership.REGULAR.label' | translate }}
-            <p-sorticon field="isBase" />
-          </div>
-        </th>
-        <th pSortableColumn="stats.played">
-          <div class="flex items-center gap-2">
-            Played
-            <p-sorticon field="stats.played" />
-          </div>
-        </th>
-        <th pSortableColumn="stats.won">
-          <div class="flex items-center gap-2">
-            Won
-            <p-sorticon field="stats.won" />
-          </div>
-        </th>
-        <th pSortableColumn="stats.lost">
-          <div class="flex items-center gap-2">
-            Lost
-            <p-sorticon field="stats.lost" />
-          </div>
-        </th>
-        <th pSortableColumn="stats.winPct">
-          <div class="flex items-center gap-2">
-            Win %
-            <p-sorticon field="stats.winPct" />
-          </div>
-        </th>
-        <th pSortableColumn="stats.encounterPct">
-          <div class="flex items-center gap-2">
-            {{ 'all.team.edit.encounter-presence' | translate }}
-            <p-sorticon field="stats.encounterPct" />
-          </div>
-        </th>
-        @if (onAddPlayerToTeam() || onRemovePlayerFromTeam()) {
-          <th></th>
-        }
-      </tr>
-    </ng-template>
-    <ng-template #body let-membership>
-      <tr>
-        <td>
-          @if (membership.player?.slug) {
-            <a [routerLink]="['/players', membership.player.slug]" class="font-medium text-primary no-underline hover:underline">
-              {{ membership.player.fullName }}
-            </a>
-          } @else {
-            <span class="font-medium">{{ membership.player?.fullName || '-' }}</span>
+  @if (membershipError(); as error) {
+    <p-message severity="error" class="block mb-4">{{ error | translate }}</p-message>
+  }
+
+  @if (playerRows().length > 0) {
+    <p-table [value]="playerRows()" sortMode="multiple" [multiSortMeta]="defaultSort" [scrollable]="true" [tableStyle]="{ 'min-width': '40rem' }">
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="player.lastName">
+            <div class="flex items-center gap-2">
+              {{ 'all.competition.player' | translate }}
+              <p-sorticon field="player.lastName" />
+            </div>
+          </th>
+          <th pSortableColumn="membershipType">
+            <div class="flex items-center gap-2">
+              {{ 'all.team.detail.roster.membership' | translate }}
+              <p-sorticon field="membershipType" />
+            </div>
+          </th>
+          <th pSortableColumn="isBase">
+            <div class="flex items-center gap-2">
+              {{ 'all.team.membership.REGULAR.label' | translate }}
+              <p-sorticon field="isBase" />
+            </div>
+          </th>
+          <th pSortableColumn="stats.played">
+            <div class="flex items-center gap-2">
+              {{ 'all.competition.played' | translate }}
+              <p-sorticon field="stats.played" />
+            </div>
+          </th>
+          <th pSortableColumn="stats.won">
+            <div class="flex items-center gap-2">
+              {{ 'all.competition.won' | translate }}
+              <p-sorticon field="stats.won" />
+            </div>
+          </th>
+          <th pSortableColumn="stats.lost">
+            <div class="flex items-center gap-2">
+              {{ 'all.competition.lost' | translate }}
+              <p-sorticon field="stats.lost" />
+            </div>
+          </th>
+          <th pSortableColumn="stats.winPct">
+            <div class="flex items-center gap-2">
+              {{ 'all.team.detail.roster.winPercentage' | translate }}
+              <p-sorticon field="stats.winPct" />
+            </div>
+          </th>
+          <th pSortableColumn="stats.encounterPct">
+            <div class="flex items-center gap-2">
+              {{ 'all.team.edit.encounter-presence' | translate }}
+              <p-sorticon field="stats.encounterPct" />
+            </div>
+          </th>
+          @if (onAddPlayerToTeam() || onRemovePlayerFromTeam()) {
+            <th>{{ 'all.common.actions' | translate }}</th>
           }
-        </td>
-        <td class="text-center">
-          @if (membership.isGameOnly) {
-            <p-tag
-              severity="warn"
-              [value]="membership.membershipType || '-'"
-              [pTooltip]="'all.team.edit.game-only-player-tooltip' | translate"
-              tooltipPosition="top"
-            />
-          } @else {
-            <p-tag severity="info" [value]="membership.membershipType || '-'" />
-          }
-        </td>
-        <td class="text-center">
-          @if (membership.isBase) {
-            <p-tag
-              severity="success"
-              [value]="'all.team.membership.REGULAR.label' | translate"
-              [pTooltip]="'all.team.base-player-tooltip' | translate"
-              tooltipPosition="top"
-            />
-          }
-        </td>
-        <td class="text-center text-sm">{{ membership.stats.played }}</td>
-        <td class="text-center text-sm" style="color: var(--p-green-500)">{{ membership.stats.won }}</td>
-        <td class="text-center text-sm" style="color: var(--p-red-500)">{{ membership.stats.lost }}</td>
-        <td class="text-center text-sm font-medium">
-          @if (membership.stats.winPct !== null) {
-            {{ membership.stats.winPct | number: '1.0-0' }}%
-          } @else {
-            -
-          }
-        </td>
-        <td class="text-center text-sm font-medium">
-          @if (membership.stats.encounterPct !== null) {
-            {{ membership.stats.encounterPct | number: '1.0-0' }}%
-          } @else {
-            -
-          }
-        </td>
-        @if (onAddPlayerToTeam() || onRemovePlayerFromTeam()) {
-          <td class="text-center">
-            @if (membership.isGameOnly && onAddPlayerToTeam(); as addFn) {
-              <button
-                pButton
-                type="button"
-                iconOnly
-                severity="success"
-                [text]="true"
-                size="small"
-                [pTooltip]="'all.team.edit.add-to-team' | translate"
-                tooltipPosition="top"
-                (click)="addFn(membership.player.id)"
-              >
-                <i pButtonIcon class="pi pi-user-plus" aria-hidden="true"></i>
-              </button>
-            }
-            @if (!membership.isGameOnly && onRemovePlayerFromTeam(); as removeFn) {
-              <button
-                pButton
-                type="button"
-                iconOnly
-                severity="danger"
-                [text]="true"
-                size="small"
-                [pTooltip]="'all.team.edit.remove-from-team' | translate"
-                tooltipPosition="top"
-                (click)="removeFn(membership.id)"
-              >
-                <i pButtonIcon class="pi pi-user-minus" aria-hidden="true"></i>
-              </button>
+        </tr>
+      </ng-template>
+      <ng-template #body let-membership>
+        <tr>
+          <td>
+            @if (membership.player?.slug) {
+              <a [routerLink]="['/players', membership.player.slug]" class="font-medium text-color no-underline hover:underline">
+                {{ membership.player.fullName }}
+              </a>
+            } @else {
+              <span class="font-medium">{{ membership.player?.fullName || '-' }}</span>
             }
           </td>
-        }
-      </tr>
-    </ng-template>
-  </p-table>
-</section>
+          <td>
+            <p-tag
+              [severity]="membership.isGameOnly ? 'warn' : 'info'"
+              [value]="membership.membershipLabelKey ? (membership.membershipLabelKey | translate) : membership.membershipType || '-'"
+              [pTooltip]="membership.isGameOnly ? ('all.team.edit.game-only-player-tooltip' | translate) : ''"
+              tooltipPosition="top"
+            />
+          </td>
+          <td class="text-center">
+            @if (membership.isBase) {
+              <p-tag
+                severity="success"
+                [value]="'all.team.membership.REGULAR.label' | translate"
+                [pTooltip]="'all.team.base-player-tooltip' | translate"
+                tooltipPosition="top"
+              />
+            }
+          </td>
+          <td class="text-center text-sm">{{ membership.stats.played }}</td>
+          <td class="text-center text-sm">{{ membership.stats.won }}</td>
+          <td class="text-center text-sm">{{ membership.stats.lost }}</td>
+          <td class="text-center text-sm font-medium">
+            @if (membership.stats.winPct !== null) {
+              {{ membership.stats.winPct | number: '1.0-0' }}%
+            } @else {
+              -
+            }
+          </td>
+          <td class="text-center text-sm font-medium">
+            @if (membership.stats.encounterPct !== null) {
+              {{ membership.stats.encounterPct | number: '1.0-0' }}%
+            } @else {
+              -
+            }
+          </td>
+          @if (onAddPlayerToTeam() || onRemovePlayerFromTeam()) {
+            <td class="text-center">
+              @if (membership.isGameOnly && membership.player?.id && onAddPlayerToTeam(); as addFn) {
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
+                  severity="success"
+                  [text]="true"
+                  size="small"
+                  [attr.aria-label]="'all.team.detail.roster.addPlayer' | translate: { name: membership.player.fullName || '-' }"
+                  [pTooltip]="'all.team.edit.add-to-team' | translate"
+                  tooltipPosition="top"
+                  (click)="addFn(membership.player.id)"
+                >
+                  <i pButtonIcon class="pi pi-user-plus" aria-hidden="true"></i>
+                </button>
+              }
+              @if (!membership.isGameOnly && onRemovePlayerFromTeam(); as removeFn) {
+                <button
+                  pButton
+                  type="button"
+                  iconOnly
+                  severity="danger"
+                  [text]="true"
+                  size="small"
+                  [attr.aria-label]="'all.team.detail.roster.removePlayer' | translate: { name: membership.player?.fullName || '-' }"
+                  [pTooltip]="'all.team.edit.remove-from-team' | translate"
+                  tooltipPosition="top"
+                  (click)="removeFn(membership.id)"
+                >
+                  <i pButtonIcon class="pi pi-user-minus" aria-hidden="true"></i>
+                </button>
+              }
+            </td>
+          }
+        </tr>
+      </ng-template>
+    </p-table>
+  } @else {
+    <p-message severity="secondary">
+      <strong>{{ 'all.team.no-players' | translate }}</strong>
+      {{ 'all.team.no-players-description' | translate }}
+    </p-message>
+  }
+</p-card>

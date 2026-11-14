@@ -16,6 +16,7 @@ export interface PlayerStats {
 
 export class TeamDetailService {
   private readonly apollo = inject(Apollo);
+  membershipError = signal<'all.team.detail.roster.addError' | 'all.team.detail.roster.removeError' | null>(null);
 
   filter = new FormGroup({
     teamId: new FormControl<string | null>(null),
@@ -33,6 +34,7 @@ export class TeamDetailService {
         return null;
       }
 
+      this.membershipError.set(null);
       try {
         // Step 1: resolve the team. The backend `team(id)` query accepts both
         // a UUID and a slug (see team.resolver.ts), so we can pass whatever
@@ -390,6 +392,7 @@ export class TeamDetailService {
   });
 
   async addPlayerToTeam(teamId: string, playerId: string): Promise<void> {
+    this.membershipError.set(null);
     try {
       const result = await lastValueFrom(
         this.apollo.mutate<{ addTeamPlayerMembership: any }>({
@@ -410,15 +413,18 @@ export class TeamDetailService {
         }),
       );
 
-      if (result?.data?.addTeamPlayerMembership) {
-        this.dataResource.reload();
+      if (!result?.data?.addTeamPlayerMembership) {
+        throw new Error('Adding team membership returned no membership');
       }
+      this.dataResource.reload();
     } catch (err) {
       console.error('Failed to add player to team:', err);
+      this.membershipError.set('all.team.detail.roster.addError');
     }
   }
 
   async removePlayerFromTeam(membershipId: string): Promise<void> {
+    this.membershipError.set(null);
     try {
       const result = await lastValueFrom(
         this.apollo.mutate<{ removeTeamPlayerMembership: boolean }>({
@@ -431,11 +437,13 @@ export class TeamDetailService {
         }),
       );
 
-      if (result?.data?.removeTeamPlayerMembership) {
-        this.dataResource.reload();
+      if (!result?.data?.removeTeamPlayerMembership) {
+        throw new Error('Removing team membership was not successful');
       }
+      this.dataResource.reload();
     } catch (err) {
       console.error('Failed to remove player from team:', err);
+      this.membershipError.set('all.team.detail.roster.removeError');
     }
   }
 

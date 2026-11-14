@@ -17,14 +17,14 @@ description: 'Bounded child slices for the mounted club team-detail page.'
 
 ## Required children
 
-| ID                                         | Scope                                              | Prerequisite                                        |
-| ------------------------------------------ | -------------------------------------------------- | --------------------------------------------------- |
-| [DR-014a](DR-014a-team-page-chrome.md)     | Identity, contact actions, page loading/error      | Completed DR-004 shared hero                        |
-| [DR-014b](DR-014b-team-hero-statistics.md) | Hero statistics and their copy                     | DR-014a complete                                    |
-| DR-014c                                    | Mounted roster table, actions and empty state      | DR-014a complete; scope brief before implementation |
-| DR-014d                                    | Upcoming/played encounter headings and empty state | DR-014a complete; preserve shared encounter Cards   |
+| ID                                         | Scope                                              | Prerequisite                                      |
+| ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------- |
+| [DR-014a](DR-014a-team-page-chrome.md)     | Identity, contact actions, page loading/error      | Completed DR-004 shared hero                      |
+| [DR-014b](DR-014b-team-hero-statistics.md) | Hero statistics and their copy                     | DR-014a complete                                  |
+| [DR-014c](DR-014c-team-roster.md)          | Mounted roster table, actions and empty state      | DR-014a complete                                  |
+| DR-014d                                    | Upcoming/played encounter headings and empty state | DR-014a complete; preserve shared encounter Cards |
 
-DR-014a and DR-014b are complete with disclosed limits; DR-014c/d were not started.
+DR-014a/b/c are complete with disclosed limits; DR-014d is not started.
 Keep the parent open until all required children and parent review pass.
 
 ## Baseline and discoveries
@@ -33,8 +33,8 @@ Keep the parent open until all required children and parent review pass.
   unnamed icon-only contact links. Page error is hand-styled red text; loading uses three Skeletons.
 - Hero statistics originally contained English copy, oversized metrics, `t-eyebrow` and paired palette utilities.
   DR-014b replaces these with localized compact metrics, native Tag severity and wrapping next-encounter details.
-- Mounted roster has English headings/membership values, inline palette colors and tooltip-only mutation action
-  names. Resolve these within DR-014c, without making membership mutations for visual verification.
+- Mounted roster originally had English headings/membership values, inline palette colors and tooltip-only action
+  names. DR-014c replaces these with localized native presentation and named actions; no live mutations.
 - Encounter lists already consume the shared `app-encounter-card`; DR-014d is section chrome, not Card internals.
 - The sibling `components/team-encounters.component.*` has no application consumer (only its declaration was
   found). Leave it unchanged; exports/tests/unused paths do not authorize refreshing or mounting it.
@@ -42,7 +42,7 @@ Keep the parent open until all required children and parent review pass.
   rendering from data. Reuse these; do not add a one-consumer wrapper solely to hide classes.
 - Service resource selectors call `value()` without `hasValue()` guards, preventing failed-load presentation.
   DR-014a includes the directly coupled main-resource guards, not service/query/mutation redesign.
-- Membership mutation errors only log; defer user-facing feedback investigation to DR-014c.
+- Membership mutation errors originally only logged; DR-014c adds translated native feedback while preserving logging.
 - Fallback-draw resource error handling is outside the page's main loading/error chrome; scope separately if needed.
 
 ## Parent acceptance
@@ -64,7 +64,12 @@ After the user restored ports 3000/5000, Dutch light/dark/narrow/wide and synthe
 DR-014b is Done with explicit approval (`Approve and commit DR-014b with disclosed limits`, 2026-11-14).
 French/English browser, full accessibility, default tests and full SSR/hydration remain unverified.
 Approval accepts those limits without claiming the unperformed checks passed.
-Exact next action: scope DR-014c roster and create its brief before implementation.
+DR-014c implementation and focused lint/build/zoneless tests pass. User restored frontend 3000; Dutch mounted
+theme/width, safe synthetic roster/error/permission and keyboard checks pass. Inherited native danger-icon light
+contrast remains DR-033; fr/en browser, live persistence, full accessibility/default tests/SSR remain unverified.
+DR-014c is Done with explicit approval (`Approve and commit DR-014c with disclosed limits`, 2026-11-14).
+Approval accepts those limits and the DR-033 shortfall without claiming unperformed checks passed.
+Exact next action: scope DR-014d encounter section chrome and create its brief; it was not started here.
 Keep this parent open until all required children and parent review are complete.
 DR-014b approval authorizes its template, locale assets, generated types and repository handoff commit only.
 No push is authorized.

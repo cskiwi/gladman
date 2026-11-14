@@ -1480,6 +1480,16 @@
     "detail": {
       "loadError": "Impossible de charger les détails de l'équipe. Veuillez réessayer.",
       "loading": "Chargement des détails de l'équipe...",
+      "roster": {
+        "membership": "Appartenance",
+        "winPercentage": "Victoires %",
+        "member": "Membre",
+        "gameOnly": "Matchs uniquement",
+        "addPlayer": "Ajouter {{name}} à l'équipe",
+        "removePlayer": "Retirer {{name}} de l'équipe",
+        "addError": "Impossible d'ajouter le joueur à l'équipe. Veuillez réessayer.",
+        "removeError": "Impossible de retirer le joueur de l'équipe. Veuillez réessayer."
+      },
       "stats": {
         "roster": "Joueurs",
         "seasonRecord": "Bilan de la saison",

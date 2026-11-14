@@ -125,22 +125,13 @@
       </app-hero>
 
       <!-- Players Section -->
-      @if (players().length > 0) {
-        <section>
-          <app-team-players-table
-            [players]="players()"
-            [playerStats]="playerStats()"
-            [onAddPlayerToTeam]="canEditClub() ? onAddPlayerToTeam : null"
-            [onRemovePlayerFromTeam]="canEditClub() ? onRemovePlayerFromTeam : null"
-          />
-        </section>
-      } @else {
-        <div class="text-center py-12 text-muted-color">
-          <i class="pi pi-users text-4xl mb-4 block"></i>
-          <h3 class="text-lg font-medium text-color mb-2">{{ 'all.team.no-players' | translate }}</h3>
-          <p>{{ 'all.team.no-players-description' | translate }}</p>
-        </div>
-      }
+      <app-team-players-table
+        [players]="players()"
+        [playerStats]="playerStats()"
+        [membershipError]="membershipError()"
+        [onAddPlayerToTeam]="canEditClub() ? onAddPlayerToTeam : null"
+        [onRemovePlayerFromTeam]="canEditClub() ? onRemovePlayerFromTeam : null"
+      />
 
       <!-- Upcoming encounters -->
       @if (upcomingEncounters().length > 0) {

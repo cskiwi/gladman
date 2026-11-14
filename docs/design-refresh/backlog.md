@@ -5,6 +5,38 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-014c [Team roster](work-items/DR-014c-team-roster.md) is Done with explicit approval
+(`Approve and commit DR-014c with disclosed limits`, 2026-11-14).
+Confirmed mounted consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
+Clean worktree at selection on 2026-11-14; DR-014a/b are Done.
+Scope: native roster surface, localized headings/membership, named actions, empty state and membership error feedback.
+Preserve statistics, sorting, routes, permissions and callback payloads. No live mutations or shared styling changes.
+Existing smart/service and presentational roster separation retained; no new wrapper needed.
+Implemented native Card/Table scrolling, localized membership/headings, named actions and consolidated empty/error Message.
+Statistics, sorting and mutation payloads preserved. Logged mutation failures now also display native translated feedback.
+Roster template class tokens 56 -> 57; two inline palette colors removed, parent decorative empty wrappers removed.
+Club lint/build pass (12 tasks); two suites / seven tests pass with temporary zoneless setup.
+Default tests fail before execution on missing `zone.js` (DR-059); actual-template Jest resources also unavailable.
+Source eight-key/interpolation parity and live API translations in nl_BE/fr_BE/en pass; related generated types retained.
+Initial server blocker resolved after `Frontend restored; continue DR-014c verification` (2026-11-14).
+Both ports now respond; no shared server was stopped/restarted here.
+Mounted Dutch light/dark 390px/1440px real and long/missing/game-only/zero/empty/error states fit without page overflow.
+Native Table scrolling, named keyboard Add/Remove recorder payloads, permission column gating and error clearing pass.
+Header Enter sorting and narrow Tab/Shift+Tab link/action focus/scroll pass; zero action-check GraphQL mutations.
+Native heading/metric/count/Tag text contrast passes; player links corrected to semantic normal text and rechecked.
+Inherited native danger-icon light contrast 2.77 (<3:1) remains DR-033; no shared theme change.
+Final dark-narrow/light-wide screenshots inspected; real data, homepage, original viewport/dark preference restored.
+Not verified: live membership persistence, fr/en browser, full accessibility, default tests and full SSR/hydration.
+Final link-correction club lint/build pass (12 tasks / 10 cached).
+Approval accepts the disclosed limits and inherited DR-033 shortfall without claiming unperformed checks passed.
+Unchecked criteria remain in the brief; temporary test helpers removed.
+Exact next action: scope DR-014d encounter section chrome and create its brief before implementation.
+Keep parent DR-014 open and DR-014d unstarted.
+Approval authorizes only DR-014c implementation, tests, related generated types and repository handoff commit.
+No push authorized.
+
+### Previous focus: Team hero statistics (DR-014b)
+
 DR-014b [Team hero statistics](work-items/DR-014b-team-hero-statistics.md) is Done with explicit approval
 (`Approve and commit DR-014b with disclosed limits`, 2026-11-14).
 Confirmed mounted consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
@@ -2848,7 +2880,7 @@ and linked from their registry rows.
 | [DR-014](work-items/DR-014-club-team-detail.md)               | Club team detail                                                             | In progress |
 | [DR-014a](work-items/DR-014a-team-page-chrome.md)             | Team-detail identity, contacts and main loading/error                        | Done        |
 | [DR-014b](work-items/DR-014b-team-hero-statistics.md)         | Team-detail hero statistics and copy (depends on DR-014a)                    | Done        |
-| DR-014c                                                       | Team-detail roster, actions and empty state (depends on DR-014a)             | Backlog     |
+| [DR-014c](work-items/DR-014c-team-roster.md)                  | Team-detail roster, actions and empty state (depends on DR-014a)             | Done        |
 | DR-014d                                                       | Team-detail encounter section chrome (depends on DR-014a)                    | Backlog     |
 | DR-015                                                        | Competition detail and sub-event presentation                                | Backlog     |
 | [DR-015a](work-items/DR-015a-competition-event-cards.md)      | Competition sub-event Cards                                                  | Done        |

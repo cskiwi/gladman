@@ -5,6 +5,28 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-014 [Club team detail](work-items/DR-014-club-team-detail.md) is Done with explicit parent approval
+(`Approve and commit DR-014 with disclosed limits`, 2026-11-14).
+All required children DR-014a/b/c/d are Done with recorded approval and disclosed limits.
+Confirmed mounted consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
+Scope: review the assembled page, preserve child implementations and record parent acceptance; no new redesign slice.
+Exclude shared theme/topbar, unused team-encounters, operations and translation changes.
+Dutch mounted page: seven roster rows, seven upcoming/three played Cards, no raw translation keys or nested Cards.
+Theme/width DOM checks at 390px/1440px fit page sections; DR-066 topbar still overflows (424px/375px).
+Keyboard contact/link/action focus, ascending/descending roster sort and played-match expand/collapse pass.
+Dark 1693px-wide screenshot inspected; narrow screenshot verification is incomplete because the shared browser
+resets requested viewports between operations. Theme pointer action also timed out; native DOM activation was used.
+No application code, translations, shared styling, operational mutations or new extraction; existing separation retained.
+Documentation-only: formatter and diff checks apply; child Nx results remain historical, not rerun here.
+Not verified: complete four-case screenshot review, full accessibility/contrast, fr/en, live membership persistence,
+full loading/error/empty matrix, default tests or SSR/hydration. DR-033/059/066 remain separate.
+Parent approval accepts these limits without claiming unperformed checks passed; unchecked criteria remain.
+Approval authorizes committing only this parent handoff. No push authorized.
+Exact next action: scope DR-015 competition detail from its mounted route, split into children if needed, and select
+one bounded child before implementation. DR-015 remains Backlog and was not started here.
+
+### Previous focus: Team encounter section chrome (DR-014d)
+
 DR-014d [Team encounter section chrome](work-items/DR-014d-team-encounter-chrome.md) is Done with explicit
 approval (`Approve and commit with disclosed limits`, 2026-11-14).
 Confirmed mounted consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
@@ -2891,7 +2913,7 @@ and linked from their registry rows.
 | [DR-013f](work-items/DR-013f-builder-survey-edit.md)          | Survey edit dialog                                                           | Done        |
 | [DR-013g](work-items/DR-013g-builder-sub-event.md)            | Sub-event dialog                                                             | Done        |
 | [DR-013h](work-items/DR-013h-builder-feedback.md)             | Builder validation, notification and confirmation localization               | Done        |
-| [DR-014](work-items/DR-014-club-team-detail.md)               | Club team detail                                                             | In progress |
+| [DR-014](work-items/DR-014-club-team-detail.md)               | Club team detail                                                             | Done        |
 | [DR-014a](work-items/DR-014a-team-page-chrome.md)             | Team-detail identity, contacts and main loading/error                        | Done        |
 | [DR-014b](work-items/DR-014b-team-hero-statistics.md)         | Team-detail hero statistics and copy (depends on DR-014a)                    | Done        |
 | [DR-014c](work-items/DR-014c-team-roster.md)                  | Team-detail roster, actions and empty state (depends on DR-014a)             | Done        |

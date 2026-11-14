@@ -24,8 +24,8 @@ description: 'Bounded child slices for the mounted club team-detail page.'
 | [DR-014c](DR-014c-team-roster.md)           | Mounted roster table, actions and empty state      | DR-014a complete                                  |
 | [DR-014d](DR-014d-team-encounter-chrome.md) | Upcoming/played encounter headings and empty state | DR-014a complete; preserve shared encounter Cards |
 
-DR-014a/b/c/d are complete with disclosed limits. Parent review remains outstanding.
-Keep the parent open until all required children and parent review pass.
+DR-014a/b/c/d are complete with disclosed limits. Integrated parent review and explicit parent approval are
+recorded below. Unperformed acceptance checks remain unchecked; approval accepts those limits.
 
 ## Baseline and discoveries
 
@@ -48,10 +48,10 @@ Keep the parent open until all required children and parent review pass.
 ## Parent acceptance
 
 - [x] Confirm mounted consumer and split broad page into independently reviewable children.
-- [ ] Complete all required children.
+- [x] Complete all required children.
 - [ ] Review integrated page in light/dark, narrow/wide, with keyboard and relevant data states.
 - [ ] Preserve routes, permissions, data and domain workflows.
-- [ ] Record parent approval and disclosed verification limits before completion.
+- [x] Record parent approval and disclosed verification limits before completion.
 
 ## Handoff
 
@@ -71,7 +71,54 @@ DR-014c is Done with explicit approval (`Approve and commit DR-014c with disclos
 Approval accepts those limits and the DR-033 shortfall without claiming unperformed checks passed.
 DR-014d has semantic headings and native empty feedback and is Done with explicit approval
 (`Approve and commit with disclosed limits`, 2026-11-14); its unchecked verification limits remain in its brief.
-Exact next action: review the integrated DR-014 team-detail page and parent checklist before parent closure.
-Keep this parent open until all required children and parent review are complete.
+Integrated parent review and explicit approval with disclosed limits are recorded below.
+The parent and all completed children are Done; unperformed verification remains unchecked.
 DR-014b approval authorizes its template, locale assets, generated types and repository handoff commit only.
 No push is authorized.
+
+## Integrated parent review (2026-11-14)
+
+- Selected exactly this parent review, resuming the recorded focus with a clean worktree.
+  No child was reopened and no new implementation slice was started.
+- Confirmed actual consumer: `/clubs/smash-for-fun/teams/ea2d1aa1-14f9-4f3a-83e8-0acbd43864da`.
+  Read the mounted page, roster template and data service against the parent/child handoffs.
+  Seven roster rows, seven upcoming and three played Cards match the existing recorded data.
+  Headings expose one h1 and roster/upcoming/played h2s; no raw `all.*` keys or nested Cards.
+- Existing smart page/service, presentational roster and shared hero/encounter Cards provide meaningful separation.
+  No new dumb/smart extraction is justified for this review. Templates, utilities and behavior are unchanged.
+  The unused sibling team-encounters component remains untouched.
+- **Passed, DOM measurements:** dark/light at requested 390px and 1440px, with actual document client widths
+  375px and 1425px during the matrix. Hero, roster and every encounter/section remain within the client bounds.
+  Native roster scroll container is 282px wide with 1002px content at narrow width, versus 1215px/1215px wide.
+  Whole-page narrow fit still fails: scroll width 424px against 375px client width, tracked separately as DR-066.
+- **Passed, keyboard:** captain -> email -> telephone Tab sequence; both contact links show focus-visible.
+  Roster player -> named Remove action -> Shift+Tab player and first encounter's first -> second team link pass
+  in the four theme/width runs. No membership action was activated.
+  Follow-up settled DOM checks confirm Played Enter sorting: ascending `[0,2,3,3,5,5,6]`, descending
+  `[6,5,5,3,3,2,0]`. The played Card's match-detail button opens with Enter (`aria-expanded=true`), renders
+  existing game results, and closes with Enter (`false`). No operational/admin mutation was performed.
+- **Passed, limited visual evidence:** inspected the light-narrow screenshot of identity/statistics and roster start,
+  and a native dark-wide 1693x1272 screenshot of the integrated hero/roster/upcoming list.
+  The shared browser resets requested viewports between operations, producing cropped or mismatched narrow
+  screenshots; an isolated temporary tab also reset to 1024px and was closed.
+  Do not treat transient DOM-fit measurements as complete four-case visual acceptance.
+  Pointer theme activation timed out waiting for stability; activating the existing native button through DOM
+  `click()` switched the real theme for measurements. Pointer theme interaction remains unverified here.
+- **Not run:** application Nx lint/build/tests, because only repository handoff documents changed.
+  Child lint/build and focused test outcomes remain recorded historical evidence in their briefs;
+  default missing-`zone.js` remains DR-059, not a new test pass or a dependency change.
+- **Passed, documentation:** `npx --no-install prettier --write docs\design-refresh\backlog.md
+docs\design-refresh\work-items\DR-014-club-team-detail.md` and `git --no-pager diff --check`.
+  Git reports its existing LF-to-CRLF working-copy warning; the edited documents retain LF.
+- **Not verified:** full narrow/wide screenshot review, exhaustive keyboard/screen-reader/focus-ring/contrast audit,
+  French/English browser, live membership persistence, complete loading/error/empty/long-data matrix or
+  SSR/hydration. Preserve the children's accepted limits and inherited DR-033 danger-icon contrast shortfall.
+- No application code, translations, shared styling or dependencies changed; no new styling exception.
+  No server was stopped or restarted. Original homepage, dark preference and 1693x1272 viewport restored.
+- User approval: `Approve and commit DR-014 with disclosed limits` (2026-11-14). This accepts the recorded
+  verification limits and inherited DR-033/059/066 issues without claiming unperformed checks passed.
+  Approval authorizes closing and committing only this parent handoff; no push is authorized.
+- Result: parent is **Done** in the authoritative backlog; child completion and parent approval are checked,
+  broader unperformed acceptance remains unchecked. Exact next action: scope DR-015 competition detail from
+  its mounted route, split into children if needed, and select one bounded child before implementation.
+  DR-015 remains Backlog and was not started here.

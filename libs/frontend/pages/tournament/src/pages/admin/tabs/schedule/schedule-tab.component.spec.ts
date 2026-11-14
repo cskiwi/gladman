@@ -8,12 +8,14 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { of, Subject, throwError } from 'rxjs';
 import { ScheduleTabComponent } from './schedule-tab.component';
+import { localDayRange } from './schedule-result.util';
 
 describe('Scheduling read feedback', () => {
   let fixture: ComponentFixture<ScheduleTabComponent>;
   let query: jest.Mock;
   let mutate: jest.Mock;
-  const empty = { data: { tournamentSchedule: [], tournamentScheduleCourts: [], unscheduledGames: [] } };
+  const empty = { data: { slots: [], memberships: [], unscheduledGames: [] } };
+  const noCourts = { data: { courts: [] } };
 
   beforeEach(async () => {
     // The native scrollable table observes its size; jsdom has no ResizeObserver.
@@ -23,7 +25,10 @@ describe('Scheduling read feedback', () => {
       disconnect: jest.fn(),
     })) as unknown as typeof ResizeObserver;
 
-    query = jest.fn(() => of(empty));
+    // The courts of the tournament venues are a second, dependent read; everything else is one document.
+    query = jest.fn((options: { query: Parameters<typeof print>[0] }) =>
+      print(options.query).includes('TournamentScheduleCourts') ? of(noCourts) : of(empty),
+    );
     mutate = jest.fn();
     await TestBed.configureTestingModule({
       imports: [ScheduleTabComponent, TranslateModule.forRoot()],
@@ -70,14 +75,14 @@ describe('Scheduling read feedback', () => {
     query.mockReturnValueOnce(
       of({
         data: {
-          tournamentSchedule: statuses.map((status, index) => ({
+          slots: statuses.map((status, index) => ({
             id: `safe-slot-${index}`,
             courtId: 'safe-court',
             startTime: '2026-11-09T09:00:00Z',
             endTime: '2026-11-09T09:30:00Z',
             status,
           })),
-          tournamentScheduleCourts: [{ id: 'safe-court', name: 'Safe Court' }],
+          memberships: [],
           unscheduledGames: [{ id: 'safe-one' }, { id: 'safe-two' }],
         },
       }),
@@ -91,7 +96,7 @@ describe('Scheduling read feedback', () => {
     const date = new Date('2026-11-10T00:00:00Z');
     fixture.componentInstance.onDateChange(date);
     await settle();
-    expect(query.mock.lastCall?.[0].variables.date).toBe(date);
+    expect(query.mock.lastCall?.[0].variables.slots.where[0].startTime).toEqual({ between: localDayRange(date) });
     expect(counts()).toEqual(['0', '0', '0', '0', '0', '0']);
   });
 
@@ -147,14 +152,14 @@ describe('Scheduling read feedback', () => {
       of({
         data: {
           ...empty.data,
-          tournamentSchedule: ['AVAILABLE', 'SCHEDULED'].map((status, index) => ({
+          slots: ['AVAILABLE', 'SCHEDULED'].map((status, index) => ({
             id: `safe-slot-${index}`,
             courtId: 'safe-court',
             startTime: '2026-11-09T09:00:00Z',
             endTime: '2026-11-09T09:30:00Z',
             status,
           })),
-          tournamentScheduleCourts: [{ id: 'safe-court', name: 'Safe Court' }],
+          memberships: [],
           unscheduledGames: [{ id: 'safe-game' }],
         },
       }),
@@ -220,9 +225,7 @@ describe('Scheduling read feedback', () => {
     const response = {
       data: {
         ...empty.data,
-        tournamentSchedule: [
-          { id: 'safe-slot', courtId: 'safe-court', startTime: date.toISOString(), endTime: '2026-11-09T00:30:00Z', status: 'AVAILABLE' },
-        ],
+        slots: [{ id: 'safe-slot', courtId: 'safe-court', startTime: date.toISOString(), endTime: '2026-11-09T00:30:00Z', status: 'AVAILABLE' }],
       },
     };
     query.mockReturnValue(of(response));
@@ -230,20 +233,20 @@ describe('Scheduling read feedback', () => {
     fixture.debugElement.query(By.css('p-select')).triggerEventHandler('ngModelChange', date);
     await settle();
     expect(fixture.componentInstance.selectedDate()).toBe(date);
-    expect(query.mock.lastCall?.[0].variables.date).toBe(date);
+    expect(query.mock.lastCall?.[0].variables.slots.where[0].startTime).toEqual({ between: localDayRange(date) });
     const controls: HTMLElement = fixture.nativeElement.querySelector('[data-testid="schedule-controls"]');
     expect(controls.querySelector('[role="combobox"]')?.textContent?.trim()).toBe('Mon, Nov 9');
     const refresh = controls.querySelectorAll<HTMLButtonElement>('button.p-button')[3];
     refresh.click();
     await settle();
-    expect(query.mock.lastCall?.[0].variables.date).toBe(date);
+    expect(query.mock.lastCall?.[0].variables.slots.where[0].startTime).toEqual({ between: localDayRange(date) });
     const refreshedControls: HTMLElement = fixture.nativeElement.querySelector('[data-testid="schedule-controls"]');
     const clear = refreshedControls.querySelector('.p-select-clear-icon');
     expect(clear).not.toBeNull();
     clear?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await settle();
     expect(fixture.componentInstance.selectedDate()).toBeNull();
-    expect(query.mock.lastCall?.[0].variables.date).toBeUndefined();
+    expect(query.mock.lastCall?.[0].variables.slots.where[0].startTime).toBeUndefined();
     expect(query).toHaveBeenCalledTimes(4);
   });
 
@@ -252,9 +255,22 @@ describe('Scheduling read feedback', () => {
     expect(fixture.componentInstance.error()).toBeNull();
     expect(fixture.nativeElement.textContent).toContain('all.tournament.admin.schedule.noSlots');
     const request = query.mock.calls[0][0];
-    expect(request.variables).toEqual({ tournamentEventId: 'safe-tournament', date: undefined });
+    expect(request.variables).toEqual({
+      slots: { where: [{ tournamentEventId: { eq: 'safe-tournament' } }], order: { startTime: 'ASC', order: 'ASC' } },
+      games: {
+        where: [
+          {
+            linkType: { eq: 'tournament' },
+            scheduleSlotId: { isNull: true },
+            tournamentDraw: { tournamentSubEvent: { eventId: { eq: 'safe-tournament' } } },
+          },
+        ],
+        order: { round: 'ASC', order: 'ASC' },
+      },
+      memberships: { where: [{ eventId: { eq: 'safe-tournament' }, isActive: { eq: true } }] },
+    });
     expect(request.fetchPolicy).toBe('network-only');
-    expect(print(request.query)).toContain('tournamentScheduleCourts(tournamentEventId: $tournamentEventId)');
+    expect(print(request.query)).toContain('locationEventMemberships(args: $memberships)');
     expect(print(request.query)).toContain('gamePlayer {');
     expect(print(request.query)).not.toContain('player {');
     expect(print(request.query)).not.toContain('location {');
@@ -299,10 +315,10 @@ describe('Scheduling read feedback', () => {
 
   it.each([
     {},
-    { tournamentSchedule: [], tournamentScheduleCourts: [] },
-    { tournamentSchedule: null, tournamentScheduleCourts: [], unscheduledGames: [] },
-    { tournamentSchedule: [], tournamentScheduleCourts: null, unscheduledGames: [] },
-    { tournamentSchedule: [], tournamentScheduleCourts: [], unscheduledGames: null },
+    { slots: [], memberships: [] },
+    { slots: null, memberships: [], unscheduledGames: [] },
+    { slots: [], memberships: null, unscheduledGames: [] },
+    { slots: [], memberships: [], unscheduledGames: null },
   ])('does not interpret malformed payload %j as empty success', async (data) => {
     query.mockReturnValueOnce(of({ data }));
     await settle();
@@ -318,15 +334,14 @@ describe('Scheduling read feedback', () => {
     const game = { id: 'safe-game', gamePlayerMemberships: [{ single: 1, gamePlayer: { fullName: 'Safe One' } }] };
     const response = {
       data: {
-        tournamentSchedule: [
-          { id: 'safe-slot', courtId: 'safe-court', startTime: '2026-11-09T09:00:00Z', endTime: '2026-11-09T09:30:00Z', status: 'AVAILABLE' },
-        ],
-        tournamentScheduleCourts: [{ id: 'safe-court', name: 'Safe Court' }],
+        slots: [{ id: 'safe-slot', courtId: 'safe-court', startTime: '2026-11-09T09:00:00Z', endTime: '2026-11-09T09:30:00Z', status: 'AVAILABLE' }],
+        memberships: [{ locationId: 'safe-location' }],
         unscheduledGames: [game],
       },
     };
-    query.mockReturnValueOnce(of(response));
+    query.mockReturnValueOnce(of(response)).mockReturnValueOnce(of({ data: { courts: [{ id: 'safe-court', name: 'Safe Court' }] } }));
     await settle();
+    expect(query.mock.calls[1][0].variables.args).toEqual({ where: [{ locationId: { in: ['safe-location'] } }], order: { name: 'ASC' } });
     expect(fixture.componentInstance.slots()).toHaveLength(1);
     expect(fixture.componentInstance.courts()).toHaveLength(1);
     expect(fixture.nativeElement.textContent).toContain('Safe One vs TBD');
@@ -344,28 +359,46 @@ describe('Scheduling read feedback', () => {
     const date = new Date('2026-11-09T00:00:00Z');
     fixture.componentInstance.selectedDate.set(date);
     await settle();
-    expect(query.mock.lastCall?.[0].variables).toEqual({ tournamentEventId: 'safe-tournament', date });
+    expect(query.mock.lastCall?.[0].variables.slots.where[0]).toEqual({
+      tournamentEventId: { eq: 'safe-tournament' },
+      startTime: { between: localDayRange(date) },
+    });
     fixture.componentRef.setInput('tournament', { id: 'safe-other' });
     await settle();
-    expect(query.mock.lastCall?.[0].variables).toEqual({ tournamentEventId: 'safe-other', date });
+    expect(query.mock.lastCall?.[0].variables.slots.where[0]).toEqual({
+      tournamentEventId: { eq: 'safe-other' },
+      startTime: { between: localDayRange(date) },
+    });
   });
 
   it('ignores a stale response after the tournament changes', async () => {
-    const stale = new Subject<{
-      data: { tournamentSchedule: []; tournamentScheduleCourts: { id: string; name: string }[]; unscheduledGames: [] };
-    }>();
+    const stale = new Subject<{ data: { slots: unknown[]; memberships: unknown[]; unscheduledGames: unknown[] } }>();
     query.mockReturnValueOnce(stale);
     fixture.detectChanges();
     const firstSignal: AbortSignal = query.mock.calls[0][0].context.signal;
     fixture.componentRef.setInput('tournament', { id: 'safe-other' });
     await settle();
     expect(firstSignal.aborted).toBe(true);
-    stale.next({ data: { ...empty.data, tournamentScheduleCourts: [{ id: 'safe-stale-court', name: 'Stale Court' }] } });
+    stale.next({
+      data: {
+        ...empty.data,
+        slots: [
+          {
+            id: 'safe-stale-slot',
+            courtId: 'safe-stale-court',
+            startTime: '2026-11-09T09:00:00Z',
+            endTime: '2026-11-09T09:30:00Z',
+            status: 'AVAILABLE',
+            court: { id: 'safe-stale-court', name: 'Stale Court' },
+          },
+        ],
+      },
+    });
     stale.complete();
     await settle();
-    expect(query.mock.lastCall?.[0].variables.tournamentEventId).toBe('safe-other');
+    expect(query.mock.lastCall?.[0].variables.slots.where[0].tournamentEventId).toEqual({ eq: 'safe-other' });
     expect(fixture.componentInstance.error()).toBeNull();
-    expect(fixture.componentInstance.courts()).toEqual([]);
+    expect(fixture.componentInstance.slots()).toEqual([]);
     expect(fixture.nativeElement.textContent).not.toContain('Stale Court');
   });
 });

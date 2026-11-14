@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, OnInit, effect } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Apollo, gql } from 'apollo-angular';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
@@ -25,9 +25,7 @@ export enum IndexType {
 
 const INDEX_ALL_MUTATION = gql`
   mutation IndexAll($input: IndexInput) {
-    indexAll(input: $input) {
-      message
-    }
+    indexAll(input: $input)
   }
 `;
 
@@ -54,6 +52,7 @@ const INDEX_ALL_MUTATION = gql`
 export class PageAdminComponent implements OnInit {
   private readonly apollo = inject(Apollo);
   private readonly messageService = inject(MessageService);
+  private readonly translate = inject(TranslateService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -167,12 +166,12 @@ export class PageAdminComponent implements OnInit {
         }),
       );
 
-      const data = result?.data as { indexAll?: { message?: string } };
-      if (data?.indexAll?.message) {
+      const data = result?.data as { indexAll?: boolean };
+      if (data?.indexAll) {
         this.messageService.add({
           severity: 'success',
           summary: 'Indexing Complete',
-          detail: data.indexAll.message,
+          detail: this.translate.instant('all.admin.panel.searchIndex.completed'),
         });
       }
     } catch (error) {

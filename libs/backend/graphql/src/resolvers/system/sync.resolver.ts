@@ -4,92 +4,7 @@ import { Player, TournamentEvent } from '@app/models';
 import { ForbiddenException, Logger, UseGuards } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { Args, Field, Float, ID, InputType, Int, Mutation, ObjectType, Query, Resolver } from '@nestjs/graphql';
-
-// GraphQL types
-@ObjectType('QueueStats')
-class QueueStats {
-  @Field(() => Int)
-  waiting!: number;
-
-  @Field(() => Int)
-  active!: number;
-
-  @Field(() => Int)
-  completed!: number;
-
-  @Field(() => Int)
-  failed!: number;
-}
-
-@ObjectType('SyncStatus')
-class SyncStatus {
-  @Field()
-  status!: string;
-
-  @Field()
-  timestamp!: string;
-
-  @Field(() => QueueStats)
-  queues!: QueueStats;
-}
-
-@ObjectType('SyncJob')
-class SyncJob {
-  @Field()
-  id!: string;
-
-  @Field()
-  name!: string;
-
-  @Field()
-  data!: string;
-
-  @Field(() => Int)
-  progress!: number;
-
-  @Field(() => Date, { nullable: true })
-  processedOn?: Date;
-
-  @Field(() => Date, { nullable: true })
-  finishedOn?: Date;
-
-  @Field({ nullable: true })
-  failedReason?: string;
-
-  @Field()
-  status!: string;
-
-  @Field(() => Float, { nullable: true })
-  timestamp?: number;
-
-  @Field({ nullable: true })
-  parentId?: string;
-}
-
-@ObjectType('SyncTriggerResponse')
-class SyncTriggerResponse {
-  @Field()
-  message!: string;
-
-  @Field()
-  success!: boolean;
-}
-
-@ObjectType('QueueStatsDetails')
-class QueueStatsDetails {
-  @Field(() => Int)
-  waiting!: number;
-
-  @Field(() => Int)
-  active!: number;
-
-  @Field(() => Int)
-  completed!: number;
-
-  @Field(() => Int)
-  failed!: number;
-}
+import { Args, Field, ID, InputType, Int, Mutation, Resolver } from '@nestjs/graphql';
 
 // Input types for team matching
 @InputType('UnmatchedTeamInput')
@@ -116,108 +31,44 @@ class UnmatchedTeamInput {
   strength?: number;
 }
 
-@ObjectType('TournamentOfficialSyncResult')
-class TournamentOfficialSyncResult {
-  @Field(() => Int)
-  updated!: number;
-
-  @Field(() => Int)
-  alreadyCorrect!: number;
-
-  @Field(() => Int)
-  notFound!: number;
-
-  @Field(() => Int)
-  recalcQueued!: number;
-}
-
 @Resolver()
 export class SyncResolver {
   private readonly logger = new Logger(SyncResolver.name);
 
   constructor(private readonly syncService: SyncService) {}
 
-  @Query(() => SyncStatus)
-  @UseGuards(PermGuard)
-  async syncStatus(@User() user: Player): Promise<SyncStatus> {
-    if (!(await user.hasAnyPermission(['change:job']))) {
-      throw new ForbiddenException('Insufficient permissions to access sync status');
-    }
-
-    const queueStats = await this.syncService.getQueueStats();
-
-    return {
-      status: 'running',
-      timestamp: new Date().toISOString(),
-      queues: queueStats,
-    };
-  }
-
-  @Query(() => [SyncJob])
-  @UseGuards(PermGuard)
-  async syncJobs(
-    @User() user: Player,
-    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
-    @Args('status', { type: () => String, nullable: true }) status?: string,
-  ): Promise<SyncJob[]> {
-    if (!(await user.hasAnyPermission(['change:job']))) {
-      throw new ForbiddenException('Insufficient permissions to access sync jobs');
-    }
-
-    const jobs = await this.syncService.getRecentJobs(limit, status);
-
-    return jobs.map((job: any) => ({
-      id: job.id?.toString() || '',
-      name: job.name || '',
-      data: JSON.stringify(job.data || {}),
-      progress: job.progress || 0,
-      processedOn: job.processedOn ? new Date(job.processedOn) : undefined,
-      finishedOn: job.finishedOn ? new Date(job.finishedOn) : undefined,
-      failedReason: job.failedReason || undefined,
-      status: job.status,
-      timestamp: job.timestamp || undefined,
-      parentId: job.parentId || undefined,
-    }));
-  }
-
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerDiscoverySync(
     @User() user: Player,
     @Args('refDate', { nullable: true }) refDate?: string,
     @Args('pageSize', { type: () => Int, nullable: true }) pageSize?: number,
     @Args('searchTerm', { nullable: true }) searchTerm?: string,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger discovery sync');
     }
 
     await this.syncService.queueTournamentDiscovery({ refDate, pageSize, searchTerm });
 
-    return {
-      message: 'Discovery sync queued successfully',
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async addTournamentByCode(@User() user: Player, @Args('visualCode', { type: () => String }) visualCode: string): Promise<SyncTriggerResponse> {
+  async addTournamentByCode(@User() user: Player, @Args('visualCode', { type: () => String }) visualCode: string): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to add tournament by code');
     }
 
     await this.syncService.queueTournamentAddByCode({ visualCode });
 
-    return {
-      message: `Tournament add by code (${visualCode}) queued successfully`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async addTournamentByCodes(@User() user: Player, @Args('visualCode', { type: () => [String] }) visualCode: string[]): Promise<SyncTriggerResponse> {
+  async addTournamentByCodes(@User() user: Player, @Args('visualCode', { type: () => [String] }) visualCode: string[]): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to add tournament by code');
     }
@@ -226,19 +77,16 @@ export class SyncResolver {
       await this.syncService.queueTournamentAddByCode({ visualCode: code });
     }
 
-    return {
-      message: `Tournament add by code (${visualCode}) queued successfully`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerEventsSync(
     @User() user: Player,
     @Args('eventId', { type: () => [ID] }) eventIds: string[],
     @Args('includeSubComponents', { type: () => Boolean, defaultValue: false }) includeSubComponents: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger event sync!');
     }
@@ -247,91 +95,76 @@ export class SyncResolver {
       await this.syncService.queueEventSync(eventId, includeSubComponents);
     }
 
-    return {
-      message: `Event sync queued successfully for ${eventIds.length} events`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerEventSync(
     @User() user: Player,
     @Args('eventId', { type: () => ID }) eventId: string,
     @Args('includeSubComponents', { type: () => Boolean, defaultValue: false }) includeSubComponents: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger event sync!');
     }
 
     await this.syncService.queueEventSync(eventId, includeSubComponents);
 
-    return {
-      message: `Event sync queued successfully for ${eventId}`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerDrawSync(
     @User() user: Player,
     @Args('drawId', { type: () => ID }) drawId: string,
     @Args('includeSubComponents', { type: () => Boolean, defaultValue: false }) includeSubComponents: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger draw sync');
     }
 
     await this.syncService.queueDrawSync(drawId, includeSubComponents);
 
-    return {
-      message: `Draw sync queued successfully for ${drawId}`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerGameSync(
     @User() user: Player,
     @Args('drawId', { type: () => ID }) drawId: string,
     @Args('matchCodes', { type: () => [String], nullable: true }) matchCodes?: string[],
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger game sync');
     }
 
     await this.syncService.queueGameSync(drawId, matchCodes);
 
-    return {
-      message: 'Game sync queued successfully',
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async triggerEncounterSync(@User() user: Player, @Args('encounterId', { type: () => ID }) encounterId: string): Promise<SyncTriggerResponse> {
+  async triggerEncounterSync(@User() user: Player, @Args('encounterId', { type: () => ID }) encounterId: string): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger encounter sync');
     }
 
     await this.syncService.queueEncounterSync(encounterId);
 
-    return {
-      message: `Encounter sync queued successfully for ${encounterId}`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerSubEventsSync(
     @User() user: Player,
     @Args('subEventIds', { type: () => [ID] }) subEventIds: string[],
     @Args('includeSubComponents', { type: () => Boolean, defaultValue: false }) includeSubComponents: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger sub-event sync!');
     }
@@ -340,19 +173,16 @@ export class SyncResolver {
       await this.syncService.queueSubEventSync(subEventId, includeSubComponents);
     }
 
-    return {
-      message: `Sub-event sync queued successfully for ${subEventIds.length} sub-events`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerDrawsSync(
     @User() user: Player,
     @Args('drawIds', { type: () => [ID] }) drawIds: string[],
     @Args('includeSubComponents', { type: () => Boolean, defaultValue: false }) includeSubComponents: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger draw sync!');
     }
@@ -361,18 +191,12 @@ export class SyncResolver {
       await this.syncService.queueDrawSync(drawId, includeSubComponents);
     }
 
-    return {
-      message: `Draw sync queued successfully for ${drawIds.length} draws`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async triggerEncountersSync(
-    @User() user: Player,
-    @Args('encounterIds', { type: () => [ID] }) encounterIds: string[],
-  ): Promise<SyncTriggerResponse> {
+  async triggerEncountersSync(@User() user: Player, @Args('encounterIds', { type: () => [ID] }) encounterIds: string[]): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger encounter sync!');
     }
@@ -381,104 +205,86 @@ export class SyncResolver {
       await this.syncService.queueEncounterSync(encounterId);
     }
 
-    return {
-      message: `Encounter sync queued successfully for ${encounterIds.length} encounters`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerSubEventSync(
     @User() user: Player,
     @Args('subEventId', { type: () => ID }) subEventId: string,
     @Args('includeSubComponents', { type: () => Boolean, defaultValue: false }) includeSubComponents?: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger sub-event sync');
     }
 
     await this.syncService.queueSubEventSync(subEventId, includeSubComponents);
 
-    return {
-      message: `Sub-event sync queued successfully for ${subEventId}`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerTeamMatching(
     @User() user: Player,
     @Args('tournamentCode') tournamentCode: string,
     @Args('eventCode', { nullable: true }) eventCode?: string,
     @Args('unmatchedTeams', { type: () => [UnmatchedTeamInput], nullable: true }) unmatchedTeams?: UnmatchedTeamInput[],
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger team matching');
     }
 
     await this.syncService.queueTeamMatching({ tournamentCode, eventCode, unmatchedTeams });
 
-    return {
-      message: 'Team matching queued successfully',
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async triggerTournamentSync(@User() user: Player): Promise<SyncTriggerResponse> {
+  async triggerTournamentSync(@User() user: Player): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger tournament structure sync');
     }
 
     await this.syncService.queueTournamentSync();
 
-    return {
-      message: 'Tournament structure sync queued successfully',
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async triggerCompetitionSync(@User() user: Player): Promise<SyncTriggerResponse> {
+  async triggerCompetitionSync(@User() user: Player): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger competition structure sync');
     }
 
     await this.syncService.queueCompetitionSync();
 
-    return {
-      message: 'Competition structure sync queued successfully',
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async triggerRankingSync(@User() user: Player, @Args('startDate', { nullable: true }) startDate?: string): Promise<SyncTriggerResponse> {
+  async triggerRankingSync(@User() user: Player, @Args('startDate', { nullable: true }) startDate?: string): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger ranking sync');
     }
 
     await this.syncService.queueRankingSync(startDate ? { startDate } : undefined);
 
-    return {
-      message: startDate ? `Ranking sync queued from ${startDate}` : 'Ranking sync queued (incremental from last update)',
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerRankingCalc(
     @User() user: Player,
     @Args('systemId', { type: () => ID }) systemId: string,
     @Args('startDate', { nullable: true }) startDate?: string,
     @Args('stopDate', { nullable: true }) stopDate?: string,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger ranking calculation');
     }
@@ -488,52 +294,39 @@ export class SyncResolver {
       stopDate: stopDate ? new Date(stopDate) : undefined,
     });
 
-    return {
-      message: startDate
-        ? `Ranking calculation queued for system ${systemId} from ${startDate}`
-        : `Ranking calculation queued for system ${systemId}`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async clearAllJobs(@User() user: Player): Promise<SyncTriggerResponse> {
+  async clearAllJobs(@User() user: Player): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to clear jobs');
     }
 
     await this.syncService.clearAllJobs();
 
-    return {
-      message: 'All jobs cleared successfully',
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Int)
   @UseGuards(PermGuard)
-  async clearCompletedJobs(@User() user: Player): Promise<SyncTriggerResponse> {
+  async clearCompletedJobs(@User() user: Player): Promise<number> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to clear jobs');
     }
 
-    const removedCount = await this.syncService.clearCompletedJobs();
-
-    return {
-      message: `Cleared ${removedCount} completed jobs (kept jobs with failed children)`,
-      success: true,
-    };
+    return this.syncService.clearCompletedJobs();
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerTournamentScrapeYear(
     @User() user: Player,
     @Args('year', { type: () => Int }) year: number,
     @Args('runAdding', { type: () => Boolean, defaultValue: true }) runAdding: boolean,
     @Args('runCleanup', { type: () => Boolean, defaultValue: true }) runCleanup: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger tournament scrape');
     }
@@ -545,20 +338,17 @@ export class SyncResolver {
       metadata: { displayName: `Scrape calendar year ${year}` },
     });
 
-    return {
-      message: `Tournament calendar scrape for ${year} queued (runAdding=${runAdding}, runCleanup=${runCleanup})`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => SyncTriggerResponse)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
   async triggerTournamentScrapeYears(
     @User() user: Player,
     @Args('years', { type: () => [Int] }) years: number[],
     @Args('runAdding', { type: () => Boolean, defaultValue: true }) runAdding: boolean,
     @Args('runCleanup', { type: () => Boolean, defaultValue: true }) runCleanup: boolean,
-  ): Promise<SyncTriggerResponse> {
+  ): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to trigger tournament scrape');
     }
@@ -572,15 +362,12 @@ export class SyncResolver {
       });
     }
 
-    return {
-      message: `Tournament calendar scrape queued for years: ${years.join(', ')} (runAdding=${runAdding}, runCleanup=${runCleanup})`,
-      success: true,
-    };
+    return true;
   }
 
-  @Mutation(() => TournamentOfficialSyncResult)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async syncTournamentOfficialStatus(@User() user: Player): Promise<TournamentOfficialSyncResult> {
+  async syncTournamentOfficialStatus(@User() user: Player): Promise<boolean> {
     if (!(await user.hasAnyPermission(['change:job']))) {
       throw new ForbiddenException('Insufficient permissions to sync tournament official status');
     }
@@ -635,17 +422,6 @@ export class SyncResolver {
       `syncTournamentOfficialStatus done — updated: ${updated}, alreadyCorrect: ${alreadyCorrect}, notFound: ${notFound}, recalcQueued: ${recalcQueued}`,
     );
 
-    return { updated, alreadyCorrect, notFound, recalcQueued };
-  }
-
-  @Query(() => String)
-  @UseGuards(PermGuard)
-  async syncQueueStatsByName(@User() user: Player): Promise<string> {
-    if (!(await user.hasAnyPermission(['change:job']))) {
-      throw new ForbiddenException('Insufficient permissions to access queue statistics');
-    }
-
-    const stats = await this.syncService.getQueueStatsByName();
-    return JSON.stringify(stats);
+    return true;
   }
 }

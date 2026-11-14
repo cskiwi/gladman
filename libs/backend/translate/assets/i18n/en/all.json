@@ -14,7 +14,8 @@
         "selectNone": "Select None",
         "selectTypes": "Select Types to Index",
         "startIndexing": "Start Indexing",
-        "title": "Indexing"
+        "title": "Indexing",
+        "completed": "Indexing completed"
       },
       "sync": {
         "title": "Synchronization"
@@ -1225,7 +1226,8 @@
         "tournamentSync": "Tournament sync",
         "tournamentSyncError": "Failed to schedule tournament sync",
         "tournamentSyncQueued": "Tournament sync successfully scheduled",
-        "tournamentSyncTooltip": "Synchronize current and upcoming tournaments"
+        "tournamentSyncTooltip": "Synchronize current and upcoming tournaments",
+        "clearCompletedSuccessCount": "Cleared {{count}} completed jobs (kept jobs with failed children)"
       },
       "jobs": {
         "actions": "Actions",
@@ -1442,6 +1444,13 @@
       "queued": "Queued for synchronization",
       "synced": "Successfully synchronized",
       "syncing": "Synchronization in progress"
+    },
+    "button": {
+      "eventSyncQueued": "Event sync queued successfully for {{id}}",
+      "subEventSyncQueued": "Sub-event sync queued successfully for {{id}}",
+      "drawSyncQueued": "Draw sync queued successfully for {{id}}",
+      "cacheCleared": "Cleared cached API entries",
+      "cacheEmpty": "No cache entries found"
     }
   },
   "system": {
@@ -1777,7 +1786,8 @@
         "waitingList": "Waiting",
         "waitingListDescription": "On waiting list",
         "withdraw": "Withdraw",
-        "withdrawn": "Withdrawn"
+        "withdrawn": "Withdrawn",
+        "playerSearchTooLong": "Player search must not exceed {{max}} characters"
       },
       "noPermission": "You do not have permission to manage this tournament",
       "phases": {

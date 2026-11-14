@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, inject } from '@angular/core';
 import { FormGroupDirective, NgModel, ReactiveFormsModule } from '@angular/forms';
@@ -59,6 +61,8 @@ describe('Assembly time-range translations', () => {
       imports: [AssemblyComponent, AssemblyFormHostComponent, TranslateModule.forRoot()],
       providers: [
         AssemblyService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         AssemblyGeneratorService,
         { provide: AuthService, useValue: { hasAnyPermission: () => false } },
         { provide: RankingSystemService, useValue: {} },

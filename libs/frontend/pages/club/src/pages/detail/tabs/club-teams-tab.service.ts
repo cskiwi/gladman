@@ -1,11 +1,26 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { computed, inject, resource, signal } from '@angular/core';
-import { Team } from '@app/models';
+import { Player, Team } from '@app/models';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 import { sortTeams } from '@app/utils/sorts';
+import { RecentFormMembership, recentFormArgs, toRecentForm } from './player-recent-form.util';
 
 export type TeamGenderFilter = 'all' | 'M' | 'F' | 'MX';
+
+/** Replaces each player's native recent game memberships by the derived `recentForm` W/L booleans. */
+function withRecentForm(team: Team): Team {
+  return {
+    ...team,
+    teamPlayerMemberships: (team.teamPlayerMemberships ?? []).map((membership) => {
+      const { recentGames, ...player } = (membership.player ?? {}) as Player & { recentGames?: RecentFormMembership[] };
+      return {
+        ...membership,
+        player: membership.player ? { ...player, recentForm: toRecentForm(recentGames, 5) } : membership.player,
+      };
+    }),
+  } as unknown as Team;
+}
 
 export class ClubTeamsTabService {
   private readonly apollo = inject(Apollo);
@@ -30,7 +45,7 @@ export class ClubTeamsTabService {
         const teamsResult = await lastValueFrom(
           this.apollo.query<{ club: { teams: Team[] } }>({
             query: gql`
-              query ClubDetailTeamsTab($clubId: ID!, $season: Float!) {
+              query ClubDetailTeamsTab($clubId: ID!, $season: Float!, $recentFormArgs: GamePlayerMembershipArgs) {
                 club(id: $clubId) {
                   id
                   teams(args: { where: [{ season: { eq: $season } }], take: 50, order: { name: ASC } }) {
@@ -64,7 +79,14 @@ export class ClubTeamsTabService {
                           double
                           mix
                         }
-                        recentForm(take: 5)
+                        recentGames: gamePlayerMemberships(args: $recentFormArgs) {
+                          id
+                          team
+                          game {
+                            id
+                            winner
+                          }
+                        }
                       }
                     }
                   }
@@ -74,12 +96,13 @@ export class ClubTeamsTabService {
             variables: {
               clubId: params.clubId,
               season: params.season,
+              recentFormArgs: recentFormArgs(5),
             },
             context: { signal: abortSignal },
           }),
         );
 
-        const teams = teamsResult.data?.club?.teams || [];
+        const teams = (teamsResult.data?.club?.teams || []).map((team) => withRecentForm(team));
         return [...teams].sort(sortTeams);
       } catch (err) {
         console.error(err);

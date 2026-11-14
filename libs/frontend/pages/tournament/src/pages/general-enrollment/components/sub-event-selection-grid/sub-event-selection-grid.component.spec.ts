@@ -18,6 +18,7 @@ describe('Enrollment selection Cards', () => {
       _isEnrollmentOpen: true,
       _isAlreadyEnrolled: false,
       _isEligible: true,
+      _waitingListCount: 0,
       ...overrides,
     });
   }
@@ -133,7 +134,7 @@ describe('Enrollment selection Cards', () => {
     [4, false, '4 spots left', 'warn'],
     [5, false, '5 spots left', 'success'],
   ] as const)('preserves capacity %s and waiting-list=%s presentation', async (spots, waitingList, label, severity) => {
-    const { element } = await mount([event({ _availableSpots: spots, waitingListEnabled: waitingList, waitingListCount: 2 })]);
+    const { element } = await mount([event({ _availableSpots: spots, waitingListEnabled: waitingList, _waitingListCount: 2 })]);
     expect(element.querySelector('.p-tag')?.textContent).toBe(label);
     expect(element.querySelector(`.p-tag-${severity}`)).not.toBeNull();
     expect(element.textContent?.includes('2 on the waiting list')).toBe(spots === 0 && waitingList);

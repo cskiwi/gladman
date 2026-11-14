@@ -1,21 +1,7 @@
 import { Field, ID, InputType, Int, ObjectType, OmitType, PartialType } from '@nestjs/graphql';
 import { BaseEntity, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { SortableField, WhereField } from '@app/utils';
-
-@ObjectType('CronJobMeta', { description: 'Cron job meta data' })
-export class CronJobMetaType {
-  @Field(() => String, { nullable: true })
-  jobName?: string;
-
-  @Field(() => String, { nullable: true })
-  queueName?: string;
-
-  @Field(() => String, { nullable: true })
-  arguments?: string;
-}
-
-@InputType()
-export class CronJobMetaInputType extends PartialType(OmitType(CronJobMetaType, [] as const), InputType) {}
+import { GraphQLJSONObject } from 'graphql-type-json';
 
 export interface CronJobMeta {
   jobName: string;
@@ -56,7 +42,7 @@ export class CronJob extends BaseEntity {
   @Column({ type: 'character varying', length: 255 })
   declare cronTime: string;
 
-  @Field(() => CronJobMetaType, { nullable: true })
+  @Field(() => GraphQLJSONObject, { nullable: true })
   @Column({ type: 'json', nullable: true })
   declare meta?: CronJobMeta;
 

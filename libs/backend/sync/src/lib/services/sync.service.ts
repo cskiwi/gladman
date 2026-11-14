@@ -2,6 +2,7 @@ import { InjectQueue, InjectFlowProducer } from '@nestjs/bullmq';
 import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob as NestCronJob } from 'cron';
+import { CRON_TIMEZONE } from '@app/utils/comp';
 import { Queue, FlowProducer } from 'bullmq';
 import {
   TournamentEvent,
@@ -130,13 +131,19 @@ export class SyncService implements OnModuleInit {
       // Not registered yet — ignore
     }
 
-    const job = new NestCronJob(cronJob.cronTime, async () => {
-      await this.executeCronJob(cronJob.name, handler);
-    });
+    const job = new NestCronJob(
+      cronJob.cronTime,
+      async () => {
+        await this.executeCronJob(cronJob.name, handler);
+      },
+      null,
+      false,
+      CRON_TIMEZONE,
+    );
 
     this.schedulerRegistry.addCronJob(cronJob.name, job);
     job.start();
-    this.logger.log(`Registered cron job: ${cronJob.name} (${cronJob.cronTime})`);
+    this.logger.log(`Registered cron job: ${cronJob.name} (${cronJob.cronTime}, ${CRON_TIMEZONE})`);
   }
 
   /**

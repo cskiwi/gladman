@@ -2,50 +2,16 @@ import { PermGuard, User } from '@app/backend-authorization';
 import { TournamentCheckIn, TournamentEvent, TournamentEnrollment, Player, TournamentSubEvent } from '@app/models';
 import { CheckInStatus, EnrollmentStatus } from '@app/models-enum';
 import { BadRequestException, ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, ID, Int, Mutation, ObjectType, Field, Parent, Query, ResolveField, Resolver, registerEnumType } from '@nestjs/graphql';
+import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver, registerEnumType } from '@nestjs/graphql';
 import { TournamentCheckInArgs } from '../../../args';
 import { CheckInPlayerInput, MarkNoShowInput, BulkCheckInInput } from '../../../inputs';
-import { FindOptionsWhere, In } from 'typeorm';
+import { In } from 'typeorm';
 
 // Register the CheckInStatus enum for GraphQL
 registerEnumType(CheckInStatus, {
   name: 'CheckInStatus',
   description: 'Status of a tournament check-in',
 });
-
-// Result types
-@ObjectType('CheckInStats')
-class CheckInStats {
-  @Field(() => Int)
-  total!: number;
-
-  @Field(() => Int)
-  checkedIn!: number;
-
-  @Field(() => Int)
-  pending!: number;
-
-  @Field(() => Int)
-  noShow!: number;
-
-  @Field(() => Number)
-  checkInRate!: number;
-}
-
-@ObjectType('BulkCheckInResult')
-class BulkCheckInResult {
-  @Field(() => Int)
-  successCount!: number;
-
-  @Field(() => Int)
-  failedCount!: number;
-
-  @Field(() => [String])
-  failedEnrollmentIds!: string[];
-
-  @Field(() => [TournamentCheckIn])
-  checkIns!: TournamentCheckIn[];
-}
 
 @Resolver(() => TournamentCheckIn)
 export class TournamentCheckInResolver {
@@ -71,122 +37,6 @@ export class TournamentCheckInResolver {
   ): Promise<TournamentCheckIn[]> {
     const args = TournamentCheckInArgs.toFindManyOptions(inputArgs);
     return TournamentCheckIn.find(args);
-  }
-
-  @Query(() => [TournamentCheckIn], { description: 'Get all check-ins for a tournament' })
-  async tournamentCheckInList(
-    @Args('tournamentEventId', { type: () => ID }) tournamentEventId: string,
-    @Args('status', { type: () => CheckInStatus, nullable: true }) status?: CheckInStatus,
-  ): Promise<TournamentCheckIn[]> {
-    const where: FindOptionsWhere<TournamentCheckIn> = { tournamentEventId };
-
-    if (status) {
-      where.status = status;
-    }
-
-    return TournamentCheckIn.find({
-      where,
-      order: { createdAt: 'DESC' },
-    });
-  }
-
-  @Query(() => [TournamentCheckIn], { description: 'Get pending check-ins for a tournament' })
-  async pendingCheckIns(@Args('tournamentEventId', { type: () => ID }) tournamentEventId: string): Promise<TournamentCheckIn[]> {
-    return TournamentCheckIn.find({
-      where: {
-        tournamentEventId,
-        status: CheckInStatus.PENDING,
-      },
-      order: { createdAt: 'ASC' },
-    });
-  }
-
-  @Query(() => CheckInStats, { description: 'Get check-in statistics for a tournament' })
-  async checkInStats(@Args('tournamentEventId', { type: () => ID }) tournamentEventId: string): Promise<CheckInStats> {
-    const [total, checkedIn, pending, noShow] = await Promise.all([
-      TournamentCheckIn.count({ where: { tournamentEventId } }),
-      TournamentCheckIn.count({
-        where: { tournamentEventId, status: CheckInStatus.CHECKED_IN },
-      }),
-      TournamentCheckIn.count({
-        where: { tournamentEventId, status: CheckInStatus.PENDING },
-      }),
-      TournamentCheckIn.count({
-        where: { tournamentEventId, status: CheckInStatus.NO_SHOW },
-      }),
-    ]);
-
-    return {
-      total,
-      checkedIn,
-      pending,
-      noShow,
-      checkInRate: total > 0 ? (checkedIn / total) * 100 : 0,
-    };
-  }
-
-  @Query(() => TournamentCheckIn, {
-    nullable: true,
-    description: 'Get check-in status for an enrollment',
-  })
-  async enrollmentCheckInStatus(
-    @Args('tournamentEventId', { type: () => ID }) tournamentEventId: string,
-    @Args('enrollmentId', { type: () => ID }) enrollmentId: string,
-  ): Promise<TournamentCheckIn | null> {
-    return TournamentCheckIn.findOne({
-      where: { tournamentEventId, enrollmentId },
-    });
-  }
-
-  @Query(() => [TournamentEnrollment], {
-    description: 'Search enrollments for check-in by player name',
-  })
-  async searchEnrollmentsForCheckIn(
-    @Args('tournamentEventId', { type: () => ID }) tournamentEventId: string,
-    @Args('searchTerm', { type: () => String }) searchTerm: string,
-  ): Promise<TournamentEnrollment[]> {
-    // Get all sub-events for this tournament
-    const subEvents = await TournamentSubEvent.find({
-      where: { eventId: tournamentEventId },
-    });
-
-    if (subEvents.length === 0) {
-      return [];
-    }
-
-    const subEventIds = subEvents.map((se) => se.id);
-
-    // Find enrollments with confirmed status
-    const enrollments = await TournamentEnrollment.find({
-      where: {
-        tournamentSubEventId: In(subEventIds),
-        status: EnrollmentStatus.CONFIRMED,
-      },
-    });
-
-    // Filter by player name
-    const filteredEnrollments: TournamentEnrollment[] = [];
-    const searchLower = searchTerm.toLowerCase();
-
-    for (const enrollment of enrollments) {
-      if (enrollment.playerId) {
-        const player = await Player.findOne({ where: { id: enrollment.playerId } });
-        if (
-          player &&
-          (player.firstName?.toLowerCase().includes(searchLower) ||
-            player.lastName?.toLowerCase().includes(searchLower) ||
-            player.fullName?.toLowerCase().includes(searchLower))
-        ) {
-          filteredEnrollments.push(enrollment);
-        }
-      } else if (enrollment.isGuest && enrollment.guestName) {
-        if (enrollment.guestName.toLowerCase().includes(searchLower)) {
-          filteredEnrollments.push(enrollment);
-        }
-      }
-    }
-
-    return filteredEnrollments;
   }
 
   // ============ MUTATIONS ============
@@ -361,20 +211,15 @@ export class TournamentCheckInResolver {
     return checkIn;
   }
 
-  @Mutation(() => BulkCheckInResult, { description: 'Check in multiple players at once' })
+  @Mutation(() => [TournamentCheckIn], { description: 'Check in multiple players at once; returns the check-ins that succeeded' })
   @UseGuards(PermGuard)
-  async bulkCheckIn(@User() user: Player, @Args('input') input: BulkCheckInInput): Promise<BulkCheckInResult> {
+  async bulkCheckIn(@User() user: Player, @Args('input') input: BulkCheckInInput): Promise<TournamentCheckIn[]> {
     // Check permission
     if (!user.hasAnyPermission(['edit-any:tournament'])) {
       throw new ForbiddenException('You do not have permission to check in players');
     }
 
-    const result: BulkCheckInResult = {
-      successCount: 0,
-      failedCount: 0,
-      failedEnrollmentIds: [],
-      checkIns: [],
-    };
+    const checkIns: TournamentCheckIn[] = [];
 
     for (const enrollmentId of input.enrollmentIds) {
       try {
@@ -400,15 +245,13 @@ export class TournamentCheckInResolver {
           await checkIn.save();
         }
 
-        result.checkIns.push(checkIn);
-        result.successCount++;
+        checkIns.push(checkIn);
       } catch {
-        result.failedCount++;
-        result.failedEnrollmentIds.push(enrollmentId);
+        // Failed enrollments are simply absent from the result; callers compare against the requested ids.
       }
     }
 
-    return result;
+    return checkIns;
   }
 
   // ============ RESOLVE FIELDS ============
@@ -429,18 +272,5 @@ export class TournamentCheckInResolver {
   async checkedInBy(@Parent() { checkedInById }: TournamentCheckIn): Promise<Player | null> {
     if (!checkedInById) return null;
     return Player.findOne({ where: { id: checkedInById } });
-  }
-
-  @ResolveField(() => Player, { nullable: true, description: 'The player being checked in' })
-  async player(@Parent() { enrollmentId }: TournamentCheckIn): Promise<Player | null> {
-    if (!enrollmentId) return null;
-
-    const enrollment = await TournamentEnrollment.findOne({
-      where: { id: enrollmentId },
-    });
-
-    if (!enrollment || !enrollment.playerId) return null;
-
-    return Player.findOne({ where: { id: enrollment.playerId } });
   }
 }

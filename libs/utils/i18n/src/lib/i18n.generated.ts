@@ -22,6 +22,7 @@ export type I18nTranslations = {
                     "selectTypes": string;
                     "startIndexing": string;
                     "title": string;
+                    "completed": string;
                 };
                 "sync": {
                     "title": string;
@@ -1233,6 +1234,7 @@ export type I18nTranslations = {
                     "tournamentSyncError": string;
                     "tournamentSyncQueued": string;
                     "tournamentSyncTooltip": string;
+                    "clearCompletedSuccessCount": string;
                 };
                 "jobs": {
                     "actions": string;
@@ -1449,6 +1451,13 @@ export type I18nTranslations = {
                 "queued": string;
                 "synced": string;
                 "syncing": string;
+            };
+            "button": {
+                "eventSyncQueued": string;
+                "subEventSyncQueued": string;
+                "drawSyncQueued": string;
+                "cacheCleared": string;
+                "cacheEmpty": string;
             };
         };
         "system": {
@@ -1785,6 +1794,7 @@ export type I18nTranslations = {
                     "waitingListDescription": string;
                     "withdraw": string;
                     "withdrawn": string;
+                    "playerSearchTooLong": string;
                 };
                 "noPermission": string;
                 "phases": {

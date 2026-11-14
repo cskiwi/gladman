@@ -1,6 +1,7 @@
 import { LocationEventMembership } from '@app/models';
 import { NotFoundException } from '@nestjs/common';
 import { Args, ID, Query, Resolver } from '@nestjs/graphql';
+import { LocationEventMembershipArgs } from '../../../args';
 
 @Resolver(() => LocationEventMembership)
 export class LocationEventMembershipResolver {
@@ -20,7 +21,11 @@ export class LocationEventMembershipResolver {
   }
 
   @Query(() => [LocationEventMembership])
-  async locationEventMemberships(): Promise<LocationEventMembership[]> {
-    return LocationEventMembership.find();
+  async locationEventMemberships(
+    @Args('args', { type: () => LocationEventMembershipArgs, nullable: true })
+    inputArgs?: InstanceType<typeof LocationEventMembershipArgs>,
+  ): Promise<LocationEventMembership[]> {
+    const args = LocationEventMembershipArgs.toFindManyOptions(inputArgs);
+    return LocationEventMembership.find(args);
   }
 }

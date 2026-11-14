@@ -11,9 +11,9 @@ describe('Draw seeding dialog', () => {
   let fixture: ComponentFixture<DrawsTabComponent>;
   let query: jest.Mock;
   let mutate: jest.Mock;
-  const entries = [{ id: 'safe-entry', player1: { fullName: 'Safe Player' } }];
+  const entries = [{ id: 'safe-entry', drawId: 'safe-draw', player1: { fullName: 'Safe Player' } }];
   const draw = { id: 'safe-draw', name: 'Safe draw', type: 'KO', entries };
-  const response = { data: { tournamentSubEvent: { entries, unassignedEntries: [], drawTournaments: [draw] } } };
+  const response = { data: { tournamentSubEvent: { entries, drawTournaments: [draw] } } };
 
   beforeEach(async () => {
     query = jest.fn(() => of(response));

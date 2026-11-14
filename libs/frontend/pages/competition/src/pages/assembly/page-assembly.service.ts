@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Player, Team, CompetitionAssembly, RankingLastPlace } from '@app/models';
@@ -101,40 +102,6 @@ const SAVED_ASSEMBLY_QUERY = gql`
   }
 `;
 
-const VALIDATE_ASSEMBLY_QUERY = gql`
-  query ValidateAssembly($assembly: AssemblyInput!) {
-    validateAssembly(assembly: $assembly) {
-      valid
-      baseTeamIndex
-      baseTeamPlayers {
-        id
-        firstName
-        lastName
-        single
-        double
-        mix
-      }
-      titularsIndex
-      titularsPlayers {
-        id
-        firstName
-        lastName
-        single
-        double
-        mix
-      }
-      errors {
-        message
-        params
-      }
-      warnings {
-        message
-        params
-      }
-    }
-  }
-`;
-
 const EVENT_FOR_ENCOUNTER_QUERY = gql`
   query CompetitionEncounterEvent($competitionEncounterId: ID!) {
     competitionEncounter(id: $competitionEncounterId) {
@@ -184,6 +151,7 @@ const PLAYER_INFO_QUERY = gql`
 @Injectable()
 export class AssemblyService {
   private readonly apollo = inject(Apollo);
+  private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
   private readonly systemService = inject(RankingSystemService);
 
@@ -273,10 +241,11 @@ export class AssemblyService {
     if (!result) return { index: 0, players: [] as (Player & { single: number; double: number; mix: number; sum: number })[] };
     return {
       index: result.titularsIndex,
-      players: result.titularsPlayers?.map((p) => ({
-        ...p,
-        sum: p.single + p.double + (this.type() === 'MX' ? p.mix : 0),
-      })) ?? [],
+      players:
+        result.titularsPlayers?.map((p) => ({
+          ...p,
+          sum: p.single + p.double + (this.type() === 'MX' ? p.mix : 0),
+        })) ?? [],
     };
   });
 
@@ -285,10 +254,11 @@ export class AssemblyService {
     if (!result) return { index: 0, players: [] as (Player & { single: number; double: number; mix: number; sum: number })[] };
     return {
       index: result.baseTeamIndex,
-      players: result.baseTeamPlayers?.map((p) => ({
-        ...p,
-        sum: p.single + p.double + (this.type() === 'MX' ? p.mix : 0),
-      })) ?? [],
+      players:
+        result.baseTeamPlayers?.map((p) => ({
+          ...p,
+          sum: p.single + p.double + (this.type() === 'MX' ? p.mix : 0),
+        })) ?? [],
     };
   });
 
@@ -319,12 +289,16 @@ export class AssemblyService {
     if (t === 'M') {
       return {
         prefix: 'all.gender.males',
-        label: slotId.startsWith('double') ? `all.competition.team-assembly.double${slotId.slice(-1)}` : `all.competition.team-assembly.single${slotId.slice(-1)}`,
+        label: slotId.startsWith('double')
+          ? `all.competition.team-assembly.double${slotId.slice(-1)}`
+          : `all.competition.team-assembly.single${slotId.slice(-1)}`,
       };
     } else if (t === 'F') {
       return {
         prefix: 'all.gender.females',
-        label: slotId.startsWith('double') ? `all.competition.team-assembly.double${slotId.slice(-1)}` : `all.competition.team-assembly.single${slotId.slice(-1)}`,
+        label: slotId.startsWith('double')
+          ? `all.competition.team-assembly.double${slotId.slice(-1)}`
+          : `all.competition.team-assembly.single${slotId.slice(-1)}`,
       };
     } else {
       // MX
@@ -431,15 +405,9 @@ export class AssemblyService {
         subtitudes: this.substitutes().map((r) => r.id),
       };
 
-      const result = await lastValueFrom(
-        this.apollo.query<{ validateAssembly: ValidationResult }>({
-          query: VALIDATE_ASSEMBLY_QUERY,
-          variables: { assembly },
-          fetchPolicy: 'no-cache',
-        }),
-      );
+      const result = await lastValueFrom(this.http.post<ValidationResult>('/api/v1/assembly/validate', assembly));
 
-      this.validationResult.set(result.data?.validateAssembly ?? null);
+      this.validationResult.set(result ?? null);
     } catch {
       // Validation failed silently
     }
@@ -603,45 +571,82 @@ export class AssemblyService {
 
   private findPlayerById(playerId: string): PlayerWithRanking | undefined {
     const allPlayers = [...this.players()[TeamMembershipType.REGULAR], ...this.players()[TeamMembershipType.BACKUP]];
-    return allPlayers.find((p) => p.id === playerId)
-      ?? [...this.single1(), ...this.single2(), ...this.single3(), ...this.single4(),
-          ...this.double1(), ...this.double2(), ...this.double3(), ...this.double4(),
-          ...this.substitutes()].find((p) => p.id === playerId);
+    return (
+      allPlayers.find((p) => p.id === playerId) ??
+      [
+        ...this.single1(),
+        ...this.single2(),
+        ...this.single3(),
+        ...this.single4(),
+        ...this.double1(),
+        ...this.double2(),
+        ...this.double3(),
+        ...this.double4(),
+        ...this.substitutes(),
+      ].find((p) => p.id === playerId)
+    );
   }
 
   private isInAnyGameSlot(playerId: string): boolean {
-    return [...this.single1(), ...this.single2(), ...this.single3(), ...this.single4(),
-            ...this.double1(), ...this.double2(), ...this.double3(), ...this.double4()]
-      .some((p) => p.id === playerId);
+    return [
+      ...this.single1(),
+      ...this.single2(),
+      ...this.single3(),
+      ...this.single4(),
+      ...this.double1(),
+      ...this.double2(),
+      ...this.double3(),
+      ...this.double4(),
+    ].some((p) => p.id === playerId);
   }
 
   getSlotData(slotId: string): PlayerWithRanking[] {
     switch (slotId) {
-      case 'single1': return this.single1();
-      case 'single2': return this.single2();
-      case 'single3': return this.single3();
-      case 'single4': return this.single4();
-      case 'double1': return this.double1();
-      case 'double2': return this.double2();
-      case 'double3': return this.double3();
-      case 'double4': return this.double4();
-      case 'substituteList': return this.substitutes();
-      default: return [];
+      case 'single1':
+        return this.single1();
+      case 'single2':
+        return this.single2();
+      case 'single3':
+        return this.single3();
+      case 'single4':
+        return this.single4();
+      case 'double1':
+        return this.double1();
+      case 'double2':
+        return this.double2();
+      case 'double3':
+        return this.double3();
+      case 'double4':
+        return this.double4();
+      case 'substituteList':
+        return this.substitutes();
+      default:
+        return [];
     }
   }
 
   private getSlotSignal(slotId: string) {
     switch (slotId) {
-      case 'single1': return this.single1;
-      case 'single2': return this.single2;
-      case 'single3': return this.single3;
-      case 'single4': return this.single4;
-      case 'double1': return this.double1;
-      case 'double2': return this.double2;
-      case 'double3': return this.double3;
-      case 'double4': return this.double4;
-      case 'substituteList': return this.substitutes;
-      default: return null;
+      case 'single1':
+        return this.single1;
+      case 'single2':
+        return this.single2;
+      case 'single3':
+        return this.single3;
+      case 'single4':
+        return this.single4;
+      case 'double1':
+        return this.double1;
+      case 'double2':
+        return this.double2;
+      case 'double3':
+        return this.double3;
+      case 'double4':
+        return this.double4;
+      case 'substituteList':
+        return this.substitutes;
+      default:
+        return null;
     }
   }
 
@@ -673,11 +678,7 @@ export class AssemblyService {
     return result;
   }
 
-  private async loadSavedAssembly(
-    encounterId: string,
-    captainId?: string,
-    categorized?: { [key in TeamMembershipType]: PlayerWithRanking[] },
-  ) {
+  private async loadSavedAssembly(encounterId: string, captainId?: string, categorized?: { [key in TeamMembershipType]: PlayerWithRanking[] }) {
     if (!this.authService.loggedIn()) {
       this.formGroup.get('captain')?.setValue(captainId ?? null);
       return;
@@ -720,8 +721,7 @@ export class AssemblyService {
       }
 
       // Populate slots
-      const getPlayers = (ids: string[]) =>
-        ids.map((id) => this.findPlayerById(id)).filter(Boolean) as PlayerWithRanking[];
+      const getPlayers = (ids: string[]) => ids.map((id) => this.findPlayerById(id)).filter(Boolean) as PlayerWithRanking[];
 
       if (assembly.double1) this.double1.set(getPlayers(assembly.double1));
       if (assembly.double2) this.double2.set(getPlayers(assembly.double2));

@@ -6,6 +6,16 @@ import { EnrollmentStatus } from '@app/models-enum';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE,
+  MANUAL_PLAYER_SEARCH_LIMIT,
+  MANUAL_PLAYER_SEARCH_MAX_LENGTH,
+  MANUAL_PLAYER_SEARCH_MIN_LENGTH,
+  MANUAL_PLAYER_SEARCH_SERVER_WORDS,
+  buildPlayerSearchWhere,
+  matchesSearchWords,
+  searchWords,
+} from './enrollments-tab.util';
 
 export type ManualEnrollmentPlayer = Pick<Player, 'id' | 'fullName' | 'memberId'>;
 export type ManualEnrollmentInput = {
@@ -36,25 +46,61 @@ export class EnrollmentsTabService {
 
   /** Search the mounted application's player API, returning selectable identities. */
   async searchPlayers(search: string): Promise<ManualEnrollmentPlayer[]> {
+    const query = search.trim();
+    if (query.length > MANUAL_PLAYER_SEARCH_MAX_LENGTH) {
+      throw new Error(this.translate.instant('all.tournament.admin.enrollments.playerSearchTooLong', { max: MANUAL_PLAYER_SEARCH_MAX_LENGTH }));
+    }
+    if (query.length < MANUAL_PLAYER_SEARCH_MIN_LENGTH) return [];
+    const words = searchWords(query);
+    const where = buildPlayerSearchWhere(words);
+
+    if (words.length <= MANUAL_PLAYER_SEARCH_SERVER_WORDS) {
+      return this.fetchPlayerSearchPage(where, 0, MANUAL_PLAYER_SEARCH_LIMIT);
+    }
+
+    // The API filters on the first words only; page through its candidates until enough of them match every word.
+    const matches: ManualEnrollmentPlayer[] = [];
+    for (let skip = 0; matches.length < MANUAL_PLAYER_SEARCH_LIMIT; skip += MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE) {
+      const page = await this.fetchPlayerSearchPage(where, skip, MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE);
+      matches.push(...page.filter((player) => matchesSearchWords(player, words)));
+      if (page.length < MANUAL_PLAYER_SEARCH_CANDIDATE_PAGE) break;
+    }
+    return matches.slice(0, MANUAL_PLAYER_SEARCH_LIMIT);
+  }
+
+  private async fetchPlayerSearchPage(
+    where: ReturnType<typeof buildPlayerSearchWhere>,
+    skip: number,
+    take: number,
+  ): Promise<ManualEnrollmentPlayer[]> {
     const result = await lastValueFrom(
-      this.apollo.query<{ manualEnrollmentPlayers: ManualEnrollmentPlayer[] }>({
+      this.apollo.query<{ players: ManualEnrollmentPlayer[] }>({
         query: gql`
-          query ManualEnrollmentPlayers($search: String!) {
-            manualEnrollmentPlayers(search: $search) {
+          query ManualEnrollmentPlayers($args: PlayerArgs) {
+            players(args: $args) {
               id
               fullName
+              firstName
+              lastName
               memberId
             }
           }
         `,
-        variables: { search: search.trim() },
+        variables: {
+          args: {
+            where,
+            order: { lastName: 'ASC', firstName: 'ASC' },
+            skip,
+            take,
+          },
+        },
         fetchPolicy: 'network-only',
       }),
     );
-    if (!Array.isArray(result.data?.manualEnrollmentPlayers)) {
+    if (!Array.isArray(result.data?.players)) {
       throw new Error(this.translate.instant('all.tournament.admin.enrollments.playerSearchNoData'));
     }
-    return result.data.manualEnrollmentPlayers;
+    return result.data.players;
   }
 
   /** Create an enrollment, reporting failures rather than closing the dialog as success. */
@@ -108,10 +154,10 @@ export class EnrollmentsTabService {
       }
 
       const result = await lastValueFrom(
-        this.apollo.query<{ subEventEnrollments: TournamentEnrollment[] }>({
+        this.apollo.query<{ tournamentEnrollments: TournamentEnrollment[] }>({
           query: gql`
-            query SubEventEnrollments($subEventId: ID!, $status: EnrollmentStatus) {
-              subEventEnrollments(subEventId: $subEventId, status: $status) {
+            query SubEventEnrollments($args: TournamentEnrollmentArgs) {
+              tournamentEnrollments(args: $args) {
                 id
                 status
                 waitingListPosition
@@ -144,18 +190,20 @@ export class EnrollmentsTabService {
             }
           `,
           variables: {
-            subEventId: params.subEventId,
-            status: params.status || undefined,
+            args: {
+              where: [{ tournamentSubEventId: { eq: params.subEventId }, ...(params.status ? { status: { eq: params.status } } : {}) }],
+              order: { createdAt: 'ASC' },
+            },
           },
           context: { signal: abortSignal },
           fetchPolicy: 'network-only',
         }),
       );
 
-      if (!Array.isArray(result.data?.subEventEnrollments)) {
+      if (!Array.isArray(result.data?.tournamentEnrollments)) {
         throw new Error(this.translate.instant('all.tournament.admin.enrollments.queryNoData'));
       }
-      return result.data.subEventEnrollments;
+      return result.data.tournamentEnrollments;
     },
   });
 

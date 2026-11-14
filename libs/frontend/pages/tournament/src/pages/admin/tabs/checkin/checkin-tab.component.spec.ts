@@ -11,8 +11,8 @@ describe('Check-in summary, filters and table', () => {
   let fixture: ComponentFixture<CheckinTabComponent>;
   let query: jest.Mock;
   let mutate: jest.Mock;
-  const stats = { total: 12, checkedIn: 4, pending: 7, noShow: 1, checkInRate: 100 / 3 };
-  const response = { data: { tournamentCheckInList: [], checkInStats: stats } };
+  const counts = { total: 12, checkedIn: 4, pending: 7, noShow: 1 };
+  const response = { data: { checkIns: [], ...counts } };
 
   beforeEach(async () => {
     query = jest.fn(() => of(response));
@@ -53,13 +53,16 @@ describe('Check-in summary, filters and table', () => {
         id: 'safe-member',
         status,
         checkedInAt: '2026-11-08T10:30:00Z',
-        player: { fullName: 'Safe Member', memberId: 'TEST123' },
-        enrollment: { id: 'safe-enrollment', tournamentSubEvent: { name: 'Safe singles' } },
+        enrollment: {
+          id: 'safe-enrollment',
+          player: { fullName: 'Safe Member', memberId: 'TEST123' },
+          tournamentSubEvent: { name: 'Safe singles' },
+        },
       },
       { id: 'safe-guest', status: CheckInStatus.PENDING, enrollment: { id: 'safe-guest-enrollment', isGuest: true, guestName: 'Example Guest' } },
       { id: 'safe-missing-enrollment', status: CheckInStatus.PENDING },
     ];
-    query.mockReturnValue(of({ data: { tournamentCheckInList: records, checkInStats: stats } }));
+    query.mockReturnValue(of({ data: { checkIns: records, ...counts } }));
   }
 
   it('renders five native definition-list metrics and preserves one-decimal percentage precision', async () => {
@@ -68,14 +71,12 @@ describe('Check-in summary, filters and table', () => {
     expect(summary().querySelectorAll('dt')).toHaveLength(5);
     expect(Array.from(summary().querySelectorAll('dd:nth-of-type(1)'), (node) => node.textContent?.trim())).toEqual(['12', '4', '7', '1', '33.3%']);
     expect(summary().querySelector('p-card')).toBeNull();
-    expect(query.mock.lastCall[0].variables.tournamentEventId).toBe('safe-tournament');
+    expect(query.mock.lastCall[0].variables.list.where[0].tournamentEventId).toEqual({ eq: 'safe-tournament' });
     expect(mutate).not.toHaveBeenCalled();
   });
 
   it('renders genuine zero statistics without hiding meaningful labels', async () => {
-    query.mockReturnValue(
-      of({ data: { tournamentCheckInList: [], checkInStats: { total: 0, checkedIn: 0, pending: 0, noShow: 0, checkInRate: 0 } } }),
-    );
+    query.mockReturnValue(of({ data: { checkIns: [], total: 0, checkedIn: 0, pending: 0, noShow: 0 } }));
     await settle();
     expect(Array.from(summary().querySelectorAll('dd:nth-of-type(1)'), (node) => node.textContent?.trim())).toEqual(['0', '0', '0', '0', '0%']);
     expect(summary().querySelectorAll('dt')).toHaveLength(5);
@@ -135,41 +136,45 @@ describe('Check-in summary, filters and table', () => {
     expect(mutate).not.toHaveBeenCalled();
   });
 
-  it.each([{ data: undefined }, { data: { tournamentCheckInList: [] } }])(
-    'rejects an incomplete successful response rather than displaying zeros',
-    async (result) => {
-      query.mockReturnValue(of(result));
-      await settle();
-      expect(summary().querySelector('p-message')?.textContent).toContain('all.tournament.admin.checkin.queryNoData');
-      expect(summary().querySelector('dl')).toBeNull();
-      expect(mutate).not.toHaveBeenCalled();
-    },
-  );
+  it.each([{ data: undefined }, { data: { total: 0 } }])('rejects an incomplete successful response rather than displaying zeros', async (result) => {
+    query.mockReturnValue(of(result));
+    await settle();
+    expect(summary().querySelector('p-message')?.textContent).toContain('all.tournament.admin.checkin.queryNoData');
+    expect(summary().querySelector('dl')).toBeNull();
+    expect(mutate).not.toHaveBeenCalled();
+  });
 
   it('sends status enum changes, clears All and preserves filters when the tournament changes', async () => {
     await settle();
     fixture.componentInstance.statusFilter.setValue(CheckInStatus.CHECKED_IN);
     await settle();
-    expect(query.mock.lastCall[0].variables.status).toBe(CheckInStatus.CHECKED_IN);
+    expect(query.mock.lastCall[0].variables.list.where[0].status).toEqual({ eq: CheckInStatus.CHECKED_IN });
     fixture.componentInstance.searchControl.setValue('safe');
     await settle();
     expect(query).toHaveBeenCalledTimes(2);
     fixture.componentRef.setInput('tournament', { id: 'other-safe-tournament' });
     await settle();
-    expect(query.mock.lastCall[0].variables).toEqual({ tournamentEventId: 'other-safe-tournament', status: CheckInStatus.CHECKED_IN });
+    expect(query.mock.lastCall[0].variables.list).toEqual({
+      where: [{ tournamentEventId: { eq: 'other-safe-tournament' }, status: { eq: CheckInStatus.CHECKED_IN } }],
+      order: { createdAt: 'DESC' },
+    });
+    expect(query.mock.lastCall[0].variables.total).toEqual({ where: [{ tournamentEventId: { eq: 'other-safe-tournament' } }] });
+    expect(query.mock.lastCall[0].variables.noShow).toEqual({
+      where: [{ tournamentEventId: { eq: 'other-safe-tournament' }, status: { eq: CheckInStatus.NO_SHOW } }],
+    });
     expect(fixture.componentInstance.searchControl.value).toBe('safe');
     fixture.componentInstance.statusFilter.setValue(null);
     await settle();
-    expect(query.mock.lastCall[0].variables.status).toBeUndefined();
+    expect(query.mock.lastCall[0].variables.list.where[0].status).toBeUndefined();
     expect(mutate).not.toHaveBeenCalled();
   });
 
   it('filters player, guest and member-ID locally and clearing restores records without a query', async () => {
     const records = [
-      { id: 'safe-member', status: CheckInStatus.PENDING, player: { fullName: 'Safe Member', memberId: 'TEST123' } },
+      { id: 'safe-member', status: CheckInStatus.PENDING, enrollment: { player: { fullName: 'Safe Member', memberId: 'TEST123' } } },
       { id: 'safe-guest', status: CheckInStatus.PENDING, enrollment: { isGuest: true, guestName: 'Example Guest' } },
     ];
-    query.mockReturnValue(of({ data: { tournamentCheckInList: records, checkInStats: stats } }));
+    query.mockReturnValue(of({ data: { checkIns: records, ...counts } }));
     await settle();
     for (const [search, id] of [
       ['  SAFE MEMBER  ', 'safe-member'],
@@ -374,7 +379,16 @@ describe('Check-in summary, filters and table', () => {
 
   it('sends only actionable selected enrollment IDs to mocked bulk check-in and clears after success', async () => {
     useRecords();
-    mutate.mockReturnValue(of({ data: { bulkCheckIn: { successCount: 2, failedCount: 0, failedEnrollmentIds: [] } } }));
+    mutate.mockReturnValue(
+      of({
+        data: {
+          bulkCheckIn: [
+            { id: 'a', enrollmentId: 'safe-enrollment' },
+            { id: 'b', enrollmentId: 'safe-guest-enrollment' },
+          ],
+        },
+      }),
+    );
     await settle();
     fixture.componentInstance.selectAllPending();
     await settle();
@@ -392,10 +406,9 @@ describe('Check-in summary, filters and table', () => {
     const records = Array.from({ length: 56 }, (_, index) => ({
       id: `safe-row-${index}`,
       status: CheckInStatus.PENDING,
-      player: { fullName: `Safe player ${index}` },
-      enrollment: { id: `safe-enrollment-${index}` },
+      enrollment: { id: `safe-enrollment-${index}`, player: { fullName: `Safe player ${index}` } },
     }));
-    query.mockReturnValue(of({ data: { tournamentCheckInList: records, checkInStats: stats } }));
+    query.mockReturnValue(of({ data: { checkIns: records, ...counts } }));
     await settle();
     expect(list().querySelectorAll('tbody tr')).toHaveLength(10);
     const next = listButton('.p-paginator-next');
@@ -411,7 +424,7 @@ describe('Check-in summary, filters and table', () => {
     const translate = TestBed.inject(TranslateService);
     translate.setTranslation(locale, { all: dictionary });
     translate.use(locale);
-    query.mockReturnValueOnce(of({ data: { tournamentCheckInList: null, checkInStats: stats } }));
+    query.mockReturnValueOnce(of({ data: { checkIns: null, ...counts } }));
     await settle();
     const copy = dictionary.tournament.admin.checkin;
     expect(copy.queryNoData.trim()).not.toBe('');

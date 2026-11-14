@@ -2,9 +2,8 @@ import { PermGuard, User } from '@app/backend-authorization';
 import { TournamentScheduleSlot, TournamentEvent, Court, Game, Player, TournamentDraw, GamePlayerMembership } from '@app/models';
 import { ScheduleSlotStatus, ScheduleStrategy, TournamentPhase } from '@app/models-enum';
 import { BadRequestException, ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, ID, Int, Mutation, ObjectType, Field, Query, Resolver, registerEnumType } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver, registerEnumType } from '@nestjs/graphql';
 import { TournamentScheduleReadResolver } from './tournament-schedule-read.resolver';
-import { TournamentScheduleSlotArgs } from '../../../args';
 import {
   GenerateTimeSlotsInput,
   ScheduleGamesInput,
@@ -21,37 +20,6 @@ registerEnumType(ScheduleSlotStatus, {
   description: 'Status of a schedule slot',
 });
 
-// Result type for scheduling conflicts
-@ObjectType('ScheduleConflict')
-class ScheduleConflict {
-  @Field(() => ID)
-  gameId!: string;
-
-  @Field(() => ID)
-  playerId!: string;
-
-  @Field(() => String)
-  playerName!: string;
-
-  @Field(() => [ID])
-  conflictingGameIds!: string[];
-
-  @Field(() => String)
-  message!: string;
-}
-
-@ObjectType('ScheduleResult')
-class ScheduleResult {
-  @Field(() => Int)
-  scheduledCount!: number;
-
-  @Field(() => Int)
-  skippedCount!: number;
-
-  @Field(() => [ScheduleConflict])
-  conflicts!: ScheduleConflict[];
-}
-
 @Resolver(() => TournamentScheduleSlot)
 export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
   // ============ QUERIES ============
@@ -67,90 +35,6 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
     }
 
     return slot;
-  }
-
-  @Query(() => [TournamentScheduleSlot])
-  async tournamentScheduleSlots(
-    @Args('args', { type: () => TournamentScheduleSlotArgs, nullable: true })
-    inputArgs?: InstanceType<typeof TournamentScheduleSlotArgs>,
-  ): Promise<TournamentScheduleSlot[]> {
-    const args = TournamentScheduleSlotArgs.toFindManyOptions(inputArgs);
-    return TournamentScheduleSlot.find(args);
-  }
-
-  @Query(() => [TournamentScheduleSlot], { description: 'Get available slots for scheduling' })
-  async availableScheduleSlots(@Args('tournamentEventId', { type: () => ID }) tournamentEventId: string): Promise<TournamentScheduleSlot[]> {
-    return TournamentScheduleSlot.find({
-      where: {
-        tournamentEventId,
-        status: ScheduleSlotStatus.AVAILABLE,
-      },
-      order: { startTime: 'ASC', order: 'ASC' },
-    });
-  }
-
-  @Query(() => [ScheduleConflict], { description: 'Detect scheduling conflicts' })
-  async detectScheduleConflicts(@Args('tournamentEventId', { type: () => ID }) tournamentEventId: string): Promise<ScheduleConflict[]> {
-    // Get all scheduled slots with games
-    const slots = await TournamentScheduleSlot.find({
-      where: {
-        tournamentEventId,
-        status: In([ScheduleSlotStatus.SCHEDULED, ScheduleSlotStatus.IN_PROGRESS]),
-        gameId: Not(IsNull()),
-      },
-      order: { startTime: 'ASC' },
-    });
-
-    const conflicts: ScheduleConflict[] = [];
-    const playerGames = new Map<string, { slotId: string; gameId: string; startTime: Date; endTime: Date }[]>();
-
-    // Build player -> games map
-    for (const slot of slots) {
-      if (!slot.gameId) continue;
-
-      const memberships = await GamePlayerMembership.find({
-        where: { gameId: slot.gameId },
-      });
-
-      for (const membership of memberships) {
-        if (!playerGames.has(membership.playerId)) {
-          playerGames.set(membership.playerId, []);
-        }
-        playerGames.get(membership.playerId)!.push({
-          slotId: slot.id,
-          gameId: slot.gameId,
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        });
-      }
-    }
-
-    // Check for overlapping games per player
-    for (const [playerId, games] of playerGames) {
-      if (games.length < 2) continue;
-
-      // Sort by start time
-      games.sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
-
-      for (let i = 0; i < games.length - 1; i++) {
-        const current = games[i];
-        const next = games[i + 1];
-
-        // Check for overlap
-        if (current.endTime > next.startTime) {
-          const player = await Player.findOne({ where: { id: playerId } });
-          conflicts.push({
-            gameId: current.gameId,
-            playerId,
-            playerName: player?.fullName ?? playerId,
-            conflictingGameIds: [next.gameId],
-            message: `Player has overlapping games at ${current.startTime.toISOString()} and ${next.startTime.toISOString()}`,
-          });
-        }
-      }
-    }
-
-    return conflicts;
   }
 
   // ============ MUTATIONS ============
@@ -178,6 +62,11 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
       if (!court) {
         throw new NotFoundException(`Court with ID ${courtId} not found`);
       }
+    }
+
+    // Each iteration advances by duration + break; a non-positive step would never reach the end time
+    if (input.slotDurationMinutes + input.breakMinutes <= 0) {
+      throw new BadRequestException('Slot duration plus break must be greater than 0 minutes');
     }
 
     // Parse time strings
@@ -347,14 +236,15 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
 
     // Update game
     const game = await Game.findOne({ where: { id: slot.gameId } });
+    // Explicit NULLs: TypeORM's save() skips undefined properties, which would leave the old values stored
     if (game) {
-      game.scheduleSlotId = undefined;
-      game.scheduledTime = undefined;
+      game.scheduleSlotId = null;
+      game.scheduledTime = null;
       await game.save();
     }
 
     // Update slot
-    slot.gameId = undefined;
+    slot.gameId = null;
     slot.status = ScheduleSlotStatus.AVAILABLE;
     await slot.save();
 
@@ -438,9 +328,11 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
     return true;
   }
 
-  @Mutation(() => ScheduleResult, { description: 'Auto-schedule games using specified strategy' })
+  @Mutation(() => [TournamentScheduleSlot], {
+    description: 'Auto-schedule games using specified strategy; returns the slots that received a game, in assignment order',
+  })
   @UseGuards(PermGuard)
-  async scheduleGames(@User() user: Player, @Args('input') input: ScheduleGamesInput): Promise<ScheduleResult> {
+  async scheduleGames(@User() user: Player, @Args('input') input: ScheduleGamesInput): Promise<TournamentScheduleSlot[]> {
     // Check permission
     if (!user.hasAnyPermission(['edit-any:tournament'])) {
       throw new ForbiddenException('You do not have permission to schedule games');
@@ -487,7 +379,7 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
         .getMany();
 
       if (draws.length === 0) {
-        return { scheduledCount: 0, skippedCount: 0, conflicts: [] };
+        return [];
       }
 
       const drawIds = draws.map((d) => d.id);
@@ -503,13 +395,11 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
     }
 
     if (gamesToSchedule.length === 0) {
-      return { scheduledCount: 0, skippedCount: 0, conflicts: [] };
+      return [];
     }
 
     // Schedule based on strategy
-    const result = await this.scheduleWithStrategy(gamesToSchedule, availableSlots, input.strategy, input.minRestMinutes ?? 15);
-
-    return result;
+    return this.scheduleWithStrategy(input.tournamentEventId, gamesToSchedule, availableSlots, input.strategy, input.minRestMinutes ?? 15);
   }
 
   @Mutation(() => Boolean, { description: 'Publish the tournament schedule' })
@@ -541,19 +431,17 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
    * Schedule games using the specified strategy
    */
   private async scheduleWithStrategy(
+    tournamentEventId: string,
     games: Game[],
     slots: TournamentScheduleSlot[],
     strategy: ScheduleStrategy,
     minRestMinutes: number,
-  ): Promise<ScheduleResult> {
-    const result: ScheduleResult = {
-      scheduledCount: 0,
-      skippedCount: 0,
-      conflicts: [],
-    };
+  ): Promise<TournamentScheduleSlot[]> {
+    const scheduledSlots: TournamentScheduleSlot[] = [];
 
-    // Track player last game end time
-    const playerLastGameEnd = new Map<string, Date>();
+    // Occupied time per player: games already on the schedule, plus the ones assigned during this run
+    const playerBusy = await this.loadPlayerBusyIntervals(tournamentEventId);
+    const restMs = minRestMinutes * 60000;
     const availableSlots = [...slots];
 
     // Sort games based on strategy
@@ -610,40 +498,17 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
 
       const playerIds = memberships.map((m) => m.playerId);
 
-      // Find suitable slot (respecting rest time)
+      // Find suitable slot: no player may overlap another game or get less than the minimum rest around it
       const suitableSlotIndex = availableSlots.findIndex((slot) => {
-        // Check if all players have sufficient rest
-        for (const playerId of playerIds) {
-          const lastEnd = playerLastGameEnd.get(playerId);
-          if (lastEnd) {
-            const restTime = (slot.startTime.getTime() - lastEnd.getTime()) / 60000;
-            if (restTime < minRestMinutes) {
-              return false;
-            }
-          }
-        }
-        return true;
+        const start = new Date(slot.startTime).getTime();
+        const end = new Date(slot.endTime).getTime();
+        return playerIds.every((playerId) =>
+          (playerBusy.get(playerId) ?? []).every((busy) => start >= busy.end + restMs || end + restMs <= busy.start),
+        );
       });
 
       if (suitableSlotIndex === -1) {
-        result.skippedCount++;
-
-        // Record conflict if players have timing issues
-        if (playerIds.length > 0 && availableSlots.length > 0) {
-          for (const playerId of playerIds) {
-            const lastEnd = playerLastGameEnd.get(playerId);
-            if (lastEnd) {
-              const player = await Player.findOne({ where: { id: playerId } });
-              result.conflicts.push({
-                gameId: game.id,
-                playerId,
-                playerName: player?.fullName ?? playerId,
-                conflictingGameIds: [],
-                message: `Player needs more rest time before next available slot`,
-              });
-            }
-          }
-        }
+        // Skipped: the game stays unscheduled and callers derive that from the returned slots.
         continue;
       }
 
@@ -659,18 +524,49 @@ export class TournamentScheduleResolver extends TournamentScheduleReadResolver {
       game.courtId = slot.courtId;
       await game.save();
 
-      // Update player last game end time
+      // Mark the players busy for this slot
       for (const playerId of playerIds) {
-        playerLastGameEnd.set(playerId, slot.endTime);
+        const busy = playerBusy.get(playerId) ?? [];
+        busy.push({ start: new Date(slot.startTime).getTime(), end: new Date(slot.endTime).getTime() });
+        playerBusy.set(playerId, busy);
       }
 
       // Remove slot from available list
       availableSlots.splice(suitableSlotIndex, 1);
 
-      result.scheduledCount++;
+      scheduledSlots.push(slot);
     }
 
-    return result;
+    return scheduledSlots;
+  }
+
+  /**
+   * Time intervals (epoch ms) per player for games already assigned to a slot of this tournament.
+   */
+  private async loadPlayerBusyIntervals(tournamentEventId: string): Promise<Map<string, { start: number; end: number }[]>> {
+    const busy = new Map<string, { start: number; end: number }[]>();
+
+    const assignedSlots = await TournamentScheduleSlot.find({
+      where: { tournamentEventId, gameId: Not(IsNull()) },
+    });
+    if (assignedSlots.length === 0) {
+      return busy;
+    }
+
+    const slotByGame = new Map(assignedSlots.map((slot) => [slot.gameId as string, slot]));
+    const memberships = await GamePlayerMembership.find({
+      where: { gameId: In([...slotByGame.keys()]) },
+    });
+
+    for (const membership of memberships) {
+      const slot = slotByGame.get(membership.gameId);
+      if (!slot) continue;
+      const intervals = busy.get(membership.playerId) ?? [];
+      intervals.push({ start: new Date(slot.startTime).getTime(), end: new Date(slot.endTime).getTime() });
+      busy.set(membership.playerId, intervals);
+    }
+
+    return busy;
   }
 
   /**

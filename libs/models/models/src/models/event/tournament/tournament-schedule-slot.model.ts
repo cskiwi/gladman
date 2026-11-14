@@ -64,7 +64,7 @@ export class TournamentScheduleSlot extends BaseEntity {
   @WhereField(() => ID, { nullable: true })
   @Column({ nullable: true, type: 'uuid' })
   @Index()
-  declare gameId?: string;
+  declare gameId?: string | null;
 
   @SortableField(() => String)
   @WhereField(() => String)

@@ -6,6 +6,8 @@ import { GraphQLWhereConverter, GraphQLWhereInput } from './queryFixer';
 import { sortOrders } from './sort-order';
 import { whereInputs } from './where-input';
 
+const WHERE_OPERATORS = new Set(['eq', 'ne', 'in', 'nin', 'gt', 'gte', 'lt', 'lte', 'like', 'ilike', 'between', 'isNull', 'raw']);
+
 export function args<T>(name?: string) {
   const SortOrder = sortOrders.get(`${name}SortOrder`);
   if (!SortOrder) {
@@ -41,7 +43,7 @@ export function args<T>(name?: string) {
         skip: args?.skip,
         where: this.getQuery(args?.where),
         order: args?.order,
-        relations: this.getRelations(args?.order),
+        relations: this.getRelations(args?.order, args?.where),
       };
     }
 
@@ -61,13 +63,20 @@ export function args<T>(name?: string) {
       return Array.isArray(where) ? (where as FindOptionsWhere<T>[]) : [where as FindOptionsWhere<T>];
     }
 
-    static getRelations(order?: { [key: string]: unknown }) {
-      // we need to include all assocations based on the order
+    static getRelations(order?: { [key: string]: unknown }, where?: GraphQLWhereInput<T>[]) {
+      // we need to include all assocations based on the order and on nested where objects
       // these are all that are more then one level deep
 
       const relations = new Set<string>();
+
+      for (const entry of where ?? []) {
+        for (const relation of this.getWhereRelations(entry)) {
+          relations.add(relation);
+        }
+      }
+
       if (!order) {
-        return [];
+        return Array.from(relations);
       }
 
       const fields = Object.keys(order);
@@ -85,6 +94,30 @@ export function args<T>(name?: string) {
       }
 
       return Array.from(relations);
+    }
+
+    /** Top-level relation names used as nested objects in a where entry (operator objects are skipped). */
+    static getWhereRelations(entry?: GraphQLWhereInput<T>): string[] {
+      if (!entry) {
+        return [];
+      }
+
+      const relations: string[] = [];
+      for (const [field, value] of Object.entries(entry)) {
+        if (field === 'OR' || field === 'AND') {
+          for (const nested of (value as GraphQLWhereInput<T>[]) ?? []) {
+            relations.push(...this.getWhereRelations(nested));
+          }
+          continue;
+        }
+        if (value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+          const isOperatorObject = Object.keys(value).every((key) => WHERE_OPERATORS.has(key));
+          if (!isOperatorObject) {
+            relations.push(field);
+          }
+        }
+      }
+      return relations;
     }
   }
 

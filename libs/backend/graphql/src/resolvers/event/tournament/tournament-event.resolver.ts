@@ -46,7 +46,7 @@ export class TournamentEventResolver {
     @Args('args', { type: () => TournamentEventArgs, nullable: true })
     inputArgs?: InstanceType<typeof TournamentEventArgs>,
   ): Promise<TournamentEvent[]> {
-    const args = TournamentEventArgs.toFindOneOptions(inputArgs);
+    const args = TournamentEventArgs.toFindManyOptions(inputArgs);
     return TournamentEvent.find(args);
   }
 

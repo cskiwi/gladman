@@ -15,6 +15,7 @@ export interface CheckInStats {
   checkInRate: number;
 }
 
+/** Outcome of a bulk check-in, derived from the requested enrollment ids and the rows the server returned. */
 export interface BulkCheckInResult {
   successCount: number;
   failedCount: number;
@@ -24,6 +25,40 @@ export interface BulkCheckInResult {
 export interface CheckInWithDetails extends TournamentCheckIn {
   player?: Player;
   enrollment?: TournamentEnrollment;
+}
+
+/** Same arithmetic as the removed server-side `checkInStats` query. */
+export function buildCheckInStats(counts: {
+  total?: number | null;
+  checkedIn?: number | null;
+  pending?: number | null;
+  noShow?: number | null;
+}): CheckInStats {
+  const total = counts.total ?? 0;
+  const checkedIn = counts.checkedIn ?? 0;
+  return {
+    total,
+    checkedIn,
+    pending: counts.pending ?? 0,
+    noShow: counts.noShow ?? 0,
+    checkInRate: total > 0 ? (checkedIn / total) * 100 : 0,
+  };
+}
+
+/** Success = requested enrollments that came back checked in; everything else counts as failed (previous server semantics). */
+export function buildBulkCheckInResult(enrollmentIds: string[], returned: { enrollmentId?: string | null }[]): BulkCheckInResult {
+  const succeeded = new Set(returned.map((row) => row.enrollmentId));
+  const failedEnrollmentIds = enrollmentIds.filter((id) => !succeeded.has(id));
+  return {
+    successCount: enrollmentIds.length - failedEnrollmentIds.length,
+    failedCount: failedEnrollmentIds.length,
+    failedEnrollmentIds,
+  };
+}
+
+/** The player of a check-in is the player of its enrollment. */
+export function withCheckInPlayer(checkIn: CheckInWithDetails): CheckInWithDetails {
+  return { ...checkIn, player: checkIn.enrollment?.player } as CheckInWithDetails;
 }
 
 export class CheckinTabService {
@@ -57,30 +92,42 @@ export class CheckinTabService {
         return { checkIns: [], stats: null };
       }
 
+      const eventWhere = { tournamentEventId: { eq: params.tournamentEventId } };
+      const countArgs = (status?: CheckInStatus) => ({ where: [status ? { ...eventWhere, status: { eq: status } } : eventWhere] });
+
       const result = await lastValueFrom(
         this.apollo.query<{
-          tournamentCheckInList: CheckInWithDetails[];
-          checkInStats: CheckInStats;
+          checkIns: CheckInWithDetails[];
+          total: number;
+          checkedIn: number;
+          pending: number;
+          noShow: number;
         }>({
           query: gql`
-            query TournamentCheckInData($tournamentEventId: ID!, $status: CheckInStatus) {
-              tournamentCheckInList(tournamentEventId: $tournamentEventId, status: $status) {
+            query TournamentCheckInData(
+              $list: TournamentCheckInArgs
+              $total: TournamentCheckInArgs
+              $checkedIn: TournamentCheckInArgs
+              $pending: TournamentCheckInArgs
+              $noShow: TournamentCheckInArgs
+            ) {
+              checkIns: tournamentCheckIns(args: $list) {
                 id
                 status
                 checkedInAt
                 notes
-                player {
-                  id
-                  firstName
-                  lastName
-                  fullName
-                  memberId
-                }
                 enrollment {
                   id
                   isGuest
                   guestName
                   guestEmail
+                  player {
+                    id
+                    firstName
+                    lastName
+                    fullName
+                    memberId
+                  }
                   tournamentSubEvent {
                     id
                     name
@@ -88,30 +135,33 @@ export class CheckinTabService {
                   }
                 }
               }
-              checkInStats(tournamentEventId: $tournamentEventId) {
-                total
-                checkedIn
-                pending
-                noShow
-                checkInRate
-              }
+              total: tournamentCheckInsCount(args: $total)
+              checkedIn: tournamentCheckInsCount(args: $checkedIn)
+              pending: tournamentCheckInsCount(args: $pending)
+              noShow: tournamentCheckInsCount(args: $noShow)
             }
           `,
           variables: {
-            tournamentEventId: params.tournamentEventId,
-            status: params.status ?? undefined,
+            list: {
+              where: [params.status ? { ...eventWhere, status: { eq: params.status } } : eventWhere],
+              order: { createdAt: 'DESC' },
+            },
+            total: countArgs(),
+            checkedIn: countArgs(CheckInStatus.CHECKED_IN),
+            pending: countArgs(CheckInStatus.PENDING),
+            noShow: countArgs(CheckInStatus.NO_SHOW),
           },
           context: { signal: abortSignal },
           fetchPolicy: 'network-only',
         }),
       );
 
-      if (!result.data?.tournamentCheckInList || !result.data.checkInStats) {
+      if (!result.data?.checkIns || result.data.total == null) {
         throw new Error(this.translate.instant('all.tournament.admin.checkin.queryNoData'));
       }
       return {
-        checkIns: result.data.tournamentCheckInList,
-        stats: result.data.checkInStats,
+        checkIns: result.data.checkIns.map(withCheckInPlayer),
+        stats: buildCheckInStats(result.data),
       };
     },
   });
@@ -291,13 +341,12 @@ export class CheckinTabService {
 
     try {
       const result = await lastValueFrom(
-        this.apollo.mutate<{ bulkCheckIn: BulkCheckInResult }>({
+        this.apollo.mutate<{ bulkCheckIn: { id: string; enrollmentId: string }[] }>({
           mutation: gql`
             mutation BulkCheckIn($input: BulkCheckInInput!) {
               bulkCheckIn(input: $input) {
-                successCount
-                failedCount
-                failedEnrollmentIds
+                id
+                enrollmentId
               }
             }
           `,
@@ -309,7 +358,7 @@ export class CheckinTabService {
 
       if (result.data?.bulkCheckIn) {
         this.refetch();
-        return result.data.bulkCheckIn;
+        return buildBulkCheckInResult(enrollmentIds, result.data.bulkCheckIn);
       }
       return null;
     } catch (err) {

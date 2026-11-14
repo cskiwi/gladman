@@ -34,7 +34,7 @@
         </div>
 
         @if (item._availableSpots === 0 && item.waitingListEnabled) {
-          <p class="text-color m-0">{{ item.waitingListCount }} {{ 'all.tournament.inWaitingList' | translate }}</p>
+          <p class="text-color m-0">{{ item._waitingListCount }} {{ 'all.tournament.inWaitingList' | translate }}</p>
         }
       </div>
 

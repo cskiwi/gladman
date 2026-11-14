@@ -1,7 +1,7 @@
 import { PermGuard, User } from '@app/backend-authorization';
 import { Player } from '@app/models';
 import { UseGuards, Logger } from '@nestjs/common';
-import { Args, Field, InputType, Mutation, ObjectType, Resolver, registerEnumType } from '@nestjs/graphql';
+import { Args, Field, InputType, Mutation, Resolver, registerEnumType } from '@nestjs/graphql';
 import { IsArray, IsEnum, IsOptional } from 'class-validator';
 import { IndexService, IndexType } from '@app/backend-search';
 
@@ -23,21 +23,15 @@ export class IndexInput {
   types?: IndexType[];
 }
 
-@ObjectType('IndexResult', { description: 'Result of the indexing operation' })
-export class IndexResult {
-  @Field(() => String)
-  message!: string;
-}
-
 @Resolver()
 export class IndexResolver {
   private readonly logger = new Logger(IndexResolver.name);
 
   constructor(private readonly indexService: IndexService) {}
 
-  @Mutation(() => IndexResult)
+  @Mutation(() => Boolean)
   @UseGuards(PermGuard)
-  async indexAll(@User() user: Player, @Args('input', { type: () => IndexInput, nullable: true }) input?: IndexInput): Promise<IndexResult> {
+  async indexAll(@User() user: Player, @Args('input', { type: () => IndexInput, nullable: true }) input?: IndexInput): Promise<boolean> {
     this.logger.log(`Indexing all data for user ${user?.fullName}`);
 
     const types = Array.isArray(input?.types)
@@ -61,6 +55,6 @@ export class IndexResolver {
 
     await Promise.all(toIndex);
 
-    return { message: 'Indexing completed' };
+    return true;
   }
 }

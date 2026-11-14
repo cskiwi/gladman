@@ -28,7 +28,7 @@ export class GameResolver {
     @Args('args', { type: () => GameArgs, nullable: true })
     inputArgs?: InstanceType<typeof GameArgs>,
   ): Promise<Game[]> {
-    const args = GameArgs.toFindOneOptions(inputArgs);
+    const args = GameArgs.toFindManyOptions(inputArgs);
 
     return Game.find(args);
   }

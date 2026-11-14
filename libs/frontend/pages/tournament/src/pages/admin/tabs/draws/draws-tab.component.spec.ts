@@ -11,8 +11,8 @@ describe('Draw lists and actions', () => {
   let query: jest.Mock;
   let mutate: jest.Mock;
   const entries = [
-    { id: 'safe-seeded', seed: 2, player1: { fullName: 'Safe Player One' }, player2: { fullName: 'Safe Partner' } },
-    { id: 'safe-unseeded', player1: { fullName: 'Safe Player Two' } },
+    { id: 'safe-seeded', drawId: 'safe-ko', seed: 2, player1: { fullName: 'Safe Player One' }, player2: { fullName: 'Safe Partner' } },
+    { id: 'safe-unseeded', drawId: 'safe-ko', player1: { fullName: 'Safe Player Two' } },
   ];
   const draws = [
     { id: 'safe-ko', name: 'Safe knockout', type: 'KO', size: 8, entries },
@@ -20,7 +20,7 @@ describe('Draw lists and actions', () => {
     { id: 'safe-qualification', name: 'Safe qualification', type: 'QUALIFICATION' },
     { id: 'safe-other', name: 'Safe other', entries: [] },
   ];
-  const response = { data: { tournamentSubEvent: { entries, unassignedEntries: [], drawTournaments: draws } } };
+  const response = { data: { tournamentSubEvent: { entries, drawTournaments: draws } } };
 
   beforeEach(async () => {
     query = jest.fn(() => of(response));
@@ -187,7 +187,7 @@ describe('Draw lists and actions', () => {
   });
 
   it('renders native no-draw and no-selection feedback without decorative surfaces', async () => {
-    query.mockReturnValueOnce(of({ data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: [] } } }));
+    query.mockReturnValueOnce(of({ data: { tournamentSubEvent: { entries: [], drawTournaments: [] } } }));
     await settle();
     const empty: HTMLElement = fixture.nativeElement.querySelector('[data-testid="empty-draw-list"]');
     expect(empty.tagName).toBe('P-PANEL');
@@ -256,7 +256,7 @@ describe('Unassigned entry selection and assignment', () => {
     { id: 'safe-entry-two', player1: { id: 'safe-player-two', fullName: 'Safe Player Two' } },
   ];
   const draw = { id: 'safe-draw', name: 'Safe draw', type: 'KO', entries: [] };
-  const response = { data: { tournamentSubEvent: { entries, unassignedEntries: entries, drawTournaments: [draw] } } };
+  const response = { data: { tournamentSubEvent: { entries, drawTournaments: [draw] } } };
 
   beforeEach(async () => {
     Object.defineProperty(window, 'matchMedia', {
@@ -414,7 +414,9 @@ describe('Unassigned entry selection and assignment', () => {
     checkboxes()[1].click();
     fixture.componentInstance.targetDrawId.set(draw.id);
     await settle();
-    query.mockReturnValue(of({ data: { tournamentSubEvent: { entries, unassignedEntries: [], drawTournaments: [draw] } } }));
+    query.mockReturnValue(
+      of({ data: { tournamentSubEvent: { entries: entries.map((entry) => ({ ...entry, drawId: draw.id })), drawTournaments: [draw] } } }),
+    );
     actions()[2].click();
     await settle();
     await settle();
@@ -477,7 +479,7 @@ describe('Unassigned entry selection and assignment', () => {
   });
 
   it('shows the genuine no-entries message and disabled named bulk controls', async () => {
-    query.mockReturnValue(of({ data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: [] } } }));
+    query.mockReturnValue(of({ data: { tournamentSubEvent: { entries: [], drawTournaments: [] } } }));
     await settle();
     expect(panel().textContent).toContain('all.tournament.admin.draws.noEntriesYet');
     expect(panel().textContent).not.toContain('all.tournament.admin.draws.allEntriesAssigned');
@@ -519,7 +521,7 @@ describe('Draw selection and read prerequisite', () => {
     { id: 'safe-singles', name: 'Safe singles' },
     { id: 'safe-doubles', name: 'Safe doubles' },
   ];
-  const response = { data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: [] } } };
+  const response = { data: { tournamentSubEvent: { entries: [], drawTournaments: [] } } };
 
   beforeEach(async () => {
     query = jest.fn(() => of(response));
@@ -657,8 +659,7 @@ describe('Draw selection and read prerequisite', () => {
       of({
         data: {
           tournamentSubEvent: {
-            entries: [{ id: 'one' }, { id: 'two' }, { id: 'three' }],
-            unassignedEntries: [{ id: 'three' }],
+            entries: [{ id: 'one', drawId: 'safe-draw' }, { id: 'two', drawId: 'safe-draw' }, { id: 'three' }],
             drawTournaments: [{ id: 'safe-draw', name: 'Safe draw', entries: [] }],
           },
         },
@@ -708,7 +709,7 @@ describe('Draw selection and read prerequisite', () => {
   it('synchronizes manual selection and clears stale assignment state', async () => {
     query.mockReturnValue(
       of({
-        data: { tournamentSubEvent: { entries: [{ id: 'safe-entry' }], unassignedEntries: [{ id: 'safe-entry' }], drawTournaments: [] } },
+        data: { tournamentSubEvent: { entries: [{ id: 'safe-entry' }], drawTournaments: [] } },
       }),
     );
     await settle();
@@ -820,8 +821,7 @@ describe('Draw selection and read prerequisite', () => {
     { data: undefined },
     { data: { tournamentSubEvent: null } },
     { data: { tournamentSubEvent: { entries: [] } } },
-    { data: { tournamentSubEvent: { entries: [], unassignedEntries: null, drawTournaments: [] } } },
-    { data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: null } } },
+    { data: { tournamentSubEvent: { entries: [], drawTournaments: null } } },
   ])('rejects an incomplete successful response instead of claiming no entries', async (result) => {
     query.mockReturnValue(of(result));
     await settle();
@@ -835,7 +835,7 @@ describe('Draw selection and read prerequisite', () => {
     const pending = new Subject<typeof response>();
     query.mockReturnValueOnce(pending).mockReturnValue(
       of({
-        data: { tournamentSubEvent: { entries: [{ id: 'latest-entry' }], unassignedEntries: [], drawTournaments: [] } },
+        data: { tournamentSubEvent: { entries: [{ id: 'latest-entry', drawId: 'safe-draw' }], drawTournaments: [] } },
       }),
     );
     fixture.detectChanges();
@@ -843,7 +843,7 @@ describe('Draw selection and read prerequisite', () => {
     fixture.componentInstance.subEventControl.setValue(fixture.componentInstance.subEvents()[1]);
     await settle();
     expect(query.mock.lastCall[0].variables).toEqual({ subEventId: 'safe-doubles' });
-    pending.next({ data: { tournamentSubEvent: { entries: [], unassignedEntries: [], drawTournaments: [] } } });
+    pending.next({ data: { tournamentSubEvent: { entries: [], drawTournaments: [] } } });
     pending.complete();
     await settle();
     expect(fixture.componentInstance.selectedSubEvent()?.id).toBe('safe-doubles');

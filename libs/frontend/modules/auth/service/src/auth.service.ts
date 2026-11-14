@@ -31,8 +31,17 @@ export class AuthService {
   loaded = computed(() => this.loadedSignal());
   token = computed(() => this.tokenSignal());
 
+  /** Permission names derived from the native `Player.claims` relation of the current user. */
+  permissions = computed<string[] | null>(() => {
+    const claims = this.user()?.claims;
+    if (!claims) {
+      return null;
+    }
+    return claims.map((claim) => claim.name).filter((name): name is string => !!name);
+  });
+
   hasAnyPermission(requiredPermissions: string[]) {
-    const claims = this.user()?.permissions || null;
+    const claims = this.permissions();
 
     if (claims === null) {
       return false;
@@ -42,7 +51,7 @@ export class AuthService {
   }
 
   hasAllPermission(requiredPermissions: string[]) {
-    const claims = this.user()?.permissions || null;
+    const claims = this.permissions();
     if (claims === null) {
       return false;
     }
@@ -63,7 +72,10 @@ export class AuthService {
                 lastName
                 fullName
                 slug
-                permissions
+                claims {
+                  id
+                  name
+                }
                 clubPlayerMemberships {
                   id
                   active

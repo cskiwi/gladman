@@ -128,11 +128,9 @@ export class Player extends BaseEntity {
   declare claims?: Relation<Claim[]>;
 
   /**
-   * Permissions for the player, exposed via GraphQL.
+   * Permissions for the player (backend use only, derived from the loaded claims; not exposed via GraphQL).
    */
-  @Field(() => [String], { nullable: true })
   get permissions() {
-    // This should be resolved via a resolver, not directly here.
     return this.claims?.map((claim) => claim.name) ?? [];
   }
 

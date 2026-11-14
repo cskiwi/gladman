@@ -27,11 +27,6 @@ export interface SyncStatus {
   queues: QueueStats;
 }
 
-export interface SyncTriggerResponse {
-  message: string;
-  success: boolean;
-}
-
 export interface RankingSystemSyncInfo {
   id: string;
   name: string;

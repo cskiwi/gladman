@@ -106,11 +106,11 @@ export class OverviewTabComponent implements OnDestroy {
           .clearAllJobs()
           .pipe(delay(this.queueMutationDelayMs))
           .subscribe({
-            next: (result) => {
+            next: () => {
               this.messageService.add({
                 severity: 'success',
                 summary: this.translateService.instant('all.common.success'),
-                detail: result.message || this.translateService.instant('all.sync.dashboard.actions.clearAllSuccess'),
+                detail: this.translateService.instant('all.sync.dashboard.actions.clearAllSuccess'),
               });
               this.overviewService.refresh();
             },
@@ -139,11 +139,11 @@ export class OverviewTabComponent implements OnDestroy {
           .clearCompletedJobs()
           .pipe(delay(this.queueMutationDelayMs))
           .subscribe({
-            next: (result) => {
+            next: (removedCount) => {
               this.messageService.add({
                 severity: 'success',
                 summary: this.translateService.instant('all.common.success'),
-                detail: result.message || this.translateService.instant('all.sync.dashboard.actions.clearCompletedSuccess'),
+                detail: this.translateService.instant('all.sync.dashboard.actions.clearCompletedSuccessCount', { count: removedCount }),
               });
               this.overviewService.refresh();
             },

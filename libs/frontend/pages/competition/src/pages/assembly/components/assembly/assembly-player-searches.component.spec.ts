@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AuthService } from '@app/frontend-modules-auth/service';
@@ -56,6 +58,8 @@ describe.each([false, true])('Assembly player searches (mobile: %s)', (mobile) =
       imports: [AssemblyComponent, TranslateModule.forRoot()],
       providers: [
         AssemblyService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         AssemblyGeneratorService,
         { provide: AuthService, useValue: { hasAnyPermission: () => false } },
         { provide: RankingSystemService, useValue: {} },

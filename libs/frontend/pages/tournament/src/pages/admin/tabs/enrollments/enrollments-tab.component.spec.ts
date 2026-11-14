@@ -19,7 +19,7 @@ describe('Manual enrollment dialog and creation', () => {
 
   beforeEach(async () => {
     query = jest.fn(({ query }: { query: DocumentNode }) =>
-      of({ data: print(query).includes('ManualEnrollmentPlayers') ? { manualEnrollmentPlayers: [player, partner] } : { subEventEnrollments: [] } }),
+      of({ data: print(query).includes('ManualEnrollmentPlayers') ? { players: [player, partner] } : { tournamentEnrollments: [] } }),
     );
     mutate = jest.fn(() =>
       of({
@@ -224,7 +224,11 @@ describe('Manual enrollment dialog and creation', () => {
   it('searches names/member IDs through the actual bounded players query', async () => {
     await fixture.componentInstance.searchManualPlayers('player', 'Safe 100%');
     expect(fixture.componentInstance.suggestions().player).toEqual([player, partner]);
-    expect(query.mock.lastCall[0].variables).toEqual({ search: 'Safe 100%' });
+    const { where, order, take } = query.mock.lastCall[0].variables.args;
+    expect(where).toHaveLength(9);
+    expect(where).toContainEqual({ AND: [{ firstName: { ilike: '%Safe%' } }, { lastName: { ilike: '%100\\%%' } }] });
+    expect(order).toEqual({ lastName: 'ASC', firstName: 'ASC' });
+    expect(take).toBe(20);
     query.mockClear();
     await fixture.componentInstance.searchManualPlayers('player', 'a');
     expect(query).not.toHaveBeenCalled();
@@ -232,20 +236,20 @@ describe('Manual enrollment dialog and creation', () => {
   });
 
   it('ignores older search responses and responses after closing/reopening', async () => {
-    const pending = new Subject<{ data: { manualEnrollmentPlayers: (typeof player)[] } }>();
+    const pending = new Subject<{ data: { players: (typeof player)[] } }>();
     query.mockReturnValueOnce(pending);
     const first = fixture.componentInstance.searchManualPlayers('player', 'Old');
     await fixture.componentInstance.searchManualPlayers('player', 'New');
-    pending.next({ data: { manualEnrollmentPlayers: [] } });
+    pending.next({ data: { players: [] } });
     pending.complete();
     await first;
     expect(fixture.componentInstance.suggestions().player).toHaveLength(2);
-    const closed = new Subject<{ data: { manualEnrollmentPlayers: (typeof player)[] } }>();
+    const closed = new Subject<{ data: { players: (typeof player)[] } }>();
     query.mockReturnValueOnce(closed);
     const second = fixture.componentInstance.searchManualPlayers('partner', 'Partner');
     fixture.componentInstance.closeManualEnrollmentDialog();
     fixture.componentInstance.openManualEnrollmentDialog();
-    closed.next({ data: { manualEnrollmentPlayers: [partner] } });
+    closed.next({ data: { players: [partner] } });
     closed.complete();
     await second;
     expect(fixture.componentInstance.suggestions().partner).toEqual([]);
@@ -308,8 +312,12 @@ describe('Enrollment-management filters', () => {
   ];
 
   beforeEach(async () => {
-    query = jest.fn(({ variables }: { variables: { subEventId: string; status?: EnrollmentStatus } }) =>
-      of({ data: { subEventEnrollments: enrollments.filter((entry) => !variables.status || entry.status === variables.status) } }),
+    query = jest.fn(({ variables }: { variables: { args: { where: Array<{ status?: { eq: EnrollmentStatus } }> } } }) =>
+      of({
+        data: {
+          tournamentEnrollments: enrollments.filter((entry) => !variables.args.where[0].status || entry.status === variables.args.where[0].status.eq),
+        },
+      }),
     );
     mutate = jest.fn();
     await TestBed.configureTestingModule({
@@ -338,7 +346,9 @@ describe('Enrollment-management filters', () => {
   it('selects the first sub-event and mounts the matching table and query', () => {
     expect(fixture.componentInstance.selectedSubEvent()?.id).toBe('safe-single');
     expect(query).toHaveBeenCalledTimes(1);
-    expect(query.mock.calls[0][0].variables).toEqual({ subEventId: 'safe-single', status: undefined });
+    expect(query.mock.calls[0][0].variables).toEqual({
+      args: { where: [{ tournamentSubEventId: { eq: 'safe-single' } }], order: { createdAt: 'ASC' } },
+    });
     expect(ids()).toEqual(['player', 'guest', 'partner']);
     expect(fixture.nativeElement.querySelector('p-table')).not.toBeNull();
     expect(fixture.componentInstance.isDoublesEvent()).toBe(false);
@@ -348,14 +358,16 @@ describe('Enrollment-management filters', () => {
     fixture.componentInstance.subEventControl.setValue(fixture.componentInstance.subEvents()[1]);
     await settle();
     expect(fixture.componentInstance.selectedSubEvent()?.id).toBe('safe-double');
-    expect(query.mock.lastCall[0].variables.subEventId).toBe('safe-double');
+    expect(query.mock.lastCall[0].variables.args.where[0].tournamentSubEventId).toEqual({ eq: 'safe-double' });
     expect(fixture.componentInstance.isDoublesEvent()).toBe(true);
   });
 
   it.each([null, ...Object.values(EnrollmentStatus)])('sends the selected status %s without changing its enum value', async (status) => {
     fixture.componentInstance.statusFilter.setValue(status);
     await settle();
-    expect(query.mock.lastCall[0].variables).toEqual({ subEventId: 'safe-single', status: status ?? undefined });
+    expect(query.mock.lastCall[0].variables.args.where).toEqual([
+      { tournamentSubEventId: { eq: 'safe-single' }, ...(status ? { status: { eq: status } } : {}) },
+    ]);
     expect(ids()).toEqual(enrollments.filter((entry) => !status || entry.status === status).map((entry) => entry.id));
   });
 
@@ -384,7 +396,9 @@ describe('Enrollment-management filters', () => {
     refresh.click();
     await settle();
     expect(query).toHaveBeenCalledTimes(1);
-    expect(query.mock.lastCall[0].variables).toEqual({ subEventId: 'safe-single', status: EnrollmentStatus.CONFIRMED });
+    expect(query.mock.lastCall[0].variables.args.where).toEqual([
+      { tournamentSubEventId: { eq: 'safe-single' }, status: { eq: EnrollmentStatus.CONFIRMED } },
+    ]);
     expect(ids()).toEqual(['player']);
   });
 
@@ -427,7 +441,7 @@ describe('Enrollment-management filters', () => {
   it.each([
     ['network failure', () => throwError(() => new Error('Safe enrollment query failure')), 'Safe enrollment query failure'],
     ['missing response data', () => of({ data: {} }), 'all.tournament.admin.enrollments.queryNoData'],
-    ['null list', () => of({ data: { subEventEnrollments: null } }), 'all.tournament.admin.enrollments.queryNoData'],
+    ['null list', () => of({ data: { tournamentEnrollments: null } }), 'all.tournament.admin.enrollments.queryNoData'],
   ])('shows explicit %s feedback with safe selectors and recovers using refresh', async (_name, response, message) => {
     query.mockImplementationOnce(response);
     fixture.componentInstance.refetch();
@@ -447,7 +461,7 @@ describe('Enrollment-management filters', () => {
   });
 
   it('names native loading progress and avoids empty-success feedback while loading', async () => {
-    const response = new Subject<{ data: { subEventEnrollments: TournamentEnrollment[] } }>();
+    const response = new Subject<{ data: { tournamentEnrollments: TournamentEnrollment[] } }>();
     query.mockReturnValueOnce(response);
     fixture.componentInstance.refetch();
     fixture.detectChanges();
@@ -455,7 +469,7 @@ describe('Enrollment-management filters', () => {
     expect(fixture.nativeElement.querySelector('p-progressbar')?.getAttribute('aria-label')).toBe('all.loading.players');
     expect(fixture.nativeElement.querySelector('[data-testid="enrollment-table"]')?.getAttribute('aria-busy')).toBe('true');
     expect(fixture.nativeElement.querySelector('[data-testid="enrollment-table"] p-table')).toBeNull();
-    response.next({ data: { subEventEnrollments: [] } });
+    response.next({ data: { tournamentEnrollments: [] } });
     response.complete();
     await settle();
     expect(fixture.nativeElement.querySelector('p-progressbar')).toBeNull();
@@ -483,7 +497,7 @@ describe('Enrollment-management filters', () => {
       { id: 'cancelled', status: EnrollmentStatus.CANCELLED },
       { id: 'withdrawn', status: EnrollmentStatus.WITHDRAWN },
     ];
-    query.mockReturnValueOnce(of({ data: { subEventEnrollments: rows } }));
+    query.mockReturnValueOnce(of({ data: { tournamentEnrollments: rows } }));
     fixture.componentInstance.subEventControl.setValue(fixture.componentInstance.subEvents()[1]);
     await settle();
     const table: HTMLElement = fixture.nativeElement.querySelector('[data-testid="enrollment-table"] table');
@@ -508,7 +522,7 @@ describe('Enrollment-management filters', () => {
     query.mockReturnValueOnce(
       of({
         data: {
-          subEventEnrollments: Array.from({ length: 26 }, (_, index) => ({
+          tournamentEnrollments: Array.from({ length: 26 }, (_, index) => ({
             id: `safe-${index}`,
             status: EnrollmentStatus.CONFIRMED,
             player: { fullName: `Safe Player ${index}` },
@@ -573,7 +587,7 @@ describe('Enrollment-management locale completeness', () => {
   let mutate: jest.Mock;
 
   beforeEach(async () => {
-    query = jest.fn(() => of({ data: { subEventEnrollments: [] } }));
+    query = jest.fn(() => of({ data: { tournamentEnrollments: [] } }));
     mutate = jest.fn(() => of({ data: { cancelEnrollment: { id: 'safe-entry' }, promoteFromWaitingList: { id: 'safe-entry' } } }));
     await TestBed.configureTestingModule({
       imports: [EnrollmentsTabComponent, TranslateModule.forRoot()],
@@ -738,7 +752,7 @@ describe('Enrollment-management summary presentation', () => {
     mutate = jest.fn();
     await TestBed.configureTestingModule({
       imports: [EnrollmentsTabComponent, TranslateModule.forRoot()],
-      providers: [{ provide: Apollo, useValue: { query: jest.fn(() => of({ data: { subEventEnrollments: [] } })), mutate } }],
+      providers: [{ provide: Apollo, useValue: { query: jest.fn(() => of({ data: { tournamentEnrollments: [] } })), mutate } }],
     }).compileComponents();
     fixture = TestBed.createComponent(EnrollmentsTabComponent);
     fixture.componentRef.setInput('tournament', { id: 'safe-event', tournamentSubEvents: [] });

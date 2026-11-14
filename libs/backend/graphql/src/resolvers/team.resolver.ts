@@ -39,7 +39,7 @@ export class TeamResolver {
     @Args('args', { type: () => TeamArgs, nullable: true })
     inputArgs?: InstanceType<typeof TeamArgs>,
   ): Promise<Team[]> {
-    const args = TeamArgs.toFindOneOptions(inputArgs);
+    const args = TeamArgs.toFindManyOptions(inputArgs);
     return Team.find(args);
   }
 

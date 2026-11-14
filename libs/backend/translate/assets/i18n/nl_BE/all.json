@@ -14,7 +14,8 @@
         "selectNone": "Niets selecteren",
         "selectTypes": "Selecteer types om te indexeren",
         "startIndexing": "Indexering starten",
-        "title": "Indexering"
+        "title": "Indexering",
+        "completed": "Indexering voltooid"
       },
       "sync": {
         "title": "Synchronisatie"
@@ -1225,7 +1226,8 @@
         "tournamentSync": "Toernooi sync",
         "tournamentSyncError": "Mislukt om toernooi sync te plannen",
         "tournamentSyncQueued": "Toernooi  sync succesvol gepland",
-        "tournamentSyncTooltip": "Synchroniseer huidige en aankomende toernooien"
+        "tournamentSyncTooltip": "Synchroniseer huidige en aankomende toernooien",
+        "clearCompletedSuccessCount": "{{count}} voltooide jobs verwijderd (jobs met mislukte subjobs behouden)"
       },
       "jobs": {
         "actions": "Acties",
@@ -1442,6 +1444,13 @@
       "queued": "In wachtrij voor synchronisatie",
       "synced": "Succesvol gesynchroniseerd",
       "syncing": "Synchronisatie bezig"
+    },
+    "button": {
+      "eventSyncQueued": "Event-synchronisatie ingepland voor {{id}}",
+      "subEventSyncQueued": "Onderdeel-synchronisatie ingepland voor {{id}}",
+      "drawSyncQueued": "Reeks-synchronisatie ingepland voor {{id}}",
+      "cacheCleared": "API-cache gewist",
+      "cacheEmpty": "Geen cache-items gevonden"
     }
   },
   "system": {
@@ -1777,7 +1786,8 @@
         "waitingList": "Wachtlijst",
         "waitingListDescription": "Op de wachtlijst",
         "withdraw": "",
-        "withdrawn": "Teruggetrokken"
+        "withdrawn": "Teruggetrokken",
+        "playerSearchTooLong": "De zoekopdracht mag niet langer zijn dan {{max}} tekens"
       },
       "noPermission": "Je hebt geen toestemming om dit toernooi te beheren",
       "phases": {

@@ -41,6 +41,7 @@ export class SubEventSelectionGridComponent {
       delete subEvent['_isEnrollmentOpen'];
       delete subEvent['_isAlreadyEnrolled'];
       delete subEvent['_isEligible'];
+      delete subEvent['_waitingListCount'];
       this.subEventSelect.emit(subEvent as unknown as TournamentSubEvent);
     }
   }

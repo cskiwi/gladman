@@ -70,62 +70,65 @@
       </div>
     </section>
 
-    <!-- Location Information -->
-    <div class="mb-8">
-      <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
+    <section aria-labelledby="competition-info-location-title">
+      <h2 id="competition-info-location-title" class="text-lg font-semibold text-color mt-0 mb-4">
         {{ 'all.competition.edit.info.location.title' | translate }}
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <!-- Country -->
-        <div class="flex flex-col gap-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
           <label id="competition-info-country-label" for="country" class="font-medium">
             {{ 'all.competition.edit.info.country' | translate }}
           </label>
           <app-country-select inputId="country" ariaLabelledBy="competition-info-country-label" formControlName="country" />
         </div>
 
-        <!-- State/Province -->
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-2">
           <label id="competition-info-state-label" for="state" class="font-medium">
             {{ 'all.competition.edit.info.state' | translate }}
           </label>
           <app-state-select inputId="state" ariaLabelledBy="competition-info-state-label" formControlName="state" [country]="selectedCountry()" />
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Contact Information -->
-    <div class="mb-8">
-      <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
+    <section aria-labelledby="competition-info-contact-title">
+      <h2 id="competition-info-contact-title" class="text-lg font-semibold text-color mt-0 mb-4">
         {{ 'all.competition.edit.info.contact.title' | translate }}
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <!-- Contact Email -->
-        <div class="flex flex-col gap-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
           <label for="contactEmail" class="font-medium">{{ 'all.competition.edit.info.contactEmail' | translate }}</label>
           <input
             pInputText
             id="contactEmail"
             formControlName="contactEmail"
             type="email"
+            fluid
+            [invalid]="infoForm.get('contactEmail')!.hasError('email') && infoForm.get('contactEmail')!.touched"
+            [attr.aria-invalid]="infoForm.get('contactEmail')!.hasError('email') && infoForm.get('contactEmail')!.touched"
+            [attr.aria-describedby]="
+              infoForm.get('contactEmail')!.hasError('email') && infoForm.get('contactEmail')!.touched ? 'competition-info-contact-email-error' : null
+            "
             [placeholder]="'all.competition.edit.info.contactEmail.placeholder' | translate"
           />
-          @if (infoForm.get('contactEmail')?.errors?.['email'] && infoForm.get('contactEmail')?.touched) {
-            <small class="text-red-500">{{ 'all.competition.edit.info.contactEmail.invalid' | translate }}</small>
+          @if (infoForm.get('contactEmail')!.hasError('email') && infoForm.get('contactEmail')!.touched) {
+            <p-message id="competition-info-contact-email-error" severity="error" size="small" variant="simple">
+              {{ 'all.competition.edit.info.contactEmail.invalid' | translate }}
+            </p-message>
           }
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Loading Indicator -->
     @if (saving()) {
-      <div class="pt-4">
-        <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
-        <p class="text-sm text-muted-color mt-2">{{ 'all.competition.edit.info.messages.saving' | translate }}</p>
+      <div class="flex flex-col gap-2">
+        <p id="competition-info-saving-status" class="m-0 text-muted-color" role="status" aria-live="polite" aria-atomic="true">
+          {{ 'all.competition.edit.info.messages.saving' | translate }}
+        </p>
+        <p-progressbar mode="indeterminate" aria-labelledby="competition-info-saving-status" />
       </div>
     }
 
-    <!-- Error Message -->
     @if (error(); as errorMessage) {
       <p-message severity="error">{{ errorMessage }}</p-message>
     }

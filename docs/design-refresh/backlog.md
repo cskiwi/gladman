@@ -5,6 +5,27 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018b2 [Location/contact presentation and tab feedback](work-items/DR-018b2-location-contact-presentation.md)
+is Done with explicit approval (`Approve DR-018b2 and commit with disclosed limits`, 2026-11-16).
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, information tab, 2026-11-16.
+Scope: semantic location/contact sections, native email validation and accessible information-tab saving feedback.
+Dependency DR-018b1 is Done. Exclude completed basic fields, shared selectors/theme, page chrome, dates/settings,
+translations and operational saves. Existing form/CVA separation is sufficient; no new component extraction.
+Implemented labelled semantic sections, fluid/invalid email with described native Message, and named native saving feedback.
+Template class tokens 64 -> 62; no shared styling, TypeScript form logic, translation or persistence changes.
+Competition lint/build pass (12 tasks); four focused tests pass. Final lint: 41 existing warnings, zero errors.
+Dutch light/dark DOM fixtures at 390px/1440px fit sections and long email/error feedback; real disabled/pristine values restored.
+Native email fill/Tab and reverse focus to state pass partial checks; hidden Message exit does not detach in this browser.
+Dark-wide before/after screenshots inspected. Remaining screenshot capture is stale/clipped or resets the viewport.
+Full visual matrix, keyboard/contrast/accessibility, alternate locales, live saves and SSR/hydration remain unverified.
+Approval accepts the disclosed limits without claiming unperformed checks passed; unchecked criteria remain in the brief.
+Exact next action: integrated DR-018b acceptance review of already-Done b1/b2, without live saves.
+Obtain parent approval separately with any remaining limits disclosed; keep DR-018/DR-018b open.
+Keep DR-018c unstarted. Page chrome remains DR-018e and existing topbar overflow remains DR-066.
+Approval authorizes only b2 and its handoff commit; no push.
+
+### Previous focus: Country/state selector integration (DR-018b1)
+
 DR-018b1 [Country/state selector integration](work-items/DR-018b1-country-state-selectors.md) is Done with explicit
 approval (`commit`, 2026-11-16), accepting the disclosed verification limits below.
 Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, information tab, 2026-11-14.
@@ -3022,7 +3043,7 @@ and linked from their registry rows.
 | [DR-018a](work-items/DR-018a-basic-information.md)            | Basic competition information                                                | Done        |
 | [DR-018b](work-items/DR-018b-location-contact.md)             | Location/contact information and tab feedback                                | In progress |
 | [DR-018b1](work-items/DR-018b1-country-state-selectors.md)    | Shared country/state selector integration                                    | Done        |
-| DR-018b2                                                      | Location/contact presentation and tab feedback (depends on DR-018b1)         | Backlog     |
+| [DR-018b2][location-contact-presentation]                     | Location/contact presentation and tab feedback (depends on DR-018b1)         | Done        |
 | DR-018c                                                       | Competition editing dates                                                    | Backlog     |
 | DR-018d                                                       | Competition editing settings                                                 | Backlog     |
 | DR-018e                                                       | Competition editing page chrome and actions                                  | Backlog     |
@@ -3923,6 +3944,7 @@ When splitting an item, add child rows to the registry with their own status and
 done only after its required children pass review. Add new routes or newly discovered UI surfaces here rather than
 silently expanding the active task.
 
+[location-contact-presentation]: work-items/DR-018b2-location-contact-presentation.md
 [baseline]: work-items/DR-001-design-baseline.md
 [pilot]: work-items/DR-002-home-pilot.md
 [shell-work-item]: work-items/DR-003-app-shell.md

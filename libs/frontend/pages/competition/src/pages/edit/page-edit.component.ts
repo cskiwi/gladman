@@ -1,10 +1,11 @@
 import { Component, computed, inject, signal, resource, viewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Apollo, gql } from 'apollo-angular';
 
 import { lastValueFrom } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
@@ -55,6 +56,7 @@ const GET_COMPETITION_WITH_DETAILS = gql`
   imports: [
     BreadcrumbComponent,
     ButtonModule,
+    CardModule,
     MessageModule,
     ProgressBarModule,
     ToastModule,
@@ -66,7 +68,7 @@ const GET_COMPETITION_WITH_DETAILS = gql`
   ],
   providers: [MessageService],
   templateUrl: './page-edit.component.html',
-  styleUrl: './page-edit.component.scss',
+  host: { class: 'block' },
 })
 export class PageEditComponent {
   private readonly route = inject(ActivatedRoute);
@@ -120,8 +122,11 @@ export class PageEditComponent {
   // Public computed properties
   readonly competition = computed(() => this.competitionResource.value());
   readonly loading = computed(() => this.loadingCompetition());
+  readonly saving = computed(() => this.infoComponent()?.saving() || this.datesComponent()?.saving() || this.settingsComponent()?.saving() || false);
 
   async saveCurrentTab(): Promise<void> {
+    if (this.saving()) return;
+
     const activeTab = this.activeTabIndex();
 
     try {
@@ -159,6 +164,8 @@ export class PageEditComponent {
   }
 
   async saveAll(): Promise<void> {
+    if (this.saving()) return;
+
     const promises: Promise<void>[] = [];
 
     const infoComponent = this.infoComponent();
@@ -207,6 +214,8 @@ export class PageEditComponent {
   }
 
   cancel(): void {
+    if (this.saving()) return;
+
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -218,7 +227,7 @@ export class PageEditComponent {
     return (infoComponent?.isDirty ?? false) || (datesComponent?.isDirty ?? false) || (settingsComponent?.isDirty ?? false);
   }
 
-  onActiveIndexChange(event: any): void {
-    this.activeTabIndex.set(event.index?.toString() || '0');
+  onActiveTabChange(value: string | number | undefined): void {
+    if (value !== undefined) this.activeTabIndex.set(String(value));
   }
 }

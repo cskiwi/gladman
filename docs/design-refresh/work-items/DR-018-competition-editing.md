@@ -22,7 +22,7 @@ description: 'Bounded rollout for the mounted competition editing page.'
   [DR-018b2](DR-018b2-location-contact-presentation.md) handles page presentation/feedback after b1.
 - [DR-018c](DR-018c-competition-dates.md): dates tab.
 - [DR-018d](DR-018d-competition-settings.md): settings tab.
-- DR-018e: page chrome, tab selection and save feedback.
+- [DR-018e](DR-018e-competition-editor-chrome.md): page chrome, tab selection and save feedback.
 - Keep the parent open until all required children and integrated review are complete.
 
 ## Baseline and decisions
@@ -80,5 +80,16 @@ Physical interactions, ranking bounds/unit selection, full screenshot matrix, ac
 alternate locales, live saves and full SSR/hydration remain unverified. DR-058/066/068 are separate follow-ups.
 DR-018d is Done with explicit approval (`Approve DR-018d and commit with disclosed limits`, 2026-11-16).
 Approval accepts its recorded limits without claiming unperformed checks passed; unchecked criteria remain.
-Next: confirm mounted page chrome/actions, scope DR-018e and create its brief before implementation.
-Keep DR-018 open and DR-018e unstarted. Approval authorizes only DR-018d and its handoff commit; no push.
+DR-018e is selected on 2026-11-16 after confirming mounted page chrome/actions and reproducing stale current-tab state.
+Scope: native page chrome/feedback, native tab selection and guarded save actions; child forms/persistence stay unchanged.
+DR-018e implements native chrome/feedback, correct current-tab save routing and guarded busy actions.
+Competition lint/build and seven focused tests pass. Light/dark 390px/1440px DOM geometry/feedback checks pass.
+Dark-wide before/after screenshots inspected; light-narrow capture is partial. Child forms and payloads are unchanged.
+Physical keyboard/pointer, native navigator, full screenshot review, accessibility/contrast, animation exit,
+alternate locales, operational save-all workflows, persistence and full SSR/hydration remain unverified.
+No browser save/mutation method was activated. Existing DR-058/066/068 remain; source-only DR-069 is separate.
+DR-018e is Done with explicit approval (`Approve DR-018e and commit with disclosed limits`, 2026-11-16).
+Approval accepts its recorded limits without claiming unperformed checks passed; unchecked criteria remain.
+Required precommit workspace lint passes for all 34 projects, three cached; existing warnings remain.
+Exact next action: perform DR-018 integrated parent review on the next invocation, without restarting completed
+children. Keep DR-018 open and DR-069 unstarted. Approval authorizes only DR-018e and its handoff commit; no push.

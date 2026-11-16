@@ -1,6 +1,5 @@
 @if (!loading()) {
   @if (this.competition(); as competition) {
-    <!-- Breadcrumb -->
     <app-breadcrumb
       [items]="[
         { label: competition.name, routerLink: ['/', 'competition', competition.slug] },
@@ -8,53 +7,46 @@
       ]"
     />
 
-    <!-- Header -->
     <header class="flex items-start justify-between flex-wrap gap-4 mb-6">
       <div class="flex flex-col gap-2 min-w-0">
-        <span class="t-eyebrow">{{ 'all.competition.edit.subtitle' | translate }}</span>
-        <h1 class="edit-title m-0">{{ 'all.competition.edit.title' | translate }}</h1>
+        <h1 class="text-2xl font-semibold m-0">{{ 'all.competition.edit.title' | translate }}</h1>
+        <p class="text-muted-color m-0">{{ 'all.competition.edit.subtitle' | translate }}</p>
       </div>
       <div class="flex gap-2 flex-wrap">
-        <button pButton type="button" severity="secondary" [outlined]="true" size="small" (click)="cancel()">
+        <button pButton type="button" severity="secondary" [outlined]="true" size="small" (click)="cancel()" [disabled]="saving()">
           <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
           <span pButtonLabel>{{ 'all.competition.edit.actions.cancel' | translate }}</span>
         </button>
-        <button pButton type="button" [outlined]="true" size="small" (click)="saveCurrentTab()">
+        <button pButton type="button" [outlined]="true" size="small" (click)="saveCurrentTab()" [disabled]="saving()">
           <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
           <span pButtonLabel>{{ 'all.competition.edit.actions.save-current' | translate }}</span>
         </button>
-        <button pButton type="button" size="small" (click)="saveAll()" [disabled]="!hasUnsavedChanges">
+        <button pButton type="button" size="small" (click)="saveAll()" [disabled]="saving() || !hasUnsavedChanges">
           <i pButtonIcon class="pi pi-save" aria-hidden="true"></i>
           <span pButtonLabel>{{ 'all.competition.edit.actions.save-all' | translate }}</span>
         </button>
       </div>
     </header>
 
-    <!-- Unsaved changes indicator -->
     @if (hasUnsavedChanges) {
-      <div
-        class="mb-4 p-3 rounded-lg flex items-center gap-2"
-        style="background: var(--g-pending-muted, var(--p-yellow-100)); color: var(--g-pending, var(--p-yellow-700))"
-      >
-        <i class="pi pi-exclamation-triangle"></i>
-        <span class="font-medium text-sm">{{ 'all.competition.edit.messages.unsaved-changes' | translate }}</span>
-      </div>
+      <p-message severity="warn" icon="pi pi-exclamation-triangle" class="mb-4">
+        {{ 'all.competition.edit.messages.unsaved-changes' | translate }}
+      </p-message>
     }
 
-    <!-- Tabbed Interface -->
-    <div class="bg-emphasis border border-surface rounded-border p-4">
-      <p-tabs [value]="activeTabIndex()" (activeIndexChange)="onActiveIndexChange($event)">
+    <p-card>
+      <p-tabs [value]="activeTabIndex()" (valueChange)="onActiveTabChange($event)" [attr.aria-busy]="saving()">
         <p-tablist>
           <p-tab value="0">
-            <i class="pi pi-info-circle mr-2"></i>
+            <i class="pi pi-info-circle" aria-hidden="true"></i>
             {{ 'all.competition.edit.tabs.info' | translate }}
           </p-tab>
           <p-tab value="1">
-            <i class="pi pi-calendar mr-2"></i>
+            <i class="pi pi-calendar" aria-hidden="true"></i>
             {{ 'all.competition.edit.tabs.dates' | translate }}
           </p-tab>
           <p-tab value="2">
-            <i class="pi pi-cog mr-2"></i>
+            <i class="pi pi-cog" aria-hidden="true"></i>
             {{ 'all.competition.edit.tabs.settings' | translate }}
           </p-tab>
         </p-tablist>
@@ -73,19 +65,19 @@
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
-    </div>
+    </p-card>
   }
 } @else {
-  <p-progressbar mode="indeterminate" [style]="{ height: '4px' }" />
-  <p class="text-center text-muted-color mt-4 text-sm">{{ 'all.competition.edit.messages.loading' | translate }}</p>
-}
-
-@if (error(); as errorMessage) {
-  <div class="flex items-center gap-2 p-4 rounded-lg mt-4" style="background: var(--g-loss-muted); color: var(--g-loss)">
-    <i class="pi pi-exclamation-triangle"></i>
-    <span>{{ errorMessage }}</span>
+  <div role="status" aria-live="polite" aria-atomic="true">
+    <p-progressbar mode="indeterminate" aria-labelledby="competition-editor-loading-status" />
+    <p id="competition-editor-loading-status" class="text-muted-color text-sm">
+      {{ 'all.competition.edit.messages.loading' | translate }}
+    </p>
   </div>
 }
 
-<!-- Toast Messages -->
+@if (error(); as errorMessage) {
+  <p-message severity="error" icon="pi pi-exclamation-triangle" class="mt-4">{{ errorMessage }}</p-message>
+}
+
 <p-toast position="top-right" />

@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018e [Competition editor chrome and actions](work-items/DR-018e-competition-editor-chrome.md) is Done with explicit
+approval (`Approve DR-018e and commit with disclosed limits`, 2026-11-16).
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, 2026-11-16.
+Scope: header/actions, native tab surface, unsaved/load feedback and current-tab save routing.
+Preserve child forms, permissions, values, translations, payloads and navigation. Exclude live saves and shared styling.
+Existing page/form separation is sufficient; no additional smart/presentational extraction is justified.
+Implemented normal heading/subtitle, native Card/Tabs, semantic warning/error Messages and named loading progress.
+Native tab selection now updates current-save routing; child saving disables/guards all three page actions.
+Template class tokens 58 -> 34; page-only stylesheet removed. No child/shared/theme/translation/payload changes.
+Competition lint/build pass (12 tasks, ten cached; 39 existing warnings, zero errors); seven focused tests pass.
+Required precommit workspace lint passes for all 34 projects, three cached; existing warnings remain.
+Dutch light/dark 390px/1440px DOM checks fit header/actions/Card/tabs and long unsaved/load-error feedback.
+Native DOM tab/dirty-value preservation and saving fixtures pass; unit tests cover denied permissions and cancel routing.
+Dark-wide before/after screenshots inspected; light-narrow capture is partial in a larger blank canvas.
+Physical ArrowRight/Enter did not advance focus in the hidden shared browser. Full screenshot review,
+keyboard/pointer/native navigator, contrast/accessibility, animation exit, alternate locales, operational save-all
+workflows, live persistence and full SSR/hydration remain unverified. No browser save/mutation method activated.
+Existing DR-058/066/068 remain separate; source-only save-all invalid-form success discovery is recorded as DR-069.
+Approval accepts those disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Exact next action: perform DR-018 integrated parent review on the next invocation; do not restart completed children.
+Keep DR-018 open and DR-069 unstarted. Approval authorizes only this slice and its handoff commit; no push.
+
+### Previous focus: Competition settings (DR-018d)
+
 DR-018d [Competition settings](work-items/DR-018d-competition-settings.md) is Done with explicit approval
 (`Approve DR-018d and commit with disclosed limits`, 2026-11-16).
 Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, settings tab, 2026-11-16.
@@ -3109,7 +3133,7 @@ and linked from their registry rows.
 | [DR-018b2][location-contact-presentation]                     | Location/contact presentation and tab feedback (depends on DR-018b1)         | Done        |
 | [DR-018c](work-items/DR-018c-competition-dates.md)            | Competition editing dates                                                    | Done        |
 | [DR-018d](work-items/DR-018d-competition-settings.md)         | Competition editing settings                                                 | Done        |
-| DR-018e                                                       | Competition editing page chrome and actions                                  | Backlog     |
+| [DR-018e](work-items/DR-018e-competition-editor-chrome.md)    | Competition editing page chrome and actions                                  | Done        |
 | [DR-019](work-items/DR-019-tournament-browsing.md)            | Tournament detail and retired club tournaments                               | Done        |
 | [DR-019a](work-items/DR-019a-tournament-identity.md)          | Tournament complete hero parity                                              | Done        |
 | DR-019b                                                       | Reserved history: summaries/actions absorbed into DR-019a                    | Backlog     |
@@ -3232,12 +3256,24 @@ and linked from their registry rows.
 | DR-066                                                        | Narrow topbar horizontal overflow                                            | Backlog     |
 | DR-067                                                        | Shared sync SplitButton dropdown accessible name                             | Backlog     |
 | DR-068                                                        | Competition editor option and save-message localization                      | Backlog     |
+| DR-069                                                        | Competition editor save-all invalid-form result handling                     | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-069: Competition editor save-all invalid-form result handling
+
+- Source inspection during DR-018e found the
+  [information form](../../libs/frontend/pages/competition/src/pages/edit/components/competition-info/competition-info.component.ts)
+  returns a resolved async result when validation fails, after displaying its error.
+  The [editor](../../libs/frontend/pages/competition/src/pages/edit/page-edit.component.ts) awaits `Promise.all`
+  and then shows success/navigates, without distinguishing that early return from a completed save.
+- Scope a separate persistence-result correction covering invalid dirty forms, partial failure, no changes and
+  successful saves. Preserve field-level feedback and payloads; use mocked mutations/navigation for verification.
+  This is source evidence only, not a reproduced live save. No operational save was activated during DR-018e.
 
 ### DR-068: Competition editor option and save-message localization
 

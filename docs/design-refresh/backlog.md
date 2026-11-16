@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018b [Location/contact integrated review](work-items/DR-018b-location-contact.md) is Done with explicit approval
+(`Approve DR-018b and commit with disclosed limits`, 2026-11-16).
+Selected 2026-11-16 from the recorded next action; b1/b2 remain Done with their accepted limits.
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, information tab.
+Integrated labels/sections, four-case responsive geometry and non-mutating form/CVA feedback checked.
+The current account is editable, unlike the earlier child baselines; real enabled/pristine/untouched values restored.
+Light/dark at 390px/1440px: all three sections and long email/error/saving feedback fit their containers.
+Country-dependent state reset/disable, valid/empty email correction and stored-error transitions pass DOM fixture checks.
+Physical Tab did not advance from country; keyboard/overlay behavior remains unverified.
+Dark-wide integrated screenshot inspected. Four focused tests pass from Nx cache; no application code changed.
+Child lint/build evidence remains historical. Full screenshot matrix, contrast/accessibility, alternate locales,
+live persistence and full SSR/hydration remain unverified. No save or mutation method activated.
+Original viewport/dark preference restored; real form reloaded and browser returned to homepage.
+Exclude application redesign, dates/settings, page chrome, shared styling, translations and live saves.
+Approval accepts the disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Exact next action: confirm the mounted dates tab, scope DR-018c and create its brief before implementation.
+Keep DR-018 open and DR-018c unstarted. Approval authorizes only this parent's three handoff documents; no push.
+
+### Previous focus: Location/contact presentation and tab feedback (DR-018b2)
+
 DR-018b2 [Location/contact presentation and tab feedback](work-items/DR-018b2-location-contact-presentation.md)
 is Done with explicit approval (`Approve DR-018b2 and commit with disclosed limits`, 2026-11-16).
 Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, information tab, 2026-11-16.
@@ -3041,7 +3061,7 @@ and linked from their registry rows.
 | DR-017s                                                       | Deferred authenticated assembly Save popup                                   | Backlog     |
 | [DR-018](work-items/DR-018-competition-editing.md)            | Competition editing                                                          | In progress |
 | [DR-018a](work-items/DR-018a-basic-information.md)            | Basic competition information                                                | Done        |
-| [DR-018b](work-items/DR-018b-location-contact.md)             | Location/contact information and tab feedback                                | In progress |
+| [DR-018b](work-items/DR-018b-location-contact.md)             | Location/contact information and tab feedback                                | Done        |
 | [DR-018b1](work-items/DR-018b1-country-state-selectors.md)    | Shared country/state selector integration                                    | Done        |
 | [DR-018b2][location-contact-presentation]                     | Location/contact presentation and tab feedback (depends on DR-018b1)         | Done        |
 | DR-018c                                                       | Competition editing dates                                                    | Backlog     |

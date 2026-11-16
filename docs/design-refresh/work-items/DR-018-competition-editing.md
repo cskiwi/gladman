@@ -19,7 +19,7 @@ description: 'Bounded rollout for the mounted competition editing page.'
 - DR-018a: basic information (name, season and type); first implementation slice.
 - DR-018b: location/contact information and information-tab feedback; split into b1/b2.
   [DR-018b1](DR-018b1-country-state-selectors.md) handles the shared selector prerequisite;
-  DR-018b2 handles page presentation/feedback after b1.
+  [DR-018b2](DR-018b2-location-contact-presentation.md) handles page presentation/feedback after b1.
 - DR-018c: dates tab.
 - DR-018d: settings tab.
 - DR-018e: page chrome, tab selection and save feedback.
@@ -57,5 +57,13 @@ Current: DR-018b1's shared selector prerequisite is Done with explicit approval 
 Shared-components/competition lint/build and four-case field geometry pass; native DOM CVA handlers pass.
 Physical keyboard/pointer, overlay visibility, full accessibility and other child-recorded limits remain unverified.
 Approval accepts those disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
-Next: scope DR-018b2 location/contact presentation and tab feedback, and create its brief.
-Keep the parent open; DR-018b2 and subsequent children remain unstarted.
+DR-018b2 is Done with explicit approval (`Approve DR-018b2 and commit with disclosed limits`, 2026-11-16).
+It implements semantic location/contact sections, native email validation and named saving feedback.
+Four focused tests and competition lint/build pass; its unchecked verification limits remain recorded.
+DR-018b integrated review on 2026-11-16 confirms assembled labels, responsive geometry and non-mutating form feedback.
+Current account has edit permission; real enabled/pristine/untouched values restored after browser-only fixtures.
+Physical keyboard/overlay, screenshot matrix, accessibility/contrast, locales, persistence and SSR limits remain.
+DR-018b is Done with explicit parent approval (`Approve DR-018b and commit with disclosed limits`, 2026-11-16).
+Approval accepts those limits without claiming unperformed checks passed; unchecked criteria remain.
+Next: confirm the mounted dates tab, scope DR-018c and create its brief before implementation.
+Keep DR-018 open; DR-018c remains unstarted, as do d/e. No push authorized.

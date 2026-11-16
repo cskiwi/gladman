@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018b1 [Country/state selector integration](work-items/DR-018b1-country-state-selectors.md) is Done with explicit
+approval (`commit`, 2026-11-16), accepting the disclosed verification limits below.
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, information tab, 2026-11-14.
+Scope: shared selectors' native label forwarding, standalone inner ngModel and fluid sizing, with page label wiring.
+Only this mounted consumer was found in source; preserve country filtering, CVA values and permission disabling.
+DR-018b is split into b1 (shared prerequisite) and b2 (location/contact and tab feedback).
+Exclude heading/contact restyling, translations, saves, dates/settings, shared theme and other components.
+Implemented optional native label forwarding, standalone inner ngModel and fluid sizing; no new styling or wrappers.
+Shared-components/competition lint/build pass (13 tasks, nine cached); no existing country/state test suites.
+Dutch light/dark at 390px/1440px: both controls fit their columns with native fluid sizing.
+Real values and disabled permissions preserved; NG01354 warnings no longer reproduce after hydration.
+Browser-only fixtures verify country-dependent reset, empty-country disabling and dirty/touched CVA values.
+Native DOM filter/option handlers select Germany/Bayern and Escape closes the state control.
+These are DOM-handler checks, not passed pointer/physical keyboard or overlay accessibility checks:
+browser actions time out and overlay measurements return zero-size bounds in this session.
+Dark-wide after screenshot inspected. Full screenshot matrix, accessibility/contrast, alternate locales,
+live saves, automated tests and full SSR/hydration remain unverified. No save action activated.
+Approval accepts these limits without claiming unperformed checks passed; unchecked criteria remain.
+Exact next action: scope DR-018b2 location/contact presentation and tab feedback, and create its brief.
+Keep DR-018/DR-018b open and DR-018b2 unstarted. Approval authorizes only b1 and its handoff commit; no push.
+
+### Previous focus: Basic competition information (DR-018a)
+
 DR-018a [Basic competition information](work-items/DR-018a-basic-information.md) is Done with explicit approval
 (`Approve DR-018a and commit with disclosed limits`, 2026-11-14).
 Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, information tab, 2026-11-14.
@@ -2997,7 +3020,9 @@ and linked from their registry rows.
 | DR-017s                                                       | Deferred authenticated assembly Save popup                                   | Backlog     |
 | [DR-018](work-items/DR-018-competition-editing.md)            | Competition editing                                                          | In progress |
 | [DR-018a](work-items/DR-018a-basic-information.md)            | Basic competition information                                                | Done        |
-| DR-018b                                                       | Location/contact information and tab feedback                                | Backlog     |
+| [DR-018b](work-items/DR-018b-location-contact.md)             | Location/contact information and tab feedback                                | In progress |
+| [DR-018b1](work-items/DR-018b1-country-state-selectors.md)    | Shared country/state selector integration                                    | Done        |
+| DR-018b2                                                      | Location/contact presentation and tab feedback (depends on DR-018b1)         | Backlog     |
 | DR-018c                                                       | Competition editing dates                                                    | Backlog     |
 | DR-018d                                                       | Competition editing settings                                                 | Backlog     |
 | DR-018e                                                       | Competition editing page chrome and actions                                  | Backlog     |

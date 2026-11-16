@@ -78,14 +78,18 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <!-- Country -->
         <div class="flex flex-col gap-1">
-          <label for="country" class="font-medium">{{ 'all.competition.edit.info.country' | translate }}</label>
-          <app-country-select formControlName="country" />
+          <label id="competition-info-country-label" for="country" class="font-medium">
+            {{ 'all.competition.edit.info.country' | translate }}
+          </label>
+          <app-country-select inputId="country" ariaLabelledBy="competition-info-country-label" formControlName="country" />
         </div>
 
         <!-- State/Province -->
         <div class="flex flex-col gap-1">
-          <label for="state" class="font-medium">{{ 'all.competition.edit.info.state' | translate }}</label>
-          <app-state-select formControlName="state" [country]="selectedCountry()" />
+          <label id="competition-info-state-label" for="state" class="font-medium">
+            {{ 'all.competition.edit.info.state' | translate }}
+          </label>
+          <app-state-select inputId="state" ariaLabelledBy="competition-info-state-label" formControlName="state" [country]="selectedCountry()" />
         </div>
       </div>
     </div>

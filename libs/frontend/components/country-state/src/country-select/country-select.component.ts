@@ -1,4 +1,4 @@
-import { Component, computed, forwardRef, inject, signal } from '@angular/core';
+import { Component, computed, forwardRef, inject, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
@@ -29,6 +29,9 @@ const UNIQUE_COUNTRIES = [...new Set(STATES_DATA.map((s) => s.country))];
 })
 export class CountrySelectComponent implements ControlValueAccessor {
   private readonly translateService = inject(TranslateService);
+
+  readonly inputId = input<string>();
+  readonly ariaLabelledBy = input<string>();
 
   readonly value = signal<string | null>(null);
   readonly disabled = signal(false);

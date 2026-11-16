@@ -1,7 +1,10 @@
 <p-select
   [options]="countries()"
   [ngModel]="value()"
+  [ngModelOptions]="{ standalone: true }"
   (ngModelChange)="onValueChange($event)"
+  [inputId]="inputId()"
+  [ariaLabelledBy]="ariaLabelledBy()"
   optionLabel="name"
   optionValue="code"
   [filter]="true"
@@ -10,5 +13,5 @@
   [showClear]="true"
   [disabled]="disabled()"
   appendTo="body"
-  styleClass="w-full"
+  fluid
 />

@@ -17,7 +17,9 @@ description: 'Bounded rollout for the mounted competition editing page.'
 ## Children
 
 - DR-018a: basic information (name, season and type); first implementation slice.
-- DR-018b: location/contact information and information-tab feedback. Scope shared selector dependencies separately.
+- DR-018b: location/contact information and information-tab feedback; split into b1/b2.
+  [DR-018b1](DR-018b1-country-state-selectors.md) handles the shared selector prerequisite;
+  DR-018b2 handles page presentation/feedback after b1.
 - DR-018c: dates tab.
 - DR-018d: settings tab.
 - DR-018e: page chrome, tab selection and save feedback.
@@ -51,5 +53,9 @@ native semantic basic section, labels and validation feedback.
 Focused competition lint/build pass; four theme/width browser checks and screenshots pass for this section.
 Approval accepts the child's recorded limits without claiming unperformed checks passed.
 No form logic, shared components, translations or mutations changed.
-Next: scope DR-018b with its shared-selector dependencies and create the brief before implementation.
-Keep the parent open; do not begin another child in this invocation.
+Current: DR-018b1's shared selector prerequisite is Done with explicit approval (`commit`, 2026-11-16).
+Shared-components/competition lint/build and four-case field geometry pass; native DOM CVA handlers pass.
+Physical keyboard/pointer, overlay visibility, full accessibility and other child-recorded limits remain unverified.
+Approval accepts those disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Next: scope DR-018b2 location/contact presentation and tab feedback, and create its brief.
+Keep the parent open; DR-018b2 and subsequent children remain unstarted.

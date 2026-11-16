@@ -34,6 +34,9 @@ export class StateSelectComponent implements ControlValueAccessor {
   /** The country code to filter states by (2-letter ISO code, lowercase) */
   readonly country = input<string | null>(null);
 
+  readonly inputId = input<string>();
+  readonly ariaLabelledBy = input<string>();
+
   readonly value = signal<string | null>(null);
   readonly disabled = signal(false);
 

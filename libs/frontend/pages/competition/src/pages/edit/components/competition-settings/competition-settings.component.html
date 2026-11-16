@@ -1,116 +1,129 @@
 <div class="space-y-6">
- <p class="text-muted-color mb-6">
- {{ 'all.competition.edit.settings.description' | translate }}
- </p>
+  <p class="text-muted-color mb-6">
+    {{ 'all.competition.edit.settings.description' | translate }}
+  </p>
 
- <form [formGroup]="settingsForm" class="space-y-6">
- <!-- Official Settings -->
- <div class="mb-8">
- <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
- {{ 'all.competition.edit.settings.official.title' | translate }}
- </h2>
- <div class="flex flex-col gap-4">
- <!-- Official Competition -->
- <div class="flex items-center gap-3">
- <p-checkbox id="official" formControlName="official" [binary]="true" />
- <label for="official" class="font-medium cursor-pointer">
- {{ 'all.competition.edit.settings.official' | translate }}
- </label>
- </div>
- <p class="text-sm text-muted-color">
- {{ 'all.competition.edit.settings.official.description' | translate }}
- </p>
- </div>
- </div>
+  <form [formGroup]="settingsForm" class="space-y-6">
+    <section aria-labelledby="competition-settings-official-title">
+      <h2 id="competition-settings-official-title" class="text-lg font-semibold text-color mt-0 mb-4">
+        {{ 'all.competition.edit.settings.official' | translate }}
+      </h2>
+      <div class="flex items-center gap-3">
+        <p-checkbox
+          inputId="official"
+          formControlName="official"
+          [binary]="true"
+          [pt]="{ input: { 'aria-describedby': 'competition-settings-official-hint' } }"
+        />
+        <label for="official" class="font-medium cursor-pointer">
+          {{ 'all.competition.edit.settings.official' | translate }}
+        </label>
+      </div>
+      <p id="competition-settings-official-hint" class="text-sm text-muted-color mt-2 mb-0">
+        {{ 'all.competition.edit.settings.official.description' | translate }}
+      </p>
+    </section>
 
- <!-- Team Matching Settings -->
- <div class="mb-8">
- <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
- {{ 'all.competition.edit.settings.teamMatching.title' | translate }}
- </h2>
- <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
- <!-- Team Matcher -->
- <div class="flex flex-col gap-1">
- <label for="teamMatcher" class="font-medium">
- {{ 'all.competition.edit.settings.teamMatcher' | translate }}
- </label>
- <input
- pInputText
- id="teamMatcher"
- formControlName="teamMatcher"
- [placeholder]="'all.competition.edit.settings.teamMatcher.placeholder' | translate"
- />
- <small class="text-muted-color">
- {{ 'all.competition.edit.settings.teamMatcher.hint' | translate }}
- </small>
- </div>
- </div>
- </div>
+    <section aria-labelledby="competition-settings-team-matching-title">
+      <h2 id="competition-settings-team-matching-title" class="text-lg font-semibold text-color mt-0 mb-4">
+        {{ 'all.competition.edit.settings.teamMatching.title' | translate }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+          <label for="teamMatcher" class="font-medium">
+            {{ 'all.competition.edit.settings.teamMatcher' | translate }}
+          </label>
+          <input
+            pInputText
+            id="teamMatcher"
+            formControlName="teamMatcher"
+            fluid
+            aria-describedby="competition-settings-team-matcher-hint"
+            [placeholder]="'all.competition.edit.settings.teamMatcher.placeholder' | translate"
+          />
+          <small id="competition-settings-team-matcher-hint" class="text-muted-color">
+            {{ 'all.competition.edit.settings.teamMatcher.hint' | translate }}
+          </small>
+        </div>
+      </div>
+    </section>
 
- <!-- Ranking Settings -->
- <div class="mb-8">
- <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
- {{ 'all.competition.edit.settings.ranking.title' | translate }}
- </h2>
- <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
- <!-- Used Ranking Amount -->
- <div class="flex flex-col gap-1">
- <label for="usedRankingAmount" class="font-medium">
- {{ 'all.competition.edit.settings.usedRankingAmount' | translate }}
- </label>
- <p-inputnumber id="usedRankingAmount" formControlName="usedRankingAmount" [min]="1" [max]="24" [showButtons]="true" />
- <small class="text-muted-color">
- {{ 'all.competition.edit.settings.usedRankingAmount.hint' | translate }}
- </small>
- </div>
+    <section aria-labelledby="competition-settings-ranking-title">
+      <h2 id="competition-settings-ranking-title" class="text-lg font-semibold text-color mt-0 mb-4">
+        {{ 'all.competition.edit.settings.ranking.title' | translate }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+          <label for="usedRankingAmount" class="font-medium">
+            {{ 'all.competition.edit.settings.usedRankingAmount' | translate }}
+          </label>
+          <p-inputnumber
+            inputId="usedRankingAmount"
+            formControlName="usedRankingAmount"
+            fluid
+            ariaDescribedBy="competition-settings-ranking-amount-hint"
+            [min]="1"
+            [max]="24"
+            [showButtons]="true"
+            [pt]="{
+              incrementButton: { 'aria-label': ('all.competition.edit.settings.usedRankingAmount' | translate) + ' +' },
+              decrementButton: { 'aria-label': ('all.competition.edit.settings.usedRankingAmount' | translate) + ' -' },
+            }"
+          />
+          <small id="competition-settings-ranking-amount-hint" class="text-muted-color">
+            {{ 'all.competition.edit.settings.usedRankingAmount.hint' | translate }}
+          </small>
+        </div>
 
- <!-- Used Ranking Unit -->
- <div class="flex flex-col gap-1">
- <label for="usedRankingUnit" class="font-medium">
- {{ 'all.competition.edit.settings.usedRankingUnit' | translate }}
- </label>
- <p-select
- id="usedRankingUnit"
- formControlName="usedRankingUnit"
- [options]="rankingUnitOptions"
- optionLabel="label"
- optionValue="value"
- [placeholder]="'all.competition.edit.settings.usedRankingUnit.placeholder' | translate"
- />
- </div>
- </div>
- </div>
+        <div class="flex flex-col gap-2">
+          <label id="competition-settings-ranking-unit-label" for="usedRankingUnit" class="font-medium">
+            {{ 'all.competition.edit.settings.usedRankingUnit' | translate }}
+          </label>
+          <p-select
+            inputId="usedRankingUnit"
+            ariaLabelledBy="competition-settings-ranking-unit-label"
+            formControlName="usedRankingUnit"
+            fluid
+            [options]="rankingUnitOptions"
+            optionLabel="label"
+            optionValue="value"
+            [placeholder]="'all.competition.edit.settings.usedRankingUnit.placeholder' | translate"
+          />
+        </div>
+      </div>
+    </section>
 
- <!-- Validation Settings -->
- <div class="mb-8">
- <h2 class="text-lg font-medium mb-4 text-primary-700 dark:text-primary-400">
- {{ 'all.competition.edit.settings.validation.title' | translate }}
- </h2>
- <div class="flex flex-col gap-4">
- <!-- Check Encounter For Filled In -->
- <div class="flex items-center gap-3">
- <p-checkbox id="checkEncounterForFilledIn" formControlName="checkEncounterForFilledIn" [binary]="true" />
- <label for="checkEncounterForFilledIn" class="font-medium cursor-pointer">
- {{ 'all.competition.edit.settings.checkEncounterForFilledIn' | translate }}
- </label>
- </div>
- <p class="text-sm text-muted-color">
- {{ 'all.competition.edit.settings.checkEncounterForFilledIn.description' | translate }}
- </p>
- </div>
- </div>
+    <section aria-labelledby="competition-settings-validation-title">
+      <h2 id="competition-settings-validation-title" class="text-lg font-semibold text-color mt-0 mb-4">
+        {{ 'all.competition.edit.settings.validation.title' | translate }}
+      </h2>
+      <div class="flex items-center gap-3">
+        <p-checkbox
+          inputId="checkEncounterForFilledIn"
+          formControlName="checkEncounterForFilledIn"
+          [binary]="true"
+          [pt]="{ input: { 'aria-describedby': 'competition-settings-validation-hint' } }"
+        />
+        <label for="checkEncounterForFilledIn" class="font-medium cursor-pointer">
+          {{ 'all.competition.edit.settings.checkEncounterForFilledIn' | translate }}
+        </label>
+      </div>
+      <p id="competition-settings-validation-hint" class="text-sm text-muted-color mt-2 mb-0">
+        {{ 'all.competition.edit.settings.checkEncounterForFilledIn.description' | translate }}
+      </p>
+    </section>
 
- <!-- Loading Indicator -->
- @if (saving()) {
- <div class="pt-4">
- <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
- <p class="text-sm text-muted-color mt-2">{{ 'all.competition.edit.settings.messages.saving' | translate }}</p>
- </div>
- }
+    @if (saving()) {
+      <div class="flex flex-col gap-2">
+        <p id="competition-settings-saving-status" class="m-0 text-muted-color" role="status" aria-live="polite" aria-atomic="true">
+          {{ 'all.competition.edit.settings.messages.saving' | translate }}
+        </p>
+        <p-progressbar mode="indeterminate" aria-labelledby="competition-settings-saving-status" />
+      </div>
+    }
 
- <!-- Error Message -->
- @if (error(); as errorMessage) {
- <p-message severity="error">{{ errorMessage }}</p-message>
- }
- </form>
+    @if (error(); as errorMessage) {
+      <p-message severity="error">{{ errorMessage }}</p-message>
+    }
+  </form>
 </div>

@@ -5,6 +5,27 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018d [Competition settings](work-items/DR-018d-competition-settings.md) is Done with explicit approval
+(`Approve DR-018d and commit with disclosed limits`, 2026-11-16).
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, settings tab, 2026-11-16.
+Scope: four semantic sections, five native labelled/described controls and accessible settings-tab saving feedback.
+Preserve values, ranking bounds/units, permissions and persistence. Exclude page actions (DR-018e),
+information/dates, translations, shared styling and live saves. Existing page/form separation is sufficient.
+Implemented four semantic sections, five labelled native controls, four described hints, fluid sizing,
+named ranking step buttons and native live saving feedback. Reused the official label to remove a raw heading key.
+Template class tokens 74 -> 69; no production TypeScript, shared styling, translations or persistence changes.
+Competition lint/build pass (12 tasks, ten cached; 41 existing warnings, zero errors); four focused tests pass.
+Dutch light/dark 390px/1440px DOM checks fit all sections/controls and long saving/error feedback.
+Native DOM label toggles/matcher edits and disabled-state fixtures pass; real enabled/pristine values restored.
+Dark-wide after screenshot inspected. Remaining screenshot matrix, physical keyboard/pointer, ranking bounds/units,
+overlays, full accessibility/contrast, alternate locales, live saves and SSR/hydration remain unverified.
+Existing spinner contrast is DR-058; English editor options/messages are recorded as DR-068.
+Approval accepts those disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Exact next action: confirm mounted page chrome/actions, scope DR-018e and create its brief before implementation.
+Keep DR-018 open and DR-018e unstarted. Approval authorizes only this slice and its handoff commit; no push.
+
+### Previous focus: Competition dates (DR-018c)
+
 DR-018c [Competition dates](work-items/DR-018c-competition-dates.md) is Done with explicit approval
 (`Approve DR-018c and commit with disclosed limits`, 2026-11-16).
 Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, dates tab.
@@ -3087,7 +3108,7 @@ and linked from their registry rows.
 | [DR-018b1](work-items/DR-018b1-country-state-selectors.md)    | Shared country/state selector integration                                    | Done        |
 | [DR-018b2][location-contact-presentation]                     | Location/contact presentation and tab feedback (depends on DR-018b1)         | Done        |
 | [DR-018c](work-items/DR-018c-competition-dates.md)            | Competition editing dates                                                    | Done        |
-| DR-018d                                                       | Competition editing settings                                                 | Backlog     |
+| [DR-018d](work-items/DR-018d-competition-settings.md)         | Competition editing settings                                                 | Done        |
 | DR-018e                                                       | Competition editing page chrome and actions                                  | Backlog     |
 | [DR-019](work-items/DR-019-tournament-browsing.md)            | Tournament detail and retired club tournaments                               | Done        |
 | [DR-019a](work-items/DR-019a-tournament-identity.md)          | Tournament complete hero parity                                              | Done        |
@@ -3210,12 +3231,22 @@ and linked from their registry rows.
 | DR-065                                                        | Builder survey import creation-failure feedback                              | Backlog     |
 | DR-066                                                        | Narrow topbar horizontal overflow                                            | Backlog     |
 | DR-067                                                        | Shared sync SplitButton dropdown accessible name                             | Backlog     |
+| DR-068                                                        | Competition editor option and save-message localization                      | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-068: Competition editor option and save-message localization
+
+- DR-018d confirms native ranking unit options still read Months/Weeks/Days on the Dutch settings tab.
+  The [settings component](../../libs/frontend/pages/competition/src/pages/edit/components/competition-settings/competition-settings.component.ts)
+  also retains hard-coded English save/error toast messages. DR-018's baseline records English competition type options.
+- Scope a separate localization change using existing translation conventions; preserve option values, permission
+  behavior and mutation payloads. Verify nl/fr/en without live saves or operational mutations.
+- DR-018d reuses the already translated official label for its heading; no translation/backend changes are needed there.
 
 ### DR-067: Shared sync SplitButton dropdown accessible name
 

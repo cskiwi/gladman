@@ -21,7 +21,7 @@ description: 'Bounded rollout for the mounted competition editing page.'
   [DR-018b1](DR-018b1-country-state-selectors.md) handles the shared selector prerequisite;
   [DR-018b2](DR-018b2-location-contact-presentation.md) handles page presentation/feedback after b1.
 - [DR-018c](DR-018c-competition-dates.md): dates tab.
-- DR-018d: settings tab.
+- [DR-018d](DR-018d-competition-settings.md): settings tab.
 - DR-018e: page chrome, tab selection and save feedback.
 - Keep the parent open until all required children and integrated review are complete.
 
@@ -72,5 +72,13 @@ Light/dark 390px/1440px DOM geometry fits; dark-wide after screenshot inspected.
 Physical keyboard/clear/time selection, full screenshot matrix, contrast/accessibility, alternate locales,
 live saves and full SSR/hydration remain unverified. Existing DR-043/066 and page orchestration DR-018e stay separate.
 Approval accepts the child's recorded limits without claiming unperformed checks passed; unchecked criteria remain.
-Next: confirm the mounted settings tab, scope DR-018d and create its brief before implementation.
-Keep DR-018 open; d/e remain unstarted. Approval authorizes only DR-018c and its handoff commit; no push.
+DR-018d implements the mounted settings tab's four semantic sections, five labelled native controls, described hints,
+fluid sizing and named saving feedback. No form/persistence logic, translations or shared styling changed.
+Competition lint/build and four focused tests pass. Light/dark 390px/1440px DOM geometry/feedback checks pass;
+dark-wide after screenshot inspected. Native DOM toggles/matcher edits and disabled-state fixtures pass.
+Physical interactions, ranking bounds/unit selection, full screenshot matrix, accessibility/contrast,
+alternate locales, live saves and full SSR/hydration remain unverified. DR-058/066/068 are separate follow-ups.
+DR-018d is Done with explicit approval (`Approve DR-018d and commit with disclosed limits`, 2026-11-16).
+Approval accepts its recorded limits without claiming unperformed checks passed; unchecked criteria remain.
+Next: confirm mounted page chrome/actions, scope DR-018e and create its brief before implementation.
+Keep DR-018 open and DR-018e unstarted. Approval authorizes only DR-018d and its handoff commit; no push.

@@ -20,7 +20,7 @@ description: 'Bounded rollout for the mounted competition editing page.'
 - DR-018b: location/contact information and information-tab feedback; split into b1/b2.
   [DR-018b1](DR-018b1-country-state-selectors.md) handles the shared selector prerequisite;
   [DR-018b2](DR-018b2-location-contact-presentation.md) handles page presentation/feedback after b1.
-- DR-018c: dates tab.
+- [DR-018c](DR-018c-competition-dates.md): dates tab.
 - DR-018d: settings tab.
 - DR-018e: page chrome, tab selection and save feedback.
 - Keep the parent open until all required children and integrated review are complete.
@@ -65,5 +65,12 @@ Current account has edit permission; real enabled/pristine/untouched values rest
 Physical keyboard/overlay, screenshot matrix, accessibility/contrast, locales, persistence and SSR limits remain.
 DR-018b is Done with explicit parent approval (`Approve DR-018b and commit with disclosed limits`, 2026-11-16).
 Approval accepts those limits without claiming unperformed checks passed; unchecked criteria remain.
-Next: confirm the mounted dates tab, scope DR-018c and create its brief before implementation.
-Keep DR-018 open; DR-018c remains unstarted, as do d/e. No push authorized.
+DR-018c is Done with explicit approval (`Approve DR-018c and commit with disclosed limits`, 2026-11-16):
+native fluid date/time controls, semantic sections,
+associated labels/hints/icon names and named saving feedback. Competition lint/build and three focused tests pass.
+Light/dark 390px/1440px DOM geometry fits; dark-wide after screenshot inspected.
+Physical keyboard/clear/time selection, full screenshot matrix, contrast/accessibility, alternate locales,
+live saves and full SSR/hydration remain unverified. Existing DR-043/066 and page orchestration DR-018e stay separate.
+Approval accepts the child's recorded limits without claiming unperformed checks passed; unchecked criteria remain.
+Next: confirm the mounted settings tab, scope DR-018d and create its brief before implementation.
+Keep DR-018 open; d/e remain unstarted. Approval authorizes only DR-018c and its handoff commit; no push.

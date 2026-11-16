@@ -5,6 +5,28 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018c [Competition dates](work-items/DR-018c-competition-dates.md) is Done with explicit approval
+(`Approve DR-018c and commit with disclosed limits`, 2026-11-16).
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, dates tab.
+Scope: seven native date/time inputs, semantic sections, labels/hints and dates-tab saving feedback.
+Preserve dates, optional values, permissions, deferred rendering and persistence behavior.
+Exclude information/settings, page chrome/tab orchestration (DR-018e), shared styling, translations and live saves.
+Existing form/page separation is sufficient; no new extraction is justified for this single consumer.
+Implemented native fluid date/time inputs, labelled sections, input/hint/icon associations and named saving feedback.
+Class tokens 68 -> 67; no production TypeScript, shared styling, translations or persistence changes.
+Competition lint/build pass (12 tasks, ten cached; 41 existing lint warnings, zero errors).
+Three focused presentation tests pass, covering labels/hints, disabled values and saving/error transitions.
+Dutch light/dark 390px/1440px DOM measurements: sections, controls and long error/saving feedback fit.
+Dark-wide full-page after screenshot inspected. Remaining screenshot matrix is inconclusive in this shared browser.
+Physical keyboard/clear/time selection, contrast/full accessibility, alternate locales, live saves and full
+SSR/hydration remain unverified. Native English calendar internals remain DR-043; topbar remains DR-066.
+Real enabled/pristine/untouched values and original dark/viewport restored; no save or mutation method activated.
+Approval accepts the disclosed limits without claiming unperformed checks passed; unchecked criteria remain.
+Exact next action: confirm the mounted settings tab, scope DR-018d and create its brief before implementation.
+Keep DR-018 open and DR-018d/e unstarted. Approval authorizes only this slice and its handoff commit; no push.
+
+### Previous focus: Location/contact integrated review (DR-018b)
+
 DR-018b [Location/contact integrated review](work-items/DR-018b-location-contact.md) is Done with explicit approval
 (`Approve DR-018b and commit with disclosed limits`, 2026-11-16).
 Selected 2026-11-16 from the recorded next action; b1/b2 remain Done with their accepted limits.
@@ -3064,7 +3086,7 @@ and linked from their registry rows.
 | [DR-018b](work-items/DR-018b-location-contact.md)             | Location/contact information and tab feedback                                | Done        |
 | [DR-018b1](work-items/DR-018b1-country-state-selectors.md)    | Shared country/state selector integration                                    | Done        |
 | [DR-018b2][location-contact-presentation]                     | Location/contact presentation and tab feedback (depends on DR-018b1)         | Done        |
-| DR-018c                                                       | Competition editing dates                                                    | Backlog     |
+| [DR-018c](work-items/DR-018c-competition-dates.md)            | Competition editing dates                                                    | Done        |
 | DR-018d                                                       | Competition editing settings                                                 | Backlog     |
 | DR-018e                                                       | Competition editing page chrome and actions                                  | Backlog     |
 | [DR-019](work-items/DR-019-tournament-browsing.md)            | Tournament detail and retired club tournaments                               | Done        |
@@ -3561,6 +3583,9 @@ Audit existing PrimeNG locale configuration and real consumers before scoping a 
 Do not add page-specific overrides or translation assets as a hidden side effect of a surface refresh.
 
 ### DR-043: native DatePicker accessibility-label localization
+
+DR-018c confirms English calendar dialog/month/day/time names on the mounted Dutch competition dates tab.
+Its seven icon buttons now reuse their translated field labels; shared calendar locale behavior remains unchanged.
 
 DR-020d confirms the same English native button/dialog/full-date names on the mounted Dutch editing-information tab.
 All five visible date labels now correctly associate with native inputs; the shared native locale audit stays open.

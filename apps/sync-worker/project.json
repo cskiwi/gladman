@@ -6,19 +6,10 @@
   "tags": ["scope:worker"],
   "targets": {
     "build": {
-      "executor": "nx:run-commands",
-      "dependsOn": [],
-      "options": {
-        "command": "webpack-cli build",
-        "args": ["--config-node-env=production"]
-      },
-      "configurations": {
-        "development": {
-          "args": ["--config-node-env=development"]
-        }
-      }
+      "dependsOn": []
     },
     "serve": {
+      "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
@@ -32,7 +23,7 @@
           "buildTarget": "sync-worker:build:development"
         },
         "production": {
-          "buildTarget": "sync-worker:build:production"
+          "buildTarget": "sync-worker:build"
         }
       }
     },

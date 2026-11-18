@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule,
     I18nModule.forRootAsync({
+      imports: [],
       resolvers: [{ use: QueryResolver, options: ['lang'] }],
 
       useFactory: () => {

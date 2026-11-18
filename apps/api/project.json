@@ -6,17 +6,7 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "nx:run-commands",
-      "dependsOn": [],
-      "options": {
-        "command": "webpack-cli build",
-        "args": ["--config-node-env=production"]
-      },
-      "configurations": {
-        "development": {
-          "args": ["--config-node-env=development"]
-        }
-      }
+      "dependsOn": []
     },
     "serve": {
       "continuous": true,
@@ -31,7 +21,7 @@
           "buildTarget": "api:build:development"
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "buildTarget": "api:build"
         }
       }
     }

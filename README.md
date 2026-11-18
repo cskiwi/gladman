@@ -46,8 +46,11 @@ s
 
 Ensure you have the following installed on your machine:
 
-- Node.js (Node 20 is recommended, 22 doens't seem to build the SSG)
+- Node.js 24.15.0 or a newer Node.js 24 release
 - Nx CLI
+
+The workspace pins Nx `24.1.0-beta.1` for NestJS 12 support. The scoped npm override lets `@nx/devkit`
+resolve the matching `nx` prerelease. Remove it when moving to a stable Nx version that supports NestJS 12.
 
 ### Installation
 
@@ -87,6 +90,12 @@ libraries. Type checking and Nx build caching still apply. To benchmark a build 
 npx nx build api --skipNxCache
 npx nx build sync-worker --skipNxCache
 ```
+
+Nx infers the API and worker build targets from their Rspack configs. Like the
+[Nest CLI v12 monorepo builder](https://docs.nestjs.com/recipes/swc#monorepo), Rspack uses its built-in
+SWC loader for transpilation. TypeScript checking runs alongside bundling, and the output remains under `dist/apps`.
+The API's SWC target matches its TypeScript target (ES2021) so Nest GraphQL can distinguish arrow-function type
+factories from constructors at runtime.
 
 ### Building the Applications
 

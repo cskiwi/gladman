@@ -1,20 +1,20 @@
-const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
-const { join } = require('path');
+const { NxAppRspackPlugin } = require('@nx/rspack/app-plugin');
+const { join } = require('node:path');
 
 module.exports = {
   output: {
     path: join(__dirname, '../../dist/apps/sync-worker'),
   },
   plugins: [
-    new NxAppWebpackPlugin({
+    new NxAppRspackPlugin({
       target: 'node',
-      compiler: 'tsc',
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
-      assets: ['./src/assets'],
       optimization: false,
       outputHashing: 'none',
+      typeCheckOptions: { async: false },
       generatePackageJson: true,
+      assets: ['./src/assets'],
     }),
   ],
 };

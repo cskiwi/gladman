@@ -9,6 +9,7 @@
     "build": {
       "executor": "@nx/angular:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "development",
       "options": {
         "outputPath": "{workspaceRoot}/dist/{projectRoot}",
         "index": "{projectRoot}/src/index.html",
@@ -74,11 +75,12 @@
           "extractLicenses": false,
           "sourceMap": true
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "serve": {
       "executor": "@nx/angular:dev-server",
+      "defaultConfiguration": "development",
+      "continuous": true,
       "options": {
         "port": 3000,
         "allowedHosts": ["dev.purr.dev", "localhost"]
@@ -92,8 +94,9 @@
           "proxyConfig": "{projectRoot}/proxy.conf.json"
         }
       },
-      "defaultConfiguration": "development",
-      "continuous": true
+      "readyWhen": {
+        "signal": true
+      }
     },
     "extract-i18n": {
       "executor": "@nx/angular:extract-i18n",
@@ -102,7 +105,15 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/.eslintignore",
+        "{workspaceRoot}/eslint.config.js",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ]
     },
     "test": {
       "inputs": [

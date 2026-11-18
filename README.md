@@ -1,4 +1,7 @@
-# Project README
+---
+title: Project README
+description: Getting started with the Gladman Nx workspace.
+---
 
 ## Project Overview
 
@@ -69,6 +72,21 @@ npm start
 ```
 
 This will start the development server and the application will be available at `http://localhost:4200`.
+
+To run just the API or sync worker in development mode:
+
+```bash
+npx nx serve api
+npx nx serve sync-worker
+```
+
+Both apps bundle workspace libraries directly from source, so their builds and dev servers do not prebuild those
+libraries. Type checking and Nx build caching still apply. To benchmark a build without Nx cache hits:
+
+```bash
+npx nx build api --skipNxCache
+npx nx build sync-worker --skipNxCache
+```
 
 ### Building the Applications
 

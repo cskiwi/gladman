@@ -9,7 +9,16 @@
         <p-badge value="!" severity="warn" />
       }
     </button>
-    <button pButton type="button" [text]="true" size="small" (click)="openAddGameDialog()">
+    <button
+      #addGameTrigger
+      pButton
+      type="button"
+      [text]="true"
+      size="small"
+      aria-haspopup="dialog"
+      [attr.aria-expanded]="showAddGameDialog()"
+      (click)="openAddGameDialog()"
+    >
       <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
       <span pButtonLabel>{{ 'all.ranking.breakdown.add-game.title' | translate }}</span>
     </button>
@@ -337,11 +346,22 @@
   }
 </p-popover>
 
-<p-dialog [header]="'all.ranking.breakdown.add-game.title' | translate" [(visible)]="showAddGameDialog" [modal]="true" [style]="{ width: '28rem' }">
-  <div class="flex flex-col gap-4 pt-2">
-    <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium text-color">{{ 'all.ranking.breakdown.add-game.won' | translate }}</label>
+<p-dialog
+  [header]="'all.ranking.breakdown.add-game.title' | translate"
+  [(visible)]="showAddGameDialog"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [closeAriaLabel]="'all.button.close' | translate"
+  styleClass="w-full max-w-lg m-2"
+  appendTo="body"
+  (onHide)="addGameTrigger.focus()"
+>
+  <div class="grid gap-4">
+    <div class="grid gap-2">
+      <span id="simulation-outcome" class="font-medium">{{ 'all.ranking.breakdown.add-game.won' | translate }}</span>
       <p-selectbutton
+        ariaLabelledBy="simulation-outcome"
         [options]="wonOptions"
         [ngModel]="addGameWon()"
         (ngModelChange)="addGameWon.set($event)"
@@ -350,67 +370,70 @@
       />
     </div>
 
-    <!-- Opponent 1 -->
-    <div class="flex flex-row gap-2">
-      <p-autocomplete
-        [suggestions]="playerSuggestions1()"
-        (completeMethod)="searchOpponent($event, 1)"
-        (onSelect)="selectOpponent($event, 1)"
-        optionLabel="fullName"
-        [placeholder]="'all.ranking.breakdown.add-game.search-player' | translate"
-        [minQueryLength]="2"
-        style="w-full"
-      />
-      <div class="flex w-36">
-        <p-inputnumber
-          [ngModel]="addGameOpponentLevel1()"
-          (ngModelChange)="addGameOpponentLevel1.set($event)"
-          [min]="1"
-          [max]="system().amountOfLevels ?? 12"
-          [showButtons]="true"
-        />
-      </div>
-    </div>
-
-    <!-- Opponent 2 (doubles/mix only) -->
-    @if (isDoubles()) {
-      <div class="flex flex-row gap-2">
-        <p-autocomplete
-          [suggestions]="playerSuggestions2()"
-          (completeMethod)="searchOpponent($event, 2)"
-          (onSelect)="selectOpponent($event, 2)"
-          optionLabel="fullName"
-          [placeholder]="'all.ranking.breakdown.add-game.search-player' | translate"
-          [minQueryLength]="2"
-          styleClass="w-full"
-        />
-        <div class="flex w-36">
+    @for (field of simulationFields(); track field.key) {
+      @let isPartner = field.key === 'partner';
+      @let suffix = isDoubles() && !isPartner ? ' ' + (field.key === 'opponent-1' ? 1 : 2) : '';
+      @let playerLabel = ((isPartner ? 'all.head-to-head.partner' : 'all.ranking.breakdown.opponent') | translate) + suffix;
+      @let levelLabel =
+        isPartner
+          ? playerLabel + ' · ' + ('all.points.table.level' | translate)
+          : ('all.ranking.breakdown.add-game.opponent-level' | translate) + suffix;
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div class="grid min-w-0 gap-2">
+          <label [for]="'simulation-' + field.key">{{ playerLabel }}</label>
+          <p-autocomplete
+            [inputId]="'simulation-' + field.key"
+            [ngModel]="field.search()"
+            (ngModelChange)="field.search.set($event)"
+            [suggestions]="field.suggestions()"
+            (completeMethod)="searchSimulationPlayer($event, field)"
+            (onSelect)="selectSimulationPlayer($event, field)"
+            optionLabel="fullName"
+            [placeholder]="'all.ranking.breakdown.add-game.search-player' | translate"
+            [minQueryLength]="2"
+            [fluid]="true"
+          >
+            <ng-template #item let-player>
+              <span class="flex items-baseline gap-2">
+                <span class="wrap-anywhere">{{ player.fullName }}</span>
+                <small class="text-muted-color whitespace-nowrap">
+                  @if (player.memberId) {
+                    {{ player.memberId }} ·
+                  }
+                  {{ simulationRanking(player) ?? '?' }}
+                </small>
+              </span>
+            </ng-template>
+          </p-autocomplete>
+        </div>
+        <div class="grid min-w-0 gap-2">
+          <label [for]="'simulation-level-' + field.key">{{ levelLabel }}</label>
           <p-inputnumber
-            [ngModel]="addGameOpponentLevel2()"
-            (ngModelChange)="addGameOpponentLevel2.set($event)"
+            [inputId]="'simulation-level-' + field.key"
+            [ngModel]="field.level()"
+            (ngModelChange)="field.level.set($event)"
             [min]="1"
             [max]="system().amountOfLevels ?? 12"
             [showButtons]="true"
+            [fluid]="true"
           />
         </div>
       </div>
     }
 
-    <!-- Summary -->
-    <div class="flex items-center gap-2 text-sm text-muted-color border-t border-surface pt-3">
-      <i class="pi pi-info-circle"></i>
+    <p role="status" class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-color">
       <span
         >{{ 'all.ranking.breakdown.add-game.points' | translate }}: <strong class="text-color">{{ simulatedPoints() }}</strong></span
       >
       @if (isDoubles()) {
-        <span class="ml-auto"
-          >{{ 'all.ranking.breakdown.add-game.effective-level' | translate }}:
-          <strong class="text-color">{{ effectiveOpponentLevel() }}</strong></span
-        >
+        <span>
+          {{ 'all.ranking.breakdown.add-game.effective-level' | translate }}:
+          <strong class="text-color">{{ effectiveOpponentLevel() }}</strong>
+        </span>
       }
-    </div>
+    </p>
   </div>
-  <ng-template pTemplate="footer">
+  <ng-template #footer>
     <button pButton type="button" (click)="addSimulatedGame()">
       <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
       <span pButtonLabel>{{ 'all.ranking.breakdown.add-game.add' | translate }}</span>

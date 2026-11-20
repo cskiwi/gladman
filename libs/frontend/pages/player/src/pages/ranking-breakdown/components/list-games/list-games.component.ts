@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, untracked, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, linkedSignal, signal, untracked, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RankingLastPlace, RankingSystem } from '@app/models';
@@ -60,7 +60,7 @@ export class ListGamesComponent {
   readonly breakdownService = inject(RankingBreakdownService);
 
   system = input.required<RankingSystem>();
-  player = input.required<{ id: string }>();
+  private readonly player = this.breakdownService.resolvedPlayer;
   rankingPlace = input<RankingLastPlace | null>(null);
   type = input.required<RankingType>();
 
@@ -90,22 +90,20 @@ export class ListGamesComponent {
   simulatedGames = signal<GameBreakdown[]>([]);
   showAddGameDialog = signal(false);
   addGameWon = signal(true);
-  addGameOpponentLevel1 = signal<number>(8);
-  addGameOpponentLevel2 = signal<number>(8);
   wonOptions: { label: string; value: boolean }[] = [];
 
-  // Player search for opponent levels
-  playerSuggestions1 = signal<PlayerSearchResult[]>([]);
-  playerSuggestions2 = signal<PlayerSearchResult[]>([]);
-  selectedOpponentName1 = signal<string | null>(null);
-  selectedOpponentName2 = signal<string | null>(null);
+  private readonly simulationContext = computed(() => `${this.player()?.id}:${this.system().id}:${this.type()}`);
+  private readonly partner = this.simulationField('partner');
+  private readonly opponent1 = this.simulationField('opponent-1');
+  private readonly opponent2 = this.simulationField('opponent-2');
 
   isDoubles = computed(() => this.type() === 'double' || this.type() === 'mix');
+  simulationFields = computed(() => (this.isDoubles() ? [this.partner, this.opponent1, this.opponent2] : [this.opponent1]));
   effectiveOpponentLevel = computed(() => {
     if (this.isDoubles()) {
-      return Math.round((this.addGameOpponentLevel1() + this.addGameOpponentLevel2()) / 2);
+      return Math.round((this.opponent1.level() + this.opponent2.level()) / 2);
     }
-    return this.addGameOpponentLevel1();
+    return this.opponent1.level();
   });
   simulatedPoints = computed(() => {
     const sys = this.system();
@@ -147,7 +145,10 @@ export class ListGamesComponent {
       // Merge simulated games
       games.push(...simulated.map((x) => structuredClone(x)));
 
-      this._addBreakdownInfo(games.filter((x) => !x.simulated));
+      this._addBreakdownInfo(
+        games.filter((x) => !x.simulated),
+        playerData.id,
+      );
       this._addBreakdownInfoSimulated(games.filter((x) => x.simulated));
       this._determineUsedForRanking(games, latestXOvr);
       this._calculateAverageUpgrade(games);
@@ -308,13 +309,12 @@ export class ListGamesComponent {
     });
   }
 
-  private _addBreakdownInfo(games: GameBreakdown[]) {
-    const playerData = this.player();
+  private _addBreakdownInfo(games: GameBreakdown[], playerId: string) {
     const sys = this.system();
     const nextPeriod = this.next();
 
     for (const game of games) {
-      const myMembership = game.gamePlayerMemberships?.find((gpm) => gpm.playerId === playerData.id);
+      const myMembership = game.gamePlayerMemberships?.find((gpm) => gpm.playerId === playerId);
       const myTeam = myMembership?.team;
 
       if (!game.gameType) {
@@ -322,7 +322,7 @@ export class ListGamesComponent {
         continue;
       }
 
-      const rankingPoint = game.rankingPoints?.find((x) => x.playerId === playerData.id && x.systemId === sys.id);
+      const rankingPoint = game.rankingPoints?.find((x) => x.playerId === playerId && x.systemId === sys.id);
 
       const type = GetGameResultType(game.winner === myTeam, game.gameType, {
         differenceInLevel: rankingPoint?.differenceInLevel ?? 0,
@@ -436,46 +436,61 @@ export class ListGamesComponent {
     this.simulatedGames.set([]);
   }
 
+  private simulationField(key: 'partner' | 'opponent-1' | 'opponent-2') {
+    const search = linkedSignal<string, PlayerSearchResult | string | null>({ source: this.simulationContext, computation: () => null });
+    const selected = computed(() => {
+      const value = search();
+      return typeof value === 'string' ? null : value;
+    });
+    return { key, search, selected, suggestions: signal<PlayerSearchResult[]>([]), level: signal(8) };
+  }
+
   openAddGameDialog() {
-    const rankingPlaceData = this.rankingPlace();
-    const gameType = this.type();
-    const playerLevel = rankingPlaceData?.[gameType] ?? 8;
-    this.addGameOpponentLevel1.set(playerLevel);
-    this.addGameOpponentLevel2.set(playerLevel);
+    const playerLevel = this.rankingPlace()?.[this.type()] ?? 8;
+    for (const field of this.simulationFields()) {
+      if (!field.selected()) {
+        field.search.set(null);
+        field.level.set(playerLevel);
+      }
+      field.suggestions.set([]);
+    }
     this.addGameWon.set(true);
-    this.playerSuggestions1.set([]);
-    this.playerSuggestions2.set([]);
-    this.selectedOpponentName1.set(null);
-    this.selectedOpponentName2.set(null);
     this.showAddGameDialog.set(true);
   }
 
-  async searchOpponent(event: AutoCompleteCompleteEvent, slot: 1 | 2) {
+  async searchSimulationPlayer(event: AutoCompleteCompleteEvent, field: ReturnType<ListGamesComponent['simulationField']>) {
     const systemId = this.filter.get('systemId')?.value;
     if (!systemId) return;
 
     const results = await this.breakdownService.searchPlayers(event.query, systemId);
-    if (slot === 1) {
-      this.playerSuggestions1.set(results);
-    } else {
-      this.playerSuggestions2.set(results);
-    }
+    field.suggestions.set(field.key === 'partner' ? results.filter((player) => player.id !== this.player()?.id) : results);
   }
 
-  selectOpponent(event: AutoCompleteSelectEvent, slot: 1 | 2) {
+  selectSimulationPlayer(event: AutoCompleteSelectEvent, field: ReturnType<ListGamesComponent['simulationField']>) {
     const player = event.value as PlayerSearchResult;
-    const gameType = this.type();
-    const level = player.rankingLastPlaces?.[0]?.[gameType] ?? 12;
-    if (slot === 1) {
-      this.addGameOpponentLevel1.set(level);
-      this.selectedOpponentName1.set(player.fullName);
-    } else {
-      this.addGameOpponentLevel2.set(level);
-      this.selectedOpponentName2.set(player.fullName);
-    }
+    field.level.set(this.simulationRanking(player) ?? 12);
+  }
+
+  simulationRanking(player: PlayerSearchResult): number | undefined {
+    return player.rankingLastPlaces?.[0]?.[this.type()] ?? undefined;
+  }
+
+  private simulatedMembership(gameId: string, team: number, level: number, player: { id: string; fullName: string }): GamePlayerMembership {
+    const membership: Partial<GamePlayerMembership> = {
+      id: `sim-member-${crypto.randomUUID()}`,
+      playerId: player.id,
+      gameId,
+      team,
+    };
+    membership[this.type()] = level;
+    Object.assign(membership, { gamePlayer: { id: player.id || membership.id, fullName: player.fullName } });
+    return membership as GamePlayerMembership;
   }
 
   addSimulatedGame() {
+    const player = this.player();
+    if (!player) return;
+
     const sys = this.system();
     const rankingPlaceData = this.rankingPlace();
     const gameType = this.type();
@@ -484,7 +499,9 @@ export class ListGamesComponent {
     const won = this.addGameWon();
     const points = this.simulatedPoints();
 
-    const differenceInLevel = opponentLevel - playerLevel;
+    const partner = this.isDoubles() ? this.partner.selected() : null;
+    const teamLevel = partner ? (playerLevel + this.partner.level()) / 2 : playerLevel;
+    const differenceInLevel = opponentLevel - teamLevel;
 
     let enumGameType = GameType.S;
     switch (gameType) {
@@ -504,39 +521,14 @@ export class ListGamesComponent {
     const now = new Date();
     const simGameId = `sim-${crypto.randomUUID()}`;
 
-    const teamMember: Partial<GamePlayerMembership> = {
-      id: `sim-team-${crypto.randomUUID()}`,
-      playerId: this.player().id,
-      gameId: simGameId,
-      team: 1,
-    };
-    teamMember[gameType] = playerLevel;
-    (teamMember as Record<string, unknown>)['gamePlayer'] = { fullName: `You` };
-
-    const opponentMembers: Partial<GamePlayerMembership>[] = [];
-    const opp1Level = this.addGameOpponentLevel1();
-    const opp1: Partial<GamePlayerMembership> = {
-      id: `sim-opp1-${crypto.randomUUID()}`,
-      playerId: '',
-      gameId: simGameId,
-      team: 2,
-    };
-    opp1[gameType] = opp1Level;
-    (opp1 as Record<string, unknown>)['gamePlayer'] = { fullName: this.selectedOpponentName1() ?? `Opponent 1` };
-    opponentMembers.push(opp1);
-
-    if (this.isDoubles()) {
-      const opp2Level = this.addGameOpponentLevel2();
-      const opp2: Partial<GamePlayerMembership> = {
-        id: `sim-opp2-${crypto.randomUUID()}`,
-        playerId: '',
-        gameId: simGameId,
-        team: 2,
-      };
-      opp2[gameType] = opp2Level;
-      (opp2 as Record<string, unknown>)['gamePlayer'] = { fullName: this.selectedOpponentName2() ?? `Opponent 2` };
-      opponentMembers.push(opp2);
+    const team = [this.simulatedMembership(simGameId, 1, playerLevel, player)];
+    if (partner) {
+      team.push(this.simulatedMembership(simGameId, 1, this.partner.level(), partner));
     }
+    const opponents = this.isDoubles() ? [this.opponent1, this.opponent2] : [this.opponent1];
+    const opponentMembers = opponents.map((field, index) =>
+      this.simulatedMembership(simGameId, 2, field.level(), field.selected() ?? { id: '', fullName: `Opponent ${index + 1}` }),
+    );
 
     const rankingPoint = {
       id: `sim-rp-${crypto.randomUUID()}`,
@@ -544,7 +536,7 @@ export class ListGamesComponent {
       updatedAt: now,
       points,
       differenceInLevel,
-      playerId: this.player().id,
+      playerId: player.id,
       gameId: simGameId,
       systemId: sys.id,
     } as Partial<RankingPoint> as RankingPoint;
@@ -558,13 +550,13 @@ export class ListGamesComponent {
       linkType: 'simulated',
       winner: won ? 1 : 2,
       gameType: enumGameType,
-      gamePlayerMemberships: [teamMember as GamePlayerMembership, ...(opponentMembers as GamePlayerMembership[])],
+      gamePlayerMemberships: [...team, ...opponentMembers],
       rankingPoints: [rankingPoint as RankingPoint],
       points,
       type,
       simulated: true,
-      team: [teamMember as GamePlayerMembership],
-      opponent: opponentMembers as GamePlayerMembership[],
+      team,
+      opponent: opponentMembers,
       dropsNextPeriod: false,
       inLatestX: false,
       usedForUpgrade: false,

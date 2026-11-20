@@ -5,6 +5,19 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-010e [Add simulated game dialog](work-items/DR-010e-ranking-breakdown-add-simulated-game.md) is Done with explicit
+approval (`Approve DR-010e with the documented limits and commit`, 2026-11-20).
+The mounted dialog now has translated field labels, a responsive layout, and a live points preview.
+Player lint/build and two existing tests pass. Dutch browser checks covered layout, level bounds,
+opponent selection, focus return, and a local-only simulated game. The dropdown shows member ID and discipline
+level; the selected opponent and level survive reopening in the same ranking context.
+The dialog also supports an optional Doubles/Mixed partner and uses the resolved player's name in simulated rows.
+The unchecked visual and accessibility limits remain in the brief.
+Next: confirm the mounted simulation toolbar and settings popover and scope them as a separate DR-010 child.
+Keep DR-010 open; do not reopen the dialog or include row actions in that slice.
+
+### Previous focus: Ranking breakdown games table (DR-010d)
+
 DR-010d [Ranking breakdown games table](work-items/DR-010d-ranking-breakdown-games-table.md) is Done with explicit
 approval (`Approve DR-010d with the documented limits and commit`, 2026-11-20).
 The revised table uses the home ranking table's native Card, shared heading and default row spacing.
@@ -3159,6 +3172,7 @@ and linked from their registry rows.
 | [DR-010b](work-items/DR-010b-ranking-breakdown-period.md)       | Ranking breakdown period selection                                           | Done        |
 | [DR-010c](work-items/DR-010c-ranking-breakdown-filters.md)    | Ranking breakdown filters and view toggles                                   | Done    |
 | [DR-010d](work-items/DR-010d-ranking-breakdown-games-table.md) | Ranking breakdown games table                                                | Done |
+| [DR-010e](work-items/DR-010e-ranking-breakdown-add-simulated-game.md) | Add simulated game dialog | Done |
 | DR-011                                                        | Player editing                                                               | Backlog     |
 | DR-012                                                        | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
@@ -3869,7 +3883,10 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header and DR-010b covers period selection.
-  DR-010c covers filters and view toggles; DR-010d covers the games table. Keep simulation separate.
+  DR-010c covers filters and view toggles; DR-010d covers the games table. DR-010e covers only the Add simulated
+  game dialog. Scope the simulation toolbar, options, and row actions separately after DR-010e.
+  The dialog's native InputNumber stepper buttons remain unnamed; track their accessible names in
+  follow-up without changing the table or global PrimeNG settings as part of this dialog slice.
   DR-070 tracks the existing hover-only date details and average tooltips on this route; verify a keyboard
   and touch alternative in a separate slice without changing ranking calculations or simulation.
   The shared preview reports aborted view transitions even on reload; revisit in route-level verification

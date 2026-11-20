@@ -11,6 +11,7 @@ import { lastValueFrom, startWith } from 'rxjs';
 export interface PlayerSearchResult {
   id: string;
   fullName: string;
+  memberId?: string | null;
   rankingLastPlaces?: RankingLastPlace[];
 }
 
@@ -121,6 +122,7 @@ const PLAYERS_BY_IDS_QUERY = gql`
     players(args: $args) {
       id
       fullName
+      memberId
       rankingLastPlaces(args: $rankingLastPlacesArgs) {
         id
         single

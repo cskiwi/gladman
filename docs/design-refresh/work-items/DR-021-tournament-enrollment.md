@@ -84,6 +84,38 @@ Focused lint/build, 147 tests, 72 actual locale/theme/width/ranking-state fixtur
 On 2026-11-07 the user approved DR-021h completion and its scoped commit with disclosed limits; its row is Done.
 Native unchecked Checkbox border remains DR-032.
 Keep its screen-reader, exhaustive accessibility/hydration and authenticated workflow limits unchecked.
-Next candidate is DR-022 draw detail: confirm a mounted consumer, scope one view and check DR-006 if applicable.
-No next implementation is started in this invocation. The parent remains open for deferred scope.
-DR-021i retains a future my-enrollments overview; no replacement is started here.
+
+## Parent reconciliation (2026-11-20)
+
+- [x] Reconcile the backlog with the approved work. DR-021a-f and DR-021h are Done with their recorded limits.
+      DR-021f1-f4 and DR-021g were withdrawn, not migrated. DR-021i is still Backlog.
+- [x] Confirm the surviving consumer and retired routes in current source and focused tests.
+      Direct navigation to `/tournament/8658b541-702a-408e-8114-2858a9428069/enroll` in the shared browser
+      renders `Toernooi Inschrijving`, `Jouw Rankings`, `Beschikbare Evenementen (30)` and
+      `Inschrijvingswinkelwagen`. The detail template retains the conditional enrollment link.
+      The current route spec verifies that both retired URLs are unmatched.
+- [x] Confirm the presentation split is still meaningful. The page coordinates state and already composes
+      filters, event selection, cart and partner-dialog components. No new extraction or styling exception is needed.
+- [ ] Reverify the full visual matrix, keyboard/contrast/accessibility, alternate locales and SSR/hydration.
+- [ ] Reverify authenticated cart and partner workflows and live enrollment persistence.
+- [x] Record explicit parent approval to accept the verification limits and keep DR-021i as independent future work.
+
+Focused regression command (61 tests, seven suites passed; existing ts-jest warning):
+
+```powershell
+npx.cmd nx run frontend-pages-tournament:test --output-style=static --runInBand `
+  --testPathPatterns=lib.routes.spec.ts --testPathPatterns=general-enrollment
+```
+
+An initial combined selector containing a pipe failed at Windows shell parsing and ran no tests. The command above
+uses separate selectors. Lint and build were not rerun for this documentation-only reconciliation.
+The browser smoke did not activate any enrollment, cart or partner actions or run the visual matrix. The console
+logged `InvalidStateError: Transition was aborted because of invalid state`, also recorded during DR-005e; this
+is not a clean-console or hydration pass. Historical child evidence and unchecked criteria are unchanged.
+
+On 2026-11-20 the user explicitly approved completion and the scoped documentation commit with `commit`.
+The approval accepts the disclosed limits; the unperformed checks above remain unchecked. DR-021i stays in
+Backlog and does not block this parent. No application changes, new browser checks or live actions followed approval.
+
+Next action: confirm prerequisites and scope a bounded DR-029 inventory of remaining legacy consumers.
+Do not remove styles until their consumers and regressions are checked. Do not scope or restore DR-021i here.

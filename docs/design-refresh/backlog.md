@@ -5,6 +5,18 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-021 [Tournament enrollment workflows](work-items/DR-021-tournament-enrollment.md) is Done with explicit
+approval (`commit`, 2026-11-20). The general enrollment route renders Dutch rankings, 30 events and the cart.
+All 61 focused tests pass across seven suites, including the retired-route assertions.
+DR-021a-f and DR-021h are Done with their recorded limits; DR-021f1-f4 and DR-021g remain withdrawn.
+No application changes, live enrollments, new shared components, or work on the deferred DR-021i overview.
+DR-021i remains independent future Backlog work. Full visual and accessibility checks, alternate locales,
+SSR/hydration and live workflows remain unverified; approval does not mark them as passed.
+Exact next action: confirm prerequisites and scope a bounded DR-029 legacy-consumer inventory before considering
+any removals. DR-021i, DR-029 and DR-069 were not started in this reconciliation.
+
+### Previous focus: Competition editor integrated review (DR-018)
+
 DR-018 [Competition editing](work-items/DR-018-competition-editing.md) is Done after integrated parent checks and explicit
 approval (`Approve DR-018 and commit with disclosed limits`, 2026-11-16).
 All required children DR-018a/b/c/d/e remain Done with their recorded approvals and verification limits.
@@ -23,8 +35,7 @@ Alternate locales, operational save-all/persistence and full SSR/hydration remai
 No browser save/mutation method activated; original values/state, dark theme and viewport restored.
 This invocation changes only parent handoff documents. Existing DR-043/058/066/068/069 remain separate.
 Approval accepts those limits without marking unperformed checks as passed; unchecked criteria remain in the brief.
-Exact next action: reconcile the open DR-021 parent against its completed enrollment children and deferred DR-021i.
-Do not start DR-021i, DR-069 or another implementation slice in this invocation.
+Recorded next action: reconcile the open DR-021 parent against its completed enrollment children and deferred DR-021i.
 
 ### Previous focus: Competition editor chrome and actions (DR-018e)
 
@@ -3172,7 +3183,7 @@ and linked from their registry rows.
 | [DR-020c](work-items/DR-020c-editing-chrome.md)               | Editing chrome and actions                                                   | Done        |
 | [DR-020d](work-items/DR-020d-editing-information.md)          | Editing information tab                                                      | Done        |
 | [DR-020e](work-items/DR-020e-editing-settings.md)             | Editing settings tab                                                         | Done        |
-| [DR-021](work-items/DR-021-tournament-enrollment.md)          | Tournament enrollment workflows                                              | In progress |
+| [DR-021](work-items/DR-021-tournament-enrollment.md)          | Tournament enrollment workflows                                              | Done        |
 | [DR-021a](work-items/DR-021a-enrollment-chrome.md)            | General enrollment page chrome                                               | Done        |
 | [DR-021b](work-items/DR-021b-enrollment-filters.md)           | General enrollment filters and rankings                                      | Done        |
 | [DR-021c](work-items/DR-021c-enrollment-selection.md)         | General enrollment selection tiles                                           | Done        |
@@ -3898,7 +3909,8 @@ DR-021f1-f4 and DR-021g are withdrawn, not design migrations; DR-021i retains th
 On 2026-11-07 the user said a new overview will be made later, replacing the incomplete retired page.
 Keep this Backlog until its real consumer, route, data, permissions, interactions and acceptance checks are scoped.
 Do not restore the old implementation or assume its route/cancellation workflow is the requirement.
-This invocation only retires obsolete UI under DR-021f; no overview is implemented.
+DR-021f retired obsolete UI; no overview is implemented. The overview is independent future scope and does
+not block the approved closure of the existing enrollment refresh.
 
 ### Tournament draws
 
@@ -4042,6 +4054,7 @@ routes][admin-routes] and [sync routes][sync-routes].
 DR-005e navigation also logged `InvalidStateError: Transition was aborted because of invalid state` while routes
 still loaded. No global transition change was made; investigate only if reproducible in the relevant route/shell
 follow-up. This is not a claimed clean-console or exhaustive hydration pass.
+The DR-021 parent smoke on 2026-11-20 also logged that message while general enrollment rendered successfully.
 
 DR-001 established the baseline; DR-002 and DR-003 implemented the homepage and shell. [DR-004][heading-work-item]
 records the approved shared layout, native homepage table composition, and explicitly requested neutral canvas.

@@ -12,8 +12,13 @@ DR-021a-f and DR-021h are Done with their recorded limits; DR-021f1-f4 and DR-02
 No application changes, live enrollments, new shared components, or work on the deferred DR-021i overview.
 DR-021i remains independent future Backlog work. Full visual and accessibility checks, alternate locales,
 SSR/hydration and live workflows remain unverified; approval does not mark them as passed.
-Exact next action: confirm prerequisites and scope a bounded DR-029 legacy-consumer inventory before considering
-any removals. DR-021i, DR-029 and DR-069 were not started in this reconciliation.
+
+DR-029a [Legacy typography consumer inventory](work-items/DR-029a-legacy-typography.md) is Done with explicit
+approval (`Approve DR-029a and commit`, 2026-11-20).
+The mounted player ranking breakdown (DR-010) uses `.t-eyebrow`. The deferred competition qualification branch
+also references it. Four other helpers have no tracked application references outside their definitions.
+Nothing was removed. The browser check was a mounted baseline, not a visual regression test.
+Exact next action: scope only the DR-010 ranking breakdown header; do not start global removal on that route.
 
 ### Previous focus: Competition editor integrated review (DR-018)
 
@@ -3251,6 +3256,7 @@ and linked from their registry rows.
 | [DR-028c](work-items/DR-028c-sync-plans-tab.md)               | Sync plans tab Cards                                                         | Done        |
 | [DR-028d](work-items/DR-028d-cron-jobs-tab.md)                | Sync cron jobs tab Card                                                      | Done        |
 | DR-029                                                        | Legacy styling retirement and final regression                               | Backlog     |
+| [DR-029a](work-items/DR-029a-legacy-typography.md)            | Legacy typography consumer inventory                                         | Done        |
 | DR-030                                                        | Shared header overflow at 320px                                              | Backlog     |
 | DR-031                                                        | Native FloatLabel focused-label contrast audit                               | Backlog     |
 | DR-032                                                        | Native Checkbox and secondary Button contrast audit                          | Backlog     |
@@ -4016,6 +4022,9 @@ routes][admin-routes] and [sync routes][sync-routes].
 ## DR-029: final cleanup
 
 - Search all consumers before removing old gradients, `g-*`/`t-*` styling, custom tokens, or component overrides.
+- DR-029a inventories only global typography. Retain `.t-eyebrow` for DR-010 and the deferred DR-016 qualification
+  branch. Recheck the four unmatched typography helpers separately before any removal. This is not a pass for
+  the rest of the global stylesheet or the final regression matrix.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.
 - Check all migrated routes, shared overlays, translations, theme persistence, and SSR/hydration.

@@ -6,9 +6,17 @@
   "implicitDependencies": ["app"],
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/.eslintignore",
+        "{workspaceRoot}/eslint.config.js",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
       "options": {
-        "lintFilePatterns": ["apps/app-e2e/**/*.{js,ts}"]
+        "args": ["**/*.{js,ts}"]
       }
     }
   }

@@ -112,7 +112,7 @@ import { AssemblyValidationService } from './services/assembly/assembly-validati
         }
 
         return {
-          playground: false,
+          graphiql: false,
           debug: true,
           autoSchemaFile: true,
           sortSchema: true,

@@ -16,7 +16,11 @@
       ],
       "outputs": ["{workspaceRoot}/coverage/libs/backend/ranking", "{workspaceRoot}\\coverage\\libs\\backend\\ranking"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "env": {
+          "...": true,
+          "NODE_OPTIONS": "--experimental-vm-modules"
+        }
       },
       "configurations": {
         "ci": {

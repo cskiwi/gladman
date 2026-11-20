@@ -16,7 +16,11 @@
       ],
       "outputs": ["{workspaceRoot}/coverage/libs/backend/translate", "{workspaceRoot}\\coverage\\libs\\backend\\translate"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "env": {
+          "...": true,
+          "NODE_OPTIONS": "--experimental-vm-modules"
+        }
       },
       "configurations": {
         "ci": {

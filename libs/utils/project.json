@@ -27,7 +27,11 @@
       ],
       "outputs": ["{workspaceRoot}/coverage/libs/utils", "{workspaceRoot}\\coverage\\libs\\utils"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "env": {
+          "...": true,
+          "NODE_OPTIONS": "--experimental-vm-modules"
+        }
       },
       "configurations": {
         "ci": {

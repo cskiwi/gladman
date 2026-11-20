@@ -27,7 +27,11 @@
       ],
       "outputs": ["{workspaceRoot}/coverage/libs/shared", "{workspaceRoot}\\coverage\\libs\\backend\\_shared"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "env": {
+          "...": true,
+          "NODE_OPTIONS": "--experimental-vm-modules"
+        }
       },
       "configurations": {
         "ci": {

@@ -16,7 +16,11 @@
       ],
       "outputs": ["{workspaceRoot}/coverage/libs/backend/database", "{workspaceRoot}\\coverage\\libs\\backend\\database"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "env": {
+          "...": true,
+          "NODE_OPTIONS": "--experimental-vm-modules"
+        }
       },
       "configurations": {
         "ci": {

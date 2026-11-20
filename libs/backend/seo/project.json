@@ -16,7 +16,11 @@
       ],
       "outputs": ["{workspaceRoot}/coverage/libs/backend/seo", "{workspaceRoot}\\coverage\\libs\\backend\\seo"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "env": {
+          "...": true,
+          "NODE_OPTIONS": "--experimental-vm-modules"
+        }
       },
       "configurations": {
         "ci": {

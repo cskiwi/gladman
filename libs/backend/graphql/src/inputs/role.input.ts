@@ -4,7 +4,10 @@ import { Relation } from 'typeorm';
 import { ClaimUpdateInput } from './claim.input';
 
 @InputType('RoleUpdateInput')
-export class RoleUpdateInput extends PartialType(OmitType(Role, ['createdAt', 'updatedAt', 'claims'] as const), InputType) {
+export class RoleUpdateInput extends PartialType(
+  OmitType(Role, ['createdAt', 'updatedAt', 'claims', 'players', 'club', 'team', 'competition', 'tournament'] as const),
+  InputType,
+) {
   @Field(() => [ClaimUpdateInput], { nullable: true })
   claims?: Relation<Claim[]>;
 }

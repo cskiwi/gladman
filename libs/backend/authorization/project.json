@@ -27,7 +27,11 @@
       ],
       "outputs": ["{workspaceRoot}/coverage/libs/backend/authorization", "{workspaceRoot}\\coverage\\libs\\backend\\authorization"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "env": {
+          "...": true,
+          "NODE_OPTIONS": "--experimental-vm-modules"
+        }
       },
       "configurations": {
         "ci": {

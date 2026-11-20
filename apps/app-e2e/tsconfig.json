@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "outDir": "../../dist/out-tsc",
-    "module": "Node16",
+    "module": "Node20",
     "sourceMap": false,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    "module": "Node16",
+    "module": "Node20",
     "lib": ["es2020", "dom", "ES2021.String"],
     "resolveJsonModule": true,
     "skipLibCheck": true,

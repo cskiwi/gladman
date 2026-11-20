@@ -17,6 +17,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -38,6 +39,7 @@ dayjs.extend(isSameOrAfter);
     ReactiveFormsModule,
     TranslateModule,
     TableModule,
+    TagModule,
     BadgeModule,
     ButtonModule,
     AutoCompleteModule,
@@ -849,6 +851,10 @@ export class ListGamesComponent {
       this.sortField.set(null);
       this.sortOrder.set(1);
     }
+  }
+
+  getSortDirection(field: string): 'ascending' | 'descending' | null {
+    return this.sortField() === field ? (this.sortOrder() === 1 ? 'ascending' : 'descending') : null;
   }
 
   getSortIcon(field: string): string {

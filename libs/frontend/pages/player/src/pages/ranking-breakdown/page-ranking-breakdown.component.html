@@ -80,9 +80,11 @@
     </div>
   </p-card>
 
-  <!-- Games List Section -->
-  <section class="bg-emphasis border border-surface rounded-border overflow-hidden">
-    <app-list-games [system]="system()" [player]="{ id: breakdownService.resolvedPlayerId()! }" [rankingPlace]="rankingPlace()" [type]="type()" />
+  <section aria-labelledby="ranking-games-title">
+    <p-card>
+      <app-section-header id="ranking-games-title" [title]="'all.games.gamesList' | translate" />
+      <app-list-games [system]="system()" [player]="{ id: breakdownService.resolvedPlayerId()! }" [rankingPlace]="rankingPlace()" [type]="type()" />
+    </p-card>
   </section>
 } @else {
   <!-- Loading State -->

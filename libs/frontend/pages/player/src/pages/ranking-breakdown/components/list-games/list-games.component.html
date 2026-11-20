@@ -1,5 +1,5 @@
 <!-- Toolbar Section -->
-<div class="flex flex-wrap items-center gap-4 px-4 py-3 bg-highlight border-b border-surface">
+<div class="mb-3">
   <!-- Simulation -->
   <div class="flex flex-wrap items-center gap-2">
     <button pButton type="button" [text]="true" size="small" (click)="simulationPopover.toggle($event)">
@@ -27,243 +27,205 @@
   </div>
 </div>
 
+<ng-template #sortButton let-field let-label="label">
+  <button pButton type="button" size="small" severity="secondary" [text]="true" (click)="toggleSort(field)">
+    <span pButtonLabel class="whitespace-nowrap">
+      {{ label | translate }}
+      @if (field !== 'playedAt') {
+        #
+      }
+    </span>
+    <i pButtonIcon class="pi" [ngClass]="getSortIcon(field)" aria-hidden="true"></i>
+  </button>
+</ng-template>
+
+<ng-template #usedStatus let-used>
+  {{ (used ? 'all.common.yes' : 'all.common.no') | translate }}
+</ng-template>
+
+<ng-template #average let-value let-qualifies="qualifies" let-highest="highest" let-danger="danger">
+  @if (qualifies || highest) {
+    <p-tag
+      [class.font-bold]="highest"
+      [severity]="qualifies ? (danger ? 'danger' : 'success') : 'warn'"
+      [value]="(value | number: '1.0-0') ?? undefined"
+    />
+  } @else {
+    {{ value | number: '1.0-0' }}
+  }
+</ng-template>
+
 <!-- Data Table -->
-<div class="overflow-x-auto">
-  <p-table [value]="displayGames()" [loading]="loading()" [paginator]="false" styleClass="p-datatable-sm" [scrollable]="true">
-    <ng-template #header>
-      <tr>
-        @if (showRemoveColumn()) {
-          <th style="min-width: 32px"></th>
-        }
-        @if (showUpgrade()) {
-          <th class="text-center cursor-pointer select-none" style="min-width: 40px" (click)="toggleSort('devideUpgrade')">
-            <div class="flex items-center justify-center gap-1">
-              # <i class="pi pi-arrow-up text-xs"></i>
-              <i class="pi text-xs" [ngClass]="getSortIcon('devideUpgrade')"></i>
-            </div>
-          </th>
-        }
-        @if (showDowngrade()) {
-          <th class="text-center cursor-pointer select-none" style="min-width: 40px" (click)="toggleSort('devideDowngrade')">
-            <div class="flex items-center justify-center gap-1">
-              # <i class="pi pi-arrow-down text-xs"></i>
-              <i class="pi text-xs" [ngClass]="getSortIcon('devideDowngrade')"></i>
-            </div>
-          </th>
-        }
-        <th style="min-width: 40px"></th>
-        <th class="cursor-pointer select-none" style="min-width: 140px" (click)="toggleSort('playedAt')">
-          <div class="flex items-center gap-1">
-            <i class="pi pi-calendar text-xs"></i>
-            {{ 'all.ranking.breakdown.date' | translate }}
-            <i class="pi text-xs" [ngClass]="getSortIcon('playedAt')"></i>
-          </div>
+<p-table [value]="displayGames()" [loading]="loading()" [scrollable]="true" [tableStyle]="{ 'min-width': '48rem' }" class="tabular-nums">
+  <ng-template #header>
+    <tr>
+      @if (showRemoveColumn()) {
+        <th style="min-width: 32px"></th>
+      }
+      @if (showUpgrade()) {
+        <th scope="col" [attr.aria-sort]="getSortDirection('devideUpgrade')">
+          <ng-container *ngTemplateOutlet="sortButton; context: { $implicit: 'devideUpgrade', label: 'all.ranking.breakdown.usedForUpgrade' }" />
         </th>
-        <th style="min-width: 180px">
-          <i class="pi pi-users text-xs mr-1"></i>
-          {{ 'all.ranking.breakdown.team' | translate }}
+      }
+      @if (showDowngrade()) {
+        <th scope="col" [attr.aria-sort]="getSortDirection('devideDowngrade')">
+          <ng-container *ngTemplateOutlet="sortButton; context: { $implicit: 'devideDowngrade', label: 'all.ranking.breakdown.usedForDowngrade' }" />
         </th>
-        <th style="min-width: 180px">
-          <i class="pi pi-users text-xs mr-1"></i>
-          {{ 'all.ranking.breakdown.opponent' | translate }}
+      }
+      <th scope="col">
+        <span class="sr-only">{{ 'all.competition.status' | translate }}</span>
+      </th>
+      <th scope="col" [attr.aria-sort]="getSortDirection('playedAt')">
+        <ng-container *ngTemplateOutlet="sortButton; context: { $implicit: 'playedAt', label: 'all.ranking.breakdown.date' }" />
+      </th>
+      <th scope="col">{{ 'all.ranking.breakdown.team' | translate }}</th>
+      <th scope="col">{{ 'all.ranking.breakdown.opponent' | translate }}</th>
+      <th scope="col" class="text-right">{{ 'all.ranking.breakdown.points' | translate }}</th>
+      @if (enableToggleLatestX()) {
+        <th class="text-center" style="min-width: 50px">
+          <i class="pi pi-check-square text-xs mr-1"></i>
+          <span class="hidden md:inline">{{ 'all.ranking.breakdown.in-latest-x' | translate: { latestX: system().latestXGamesToUse } }}</span>
         </th>
-        <th class="text-center" style="min-width: 80px">
-          <i class="pi pi-star text-xs mr-1"></i>
-          {{ 'all.ranking.breakdown.points' | translate }}
-        </th>
-        @if (enableToggleLatestX()) {
-          <th class="text-center" style="min-width: 50px">
-            <i class="pi pi-check-square text-xs mr-1"></i>
-            <span class="hidden md:inline">{{ 'all.ranking.breakdown.in-latest-x' | translate: { latestX: system().latestXGamesToUse } }}</span>
-          </th>
-        }
-        @if (showUpgrade()) {
-          <th class="text-center" style="min-width: 80px">
-            <i class="pi pi-arrow-up text-xs mr-1"></i>
-            <span class="hidden md:inline">{{ 'all.ranking.breakdown.usedForUpgrade' | translate }}</span>
-          </th>
-          <th class="text-center" style="min-width: 100px">
-            <i class="pi pi-chart-line text-xs mr-1"></i>
-            <span class="hidden md:inline">{{ 'all.ranking.breakdown.upgrade-average' | translate }}</span>
-          </th>
-        }
-        @if (showDowngrade()) {
-          <th class="text-center" style="min-width: 80px">
-            <i class="pi pi-arrow-down text-xs mr-1"></i>
-            <span class="hidden md:inline">{{ 'all.ranking.breakdown.usedForDowngrade' | translate }}</span>
-          </th>
-          <th class="text-center" style="min-width: 100px">
-            <i class="pi pi-chart-line text-xs mr-1"></i>
-            <span class="hidden md:inline">{{ 'all.ranking.breakdown.downgrade-average' | translate }}</span>
-          </th>
-        }
-      </tr>
-    </ng-template>
-    <ng-template #body let-game>
-      <tr
-        [class.bg-highlight]="game.highestAvgUpgrade || game.highestAvgDowngrade"
-        [class.opacity-50]="!game.inLatestX && game.type !== 'LOST_IGNORED'"
-        [class.border-l-4]="game.simulated"
-        [class.border-blue-400]="game.simulated"
-      >
-        @if (showRemoveColumn()) {
-          <td class="text-center" style="padding: 0.25rem">
-            @if (game.simulated) {
-              <button
-                class="p-button p-button-text p-button-sm p-button-rounded p-button-danger"
-                style="width: 1.5rem; height: 1.5rem; padding: 0"
-                (click)="removeSimulatedGame(game)"
-                [pTooltip]="'all.ranking.breakdown.add-game.remove' | translate"
-                tooltipPosition="top"
-              >
-                <i class="pi pi-times text-xs"></i>
-              </button>
-            } @else if (enableRemoveGames()) {
-              <button
-                class="p-button p-button-text p-button-sm p-button-rounded p-button-danger"
-                style="width: 1.5rem; height: 1.5rem; padding: 0"
-                (click)="removeGame(game)"
-                [pTooltip]="'all.ranking.breakdown.remove-game' | translate"
-                tooltipPosition="top"
-              >
-                <i class="pi pi-times text-xs"></i>
-              </button>
-            }
-          </td>
-        }
-        @if (showUpgrade()) {
-          <td class="text-center font-medium">
-            @if (game.usedForUpgrade && game.countUpgrade) {
-              <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-contrast text-xs">
-                {{ game.countUpgrade }}
-              </span>
-            }
-          </td>
-        }
-        @if (showDowngrade()) {
-          <td class="text-center font-medium">
-            @if (game.usedForDowngrade && game.countDowngrade) {
-              <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-500 text-white text-xs">
-                {{ game.countDowngrade }}
-              </span>
-            }
-          </td>
-        }
-        <td class="text-center">
-          @if (game.dropsNextPeriod) {
-            <i class="pi pi-clock text-orange-500" [pTooltip]="'all.ranking.breakdown.drops-next-period' | translate" tooltipPosition="top"></i>
-          }
-          @if (!game.inLatestX && game.type !== 'LOST_IGNORED') {
-            <i
-              class="pi pi-ban text-muted-color"
-              [pTooltip]="'all.ranking.breakdown.outOfScopeLatestXTooltip' | translate: { latestX: system().latestXGamesToUse }"
-              tooltipPosition="top"
-            ></i>
-          }
-        </td>
-        <td
-          class="text-sm text-muted-color"
-          [class.cursor-help]="!game.simulated"
-          (mouseenter)="!game.simulated && showGameInfo($event, game)"
-          (mouseleave)="!game.simulated && hideGameInfo()"
-        >
+      }
+      @if (showUpgrade()) {
+        <th scope="col">{{ 'all.ranking.breakdown.usedForUpgrade' | translate }}</th>
+        <th scope="col" class="text-right">{{ 'all.ranking.breakdown.upgrade-average' | translate }}</th>
+      }
+      @if (showDowngrade()) {
+        <th scope="col">{{ 'all.ranking.breakdown.usedForDowngrade' | translate }}</th>
+        <th scope="col" class="text-right">{{ 'all.ranking.breakdown.downgrade-average' | translate }}</th>
+      }
+    </tr>
+  </ng-template>
+  <ng-template #body let-game>
+    <tr
+      [class.bg-highlight]="game.highestAvgUpgrade || game.highestAvgDowngrade"
+      [class.border-l-4]="game.simulated"
+      [class.border-blue-400]="game.simulated"
+    >
+      @if (showRemoveColumn()) {
+        <td class="text-center" style="padding: 0.25rem">
           @if (game.simulated) {
-            <span
-              class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-xs font-medium dark:bg-blue-900 dark:text-blue-300"
+            <button
+              class="p-button p-button-text p-button-sm p-button-rounded p-button-danger"
+              style="width: 1.5rem; height: 1.5rem; padding: 0"
+              (click)="removeSimulatedGame(game)"
+              [pTooltip]="'all.ranking.breakdown.add-game.remove' | translate"
+              tooltipPosition="top"
             >
-              <i class="pi pi-bolt text-xs"></i>
-              {{ 'all.ranking.breakdown.add-game.simulated' | translate }}
-            </span>
-          } @else {
-            {{ game.playedAt | dayjsFormat: 'DD MMM YYYY HH:mm' }}
+              <i class="pi pi-times text-xs"></i>
+            </button>
+          } @else if (enableRemoveGames()) {
+            <button
+              class="p-button p-button-text p-button-sm p-button-rounded p-button-danger"
+              style="width: 1.5rem; height: 1.5rem; padding: 0"
+              (click)="removeGame(game)"
+              [pTooltip]="'all.ranking.breakdown.remove-game' | translate"
+              tooltipPosition="top"
+            >
+              <i class="pi pi-times text-xs"></i>
+            </button>
           }
         </td>
-        <td class="text-sm text-color">
-          <div class="flex flex-col gap-0.5">
-            @for (player of game.team; track player.gamePlayer?.id) {
-              <span>{{ player.gamePlayer?.fullName ?? 'Unknown' }} ({{ player[type()] ?? '?' }})</span>
-            }
-          </div>
+      }
+      @if (showUpgrade()) {
+        <td>
+          @if (game.usedForUpgrade && game.countUpgrade) {
+            {{ game.countUpgrade }}
+          }
         </td>
-        <td class="text-sm text-color">
-          <div class="flex flex-col gap-0.5">
-            @for (player of game.opponent; track player.gamePlayer?.id) {
-              <span>{{ player.gamePlayer?.fullName ?? 'Unknown' }} ({{ player[type()] ?? '?' }})</span>
-            }
-          </div>
+      }
+      @if (showDowngrade()) {
+        <td>
+          @if (game.usedForDowngrade && game.countDowngrade) {
+            {{ game.countDowngrade }}
+          }
         </td>
-        <td class="text-center">
+      }
+      <td>
+        @if (game.dropsNextPeriod) {
+          <p-tag severity="warn" icon="pi pi-clock" [value]="'all.ranking.breakdown.drops-next-period' | translate" />
+        }
+        @if (!game.inLatestX && game.type !== 'LOST_IGNORED') {
+          <p-tag
+            severity="secondary"
+            icon="pi pi-ban"
+            [value]="'all.ranking.breakdown.outOfScopeLatestXTooltip' | translate: { latestX: system().latestXGamesToUse }"
+          />
+        }
+      </td>
+      <td
+        class="whitespace-nowrap"
+        [class.cursor-help]="!game.simulated"
+        (mouseenter)="!game.simulated && showGameInfo($event, game)"
+        (mouseleave)="!game.simulated && hideGameInfo()"
+      >
+        @if (game.simulated) {
           <span
-            class="inline-flex items-center justify-center px-2 py-1 rounded text-sm font-medium"
-            [class.text-green-600]="game.points > 0"
-            [class.text-red-600]="game.points < 0"
-            [class.text-muted-color]="game.points === 0"
+            class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-xs font-medium dark:bg-blue-900 dark:text-blue-300"
           >
-            {{ game.points > 0 ? '+' : '' }}{{ game.points }}
+            <i class="pi pi-bolt text-xs"></i>
+            {{ 'all.ranking.breakdown.add-game.simulated' | translate }}
           </span>
+        } @else {
+          {{ game.playedAt | dayjsFormat: 'DD MMM YYYY HH:mm' }}
+        }
+      </td>
+      <td class="whitespace-nowrap">
+        <div class="flex flex-col">
+          @for (player of game.team; track player.gamePlayer?.id) {
+            <span>{{ player.gamePlayer?.fullName ?? 'Unknown' }} ({{ player[type()] ?? '?' }})</span>
+          }
+        </div>
+      </td>
+      <td class="whitespace-nowrap">
+        <div class="flex flex-col">
+          @for (player of game.opponent; track player.gamePlayer?.id) {
+            <span>{{ player.gamePlayer?.fullName ?? 'Unknown' }} ({{ player[type()] ?? '?' }})</span>
+          }
+        </div>
+      </td>
+      <td class="text-right">{{ game.points > 0 ? '+' : '' }}{{ game.points }}</td>
+      @if (enableToggleLatestX()) {
+        <td class="text-center">
+          <p-checkbox [binary]="true" [ngModel]="game.inLatestX" (onChange)="toggleLatestX(game)" />
         </td>
-        @if (enableToggleLatestX()) {
-          <td class="text-center">
-            <p-checkbox [binary]="true" [ngModel]="game.inLatestX" (onChange)="toggleLatestX(game)" />
-          </td>
-        }
-        @if (showUpgrade()) {
-          <td class="text-center">
-            @if (game.usedForUpgrade) {
-              <i class="pi pi-check-circle text-green-500"></i>
-            } @else {
-              <i class="pi pi-times-circle text-red-500 opacity-50"></i>
-            }
-          </td>
-          <td class="text-center font-medium" [pTooltip]="getTooltip(game, true, game.usedForUpgrade)" tooltipPosition="top">
-            @if (game.avgUpgrade) {
-              <span
-                class="inline-flex items-center justify-center px-2 py-1 rounded text-sm"
-                [class.text-green-600]="game.canUpgrade"
-                [class.font-bold]="game.highestAvgUpgrade"
-                [class.text-yellow-600]="game.highestAvgUpgrade && !game.canUpgrade"
-              >
-                {{ game.avgUpgrade | number: '1.0-0' }}
-              </span>
-            }
-          </td>
-        }
-        @if (showDowngrade()) {
-          <td class="text-center">
-            @if (game.usedForDowngrade) {
-              <i class="pi pi-check-circle text-green-500"></i>
-            } @else {
-              <i class="pi pi-times-circle text-red-500 opacity-50"></i>
-            }
-          </td>
-          <td class="text-center font-medium" [pTooltip]="getTooltip(game, false, game.usedForDowngrade)" tooltipPosition="top">
-            @if (game.avgDowngrade) {
-              <span
-                class="inline-flex items-center justify-center px-2 py-1 rounded text-sm"
-                [class.text-red-600]="game.canDowngrade"
-                [class.font-bold]="game.highestAvgDowngrade"
-                [class.text-yellow-600]="game.highestAvgDowngrade && !game.canDowngrade"
-              >
-                {{ game.avgDowngrade | number: '1.0-0' }}
-              </span>
-            }
-          </td>
-        }
-      </tr>
-    </ng-template>
-    <ng-template #emptymessage>
-      <tr>
-        <td [attr.colspan]="totalColumns()">
-          <div class="flex flex-col items-center justify-center py-8 text-center">
-            <i class="pi pi-search text-4xl text-muted-color mb-4"></i>
-            <h3 class="text-lg font-semibold text-color mb-2">{{ 'all.ranking.breakdown.games.none' | translate }}</h3>
-            <p class="text-muted-color text-sm">{{ 'all.ranking.breakdown.games.noGamesDescription' | translate }}</p>
-          </div>
+      }
+      @if (showUpgrade()) {
+        <td>
+          <ng-container *ngTemplateOutlet="usedStatus; context: { $implicit: game.usedForUpgrade }" />
         </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+        <td class="text-right" [pTooltip]="getTooltip(game, true, game.usedForUpgrade)" tooltipPosition="top">
+          @if (game.avgUpgrade) {
+            <ng-container
+              *ngTemplateOutlet="average; context: { $implicit: game.avgUpgrade, qualifies: game.canUpgrade, highest: game.highestAvgUpgrade }"
+            />
+          }
+        </td>
+      }
+      @if (showDowngrade()) {
+        <td>
+          <ng-container *ngTemplateOutlet="usedStatus; context: { $implicit: game.usedForDowngrade }" />
+        </td>
+        <td class="text-right" [pTooltip]="getTooltip(game, false, game.usedForDowngrade)" tooltipPosition="top">
+          @if (game.avgDowngrade) {
+            <ng-container
+              *ngTemplateOutlet="
+                average;
+                context: { $implicit: game.avgDowngrade, qualifies: game.canDowngrade, highest: game.highestAvgDowngrade, danger: true }
+              "
+            />
+          }
+        </td>
+      }
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr>
+      <td [attr.colspan]="totalColumns()" class="text-muted-color">{{ 'all.ranking.breakdown.games.none' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>
 
 <p-popover #simulationPopover>
   <div class="flex flex-col gap-3 min-w-56">

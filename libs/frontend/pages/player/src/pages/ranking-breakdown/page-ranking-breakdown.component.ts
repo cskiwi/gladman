@@ -9,6 +9,7 @@ import { injectParams } from 'ngxtension/inject-params';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { SectionHeaderComponent } from '@app/frontend-components/section-header';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -35,6 +36,7 @@ import { AuthService } from '@app/frontend-modules-auth/service';
     ProgressBarModule,
     ButtonModule,
     CardModule,
+    SectionHeaderComponent,
     SelectModule,
     SkeletonModule,
     ToggleButtonModule,

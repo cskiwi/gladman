@@ -5,6 +5,17 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-010d [Ranking breakdown games table](work-items/DR-010d-ranking-breakdown-games-table.md) is Done with explicit
+approval (`Approve DR-010d with the documented limits and commit`, 2026-11-20).
+The revised table uses the home ranking table's native Card, shared heading and default row spacing.
+Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-20 (six Dutch game rows).
+Player lint/build and two existing tests pass. Date sorting, conditional columns, empty state and table-local
+scroll bounds pass. The unchecked browser limits remain in the brief.
+Next: confirm the mounted simulation controls and scope them as a separate DR-010 child. Keep the parent open;
+do not reopen completed children.
+
+### Previous focus: Ranking breakdown filters and view toggles (DR-010c)
+
 DR-010c [Ranking breakdown filters and view toggles](work-items/DR-010c-ranking-breakdown-filters.md) is Done with
 explicit approval (`Approve DR-010c with the documented limits and commit`, 2026-11-20).
 Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-20.
@@ -3147,6 +3158,7 @@ and linked from their registry rows.
 | [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)     | Ranking breakdown header                                                     | Done        |
 | [DR-010b](work-items/DR-010b-ranking-breakdown-period.md)       | Ranking breakdown period selection                                           | Done        |
 | [DR-010c](work-items/DR-010c-ranking-breakdown-filters.md)    | Ranking breakdown filters and view toggles                                   | Done    |
+| [DR-010d](work-items/DR-010d-ranking-breakdown-games-table.md) | Ranking breakdown games table                                                | Done |
 | DR-011                                                        | Player editing                                                               | Backlog     |
 | DR-012                                                        | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
@@ -3338,6 +3350,7 @@ and linked from their registry rows.
 | DR-067                                                        | Shared sync SplitButton dropdown accessible name                             | Backlog     |
 | DR-068                                                        | Competition editor option and save-message localization                      | Backlog     |
 | DR-069                                                        | Competition editor save-all invalid-form result handling                     | Backlog     |
+| DR-070                                                         | Keyboard access to ranking game details and average explanations             | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -3856,7 +3869,9 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header and DR-010b covers period selection.
-  DR-010c covers the filters and view toggles. Keep the games table and simulation separate.
+  DR-010c covers filters and view toggles; DR-010d covers the games table. Keep simulation separate.
+  DR-070 tracks the existing hover-only date details and average tooltips on this route; verify a keyboard
+  and touch alternative in a separate slice without changing ranking calculations or simulation.
   The shared preview reports aborted view transitions even on reload; revisit in route-level verification
   only if reproducible in a visible browser. No navigation failure was observed in DR-010c.
   Scope filters, game list, and ranking explanations/simulation as independent slices before implementation.

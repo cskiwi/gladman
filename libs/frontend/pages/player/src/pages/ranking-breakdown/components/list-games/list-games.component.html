@@ -40,7 +40,18 @@
 </ng-template>
 
 <ng-template #usedStatus let-used>
-  {{ (used ? 'all.common.yes' : 'all.common.no') | translate }}
+  <p-tag [severity]="used ? 'success' : 'danger'" [value]="(used ? 'all.common.yes' : 'all.common.no') | translate" />
+</ng-template>
+
+<ng-template #playerWithLevel let-name let-level="level">
+  <span class="flex items-center gap-2">
+    {{ name ?? 'Unknown' }}
+    @if (level !== null && level !== undefined) {
+      <app-tier-badge [level]="level" size="sm" />
+    } @else {
+      <span class="text-muted-color">(?)</span>
+    }
+  </span>
 </ng-template>
 
 <ng-template #average let-value let-qualifies="qualifies" let-highest="highest" let-danger="danger">
@@ -172,20 +183,27 @@
         }
       </td>
       <td class="whitespace-nowrap">
-        <div class="flex flex-col">
-          @for (player of game.team; track player.gamePlayer?.id) {
-            <span>{{ player.gamePlayer?.fullName ?? 'Unknown' }} ({{ player[type()] ?? '?' }})</span>
+        <div class="flex flex-col gap-1">
+          @for (player of game.team; track player?.gamePlayer?.id ?? $index) {
+            <ng-container *ngTemplateOutlet="playerWithLevel; context: { $implicit: player?.gamePlayer?.fullName, level: player?.[type()] }" />
           }
         </div>
       </td>
       <td class="whitespace-nowrap">
-        <div class="flex flex-col">
-          @for (player of game.opponent; track player.gamePlayer?.id) {
-            <span>{{ player.gamePlayer?.fullName ?? 'Unknown' }} ({{ player[type()] ?? '?' }})</span>
+        <div class="flex flex-col gap-1">
+          @for (player of game.opponent; track player?.gamePlayer?.id ?? $index) {
+            <ng-container *ngTemplateOutlet="playerWithLevel; context: { $implicit: player?.gamePlayer?.fullName, level: player?.[type()] }" />
           }
         </div>
       </td>
-      <td class="text-right">{{ game.points > 0 ? '+' : '' }}{{ game.points }}</td>
+      <td class="text-right">
+        @let points = game.points;
+        @if (points) {
+          <p-tag [severity]="points > 0 ? 'success' : 'danger'" [value]="(points > 0 ? '+' : '') + points" />
+        } @else {
+          {{ points }}
+        }
+      </td>
       @if (enableToggleLatestX()) {
         <td class="text-center">
           <p-checkbox [binary]="true" [ngModel]="game.inLatestX" (onChange)="toggleLatestX(game)" />

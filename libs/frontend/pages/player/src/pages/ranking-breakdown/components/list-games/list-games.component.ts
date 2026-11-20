@@ -6,6 +6,7 @@ import { RankingLastPlace, RankingSystem } from '@app/models';
 import type { GamePlayerMembership, RankingPoint } from '@app/models';
 import { GameBreakdownType, GetGameResultType } from '@app/utils/comp';
 import { GameType } from '@app/models-enum';
+import { TierBadgeComponent } from '@app/frontend-components/tier-badge';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
@@ -40,6 +41,7 @@ dayjs.extend(isSameOrAfter);
     TranslateModule,
     TableModule,
     TagModule,
+    TierBadgeComponent,
     BadgeModule,
     ButtonModule,
     AutoCompleteModule,

@@ -73,4 +73,18 @@ alternate locales, full screenshot matrix and SSR/hydration remain unverified.
 
 Next: confirm the mounted simulation controls and scope a separate DR-010 child. Keep the parent open.
 
+## Cell presentation follow-up
+
+The user asked to restore visual distinctions for points and promotion usage after approving the table layout.
+Nonzero points use signed native Tags with success or danger severity; zero stays plain text. Promotion and degradation use
+translated Yes/No Tags. Team and opponent cells reuse the recent-games tier badge for the selected discipline;
+missing levels still show `(?)`. The Card, columns, calculations and simulation behavior are unchanged.
+
+The focused Nx command above passed again (19 lint warnings, zero errors; two tests passed). The mounted Dutch
+Singles sample showed two tier badges per row, five untagged zero values, and a tagged `+313`. Including unused
+games exposed both `Ja` and `Nee` tags. At 390px in both themes the table retained local horizontal scroll.
+Negative points and missing levels were not represented in the browser sample.
+The user approved committing the follow-up on 2026-11-20 (`That's it, commit`).
+Workspace lint again failed on the unrelated NestJS version specifiers noted above.
+
 [table]: ../../../libs/frontend/pages/player/src/pages/ranking-breakdown/components/list-games/list-games.component.html

@@ -5,6 +5,19 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-010b [Ranking breakdown period selection](work-items/DR-010b-ranking-breakdown-period.md) is Done with explicit
+approval (`Approve DR-010b with the documented limits and commit`, 2026-11-20).
+Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-20.
+The calendar uses a native Dialog and DatePicker; presets remain in the native Menu. Both triggers are translated.
+Player lint/build and two focused tests pass. After the preview was restored, all five date changes updated the
+display and URL; both overlays fit at 390px/1440px in light/dark and restore focus on Escape.
+Full keyboard traversal, visible focus, contrast and the other limits in the brief remain unverified.
+Workspace lint still fails on ten unrelated dependency-version checks; focused player lint passes.
+Exact next action: confirm the mounted ranking filters and scope a separate DR-010 child for filters/view toggles.
+Keep DR-010 open; do not reopen the header or period controls or start the games table.
+
+### Previous focus: Ranking breakdown header (DR-010a)
+
 DR-010a [Player ranking breakdown header](work-items/DR-010a-ranking-breakdown-header.md) is Done with explicit
 approval (`Approve DR-010a with the documented limits and commit`, 2026-11-20).
 The mounted Dutch route `/players/glenn-latomme/ranking/single` shows normal ranking-system context below the
@@ -3120,6 +3133,7 @@ and linked from their registry rows.
 | DR-009                                                        | Player head-to-head                                                          | Backlog     |
 | DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
 | [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)     | Ranking breakdown header                                                     | Done        |
+| [DR-010b](work-items/DR-010b-ranking-breakdown-period.md)       | Ranking breakdown period selection                                           | Done        |
 | DR-011                                                        | Player editing                                                               | Backlog     |
 | DR-012                                                        | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
@@ -3828,10 +3842,8 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   player-detail links resolve correctly and keyboard activation passes. Scope a separate destination fix using the
   player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
-- DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header only. Scope remaining period selection,
-  filters, game list, and ranking explanations/simulation as independent slices before implementation.
-  The existing period calendar and overflow icon buttons have no accessible names in the Dutch route snapshot;
-  include those labels when scoping the period slice.
+- DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header and DR-010b covers period selection.
+  Scope filters, game list, and ranking explanations/simulation as independent slices before implementation.
 - DR-011: `/players/:playerId/edit`. Include profile, claims, and ranking forms; split by form when needed.
 - Preserve player identity links, filters, calculations, permissions, and translated labels.
 

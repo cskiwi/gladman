@@ -1117,6 +1117,8 @@ export type I18nTranslations = {
                 "outOfScopeUpgrade": string;
                 "outOfScopeWonGames": string;
                 "period": {
+                    "choose-end-date": string;
+                    "presets": string;
                     "last-point-update": string;
                     "last-ranking-update": string;
                     "next-point-update": string;

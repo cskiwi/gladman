@@ -1,23 +1,23 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import dayjs, { Dayjs } from 'dayjs';
 import { startWith } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
+import { DialogModule } from 'primeng/dialog';
 import { MenuModule } from 'primeng/menu';
-import { TooltipModule } from 'primeng/tooltip';
 import { RankingBreakdownService } from '../../page-ranking-breakdown.service';
 import { RankingSystem } from '@app/models';
 import { DayjsFormatPipe } from '@app/frontend-utils/dayjs/fmt';
-import { GetRankingPeriods } from '@app/utils/comp';
 
 @Component({
   selector: 'app-period-selection',
   templateUrl: './period-selection.component.html',
-  styleUrl: './period-selection.component.scss',
-  imports: [ReactiveFormsModule, TranslateModule, ButtonModule, DatePickerModule, MenuModule, TooltipModule, DayjsFormatPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block' },
+  imports: [FormsModule, TranslateModule, ButtonModule, DatePickerModule, DialogModule, MenuModule, DayjsFormatPipe],
 })
 export class PeriodSelectionComponent {
   private readonly breakdownService = inject(RankingBreakdownService);
@@ -26,48 +26,11 @@ export class PeriodSelectionComponent {
   filter = this.breakdownService.filter;
   private filterSignal = toSignal(this.filter.valueChanges.pipe(startWith(this.filter.value)));
 
-  viewingDate = signal(dayjs());
-
   start = computed(() => this.filterSignal()?.start as Dayjs | null);
   end = computed(() => this.filterSignal()?.end as Dayjs | null);
 
-  updates = computed(() => {
-    const sys = this.system();
-    const viewing = this.viewingDate();
-    if (!sys || !viewing) {
-      return [];
-    }
-
-    try {
-      return GetRankingPeriods(sys, viewing.startOf('month').subtract(1, 'day'), viewing.endOf('month').add(1, 'day'));
-    } catch {
-      return [];
-    }
-  });
-
-  highlightedDates = computed(() => {
-    return this.updates().map((u: { date: Dayjs; updatePossible: boolean }) => u.date.toDate());
-  });
-
-  quickActionItems = computed(() => [
-    {
-      label: 'all.ranking.breakdown.period.last-point-update',
-      command: () => this.lastPointUpdate(),
-    },
-    {
-      label: 'all.ranking.breakdown.period.last-ranking-update',
-      command: () => this.lastRankingUpdate(),
-    },
-    { separator: true },
-    {
-      label: 'all.ranking.breakdown.period.next-point-update',
-      command: () => this.nextPointUpdate(),
-    },
-    {
-      label: 'all.ranking.breakdown.period.next-ranking-update',
-      command: () => this.nextRankingUpdate(),
-    },
-  ]);
+  selectedDate = computed(() => this.end()?.toDate() ?? null);
+  calendarVisible = signal(false);
 
   lastPointUpdate() {
     this.customPeriod(dayjs(this.system().calculationLastUpdate));
@@ -89,14 +52,7 @@ export class PeriodSelectionComponent {
 
   onDateSelect(date: Date) {
     this.customPeriod(dayjs(date));
-  }
-
-  onMonthChange(event: { month: number; year: number }) {
-    this.viewingDate.set(
-      dayjs()
-        .month(event.month - 1)
-        .year(event.year),
-    );
+    this.calendarVisible.set(false);
   }
 
   customPeriod(targetDate: Dayjs | null) {
@@ -116,19 +72,5 @@ export class PeriodSelectionComponent {
       game: gamePeriod,
       next: nextPeriod,
     });
-  }
-
-  isHighlighted(date: { day: number; month: number; year: number }): boolean {
-    const checkDate = dayjs().year(date.year).month(date.month).date(date.day);
-    return this.updates().some((u: { date: Dayjs; updatePossible: boolean }) => u.date.isSame(checkDate, 'day'));
-  }
-
-  getDateClass(date: { day: number; month: number; year: number }): string {
-    const checkDate = dayjs().year(date.year).month(date.month).date(date.day);
-    const update = this.updates().find((u: { date: Dayjs; updatePossible: boolean }) => u.date.isSame(checkDate, 'day'));
-    if (update) {
-      return update.updatePossible ? 'ranking-update-date' : 'point-update-date';
-    }
-    return '';
   }
 }

@@ -1110,6 +1110,8 @@
       "outOfScopeUpgrade": "Pas de possibilité de promotion",
       "outOfScopeWonGames": "Matchs gagnés non utilisés",
       "period": {
+        "choose-end-date": "Choisir la date de fin de la période",
+        "presets": "Périodes prédéfinies",
         "last-point-update": "Mise à jour des points précédents",
         "last-ranking-update": "Mise à jour des classements antérieurs",
         "next-point-update": "Prochaine mise à jour des points",

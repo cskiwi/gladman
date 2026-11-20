@@ -1110,6 +1110,8 @@
       "outOfScopeUpgrade": "Buiten scope voor promotie",
       "outOfScopeWonGames": "Niet gebruikte gewonnen wedstrijden",
       "period": {
+        "choose-end-date": "Kies de einddatum van de periode",
+        "presets": "Vaste periodes",
         "last-point-update": "Afgelopen punten update",
         "last-ranking-update": "Afgelopen klassementen update",
         "next-point-update": "Volgende punten update",

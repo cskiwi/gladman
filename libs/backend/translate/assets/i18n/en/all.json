@@ -1110,6 +1110,8 @@
       "outOfScopeUpgrade": "Out of scope for promotion",
       "outOfScopeWonGames": "Unused matches won",
       "period": {
+        "choose-end-date": "Choose period end date",
+        "presets": "Period presets",
         "last-point-update": "Past points update",
         "last-ranking-update": "Past rankings update",
         "next-point-update": "Next points update",

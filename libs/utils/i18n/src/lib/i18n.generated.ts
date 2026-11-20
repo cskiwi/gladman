@@ -1064,6 +1064,7 @@ export type I18nTranslations = {
                 "downgrade-average": string;
                 "drops-next-period": string;
                 "enable-remove-games": string;
+                "game-details": string;
                 "enable-toggle-latest-x": string;
                 "evolution": string;
                 "export": {

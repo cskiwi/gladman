@@ -5,6 +5,16 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-070a [Ranking game date details](work-items/DR-070a-ranking-game-date-details.md) is Done with explicit
+approval (`Approve DR-070a with the documented limits and commit`, 2026-11-20).
+Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-20.
+Dates open an anchored Popover on hover or activation, with a compact date subtitle.
+Dutch Singles hover, keyboard/mouse and light/dark bounds passed. Player lint/build and two existing tests passed.
+Touch, contrast, other fixtures, locales and SSR/hydration remain unverified; workspace lint still fails in ten projects.
+Next: confirm the mounted average explanations and scope DR-070b. DR-070 remains open; DR-071 is separate.
+
+### Previous focus: Ranking breakdown parent reconciliation (DR-010)
+
 DR-010 [Player ranking breakdown](work-items/DR-010-ranking-breakdown.md) is Done with explicit approval
 (`Approve DR-010 with the documented limits and commit`, 2026-11-20). DR-010a-g are Done with their recorded limits.
 The Dutch Singles route renders the refreshed sections together. No new visual matrix or Nx run; no application changes.
@@ -3167,7 +3177,7 @@ areas into child items before starting them. Briefs are created on demand from t
 and linked from their registry rows.
 
 | ID                                                            | Area                                                                         | Status      |
-| ------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------- |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------- |
 | [DR-001][baseline]                                            | Theme and design baseline                                                    | Done        |
 | [DR-002][pilot]                                               | Home page pilot                                                              | Done        |
 | [DR-003][shell-work-item]                                     | App shell, navigation, search, and layouts                                   | Done        |
@@ -3394,7 +3404,9 @@ and linked from their registry rows.
 | DR-067                                                        | Shared sync SplitButton dropdown accessible name                             | Backlog     |
 | DR-068                                                        | Competition editor option and save-message localization                      | Backlog     |
 | DR-069                                                        | Competition editor save-all invalid-form result handling                     | Backlog     |
-| DR-070                                                         | Keyboard access to ranking game details and average explanations             | Backlog |
+| DR-070                                                                | Keyboard and touch access to ranking game details and average explanations   | In progress |
+| [DR-070a](work-items/DR-070a-ranking-game-date-details.md) | Ranking game date details                                                      | Done        |
+| DR-070b                                                               | Ranking table average explanations                                           | Backlog     |
 | DR-071                                                                | Accessible names for ranking simulation dialog level stepper buttons         | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
@@ -3917,8 +3929,8 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   DR-010c covers filters and view toggles; DR-010d covers the games table. DR-010e covers only the Add simulated
   game dialog. DR-010f covers the simulation toolbar and settings popover. DR-010g covers simulation row actions.
   The parent reconciliation records the mounted route and approval limits; DR-010a-g are Done.
-  DR-070 tracks the existing hover-only date details and average tooltips. Start with keyboard and touch access
-  to date details without changing ranking calculations or simulation; leave average explanations for a separate slice.
+  DR-070a preserves hover and adds an activation path for date details, without changing ranking or simulation.
+  DR-070b separately tracks keyboard and touch access to the unchanged average tooltips.
   DR-071 tracks the dialog's existing unnamed InputNumber stepper buttons. Keep any fix local to the dialog.
   Neither follow-up is a parent closure dependency. The shared preview still reports an aborted view transition
   on navigation, but the route renders; do not treat this smoke check as SSR/hydration verification.

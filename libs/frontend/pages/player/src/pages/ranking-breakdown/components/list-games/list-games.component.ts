@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, linkedSignal, signal, untracked, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, input, linkedSignal, signal, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RankingLastPlace, RankingSystem } from '@app/models';
@@ -68,10 +68,8 @@ export class ListGamesComponent {
   loading = this.breakdownService.loading;
   filter = this.breakdownService.filter;
   private filterSignal = toSignal(this.filter.valueChanges.pipe(startWith(this.filter.value)));
-
-  readonly gameInfoPopover = viewChild<Popover>('gameInfoPopover');
-  hoveredGame = signal<GameBreakdown | null>(null);
-  private hideTimeout: ReturnType<typeof setTimeout> | null = null;
+  private activeGameDetails?: { popover: Popover; interactive: boolean };
+  private gameDetailsCloseTimer?: ReturnType<typeof setTimeout>;
 
   showUpgrade = this.breakdownService.showUpgrade;
   showDowngrade = this.breakdownService.showDowngrade;
@@ -297,6 +295,7 @@ export class ListGamesComponent {
   outOfScopeLatestXGames = computed(() => this.currGames().filter((x) => !x.inLatestX && x.type !== GameBreakdownType.LOST_IGNORED).length);
 
   constructor() {
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.gameDetailsCloseTimer));
     this.wonOptions = [
       { label: this.translateService.instant('all.ranking.breakdown.add-game.won'), value: true },
       { label: this.translateService.instant('all.ranking.breakdown.add-game.lost'), value: false },
@@ -772,25 +771,63 @@ export class ListGamesComponent {
     return tooltip;
   }
 
-  showGameInfo(event: Event, game: GameBreakdown) {
-    if (this.hideTimeout) {
-      clearTimeout(this.hideTimeout);
-      this.hideTimeout = null;
+  hasGameDetails(game: GameBreakdown): boolean {
+    return !!(
+      game.tournamentDraw?.name ||
+      game.competitionEncounter?.drawCompetition?.name ||
+      game.tournamentDraw?.tournamentSubEvent?.tournamentEvent?.name ||
+      game.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.name ||
+      this.hasScores(game)
+    );
+  }
+
+  previewGameDetails(event: PointerEvent, popover: Popover): void {
+    if (event.pointerType !== 'mouse') return;
+    const active = this.activeGameDetails;
+    if (active?.popover.overlayVisible() && active.interactive) return;
+
+    this.keepGameDetailsOpen(popover);
+    if (popover.overlayVisible()) return;
+
+    active?.popover.hide();
+    this.activeGameDetails = { popover, interactive: false };
+    popover.show(event);
+  }
+
+  activateGameDetails(event: MouseEvent, popover: Popover): void {
+    const active = this.activeGameDetails;
+    clearTimeout(this.gameDetailsCloseTimer);
+    if (active?.popover === popover && popover.overlayVisible()) {
+      if (active.interactive) {
+        popover.hide();
+      } else {
+        active.interactive = true;
+        this.focusGameDetails(popover);
+      }
+      return;
     }
-    const popover = this.gameInfoPopover();
-    if (popover) {
-      popover.hide();
-      this.hoveredGame.set(game);
-      // Small delay so the popover can reposition to the new target
-      setTimeout(() => popover.show(event), 0);
+
+    active?.popover.hide();
+    this.activeGameDetails = { popover, interactive: true };
+    popover.show(event);
+  }
+
+  focusGameDetails(popover: Popover): void {
+    if (this.activeGameDetails?.popover === popover && this.activeGameDetails.interactive) {
+      popover.container?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
     }
   }
 
-  hideGameInfo() {
-    this.hideTimeout = setTimeout(() => {
-      this.gameInfoPopover()?.hide();
-      this.hoveredGame.set(null);
-    }, 150);
+  keepGameDetailsOpen(popover: Popover): void {
+    if (this.activeGameDetails?.popover === popover) clearTimeout(this.gameDetailsCloseTimer);
+  }
+
+  scheduleGameDetailsClose(popover: Popover): void {
+    const active = this.activeGameDetails;
+    if (active?.popover !== popover || active.interactive) return;
+    this.keepGameDetailsOpen(popover);
+    // Leave time to cross the gap between the trigger and the popover.
+    this.gameDetailsCloseTimer = setTimeout(() => popover.hide(), 250);
   }
 
   isSetPlayed(team1Score: number | undefined, team2Score: number | undefined): boolean {

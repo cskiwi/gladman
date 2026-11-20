@@ -183,12 +183,7 @@
           />
         }
       </td>
-      <td
-        class="whitespace-nowrap"
-        [class.cursor-help]="!game.simulated"
-        (mouseenter)="!game.simulated && showGameInfo($event, game)"
-        (mouseleave)="!game.simulated && hideGameInfo()"
-      >
+      <td class="whitespace-nowrap">
         @if (game.simulated) {
           <span
             class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-xs font-medium dark:bg-blue-900 dark:text-blue-300"
@@ -197,7 +192,66 @@
             {{ 'all.ranking.breakdown.add-game.simulated' | translate }}
           </span>
         } @else {
-          <span [id]="'ranking-game-date-' + game.id">{{ game.playedAt | dayjsFormat: 'DD MMM YYYY HH:mm' }}</span>
+          @let dateId = 'ranking-game-date-' + game.id;
+          @let date = game.playedAt | dayjsFormat: 'DD MMM YYYY HH:mm';
+          @if (hasGameDetails(game)) {
+            @let detailsId = 'ranking-game-details-' + game.id;
+            <button
+              #dateTrigger
+              pButton
+              type="button"
+              size="small"
+              variant="text"
+              aria-haspopup="dialog"
+              [attr.aria-expanded]="gameDetailsPopover.overlayVisible()"
+              [attr.aria-controls]="gameDetailsPopover.overlayVisible() ? detailsId : null"
+              [attr.aria-labelledby]="'ranking-date-details-label ' + rowContext"
+              (pointerenter)="previewGameDetails($event, gameDetailsPopover)"
+              (pointerleave)="scheduleGameDetailsClose(gameDetailsPopover)"
+              (click)="activateGameDetails($event, gameDetailsPopover)"
+            >
+              <i class="pi pi-info-circle" aria-hidden="true"></i>
+              <span [id]="dateId" pButtonLabel>{{ date }}</span>
+            </button>
+            <p-popover
+              #gameDetailsPopover
+              appendTo="body"
+              [ariaLabelledBy]="detailsId + '-title'"
+              [focusOnShow]="false"
+              styleClass="max-w-3xs"
+              (onShow)="focusGameDetails(gameDetailsPopover)"
+            >
+              <section
+                [id]="detailsId"
+                class="flex flex-col gap-2 whitespace-normal"
+                pFocusTrap
+                (pointerenter)="keepGameDetailsOpen(gameDetailsPopover)"
+                (pointerleave)="scheduleGameDetailsClose(gameDetailsPopover)"
+                (keydown.escape)="dateTrigger.focus()"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex flex-col">
+                    <h3 [id]="detailsId + '-title'" class="m-0 font-semibold">{{ 'all.ranking.breakdown.game-details' | translate }}</h3>
+                    <span class="text-sm text-muted-color">{{ date }}</span>
+                  </div>
+                  <button
+                    pButton
+                    type="button"
+                    size="small"
+                    variant="text"
+                    severity="secondary"
+                    [attr.aria-label]="'all.button.close' | translate"
+                    (click)="gameDetailsPopover.hide(); dateTrigger.focus()"
+                  >
+                    <i class="pi pi-times" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <ng-container *ngTemplateOutlet="gameDetails; context: { $implicit: game }" />
+              </section>
+            </p-popover>
+          } @else {
+            <span [id]="dateId">{{ date }}</span>
+          }
         }
       </td>
       <td class="whitespace-nowrap">
@@ -282,83 +336,65 @@
   </div>
 </p-popover>
 
-<p-popover #gameInfoPopover [style]="{ 'pointer-events': 'none' }">
-  @if (hoveredGame(); as game) {
-    <div class="flex flex-col gap-2 min-w-48 max-w-84">
-      <!-- Draw / Home vs Away -->
-      @if (game.tournamentDraw?.name) {
-        <div class="flex items-center gap-2 text-sm font-medium text-color">
-          <i class="pi pi-sitemap"></i>
-          <span>{{ game.tournamentDraw.name }}</span>
-        </div>
-      } @else if (game.competitionEncounter?.drawCompetition?.name) {
-        <div class="flex flex-col gap-1">
-          @if (game.competitionEncounter.homeTeam && game.competitionEncounter.awayTeam) {
-            <div class="flex items-center gap-2 text-sm font-medium text-color">
-              <i class="pi pi-users"></i>
-              <span>{{ game.competitionEncounter.homeTeam.name ?? game.competitionEncounter.homeTeam.abbreviation }}</span>
-              <span class="text-muted-color">vs</span>
-              <span>{{ game.competitionEncounter.awayTeam.name ?? game.competitionEncounter.awayTeam.abbreviation }}</span>
-            </div>
-          }
-          <div class="flex items-center gap-2 text-xs text-muted-color">
-            <i class="pi pi-sitemap"></i>
-            <span>{{ game.competitionEncounter.drawCompetition.name }}</span>
-          </div>
+<span id="ranking-date-details-label" hidden>{{ 'all.ranking.breakdown.game-details' | translate }}</span>
+<ng-template #gameDetails let-game>
+  @if (game.tournamentDraw?.name) {
+    <div class="flex items-center gap-2 text-sm font-medium text-color">
+      <i class="pi pi-sitemap" aria-hidden="true"></i>
+      <span>{{ game.tournamentDraw.name }}</span>
+    </div>
+  } @else if (game.competitionEncounter?.drawCompetition?.name) {
+    <div class="flex flex-col gap-1">
+      @if (game.competitionEncounter.homeTeam && game.competitionEncounter.awayTeam) {
+        <div class="flex items-baseline gap-2 text-sm font-medium text-color">
+          <i class="pi pi-users" aria-hidden="true"></i>
+          <span>
+            {{ game.competitionEncounter.homeTeam.name ?? game.competitionEncounter.homeTeam.abbreviation }}
+            <span class="text-muted-color">vs</span>
+            {{ game.competitionEncounter.awayTeam.name ?? game.competitionEncounter.awayTeam.abbreviation }}
+          </span>
         </div>
       }
+      <div class="flex items-center gap-2 text-xs text-muted-color">
+        <i class="pi pi-sitemap" aria-hidden="true"></i>
+        <span>{{ game.competitionEncounter.drawCompetition.name }}</span>
+      </div>
+    </div>
+  }
 
-      <!-- Event name -->
-      @if (game.tournamentDraw?.tournamentSubEvent?.tournamentEvent?.name) {
-        <div class="flex items-center gap-2 text-xs text-muted-color">
-          <i class="pi pi-map-marker"></i>
-          <span>{{ game.tournamentDraw.tournamentSubEvent.tournamentEvent.name }}</span>
-        </div>
-      } @else if (game.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.name) {
-        <div class="flex items-center gap-2 text-xs text-muted-color">
-          <i class="pi pi-map-marker"></i>
-          <span>{{ game.competitionEncounter.drawCompetition.competitionSubEvent.competitionEvent.name }}</span>
-        </div>
+  @if (game.tournamentDraw?.tournamentSubEvent?.tournamentEvent?.name) {
+    <div class="flex items-center gap-2 text-xs text-muted-color">
+      <i class="pi pi-map-marker" aria-hidden="true"></i>
+      <span>{{ game.tournamentDraw.tournamentSubEvent.tournamentEvent.name }}</span>
+    </div>
+  } @else if (game.competitionEncounter?.drawCompetition?.competitionSubEvent?.competitionEvent?.name) {
+    <div class="flex items-center gap-2 text-xs text-muted-color">
+      <i class="pi pi-map-marker" aria-hidden="true"></i>
+      <span>{{ game.competitionEncounter.drawCompetition.competitionSubEvent.competitionEvent.name }}</span>
+    </div>
+  }
+
+  @if (hasScores(game)) {
+    <div class="flex flex-wrap items-center gap-2 tabular-nums">
+      <i class="pi pi-trophy text-sm" aria-hidden="true"></i>
+      <ng-container *ngTemplateOutlet="setScore; context: { $implicit: 1 }" />
+      @if (isSetPlayed(game.set2Team1, game.set2Team2)) {
+        <ng-container *ngTemplateOutlet="setScore; context: { $implicit: 2 }" />
       }
-
-      <!-- Score -->
-      @if (hasScores(game)) {
-        <div class="flex items-center gap-2 text-sm">
-          <i class="pi pi-trophy text-xs"></i>
-          <div class="flex items-center gap-1 tabular-nums">
-            @if (isSetPlayed(game.set1Team1, game.set1Team2)) {
-              <span class="px-1 rounded"
-                ><span
-                  [class.text-green-500]="getPlayerSetScore(game, 1) > getOpponentSetScore(game, 1)"
-                  [class.text-red-500]="getPlayerSetScore(game, 1) < getOpponentSetScore(game, 1)"
-                  >{{ getPlayerSetScore(game, 1) }}</span
-                >-{{ getOpponentSetScore(game, 1) }}</span
-              >
-            }
-            @if (isSetPlayed(game.set2Team1, game.set2Team2)) {
-              <span class="px-1 rounded"
-                ><span
-                  [class.text-green-500]="getPlayerSetScore(game, 2) > getOpponentSetScore(game, 2)"
-                  [class.text-red-500]="getPlayerSetScore(game, 2) < getOpponentSetScore(game, 2)"
-                  >{{ getPlayerSetScore(game, 2) }}</span
-                >-{{ getOpponentSetScore(game, 2) }}</span
-              >
-            }
-            @if (isSetPlayed(game.set3Team1, game.set3Team2)) {
-              <span class="px-1 rounded"
-                ><span
-                  [class.text-green-500]="getPlayerSetScore(game, 3) > getOpponentSetScore(game, 3)"
-                  [class.text-red-500]="getPlayerSetScore(game, 3) < getOpponentSetScore(game, 3)"
-                  >{{ getPlayerSetScore(game, 3) }}</span
-                >-{{ getOpponentSetScore(game, 3) }}</span
-              >
-            }
-          </div>
-        </div>
+      @if (isSetPlayed(game.set3Team1, game.set3Team2)) {
+        <ng-container *ngTemplateOutlet="setScore; context: { $implicit: 3 }" />
       }
     </div>
   }
-</p-popover>
+  <ng-template #setScore let-set>
+    @let playerScore = getPlayerSetScore(game, set);
+    @let opponentScore = getOpponentSetScore(game, set);
+    <p-tag
+      [severity]="playerScore > opponentScore ? 'success' : playerScore < opponentScore ? 'danger' : 'secondary'"
+      [value]="playerScore + '-' + opponentScore"
+    />
+  </ng-template>
+</ng-template>
 
 <p-dialog
   [header]="'all.ranking.breakdown.add-game.title' | translate"

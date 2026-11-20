@@ -5,6 +5,18 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-010c [Ranking breakdown filters and view toggles](work-items/DR-010c-ranking-breakdown-filters.md) is Done with
+explicit approval (`Approve DR-010c with the documented limits and commit`, 2026-11-20).
+Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-20.
+One native Card contains two named groups of compact toggles. Player lint/build and two existing tests pass.
+Dutch light/dark bounds fit at 390px/1440px. All six toggles change the URL and restore on reload.
+Keyboard tab order, visible focus, and representative row/column changes were observed.
+The unchecked limits remain in the brief. Workspace lint still fails on ten unrelated dependency-version checks.
+Exact next action: confirm the mounted games table and scope a separate DR-010 child; do not include simulation.
+Keep DR-010 open; do not reopen the header, period controls, filters, or view toggles.
+
+### Previous focus: Ranking breakdown period selection (DR-010b)
+
 DR-010b [Ranking breakdown period selection](work-items/DR-010b-ranking-breakdown-period.md) is Done with explicit
 approval (`Approve DR-010b with the documented limits and commit`, 2026-11-20).
 Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-20.
@@ -3103,7 +3115,7 @@ areas into child items before starting them. Briefs are created on demand from t
 and linked from their registry rows.
 
 | ID                                                            | Area                                                                         | Status      |
-| ------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------- |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------- |
 | [DR-001][baseline]                                            | Theme and design baseline                                                    | Done        |
 | [DR-002][pilot]                                               | Home page pilot                                                              | Done        |
 | [DR-003][shell-work-item]                                     | App shell, navigation, search, and layouts                                   | Done        |
@@ -3134,6 +3146,7 @@ and linked from their registry rows.
 | DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
 | [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)     | Ranking breakdown header                                                     | Done        |
 | [DR-010b](work-items/DR-010b-ranking-breakdown-period.md)       | Ranking breakdown period selection                                           | Done        |
+| [DR-010c](work-items/DR-010c-ranking-breakdown-filters.md)    | Ranking breakdown filters and view toggles                                   | Done    |
 | DR-011                                                        | Player editing                                                               | Backlog     |
 | DR-012                                                        | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
@@ -3843,6 +3856,9 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header and DR-010b covers period selection.
+  DR-010c covers the filters and view toggles. Keep the games table and simulation separate.
+  The shared preview reports aborted view transitions even on reload; revisit in route-level verification
+  only if reproducible in a visible browser. No navigation failure was observed in DR-010c.
   Scope filters, game list, and ranking explanations/simulation as independent slices before implementation.
 - DR-011: `/players/:playerId/edit`. Include profile, claims, and ranking forms; split by form when needed.
 - Preserve player identity links, filters, calculations, permissions, and translated labels.

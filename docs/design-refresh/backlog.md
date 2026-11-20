@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-018 [Competition editing](work-items/DR-018-competition-editing.md) is Done after integrated parent checks and explicit
+approval (`Approve DR-018 and commit with disclosed limits`, 2026-11-16).
+All required children DR-018a/b/c/d/e remain Done with their recorded approvals and verification limits.
+Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, 2026-11-16.
+Scope: assembled tabs, responsive layout, labels, permissions, navigation and non-mutating interaction checks.
+Do not redesign completed children, run live saves, change shared styling or start DR-069.
+Existing page/form separation remains sufficient; no additional smart/presentational extraction is justified.
+All 18 focused tests pass across four suites. Twelve Dutch theme/width/tab DOM cases fit at 390px/1440px:
+six information, seven date and five settings controls are labelled, with no duplicate IDs or control overflow.
+Native tab/panel associations, dirty-value preservation, validation descriptions, busy/error recovery and
+disabled-state browser fixtures pass. Native DOM Cancel returns the pristine editor to competition detail.
+Dark-wide information screenshot inspected; light-narrow settings capture is partial in a larger blank canvas.
+One physical ArrowRight/Enter attempt moves focus/state from information to dates; full keyboard/pointer,
+native navigator/calendar/overlay, screenshot matrix, contrast/accessibility and animation exit remain unverified.
+Alternate locales, operational save-all/persistence and full SSR/hydration remain unverified.
+No browser save/mutation method activated; original values/state, dark theme and viewport restored.
+This invocation changes only parent handoff documents. Existing DR-043/058/066/068/069 remain separate.
+Approval accepts those limits without marking unperformed checks as passed; unchecked criteria remain in the brief.
+Exact next action: reconcile the open DR-021 parent against its completed enrollment children and deferred DR-021i.
+Do not start DR-021i, DR-069 or another implementation slice in this invocation.
+
+### Previous focus: Competition editor chrome and actions (DR-018e)
+
 DR-018e [Competition editor chrome and actions](work-items/DR-018e-competition-editor-chrome.md) is Done with explicit
 approval (`Approve DR-018e and commit with disclosed limits`, 2026-11-16).
 Confirmed mounted consumer: `/competition/pbo-competitie-2026-2027/edit`, 2026-11-16.
@@ -3126,7 +3149,7 @@ and linked from their registry rows.
 | [DR-017q](work-items/DR-017q-assembly-load-feedback.md)       | Assembly load-error and unselected feedback                                  | Done        |
 | [DR-017r](work-items/DR-017r-assembly-search-card-parity.md)  | Assembly change-team Card and responsive search parity                       | Done        |
 | DR-017s                                                       | Deferred authenticated assembly Save popup                                   | Backlog     |
-| [DR-018](work-items/DR-018-competition-editing.md)            | Competition editing                                                          | In progress |
+| [DR-018](work-items/DR-018-competition-editing.md)            | Competition editing                                                          | Done        |
 | [DR-018a](work-items/DR-018a-basic-information.md)            | Basic competition information                                                | Done        |
 | [DR-018b](work-items/DR-018b-location-contact.md)             | Location/contact information and tab feedback                                | Done        |
 | [DR-018b1](work-items/DR-018b1-country-state-selectors.md)    | Shared country/state selector integration                                    | Done        |

@@ -5,6 +5,19 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-010a [Player ranking breakdown header](work-items/DR-010a-ranking-breakdown-header.md) is Done with explicit
+approval (`Approve DR-010a with the documented limits and commit`, 2026-11-20).
+The mounted Dutch route `/players/glenn-latomme/ranking/single` shows normal ranking-system context below the
+title and a named game-type select. Header bounds fit in light and dark at 375px and 1440px; keyboard selection
+routes to Doubles. Player lint/build pass; its test target found no tests. Period controls, filters, match results,
+simulation and global styling are unchanged. DR-010 remains open.
+Visible keyboard focus, contrast and the other verification limits in the brief remain unverified.
+Precommit workspace lint failed on unrelated NestJS dependency specifiers; player lint passed.
+Exact next action: confirm the mounted period controls and scope a separate DR-010 child for period selection,
+including the unnamed calendar and overflow buttons. Do not reopen the header or change the shared theme.
+
+### Previous focus: Tournament enrollment and legacy typography inventory
+
 DR-021 [Tournament enrollment workflows](work-items/DR-021-tournament-enrollment.md) is Done with explicit
 approval (`commit`, 2026-11-20). The general enrollment route renders Dutch rankings, 30 events and the cart.
 All 61 focused tests pass across seven suites, including the retired-route assertions.
@@ -18,7 +31,7 @@ approval (`Approve DR-029a and commit`, 2026-11-20).
 The mounted player ranking breakdown (DR-010) uses `.t-eyebrow`. The deferred competition qualification branch
 also references it. Four other helpers have no tracked application references outside their definitions.
 Nothing was removed. The browser check was a mounted baseline, not a visual regression test.
-Exact next action: scope only the DR-010 ranking breakdown header; do not start global removal on that route.
+Recorded next action: scope only the DR-010 ranking breakdown header; do not start global removal on that route.
 
 ### Previous focus: Competition editor integrated review (DR-018)
 
@@ -3106,6 +3119,7 @@ and linked from their registry rows.
 | [DR-008c](work-items/DR-008c-player-page-chrome.md)           | Player detail page chrome (hero identity, actions copy, loading/error)       | Done        |
 | DR-009                                                        | Player head-to-head                                                          | Backlog     |
 | DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
+| [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)     | Ranking breakdown header                                                     | Done        |
 | DR-011                                                        | Player editing                                                               | Backlog     |
 | DR-012                                                        | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
@@ -3814,7 +3828,10 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   player-detail links resolve correctly and keyboard activation passes. Scope a separate destination fix using the
   player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
-- DR-010: `/players/:playerId/ranking/:type`. Include period selection, game lists, and ranking explanations.
+- DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header only. Scope remaining period selection,
+  filters, game list, and ranking explanations/simulation as independent slices before implementation.
+  The existing period calendar and overflow icon buttons have no accessible names in the Dutch route snapshot;
+  include those labels when scoping the period slice.
 - DR-011: `/players/:playerId/edit`. Include profile, claims, and ranking forms; split by form when needed.
 - Preserve player identity links, filters, calculations, permissions, and translated labels.
 
@@ -4022,8 +4039,9 @@ routes][admin-routes] and [sync routes][sync-routes].
 ## DR-029: final cleanup
 
 - Search all consumers before removing old gradients, `g-*`/`t-*` styling, custom tokens, or component overrides.
-- DR-029a inventories only global typography. Retain `.t-eyebrow` for DR-010 and the deferred DR-016 qualification
-  branch. Recheck the four unmatched typography helpers separately before any removal. This is not a pass for
+- DR-029a inventories only global typography. DR-010a removes the player usage; retain `.t-eyebrow` for the
+  deferred DR-016 qualification branch. Recheck the four unmatched typography helpers separately before any removal.
+  This is not a pass for
   the rest of the global stylesheet or the final regression matrix.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.

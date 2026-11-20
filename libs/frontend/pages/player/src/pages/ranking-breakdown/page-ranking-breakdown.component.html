@@ -1,7 +1,10 @@
 @if (systemLoaded() && system() && breakdownService.resolvedPlayerId()) {
   <app-breadcrumb
     [items]="[
-      { label: breakdownService.resolvedPlayer()?.fullName ?? '', routerLink: ['/', 'players', breakdownService.resolvedPlayer()?.slug ?? playerId()] },
+      {
+        label: breakdownService.resolvedPlayer()?.fullName ?? '',
+        routerLink: ['/', 'players', breakdownService.resolvedPlayer()?.slug ?? playerId()],
+      },
       { label: ('all.ranking.breakdown.pointsPerGame' | translate) },
     ]"
   />
@@ -9,12 +12,12 @@
   <!-- Hero -->
   <app-hero>
     <app-hero-avatar avatar>
-      <i class="pi pi-chart-bar"></i>
+      <i class="pi pi-chart-bar" aria-hidden="true"></i>
     </app-hero-avatar>
 
     <div identity>
-      <span class="t-eyebrow">{{ system().name }}</span>
       <app-hero-title>{{ 'all.ranking.breakdown.pointsPerGame' | translate }}</app-hero-title>
+      <p class="text-sm text-muted-color">{{ system().name }}</p>
     </div>
 
     <div actions class="flex items-center gap-2 flex-wrap justify-end">
@@ -24,7 +27,8 @@
         (onChange)="onGameTypeChange($event.value)"
         optionLabel="label"
         optionValue="value"
-        placeholder="{{ 'all.game.types.title' | translate }}"
+        [placeholder]="'all.games.gameType' | translate"
+        [ariaLabel]="'all.games.gameType' | translate"
         size="small"
       />
       <app-period-selection [system]="system()" />
@@ -94,12 +98,7 @@
 
   <!-- Games List Section -->
   <section class="bg-emphasis border border-surface rounded-border overflow-hidden">
-    <app-list-games
-      [system]="system()"
-      [player]="{ id: breakdownService.resolvedPlayerId()! }"
-      [rankingPlace]="rankingPlace()"
-      [type]="type()"
-    />
+    <app-list-games [system]="system()" [player]="{ id: breakdownService.resolvedPlayerId()! }" [rankingPlace]="rankingPlace()" [type]="type()" />
   </section>
 } @else {
   <!-- Loading State -->

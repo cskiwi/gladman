@@ -40,15 +40,93 @@
 </div>
 
 <ng-template #sortButton let-field let-label="label">
-  <button pButton type="button" size="small" severity="secondary" [text]="true" (click)="toggleSort(field)">
+  @let sortLabel = label | translate;
+  @let countColumn = field !== 'playedAt';
+  <button
+    pButton
+    type="button"
+    size="small"
+    severity="secondary"
+    [text]="true"
+    [attr.aria-label]="countColumn ? sortLabel + ' #' : null"
+    [pTooltip]="countColumn ? sortLabel + ' #' : ''"
+    (click)="toggleSort(field)"
+  >
     <span pButtonLabel class="whitespace-nowrap">
-      {{ label | translate }}
-      @if (field !== 'playedAt') {
-        #
-      }
+      {{ countColumn ? sortLabel.slice(0, 1) + '#' : sortLabel }}
     </span>
     <i pButtonIcon class="pi" [ngClass]="getSortIcon(field)" aria-hidden="true"></i>
   </button>
+</ng-template>
+
+<ng-template #averageExplanation let-game let-upgrade="upgrade" let-rowContext="rowContext">
+  @let value = upgrade ? game.avgUpgrade : game.avgDowngrade;
+  @if (typeof value === 'number') {
+    @let labelKey = upgrade ? 'all.ranking.breakdown.upgrade-average' : 'all.ranking.breakdown.downgrade-average';
+    @let explanationId = 'ranking-average-' + (upgrade ? 'upgrade-' : 'downgrade-') + game.id;
+    <button
+      #averageTrigger
+      pButton
+      type="button"
+      size="small"
+      variant="text"
+      aria-haspopup="dialog"
+      [attr.aria-expanded]="averagePopover.overlayVisible()"
+      [attr.aria-controls]="averagePopover.overlayVisible() ? explanationId : null"
+      [attr.aria-labelledby]="explanationId + '-label ' + explanationId + '-value ' + rowContext"
+      (pointerenter)="previewRowPopover($event, averagePopover)"
+      (pointerleave)="scheduleRowPopoverClose(averagePopover)"
+      (click)="activateRowPopover($event, averagePopover)"
+    >
+      <span [id]="explanationId + '-label'" hidden>{{ labelKey | translate }}</span>
+      <span [id]="explanationId + '-value'" class="whitespace-nowrap text-color">
+        <ng-container
+          *ngTemplateOutlet="
+            average;
+            context: {
+              $implicit: value,
+              qualifies: upgrade ? game.canUpgrade : game.canDowngrade,
+              highest: upgrade ? game.highestAvgUpgrade : game.highestAvgDowngrade,
+              danger: !upgrade,
+            }
+          "
+        />
+      </span>
+    </button>
+    <p-popover
+      #averagePopover
+      appendTo="body"
+      [ariaLabelledBy]="explanationId + '-title'"
+      [focusOnShow]="false"
+      styleClass="max-w-3xs"
+      (onShow)="focusRowPopover(averagePopover)"
+    >
+      <section
+        [id]="explanationId"
+        class="flex flex-col gap-2"
+        pFocusTrap
+        (pointerenter)="keepRowPopoverOpen(averagePopover)"
+        (pointerleave)="scheduleRowPopoverClose(averagePopover)"
+        (keydown.escape)="averageTrigger.focus()"
+      >
+        <div class="flex items-center justify-between gap-2">
+          <h3 [id]="explanationId + '-title'" class="m-0 font-semibold">{{ labelKey | translate }}</h3>
+          <button
+            pButton
+            type="button"
+            size="small"
+            variant="text"
+            severity="secondary"
+            [attr.aria-label]="'all.button.close' | translate"
+            (click)="averagePopover.hide(); averageTrigger.focus()"
+          >
+            <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="whitespace-pre-line">{{ getAverageExplanation(game, upgrade) }}</div>
+      </section>
+    </p-popover>
+  }
 </ng-template>
 
 <ng-template #usedStatus let-used>
@@ -68,13 +146,11 @@
 
 <ng-template #average let-value let-qualifies="qualifies" let-highest="highest" let-danger="danger">
   @if (qualifies || highest) {
-    <p-tag
-      [class.font-bold]="highest"
-      [severity]="qualifies ? (danger ? 'danger' : 'success') : 'warn'"
-      [value]="(value | number: '1.0-0') ?? undefined"
-    />
+    <p-tag [class.font-bold]="highest" [severity]="qualifies ? (danger ? 'danger' : 'success') : 'warn'">
+      <span class="underline decoration-dashed underline-offset-4">{{ value | number: '1.0-0' }}</span>
+    </p-tag>
   } @else {
-    {{ value | number: '1.0-0' }}
+    <span class="underline decoration-dashed underline-offset-4">{{ value | number: '1.0-0' }}</span>
   }
 </ng-template>
 
@@ -95,12 +171,12 @@
         </th>
       }
       @if (showUpgrade()) {
-        <th scope="col" [attr.aria-sort]="getSortDirection('devideUpgrade')">
+        <th scope="col" class="w-px text-center" [attr.aria-sort]="getSortDirection('devideUpgrade')">
           <ng-container *ngTemplateOutlet="sortButton; context: { $implicit: 'devideUpgrade', label: 'all.ranking.breakdown.usedForUpgrade' }" />
         </th>
       }
       @if (showDowngrade()) {
-        <th scope="col" [attr.aria-sort]="getSortDirection('devideDowngrade')">
+        <th scope="col" class="w-px text-center" [attr.aria-sort]="getSortDirection('devideDowngrade')">
           <ng-container *ngTemplateOutlet="sortButton; context: { $implicit: 'devideDowngrade', label: 'all.ranking.breakdown.usedForDowngrade' }" />
         </th>
       }
@@ -158,14 +234,14 @@
         </td>
       }
       @if (showUpgrade()) {
-        <td>
+        <td class="text-center">
           @if (game.usedForUpgrade && game.countUpgrade) {
             {{ game.countUpgrade }}
           }
         </td>
       }
       @if (showDowngrade()) {
-        <td>
+        <td class="text-center">
           @if (game.usedForDowngrade && game.countDowngrade) {
             {{ game.countDowngrade }}
           }
@@ -206,9 +282,9 @@
               [attr.aria-expanded]="gameDetailsPopover.overlayVisible()"
               [attr.aria-controls]="gameDetailsPopover.overlayVisible() ? detailsId : null"
               [attr.aria-labelledby]="'ranking-date-details-label ' + rowContext"
-              (pointerenter)="previewGameDetails($event, gameDetailsPopover)"
-              (pointerleave)="scheduleGameDetailsClose(gameDetailsPopover)"
-              (click)="activateGameDetails($event, gameDetailsPopover)"
+              (pointerenter)="previewRowPopover($event, gameDetailsPopover)"
+              (pointerleave)="scheduleRowPopoverClose(gameDetailsPopover)"
+              (click)="activateRowPopover($event, gameDetailsPopover)"
             >
               <i class="pi pi-info-circle" aria-hidden="true"></i>
               <span [id]="dateId" pButtonLabel>{{ date }}</span>
@@ -219,14 +295,14 @@
               [ariaLabelledBy]="detailsId + '-title'"
               [focusOnShow]="false"
               styleClass="max-w-3xs"
-              (onShow)="focusGameDetails(gameDetailsPopover)"
+              (onShow)="focusRowPopover(gameDetailsPopover)"
             >
               <section
                 [id]="detailsId"
                 class="flex flex-col gap-2 whitespace-normal"
                 pFocusTrap
-                (pointerenter)="keepGameDetailsOpen(gameDetailsPopover)"
-                (pointerleave)="scheduleGameDetailsClose(gameDetailsPopover)"
+                (pointerenter)="keepRowPopoverOpen(gameDetailsPopover)"
+                (pointerleave)="scheduleRowPopoverClose(gameDetailsPopover)"
                 (keydown.escape)="dateTrigger.focus()"
               >
                 <div class="flex items-center justify-between gap-2">
@@ -290,27 +366,16 @@
         <td>
           <ng-container *ngTemplateOutlet="usedStatus; context: { $implicit: game.usedForUpgrade }" />
         </td>
-        <td class="text-right" [pTooltip]="getTooltip(game, true, game.usedForUpgrade)" tooltipPosition="top">
-          @if (game.avgUpgrade) {
-            <ng-container
-              *ngTemplateOutlet="average; context: { $implicit: game.avgUpgrade, qualifies: game.canUpgrade, highest: game.highestAvgUpgrade }"
-            />
-          }
+        <td class="text-right">
+          <ng-container *ngTemplateOutlet="averageExplanation; context: { $implicit: game, upgrade: true, rowContext }" />
         </td>
       }
       @if (showDowngrade()) {
         <td>
           <ng-container *ngTemplateOutlet="usedStatus; context: { $implicit: game.usedForDowngrade }" />
         </td>
-        <td class="text-right" [pTooltip]="getTooltip(game, false, game.usedForDowngrade)" tooltipPosition="top">
-          @if (game.avgDowngrade) {
-            <ng-container
-              *ngTemplateOutlet="
-                average;
-                context: { $implicit: game.avgDowngrade, qualifies: game.canDowngrade, highest: game.highestAvgDowngrade, danger: true }
-              "
-            />
-          }
+        <td class="text-right">
+          <ng-container *ngTemplateOutlet="averageExplanation; context: { $implicit: game, upgrade: false, rowContext }" />
         </td>
       }
     </tr>

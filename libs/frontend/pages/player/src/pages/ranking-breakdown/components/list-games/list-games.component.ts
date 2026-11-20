@@ -68,8 +68,8 @@ export class ListGamesComponent {
   loading = this.breakdownService.loading;
   filter = this.breakdownService.filter;
   private filterSignal = toSignal(this.filter.valueChanges.pipe(startWith(this.filter.value)));
-  private activeGameDetails?: { popover: Popover; interactive: boolean };
-  private gameDetailsCloseTimer?: ReturnType<typeof setTimeout>;
+  private activeRowPopover?: { popover: Popover; interactive: boolean };
+  private rowPopoverCloseTimer?: ReturnType<typeof setTimeout>;
 
   showUpgrade = this.breakdownService.showUpgrade;
   showDowngrade = this.breakdownService.showDowngrade;
@@ -295,7 +295,7 @@ export class ListGamesComponent {
   outOfScopeLatestXGames = computed(() => this.currGames().filter((x) => !x.inLatestX && x.type !== GameBreakdownType.LOST_IGNORED).length);
 
   constructor() {
-    inject(DestroyRef).onDestroy(() => clearTimeout(this.gameDetailsCloseTimer));
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.rowPopoverCloseTimer));
     this.wonOptions = [
       { label: this.translateService.instant('all.ranking.breakdown.add-game.won'), value: true },
       { label: this.translateService.instant('all.ranking.breakdown.add-game.lost'), value: false },
@@ -719,34 +719,25 @@ export class ListGamesComponent {
     return games;
   }
 
-  getTooltip(game: GameBreakdown, isForUpgrade: boolean, usedPoints: boolean): string {
-    let divider = '';
-    let totalPoints = 0;
+  getAverageExplanation(game: GameBreakdown, isForUpgrade: boolean): string {
+    const usedPoints = isForUpgrade ? game.usedForUpgrade : game.usedForDowngrade;
+    const totalPoints = isForUpgrade ? game.totalPointsUpgrade : game.totalPointsDowngrade;
+    const original = isForUpgrade ? game.devideUpgrade : game.devideDowngrade;
+    const corrected = isForUpgrade ? game.devideUpgradeCorrected : game.devideDowngradeCorrected;
     const rankingPlaceData = this.rankingPlace();
     const sys = this.system();
     const gameType = this.type();
 
-    if (isForUpgrade) {
-      totalPoints = game.totalPointsUpgrade ?? 0;
-      divider = `${game.devideUpgradeCorrected}`;
-      if ((game.devideUpgrade ?? 0) < (game.devideUpgradeCorrected ?? 0)) {
-        divider += `\n\n${this.translateService.instant('all.ranking.breakdown.corrected', {
-          original: game.devideUpgrade,
-          corrected: game.devideUpgradeCorrected,
-        })}`;
-      }
-    } else {
-      totalPoints = game.totalPointsDowngrade ?? 0;
-      divider = `${game.devideDowngrade}`;
+    let explanation = `${totalPoints ?? 0} / ${corrected}`;
+    if (original != null && corrected != null && original < corrected) {
+      explanation += `\n\n${this.translateService.instant('all.ranking.breakdown.corrected', { original, corrected })}`;
     }
-
-    let tooltip = `${totalPoints} / ${divider}`;
 
     if (usedPoints) {
       if (isForUpgrade) {
         const level = rankingPlaceData?.[gameType] ?? 12;
 
-        tooltip += `\n\n${this.translateService.instant(
+        explanation += `\n\n${this.translateService.instant(
           game.canUpgrade ? 'all.ranking.breakdown.can-upgrade' : 'all.ranking.breakdown.can-not-upgrade',
           {
             level,
@@ -757,7 +748,7 @@ export class ListGamesComponent {
       } else {
         const level = rankingPlaceData?.[gameType] ?? 12;
 
-        tooltip += `\n\n${this.translateService.instant(
+        explanation += `\n\n${this.translateService.instant(
           game.canDowngrade ? 'all.ranking.breakdown.can-downgrade' : 'all.ranking.breakdown.can-not-downgrade',
           {
             level,
@@ -768,7 +759,7 @@ export class ListGamesComponent {
       }
     }
 
-    return tooltip;
+    return explanation;
   }
 
   hasGameDetails(game: GameBreakdown): boolean {
@@ -781,53 +772,53 @@ export class ListGamesComponent {
     );
   }
 
-  previewGameDetails(event: PointerEvent, popover: Popover): void {
+  previewRowPopover(event: PointerEvent, popover: Popover): void {
     if (event.pointerType !== 'mouse') return;
-    const active = this.activeGameDetails;
+    const active = this.activeRowPopover;
     if (active?.popover.overlayVisible() && active.interactive) return;
 
-    this.keepGameDetailsOpen(popover);
+    this.keepRowPopoverOpen(popover);
     if (popover.overlayVisible()) return;
 
     active?.popover.hide();
-    this.activeGameDetails = { popover, interactive: false };
+    this.activeRowPopover = { popover, interactive: false };
     popover.show(event);
   }
 
-  activateGameDetails(event: MouseEvent, popover: Popover): void {
-    const active = this.activeGameDetails;
-    clearTimeout(this.gameDetailsCloseTimer);
+  activateRowPopover(event: MouseEvent, popover: Popover): void {
+    const active = this.activeRowPopover;
+    clearTimeout(this.rowPopoverCloseTimer);
     if (active?.popover === popover && popover.overlayVisible()) {
       if (active.interactive) {
         popover.hide();
       } else {
         active.interactive = true;
-        this.focusGameDetails(popover);
+        this.focusRowPopover(popover);
       }
       return;
     }
 
     active?.popover.hide();
-    this.activeGameDetails = { popover, interactive: true };
+    this.activeRowPopover = { popover, interactive: true };
     popover.show(event);
   }
 
-  focusGameDetails(popover: Popover): void {
-    if (this.activeGameDetails?.popover === popover && this.activeGameDetails.interactive) {
+  focusRowPopover(popover: Popover): void {
+    if (this.activeRowPopover?.popover === popover && this.activeRowPopover.interactive) {
       popover.container?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
     }
   }
 
-  keepGameDetailsOpen(popover: Popover): void {
-    if (this.activeGameDetails?.popover === popover) clearTimeout(this.gameDetailsCloseTimer);
+  keepRowPopoverOpen(popover: Popover): void {
+    if (this.activeRowPopover?.popover === popover) clearTimeout(this.rowPopoverCloseTimer);
   }
 
-  scheduleGameDetailsClose(popover: Popover): void {
-    const active = this.activeGameDetails;
+  scheduleRowPopoverClose(popover: Popover): void {
+    const active = this.activeRowPopover;
     if (active?.popover !== popover || active.interactive) return;
-    this.keepGameDetailsOpen(popover);
+    this.keepRowPopoverOpen(popover);
     // Leave time to cross the gap between the trigger and the popover.
-    this.gameDetailsCloseTimer = setTimeout(() => popover.hide(), 250);
+    this.rowPopoverCloseTimer = setTimeout(() => popover.hide(), 250);
   }
 
   isSetPlayed(team1Score: number | undefined, team2Score: number | undefined): boolean {

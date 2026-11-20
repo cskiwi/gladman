@@ -5,6 +5,15 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-010g [Simulation row actions](work-items/DR-010g-ranking-breakdown-row-actions.md) is Done with explicit
+approval (`Approve DR-010g with the documented limits and commit`, 2026-11-20).
+The Dutch Singles table has contextual names for both controls and returns focus to Simulation after removal.
+Keyboard operation, local reset, light/dark bounds at 390px/1440px, and focused Nx lint/build/test passed.
+The unchecked limits remain in the brief. Workspace lint still fails in ten unrelated projects.
+Next: reconcile the open DR-010 parent against DR-010a-g and deferred DR-070 hover-details work.
+
+### Previous focus: Simulation toolbar and settings (DR-010f)
+
 DR-010f [Simulation toolbar and settings](work-items/DR-010f-ranking-breakdown-simulation-toolbar.md) is Done with
 explicit approval (`Approve DR-010f with the documented limits and commit`, 2026-11-20).
 The Dutch Singles route has a primary Add action, a named settings popover, and a conditional Reset action.
@@ -3185,6 +3194,7 @@ and linked from their registry rows.
 | [DR-010d](work-items/DR-010d-ranking-breakdown-games-table.md) | Ranking breakdown games table                                                | Done |
 | [DR-010e](work-items/DR-010e-ranking-breakdown-add-simulated-game.md) | Add simulated game dialog | Done |
 | [DR-010f](work-items/DR-010f-ranking-breakdown-simulation-toolbar.md) | Simulation toolbar and settings | Done |
+| [DR-010g](work-items/DR-010g-ranking-breakdown-row-actions.md)        | Simulation row actions                                                       | Done    |
 | DR-011                                                        | Player editing                                                               | Backlog     |
 | DR-012                                                        | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)             | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
@@ -3896,7 +3906,7 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header and DR-010b covers period selection.
   DR-010c covers filters and view toggles; DR-010d covers the games table. DR-010e covers only the Add simulated
-  game dialog. DR-010f covers the simulation toolbar and settings popover. Scope row actions separately next.
+  game dialog. DR-010f covers the simulation toolbar and settings popover. DR-010g covers simulation row actions.
   The dialog's native InputNumber stepper buttons remain unnamed; track their accessible names in
   follow-up without changing the table or global PrimeNG settings as part of this dialog slice.
   DR-070 tracks the existing hover-only date details and average tooltips on this route; verify a keyboard

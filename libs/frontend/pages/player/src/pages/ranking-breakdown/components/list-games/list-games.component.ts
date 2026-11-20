@@ -189,6 +189,8 @@ export class ListGamesComponent {
 
   showRemoveColumn = computed(() => this.enableRemoveGames() || this.simulatedGames().length > 0);
 
+  protected readonly trackGame = (_index: number, game: GameBreakdown) => game.id;
+
   totalColumns = computed(() => {
     let cols = 5; // status icons, date, team, opponent, points
     if (this.showRemoveColumn()) cols++;

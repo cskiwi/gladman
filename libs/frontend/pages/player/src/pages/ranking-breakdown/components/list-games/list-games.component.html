@@ -79,11 +79,20 @@
 </ng-template>
 
 <!-- Data Table -->
-<p-table [value]="displayGames()" [loading]="loading()" [scrollable]="true" [tableStyle]="{ 'min-width': '48rem' }" class="tabular-nums">
+<p-table
+  [value]="displayGames()"
+  [rowTrackBy]="trackGame"
+  [loading]="loading()"
+  [scrollable]="true"
+  [tableStyle]="{ 'min-width': '48rem' }"
+  class="tabular-nums"
+>
   <ng-template #header>
     <tr>
       @if (showRemoveColumn()) {
-        <th style="min-width: 32px"></th>
+        <th scope="col">
+          <span class="sr-only">{{ 'all.common.actions' | translate }}</span>
+        </th>
       }
       @if (showUpgrade()) {
         <th scope="col" [attr.aria-sort]="getSortDirection('devideUpgrade')">
@@ -105,9 +114,8 @@
       <th scope="col">{{ 'all.ranking.breakdown.opponent' | translate }}</th>
       <th scope="col" class="text-right">{{ 'all.ranking.breakdown.points' | translate }}</th>
       @if (enableToggleLatestX()) {
-        <th class="text-center" style="min-width: 50px">
-          <i class="pi pi-check-square text-xs mr-1"></i>
-          <span class="hidden md:inline">{{ 'all.ranking.breakdown.in-latest-x' | translate: { latestX: system().latestXGamesToUse } }}</span>
+        <th id="ranking-game-latest" scope="col" class="text-center">
+          {{ 'all.ranking.breakdown.in-latest-x' | translate: { latestX: system().latestXGamesToUse } }}
         </th>
       }
       @if (showUpgrade()) {
@@ -121,32 +129,30 @@
     </tr>
   </ng-template>
   <ng-template #body let-game>
+    @let rowContext = 'ranking-game-opponent-' + game.id + (game.simulated ? '' : ' ranking-game-date-' + game.id);
     <tr
       [class.bg-highlight]="game.highestAvgUpgrade || game.highestAvgDowngrade"
       [class.border-l-4]="game.simulated"
       [class.border-blue-400]="game.simulated"
     >
       @if (showRemoveColumn()) {
-        <td class="text-center" style="padding: 0.25rem">
-          @if (game.simulated) {
+        <td class="text-center">
+          @if (game.simulated || enableRemoveGames()) {
+            @let removeLabel = (game.simulated ? 'all.ranking.breakdown.add-game.remove' : 'all.ranking.breakdown.remove-game') | translate;
             <button
-              class="p-button p-button-text p-button-sm p-button-rounded p-button-danger"
-              style="width: 1.5rem; height: 1.5rem; padding: 0"
-              (click)="removeSimulatedGame(game)"
-              [pTooltip]="'all.ranking.breakdown.add-game.remove' | translate"
+              pButton
+              type="button"
+              size="small"
+              variant="text"
+              severity="danger"
+              [rounded]="true"
+              [attr.aria-labelledby]="'ranking-game-remove-' + game.id + ' ' + rowContext"
+              (click)="game.simulated ? removeSimulatedGame(game) : removeGame(game); simulationTrigger.focus()"
+              [pTooltip]="removeLabel"
               tooltipPosition="top"
             >
-              <i class="pi pi-times text-xs"></i>
-            </button>
-          } @else if (enableRemoveGames()) {
-            <button
-              class="p-button p-button-text p-button-sm p-button-rounded p-button-danger"
-              style="width: 1.5rem; height: 1.5rem; padding: 0"
-              (click)="removeGame(game)"
-              [pTooltip]="'all.ranking.breakdown.remove-game' | translate"
-              tooltipPosition="top"
-            >
-              <i class="pi pi-times text-xs"></i>
+              <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
+              <span class="sr-only" [id]="'ranking-game-remove-' + game.id">{{ removeLabel }}</span>
             </button>
           }
         </td>
@@ -191,7 +197,7 @@
             {{ 'all.ranking.breakdown.add-game.simulated' | translate }}
           </span>
         } @else {
-          {{ game.playedAt | dayjsFormat: 'DD MMM YYYY HH:mm' }}
+          <span [id]="'ranking-game-date-' + game.id">{{ game.playedAt | dayjsFormat: 'DD MMM YYYY HH:mm' }}</span>
         }
       </td>
       <td class="whitespace-nowrap">
@@ -201,7 +207,7 @@
           }
         </div>
       </td>
-      <td class="whitespace-nowrap">
+      <td class="whitespace-nowrap" [id]="'ranking-game-opponent-' + game.id">
         <div class="flex flex-col gap-1">
           @for (player of game.opponent; track player?.gamePlayer?.id ?? $index) {
             <ng-container *ngTemplateOutlet="playerWithLevel; context: { $implicit: player?.gamePlayer?.fullName, level: player?.[type()] }" />
@@ -218,7 +224,12 @@
       </td>
       @if (enableToggleLatestX()) {
         <td class="text-center">
-          <p-checkbox [binary]="true" [ngModel]="game.inLatestX" (onChange)="toggleLatestX(game)" />
+          <p-checkbox
+            [binary]="true"
+            [ngModel]="game.inLatestX"
+            [ariaLabelledBy]="'ranking-game-latest ' + rowContext"
+            (onChange)="toggleLatestX(game)"
+          />
         </td>
       }
       @if (showUpgrade()) {

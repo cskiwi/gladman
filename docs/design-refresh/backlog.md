@@ -5,6 +5,14 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-010 [Player ranking breakdown](work-items/DR-010-ranking-breakdown.md) is Done with explicit approval
+(`Approve DR-010 with the documented limits and commit`, 2026-11-20). DR-010a-g are Done with their recorded limits.
+The Dutch Singles route renders the refreshed sections together. No new visual matrix or Nx run; no application changes.
+Next: confirm the mounted date-details trigger and scope DR-070 for keyboard and touch access to date details only.
+Leave average explanations and DR-071 stepper labels for separate slices.
+
+### Previous focus: Simulation row actions (DR-010g)
+
 DR-010g [Simulation row actions](work-items/DR-010g-ranking-breakdown-row-actions.md) is Done with explicit
 approval (`Approve DR-010g with the documented limits and commit`, 2026-11-20).
 The Dutch Singles table has contextual names for both controls and returns focus to Simulation after removal.
@@ -3187,7 +3195,7 @@ and linked from their registry rows.
 | [DR-008b](work-items/DR-008b-player-sidebar-cards.md)         | Player detail sidebar cards (form, record, match-ups, teams)                 | Done        |
 | [DR-008c](work-items/DR-008c-player-page-chrome.md)           | Player detail page chrome (hero identity, actions copy, loading/error)       | Done        |
 | DR-009                                                        | Player head-to-head                                                          | Backlog     |
-| DR-010                                                        | Player ranking breakdown                                                     | Backlog     |
+| [DR-010](work-items/DR-010-ranking-breakdown.md)                | Player ranking breakdown                                                     | Done        |
 | [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)     | Ranking breakdown header                                                     | Done        |
 | [DR-010b](work-items/DR-010b-ranking-breakdown-period.md)       | Ranking breakdown period selection                                           | Done        |
 | [DR-010c](work-items/DR-010c-ranking-breakdown-filters.md)    | Ranking breakdown filters and view toggles                                   | Done    |
@@ -3387,6 +3395,7 @@ and linked from their registry rows.
 | DR-068                                                        | Competition editor option and save-message localization                      | Backlog     |
 | DR-069                                                        | Competition editor save-all invalid-form result handling                     | Backlog     |
 | DR-070                                                         | Keyboard access to ranking game details and average explanations             | Backlog |
+| DR-071                                                                | Accessible names for ranking simulation dialog level stepper buttons         | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -3907,13 +3916,12 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
 - DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header and DR-010b covers period selection.
   DR-010c covers filters and view toggles; DR-010d covers the games table. DR-010e covers only the Add simulated
   game dialog. DR-010f covers the simulation toolbar and settings popover. DR-010g covers simulation row actions.
-  The dialog's native InputNumber stepper buttons remain unnamed; track their accessible names in
-  follow-up without changing the table or global PrimeNG settings as part of this dialog slice.
-  DR-070 tracks the existing hover-only date details and average tooltips on this route; verify a keyboard
-  and touch alternative in a separate slice without changing ranking calculations or simulation.
-  The shared preview reports aborted view transitions even on reload; revisit in route-level verification
-  only if reproducible in a visible browser. No navigation failure was observed in DR-010c.
-  Scope filters, game list, and ranking explanations/simulation as independent slices before implementation.
+  The parent reconciliation records the mounted route and approval limits; DR-010a-g are Done.
+  DR-070 tracks the existing hover-only date details and average tooltips. Start with keyboard and touch access
+  to date details without changing ranking calculations or simulation; leave average explanations for a separate slice.
+  DR-071 tracks the dialog's existing unnamed InputNumber stepper buttons. Keep any fix local to the dialog.
+  Neither follow-up is a parent closure dependency. The shared preview still reports an aborted view transition
+  on navigation, but the route renders; do not treat this smoke check as SSR/hydration verification.
 - DR-011: `/players/:playerId/edit`. Include profile, claims, and ranking forms; split by form when needed.
 - Preserve player identity links, filters, calculations, permissions, and translated labels.
 

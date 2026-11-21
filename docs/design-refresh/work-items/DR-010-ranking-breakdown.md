@@ -55,15 +55,16 @@ the verification limits above and in the child briefs; it does not mark unperfor
 
 ## Remaining work
 
-- DR-070 remains independent backlog work. In the [games list][games], real-row date details open on
-  `mouseenter`; average explanations use tooltips on table cells. Scope the two surfaces separately if needed,
-  starting with a keyboard and touch trigger for date details. Do not change calculations or simulation.
+- [DR-070](DR-070-ranking-details.md) remains independent follow-up work. DR-070a and DR-070b are now
+  approved with their recorded limits: date details and average explanations use named controls and
+  anchored Popovers with shared local hover/activation handlers. Parent reconciliation is also approved;
+  touch and other unchecked child criteria remain unverified. Do not reopen calculations or simulation.
 - DR-071 tracks the existing unnamed InputNumber stepper buttons in the simulated-game dialog. It is not a
   closure dependency. Do not change shared PrimeNG behavior as part of a dialog-only fix.
 - No extraction or styling exceptions in this slice. Keep the existing route and presentation boundaries
   unless a future slice identifies genuinely shared structure.
-- Next: confirm the mounted date-details trigger and scope DR-070 for keyboard and touch access to date details
-  only. No DR-070 implementation was started.
+- The original next action was completed by DR-070a/b and approved parent reconciliation. Current next action:
+  scope DR-071 separately after confirming the mounted dialog.
 
 [routes]: ../../../libs/frontend/pages/player/src/lib.routes.ts
 [page]: ../../../libs/frontend/pages/player/src/pages/ranking-breakdown/page-ranking-breakdown.component.html

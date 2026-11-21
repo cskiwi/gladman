@@ -5,6 +5,19 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-070 [Ranking details and average explanations](work-items/DR-070-ranking-details.md) is Done with explicit
+approval (`Approve DR-070 with the documented limits and commit`, 2026-11-21), after documentation-only
+parent reconciliation. DR-070a and DR-070b remain Done with their approvals and unchecked verification limits.
+Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-21.
+The Dutch dark-theme table renders six date controls and six named promotion averages with dashed underlines.
+Source inspection confirms both average directions share one local template and the date-details handlers.
+No application changes, new extraction, fresh visual matrix or Nx run; touch, contrast, screen-reader use,
+broader fixtures, locales and SSR/hydration remain unverified.
+Next candidate: DR-071. Confirm the mounted simulation dialog and scope only its unnamed InputNumber stepper
+controls in a separate invocation. Do not reopen completed children or treat approval as passing unperformed checks.
+
+### Previous focus: Ranking table average explanations (DR-070b)
+
 DR-070b [Ranking table average explanations](work-items/DR-070b-ranking-average-explanations.md) is Done with explicit
 approval (`Approve DR-070b with the documented limits and commit`, 2026-11-20).
 Confirmed mounted consumer: `/players/glenn-latomme/ranking/single`, 2026-11-20.
@@ -3414,7 +3427,7 @@ and linked from their registry rows.
 | DR-067                                                                | Shared sync SplitButton dropdown accessible name                             | Backlog     |
 | DR-068                                                                | Competition editor option and save-message localization                      | Backlog     |
 | DR-069                                                                | Competition editor save-all invalid-form result handling                     | Backlog     |
-| DR-070                                                                | Keyboard and touch access to ranking game details and average explanations   | In progress |
+| [DR-070](work-items/DR-070-ranking-details.md)                        | Keyboard and touch access to ranking game details and average explanations   | Done    |
 | [DR-070a](work-items/DR-070a-ranking-game-date-details.md)            | Ranking game date details                                                    | Done        |
 | [DR-070b](work-items/DR-070b-ranking-average-explanations.md)         | Ranking table average explanations                                           | Done        |
 | DR-071                                                                | Accessible names for ranking simulation dialog level stepper buttons         | Backlog     |
@@ -3940,7 +3953,8 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   game dialog. DR-010f covers the simulation toolbar and settings popover. DR-010g covers simulation row actions.
   The parent reconciliation records the mounted route and approval limits; DR-010a-g are Done.
   DR-070a preserves hover and adds an activation path for date details, without changing ranking or simulation.
-  DR-070b separately tracks keyboard and touch access to the average explanations.
+  DR-070b adds named average explanations using the same local popover interactions.
+  Both children and the DR-070 parent reconciliation are approved with their recorded limits.
   DR-071 tracks the dialog's existing unnamed InputNumber stepper buttons. Keep any fix local to the dialog.
   Neither follow-up is a parent closure dependency. The shared preview still reports an aborted view transition
   on navigation, but the route renders; do not treat this smoke check as SSR/hydration verification.

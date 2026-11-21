@@ -5,6 +5,21 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-005 [Shared ranking, statistics, and status patterns](work-items/DR-005-ranking-statistics.md)
+is Done with explicit approval (`Approve DR-005 with the documented limits and commit`, 2026-11-21)
+after documentation-only parent reconciliation.
+All five DR-005a-e children remain Done with their approvals and verification limits retained.
+Mounted player detail shows shared ranking progress, tier badges and form sequence; the club Teams tab
+shows 45 form sequences across nine cards. Form sequence now has real consumers added by DR-008b/DR-012d.
+Sparkline/stat-card still have no production callers; skip them without inventing verification consumers.
+No application changes or new extraction. No Nx tasks or fresh visual/accessibility matrix were run.
+Approval accepts the limits in the parent and child briefs; it does not establish unperformed checks as passed.
+Next candidate: scope DR-072; the shared tier badge still uses `[dt]`, contrary to the current user direction.
+Confirm its mounted consumers and native styling options in a separate bounded slice; do not reopen DR-005a
+or begin DR-072 here. DR-006 parent reconciliation remains a later independent candidate.
+
+### Previous focus: Native simulation level stepper (DR-071)
+
 DR-071 [Native simulation level stepper](work-items/DR-071-simulation-level-stepper.md) is Done with explicit
 approval (`misclicked, commit`, 2026-11-21), accepting the disclosed verification limits.
 Confirmed mounted consumers: `/players/glenn-latomme/ranking/single`, `/double` and `/mix`, 2026-11-21.
@@ -3220,7 +3235,7 @@ and linked from their registry rows.
 | [DR-002][pilot]                                                       | Home page pilot                                                              | Done    |
 | [DR-003][shell-work-item]                                             | App shell, navigation, search, and layouts                                   | Done    |
 | [DR-004][heading-work-item]                                           | Shared headings, hero, and breadcrumb                                        | Done    |
-| DR-005                                                                | Shared ranking, statistics, and status patterns                              | Backlog |
+| [DR-005](work-items/DR-005-ranking-statistics.md)                     | Shared ranking, statistics, and status patterns                              | Done    |
 | [DR-005a][tier-badge-work-item]                                       | Shared tier badge                                                            | Done    |
 | [DR-005b][form-sequence-work-item]                                    | Shared form sequence                                                         | Done    |
 | [DR-005c](work-items/DR-005c-sparkline.md)                            | Shared sparkline                                                             | Done    |
@@ -3446,6 +3461,7 @@ and linked from their registry rows.
 | [DR-070a](work-items/DR-070a-ranking-game-date-details.md)            | Ranking game date details                                                    | Done    |
 | [DR-070b](work-items/DR-070b-ranking-average-explanations.md)         | Ranking table average explanations                                           | Done    |
 | [DR-071](work-items/DR-071-simulation-level-stepper.md)               | Native simulation level stepper accessibility reconciliation                 | Done    |
+| DR-072                                                                | Shared tier badge native styling without scoped token bindings               | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -3891,14 +3907,20 @@ No page-specific override, translation asset or dependency is added during the c
 - DR-005: [stat card][stat-card], [tier badge][tier-badge], [form sequence][form-sequence], [sparkline][sparkline], and
   [ranking progress][ranking-progress]. Keep useful domain meaning; prefer native severity and semantic text over a
   custom color system.
+- DR-005 parent reconciliation is recorded in its [brief](work-items/DR-005-ranking-statistics.md).
+  All five children are complete; parent completion is approved with their disclosed limits.
+  No new implementation is needed to reconcile them. DR-072 tracks the remaining tier-badge token-binding concern
+  separately; sparkline/stat-card remain unused and must not gain consumers solely for redesign verification.
 - DR-005a scopes only the shared tier badge and its five consumer groups; other patterns have separate child scopes.
   Keep the global rank-gradient token because other components still consume it. Its `match-row` call site has no
   production import; the inspected club/team and tournament poule routes did not render level badges with available
   safe data. See the [DR-005a brief][tier-badge-work-item] for exact test, browser, and review status.
-- DR-005b scopes the form sequence only. It has no production caller; focused Angular tests cover its rendering
+- DR-005b scopes the form sequence only. It initially had no production caller; focused Angular tests cover its rendering
   contract and isolated native-tag markup supplies limited theme/viewport evidence. See its
-  [brief][form-sequence-work-item] for user approval and the retained screenshot limitation. Stat-card
-  is complete as DR-005d; ranking progress is scoped as DR-005e. Do not add a consumer solely for verification.
+  [brief][form-sequence-work-item] for user approval and the retained screenshot limitation.
+  Current mounted consumers are the player current-form card (DR-008b) and club team rosters (DR-012d);
+  their verification limits remain in those briefs. Stat-card and ranking progress are complete as DR-005d/e.
+  Do not add a consumer solely for verification.
 - DR-005c retains the miniature chart using SVG attributes and PrimeNG semantic tokens, with primary/text fallbacks
   when Tag-specific variables have not been injected. Its accessible title exposes translated outcomes as well as
   numeric heights. Six tests and isolated four-case geometry/contrast checks pass; no production caller exists.
@@ -3908,7 +3930,7 @@ No page-specific override, translation asset or dependency is added during the c
   Eight focused tests and shared-library lint/build pass. It has no production caller; isolated markup checks are
   not mounted Angular/SSR checks. The user explicitly approved completion with the stale mobile/light screenshot
   and consumer coverage limits retained in its [brief](work-items/DR-005d-stat-card.md).
-  Ranking progress is scoped separately as DR-005e with two existing production consumers.
+  Ranking progress is complete separately as DR-005e with two existing production consumers.
 - DR-005e replaces ranking-progress decoration only, with focused and mounted-consumer evidence in its
   [brief](work-items/DR-005e-ranking-progress.md). Its calculations and relative links remain unchanged.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
@@ -4195,6 +4217,12 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-072 (DR-005 reconciliation, 2026-11-21): [tier badge][tier-badge] still supplies scoped `[dt]`
+  tokens to its native Tag. The current user direction forbids `[pt]`/`[dt]` bindings.
+  Its historical DR-005a approval remains valid history, not guidance to propagate that pattern.
+  Confirmed player detail mounts 31 badge hosts; source also identifies a later ranking-games consumer.
+  Scope native styling and API/size/contrast preservation in a separate shared-component brief before promotion.
+  No badge, consumer or theme source changed during reconciliation.
 - DR-033 (additional mounted consumer during DR-017o): the native dialog Agree Button has light normal/keyboard
   text contrast 3.65:1, below 4.5:1; its settled hover passes at 4.64:1. The native outlined Cancel Button's
   dark keyboard focus ring is 1.40:1 against the dialog surface, below 3:1. Other measured title/action text

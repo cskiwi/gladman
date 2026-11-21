@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006k [Bracket semantic presentation](work-items/DR-006k-bracket-semantic-presentation.md) is Done,
+2026-11-21, on the existing `main` branch, with explicit approval:
+`Approve revised DR-006k with the documented limits and commit`.
+The user prefers the original production bracket's neutral match boundaries. Its computed borders are
+`border-surface`; the historical numbered primary class was overridden. Matches and round headings now use
+one neutral border utility, with no completion-dependent outline. Winner highlights, geometry and adapters
+are unchanged. No new component extraction, CSS, theme change or dependency.
+Components/tournament lint and build pass; three focused layout/presentation tests pass.
+Baseline mounted draw: four rounds, fifteen completed matches and 28 player links.
+The user restarted the app; HTTP 200 confirms the blocker is resolved. Isolated installed Playwright/Chrome
+checks pass at 390px/1440px in both themes: no document overflow, all 28 player links keyboard-reachable,
+visible native focus outlines and unchanged geometry/content against reconstructed original palette styling.
+Final neutral match colors match the original computed styling in both themes. Header/player text contrast
+passes (minimum 12.77:1 / 14.45:1); quiet outlines are decorative, not completion or interaction indicators.
+DR-006n records unchanged winner-score and connector contrast separately; do not expand this slice into that work.
+Full original before-capture matrix, populated doubles/TBD, screen-reader use, locales and SSR remain unverified.
+Completion approval accepts the brief's unchecked verification limits without claiming they passed.
+Required pre-commit workspace lint still fails in ten untouched projects; the scoped frontend checks pass.
+Next action: scope DR-006l's expanded encounter-game surfaces against its real mounted consumers;
+do not begin that implementation in this invocation. DR-006n remains a separate contrast follow-up.
+Commit only this approved slice and its handoff; no push. DR-006 stays open for its remaining follow-ups.
+
+### Previous focus: Shared games, matches, and brackets parent reconciliation (DR-006)
+
 DR-006 [Shared games, matches, and brackets](work-items/DR-006-games-matches-brackets.md) remains Backlog
 after approved documentation-only parent reconciliation on `main`, 2026-11-21.
 Approval: `Approve this reconciliation handoff and commit, keeping DR-006 open`.
@@ -3290,9 +3314,10 @@ and linked from their registry rows.
 | [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md)             | Shared upcoming encounter cards                                              | Done    |
 | [DR-006i](work-items/DR-006i-played-encounter-cards.md)               | Shared played encounter cards and expanded presentation                      | Done    |
 | [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)              | Shared bracket responsive layout                                             | Done    |
-| [DR-006k](work-items/DR-006k-bracket-semantic-presentation.md)        | Shared bracket semantic heading and completed-border presentation            | Ready   |
+| [DR-006k](work-items/DR-006k-bracket-semantic-presentation.md)        | Shared bracket semantic heading and completed-border presentation            | Done    |
 | DR-006l                                                               | Expanded encounter game surfaces; nested-Card follow-up, not yet scoped      | Backlog |
 | DR-006m                                                               | Recent-game result meaning and current-score evidence reconciliation         | Backlog |
+| DR-006n                                                               | Bracket score and connector contrast; follow-up not yet scoped               | Backlog |
 | DR-007                                                                | Shared form controls and sync feedback                                       | Backlog |
 | DR-008                                                                | Player detail                                                                | Backlog |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)                  | Player hero actions                                                          | Done    |
@@ -3981,6 +4006,10 @@ No page-specific override, translation asset or dependency is added during the c
   Parent stays open for the newly identified concerns. Unused match-row/upcoming-match and dispatcher team
   branches have no production callers; skip them without inventing consumers.
 - DR-006k scopes only bracket numbered-palette presentation, not the completed responsive/algorithm scope.
+- DR-006n: isolated mounted KO checks after settled theme transitions measured unchanged winner-score text
+  at 2.90:1 light / 8.16:1 dark (13 scores, 12.25px bold), and 28 unchanged connectors at 1.00:1 / 1.10:1.
+  Source confirms these utilities were not changed by DR-006k. Scope a separate contrast-only visualization
+  follow-up with the same mounted consumer, preserving scores, winner meaning, geometry and theme infrastructure.
 - DR-006l: expanded shared encounter games still render Cards inside the summary Card. Current club schedule
   expansion confirms eight nested game Cards. Scope a surface-only native Panel/semantic-layout alternative,
   preserving lazy loading, links, score ordering and all three shared consumers. Do not change it during DR-006k.

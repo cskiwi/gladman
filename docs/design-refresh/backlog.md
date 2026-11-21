@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006 [Shared games, matches, and brackets](work-items/DR-006-games-matches-brackets.md) remains Backlog
+after approved documentation-only parent reconciliation on `main`, 2026-11-21.
+Approval: `Approve this reconciliation handoff and commit, keeping DR-006 open`.
+All ten DR-006a-j children retain their approved Done statuses and verification limits.
+Current mounted consumers: player detail, populated knockout draw, club team detail, club schedule and competition draw.
+Read-only browser checks confirm ten recent/three upcoming player Cards, four bracket rounds/28 player links,
+fourteen team encounters, 72 competition-draw encounters, and 120 club-schedule encounters.
+Schedule expansion shows eight nested game Cards, then collapses; no operational mutations or preference writes.
+DR-006k [Bracket semantic presentation](work-items/DR-006k-bracket-semantic-presentation.md) is Ready:
+replace only numbered round-header/completed-border palette utilities, preserving DR-006j geometry/scrolling.
+DR-006l separately records nested expanded-game surfaces; DR-006m records recent-result evidence reconciliation.
+Current recent games no longer show DR-006c's explicit result icon/label; losing sets are muted text,
+not DR-006b's historical secondary Tags. Investigate intended later revisions before changing them.
+No application changes, extraction or Nx run. No fresh visual/accessibility/theme-width matrix, locales or SSR check.
+Formatting, LF/relative-link/registry assertions and whitespace checks pass; browser Task Group finalized.
+Next action: implement only Ready DR-006k in a fresh invocation; reconciliation review is approved.
+Do not mark the parent Done while required follow-ups remain or reopen finished children.
+
+### Previous focus: Tier badge contrast presentation (DR-072)
+
 DR-072 [Tier badge contrast presentation](work-items/DR-072-tier-badge-native-styling.md) is Done with explicit
 approval (`Approve DR-072 with the documented limits and commit`, 2026-11-21).
 The user explicitly permitted a custom badge after rejecting native contrast Tags, 2026-11-21.
@@ -3259,7 +3279,7 @@ and linked from their registry rows.
 | [DR-005c](work-items/DR-005c-sparkline.md)                            | Shared sparkline                                                             | Done    |
 | [DR-005d](work-items/DR-005d-stat-card.md)                            | Shared stat-card                                                             | Done    |
 | [DR-005e](work-items/DR-005e-ranking-progress.md)                     | Shared ranking progress                                                      | Done    |
-| DR-006                                                                | Shared games, matches, and brackets                                          | Backlog |
+| [DR-006](work-items/DR-006-games-matches-brackets.md)                 | Shared games, matches, and brackets                                          | Backlog |
 | [DR-006a](work-items/DR-006a-recent-game-points.md)                   | Mounted player recent-game point indicators                                  | Done    |
 | [DR-006b](work-items/DR-006b-recent-game-scores.md)                   | Mounted player recent-game set scores                                        | Done    |
 | [DR-006c](work-items/DR-006c-recent-game-results.md)                  | Mounted player recent-game result indicator                                  | Done    |
@@ -3270,6 +3290,9 @@ and linked from their registry rows.
 | [DR-006h](work-items/DR-006h-upcoming-encounter-cards.md)             | Shared upcoming encounter cards                                              | Done    |
 | [DR-006i](work-items/DR-006i-played-encounter-cards.md)               | Shared played encounter cards and expanded presentation                      | Done    |
 | [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)              | Shared bracket responsive layout                                             | Done    |
+| [DR-006k](work-items/DR-006k-bracket-semantic-presentation.md)        | Shared bracket semantic heading and completed-border presentation            | Ready   |
+| DR-006l                                                               | Expanded encounter game surfaces; nested-Card follow-up, not yet scoped      | Backlog |
+| DR-006m                                                               | Recent-game result meaning and current-score evidence reconciliation         | Backlog |
 | DR-007                                                                | Shared form controls and sync feedback                                       | Backlog |
 | DR-008                                                                | Player detail                                                                | Backlog |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)                  | Player hero actions                                                          | Done    |
@@ -3953,6 +3976,17 @@ No page-specific override, translation asset or dependency is added during the c
   [brief](work-items/DR-005e-ranking-progress.md). Its calculations and relative links remain unchanged.
 - DR-006: [games][games], [match row][match-row], [upcoming match][upcoming-match], and [bracket tree][bracket-tree].
   Keep score readability, result meaning, and responsive draw behavior.
+- DR-006 parent reconciliation, 2026-11-21: all ten approved children remain Done; current source and mounted
+  evidence are recorded in the [parent brief](work-items/DR-006-games-matches-brackets.md).
+  Parent stays open for the newly identified concerns. Unused match-row/upcoming-match and dispatcher team
+  branches have no production callers; skip them without inventing consumers.
+- DR-006k scopes only bracket numbered-palette presentation, not the completed responsive/algorithm scope.
+- DR-006l: expanded shared encounter games still render Cards inside the summary Card. Current club schedule
+  expansion confirms eight nested game Cards. Scope a surface-only native Panel/semantic-layout alternative,
+  preserving lazy loading, links, score ordering and all three shared consumers. Do not change it during DR-006k.
+- DR-006m: current recent games differ from DR-006b/c history: losing set values use plain muted text, while
+  explicit result icons/hidden labels are absent. Reconcile later changes and intended non-color result meaning
+  before scoping implementation; do not silently restore old markup or claim historic checks cover today's view.
 - DR-006i started with the shared played summary. At the user's request it also removes all inline component CSS,
   migrating expanded games to native Cards with wrapping player names, semantic winner emphasis, translated
   perspective results, and paired plain-text set scores. Native Button replaces mouse-only expansion.
@@ -3979,8 +4013,8 @@ No page-specific override, translation asset or dependency is added during the c
 - DR-006g completed the player upcoming-list header/loading/empty follow-up, removed legacy `.upcoming*` SCSS,
   and replaced the assembly `p-button` host with native `button pButton`. Its approved scope stays complete.
 - DR-006h refreshes only the shared encounter card's upcoming variant across club schedule, team detail, and
-  competition draw. Played encounter surfaces and expanded game rows remain candidates for separate DR-006
-  children after DR-006h approval; do not fold their palette/keyboard/legacy styling work into this slice.
+  competition draw. DR-006i subsequently completed played summaries and expanded rows with disclosed limits.
+  Preserve that approval; DR-006l is only a new surface-rule follow-up, not a restart of the completed child.
 - Each shared component can become its own child task. Inventory consumers before changing an API or appearance.
 - Preserve legitimate visualization behavior; do not replace charts or brackets with a table solely to avoid styling.
 

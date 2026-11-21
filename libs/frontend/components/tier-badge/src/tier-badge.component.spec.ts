@@ -16,10 +16,12 @@ describe('TierBadgeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('renders a numeric level with the default primary styling', () => {
-    const tag = element.querySelector('p-tag');
+  it('renders a numeric level as readable, non-interactive content', () => {
+    const tag = element.querySelector('span');
     expect(tag?.textContent?.trim()).toBe('8');
-    expect(tag?.getAttribute('severity')).toBeNull();
+    expect(tag?.classList.contains('bg-highlight')).toBe(true);
+    expect(tag?.classList.contains('text-color')).toBe(true);
+    expect(element.querySelector('button, a, [tabindex]')).toBeNull();
   });
 
   it('preserves an optional label and string level', () => {
@@ -27,31 +29,19 @@ describe('TierBadgeComponent', () => {
     fixture.componentRef.setInput('level', 'A');
     fixture.detectChanges();
 
-    expect(element.querySelector('p-tag')?.textContent?.trim()).toBe('Men A');
+    expect(element.querySelector('span')?.textContent?.trim()).toBe('Men A');
   });
 
-  it('uses the compact class only for the small size', () => {
+  it('uses compact text only for the small size', () => {
     fixture.componentRef.setInput('size', 'sm');
     fixture.detectChanges();
-    const tag = element.querySelector('p-tag');
-    expect(fixture.componentInstance.designTokens()).toEqual({
-      primary: { color: '{text.color}' },
-      borderRadius: '4px',
-      fontSize: '0.8125rem',
-      fontWeight: '700',
-      padding: '0.2rem 8px',
-    });
-    expect(tag?.classList.contains('min-w-8')).toBe(true);
+    const tag = element.querySelector('span');
+    expect(tag?.classList.contains('text-sm')).toBe(true);
+    expect(tag?.classList.contains('text-base')).toBe(false);
 
     fixture.componentRef.setInput('size', 'default');
     fixture.detectChanges();
-    expect(tag?.classList.contains('min-w-8')).toBe(false);
-    expect(tag?.classList.contains('min-w-10')).toBe(true);
-    expect(fixture.componentInstance.designTokens()).toEqual({
-      primary: { color: '{text.color}' },
-      borderRadius: '4px',
-      fontWeight: '700',
-      padding: '0.375rem 11px',
-    });
+    expect(tag?.classList.contains('text-sm')).toBe(false);
+    expect(tag?.classList.contains('text-base')).toBe(true);
   });
 });

@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-072 [Tier badge contrast presentation](work-items/DR-072-tier-badge-native-styling.md) is Done with explicit
+approval (`Approve DR-072 with the documented limits and commit`, 2026-11-21).
+The user explicitly permitted a custom badge after rejecting native contrast Tags, 2026-11-21.
+The shared badge uses semantic highlight fill, readable text and a primary border, without `[dt]`/`[pt]` or custom CSS.
+The user confirmed removing minimum widths intentionally; content-sized badges retain size-dependent typography
+and the existing input API. The concurrent width-edit blocker is resolved; obsolete test assertions are removed.
+Confirmed mounted consumers: `/players/glenn-latomme` and `/players/glenn-latomme/ranking/single`, 2026-11-21.
+Three focused tests and components/player/tournament lint/build pass for the final revision (existing warnings only).
+Both player routes fit at 390px/1440px in light/dark, with unclipped labels and no document horizontal overflow.
+Minimum custom badge text contrast: 17.10:1 light, 11.98:1 dark; border-to-fill contrast: 3.15:1 / 7.65:1.
+No new interactive/focusable badge elements, consumer-page redesign, theme change, or extraction.
+Screen-reader use, locales, surrounding workflows, SSR/hydration, and broader populated consumer checks remain
+unverified. Completion approval accepts these limits without claiming unperformed checks passed.
+Next candidate: DR-006 parent reconciliation. Confirm its completed children and mounted consumers, then scope
+only any remaining shared heading/data-surface concern; do not reopen completed children or begin it here.
+
+### Previous focus: Shared ranking/statistics/status parent reconciliation (DR-005)
+
 DR-005 [Shared ranking, statistics, and status patterns](work-items/DR-005-ranking-statistics.md)
 is Done with explicit approval (`Approve DR-005 with the documented limits and commit`, 2026-11-21)
 after documentation-only parent reconciliation.
@@ -3461,7 +3479,7 @@ and linked from their registry rows.
 | [DR-070a](work-items/DR-070a-ranking-game-date-details.md)            | Ranking game date details                                                    | Done    |
 | [DR-070b](work-items/DR-070b-ranking-average-explanations.md)         | Ranking table average explanations                                           | Done    |
 | [DR-071](work-items/DR-071-simulation-level-stepper.md)               | Native simulation level stepper accessibility reconciliation                 | Done    |
-| DR-072                                                                | Shared tier badge native styling without scoped token bindings               | Backlog |
+| [DR-072](work-items/DR-072-tier-badge-native-styling.md)              | Shared tier badge styling without scoped token bindings                      | Done    |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -4217,12 +4235,15 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
-- DR-072 (DR-005 reconciliation, 2026-11-21): [tier badge][tier-badge] still supplies scoped `[dt]`
-  tokens to its native Tag. The current user direction forbids `[pt]`/`[dt]` bindings.
+- DR-072 (DR-005 reconciliation, 2026-11-21): [tier badge][tier-badge] was identified supplying scoped `[dt]`
+  tokens to its native Tag. DR-072 now replaces them with an explicitly user-approved semantic custom badge;
+  it is Done with explicit completion approval and the documented limits. Native contrast Tags were rejected during review.
+  The current user direction forbids `[pt]`/`[dt]` bindings.
   Its historical DR-005a approval remains valid history, not guidance to propagate that pattern.
   Confirmed player detail mounts 31 badge hosts; source also identifies a later ranking-games consumer.
-  Scope native styling and API/size/contrast preservation in a separate shared-component brief before promotion.
-  No badge, consumer or theme source changed during reconciliation.
+  Its [shared-component brief](work-items/DR-072-tier-badge-native-styling.md) records the rejected native attempt,
+  custom exception, preserved input API, user-directed content widths, measured contrast, and completion approval.
+  No badge, consumer or theme source changed during DR-005 reconciliation; DR-072 changes only the shared badge.
 - DR-033 (additional mounted consumer during DR-017o): the native dialog Agree Button has light normal/keyboard
   text contrast 3.65:1, below 4.5:1; its settled hover passes at 4.64:1. The native outlined Cancel Button's
   dark keyboard focus ring is 1.40:1 against the dialog surface, below 3:1. Other measured title/action text

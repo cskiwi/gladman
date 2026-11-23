@@ -1449,6 +1449,7 @@
       "syncing": "Synchronization in progress"
     },
     "button": {
+      "moreActions": "More sync actions",
       "eventSyncQueued": "Event sync queued successfully for {{id}}",
       "subEventSyncQueued": "Sub-event sync queued successfully for {{id}}",
       "drawSyncQueued": "Draw sync queued successfully for {{id}}",

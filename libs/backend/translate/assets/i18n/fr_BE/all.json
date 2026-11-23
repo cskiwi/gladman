@@ -1449,6 +1449,7 @@
       "syncing": "Synchronisation en cours"
     },
     "button": {
+      "moreActions": "Autres actions de synchronisation",
       "eventSyncQueued": "Synchronisation de l'événement planifiée pour {{id}}",
       "subEventSyncQueued": "Synchronisation du sous-événement planifiée pour {{id}}",
       "drawSyncQueued": "Synchronisation du tableau planifiée pour {{id}}",

@@ -1456,6 +1456,7 @@ export type I18nTranslations = {
                 "syncing": string;
             };
             "button": {
+                "moreActions": string;
                 "eventSyncQueued": string;
                 "subEventSyncQueued": string;
                 "drawSyncQueued": string;

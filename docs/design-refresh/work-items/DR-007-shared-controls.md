@@ -11,7 +11,8 @@ description: 'Bounded shared-control slices and their mounted consumers.'
   Preserve that completed implementation and its accepted verification limits; do not restart it.
 - Mounted competition and tournament detail pages consume shared sync indicators and action controls.
 - First child: [DR-007a](DR-007a-sync-status-presentation.md), compact semantic sync-status presentation.
-- Sync action menus/dialogs remain separate. Existing unnamed dropdown discovery stays under DR-065.
+- Sync action menus/dialogs remain separate. Existing unnamed dropdown discovery is
+  [DR-067](DR-067-sync-dropdown-name.md), not DR-065 (unrelated builder import-failure feedback).
 - Club search contains service logic, not a visual component to refresh.
 
 ## Acceptance and handoff
@@ -22,5 +23,9 @@ description: 'Bounded shared-control slices and their mounted consumers.'
 - [ ] Reconcile remaining sync action/dialog work and DR-065 before closing this parent.
 
 DR-007 remains open until its required children and follow-ups are resolved.
-Next action: scope one mounted sync action/dialog slice against the existing DR-065 dropdown-label discovery.
+Latest slice: DR-067, localized native dropdown naming across mounted sync-control consumers, is approved Done.
+Six focused tests, scoped lint/build and twenty mounted theme/width cases pass; see its evidence and unchecked limits.
+Settled native Escape dismissal loses trigger focus, recorded separately as DR-073; it is not fixed by naming.
+Explicit approval, 2026-11-23: `Approve DR-067 with documented limits and commit`.
+Its unchecked criteria remain recorded. Next action: scope DR-073. Leave the unmounted game dialog unchanged.
 DR-007a is approved Done; preserve its unchecked verification limits and scoped zero-gap layout exception.

@@ -1449,6 +1449,7 @@
       "syncing": "Synchronisatie bezig"
     },
     "button": {
+      "moreActions": "Meer synchronisatieacties",
       "eventSyncQueued": "Event-synchronisatie ingepland voor {{id}}",
       "subEventSyncQueued": "Onderdeel-synchronisatie ingepland voor {{id}}",
       "drawSyncQueued": "Reeks-synchronisatie ingepland voor {{id}}",

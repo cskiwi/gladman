@@ -5,6 +5,27 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-067 [Shared sync dropdown accessible name](work-items/DR-067-sync-dropdown-name.md) is Done after explicit approval,
+2026-11-23, on existing `main`, starting with a clean worktree.
+Completed: native SplitButton expand-button label in en/nl_BE/fr_BE, six tests and mounted-consumer verification.
+Competition/new tournament/imported tournament expose thirteen/36/37 controls; both checked draw routes expose one.
+Preserve native appearance, menu/main actions, permissions, loading and mutation contracts.
+No new extraction, theme/styles, dependencies or operational mutations; do not redesign the unmounted game dialog.
+Correction: the prior sync-dropdown handoff incorrectly cited DR-065; the actual discovery is DR-067.
+DR-065 remains unrelated builder import-failure feedback, not a prerequisite for DR-007.
+All twenty light/dark 390px/1440px mounted cases retain correct names, main labels and control bounds.
+Live locale switching and a browser-only disabled-state fixture pass. Six tests and scoped lint/build pass.
+Settled menu association, ArrowDown and dismissal pass; Escape drops focus to body, recorded separately as DR-073.
+Full screen-reader/touch, contrast and exhaustive locale/permission/SSR checks remain unverified.
+App connection blocker resolved after user restart. No sync/cache command was activated.
+Explicit approval: `Approve DR-067 with documented limits and commit`.
+Completion accepts the unchecked limits and generator-owned formatting without claiming those checks passed.
+Required workspace lint reproduces dependency-version errors in ten unchanged manifests; the other 24 targets pass.
+No unrelated fixes. Commit only the approved slice and repository handoff; no push.
+Next action: scope DR-073's native menu focus return against real consumers. Do not start it here. DR-007 stays open.
+
+### Previous focus: Compact semantic sync-status presentation (DR-007a)
+
 DR-007a [Compact semantic sync-status presentation](work-items/DR-007a-sync-status-presentation.md)
 is Done after explicit approval, 2026-11-23, on existing `main`, starting with a clean worktree.
 Replaces palette-colored sync icons with compact native Tag severities and translated accessible image names.
@@ -3639,7 +3660,7 @@ and linked from their registry rows.
 | DR-064                                                                | Native ConfirmDialog breakpoint and close-label input audit                  | Backlog |
 | DR-065                                                                | Builder survey import creation-failure feedback                              | Backlog |
 | DR-066                                                                | Narrow topbar horizontal overflow                                            | Backlog |
-| DR-067                                                                | Shared sync SplitButton dropdown accessible name                             | Backlog |
+| [DR-067](work-items/DR-067-sync-dropdown-name.md)                     | Shared sync SplitButton dropdown accessible name                             | Done    |
 | DR-068                                                                | Competition editor option and save-message localization                      | Backlog |
 | DR-069                                                                | Competition editor save-all invalid-form result handling                     | Backlog |
 | [DR-070](work-items/DR-070-ranking-details.md)                        | Keyboard and touch access to ranking game details and average explanations   | Done    |
@@ -3647,12 +3668,24 @@ and linked from their registry rows.
 | [DR-070b](work-items/DR-070b-ranking-average-explanations.md)         | Ranking table average explanations                                           | Done    |
 | [DR-071](work-items/DR-071-simulation-level-stepper.md)               | Native simulation level stepper accessibility reconciliation                 | Done    |
 | [DR-072](work-items/DR-072-tier-badge-native-styling.md)              | Shared tier badge styling without scoped token bindings                      | Done    |
+| DR-073                                                                | Shared sync menu Escape focus restoration                                    | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-073: Shared sync menu Escape focus restoration
+
+- DR-067 settled native tournament-draw checks in light/dark at 390px/1440px confirm Enter opening,
+  post-motion menu focus, ArrowDown navigation and correct `aria-controls` overlay-wrapper association.
+- Escape dismisses the menu but leaves focus on `body`, not its dropdown trigger, in all four cases.
+  Early probes before enter motion finishes are invalid and must not be used as evidence of working focus return.
+- Scope a separate DR-007 follow-up against all mounted competition/tournament detail/draw consumers.
+  Preserve main/menu actions, translated names and permission/loading behavior. Use native capabilities first;
+  do not trigger sync/cache operations for tests. DR-067 changes only naming, not native focus behavior.
+- No brief or implementation yet; DR-067 is approved Done with this focus-restoration limit preserved.
 
 ### DR-069: Competition editor save-all invalid-form result handling
 
@@ -3682,6 +3715,8 @@ and linked from their registry rows.
 - Audit the shared [sync button](../../libs/frontend/components/sync/src/sync-button.component.html), native
   SplitButton options and all mounted consumers before choosing a localized, accessible fix. Do not activate
   sync or cache operations merely to test presentation.
+- Scoped under DR-007 in [the brief](work-items/DR-067-sync-dropdown-name.md). The previous DR-007/DR-007a
+  handoff's DR-065 reference was mistaken; DR-065 is unrelated builder feedback.
 
 ### DR-066: Narrow topbar horizontal overflow
 
@@ -4154,7 +4189,8 @@ No page-specific override, translation asset or dependency is added during the c
   disabled/loading states, and operation feedback. The [club-search area][club-search] currently contains service logic,
   not a visual component to redesign.
   Country/state integration is already approved Done under DR-018b1, with its recorded limits.
-  DR-007a scopes only mounted shared status indicators; sync actions/dialogs and DR-065 remain separate.
+  DR-007a completes mounted shared status indicators; DR-067 scopes native sync dropdown naming.
+  Remaining mounted sync action/dialog concerns need separate scope; DR-065 is unrelated builder feedback.
 - DR-015e discovery for shared-control/theme follow-up: native secondary text Button active text measured
   4.46:1 in light mode, and its default dark focus ring measured 1.40:1 against the content surface.
   At the user's request DR-015e uses no `[dt]`. Its hero-only keyboard ring addresses focus without an outline;

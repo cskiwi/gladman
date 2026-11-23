@@ -135,11 +135,21 @@ docs\design-refresh\work-items\DR-006k-bracket-semantic-presentation.md` and `gi
   Nx Cloud cache artifact upload failed after successful targets.
   Explicit approval on 2026-11-23, `Approve DR-006l with documented limits and commit`, completes the revised child.
   Child is Done with unchecked limits retained; workspace lint still fails in ten untouched dependency-check projects.
-- DR-006m remains the separate recent-result/current-score evidence reconciliation.
+- [DR-006m](DR-006m-recent-game-evidence.md) is Done after documentation-only reconciliation, 2026-11-23.
+  Later commit `a78b0401`, current guide and tests intentionally remove result icons/hidden labels and use
+  winning-set Tags with plain losing/tied scores. Numeric comparisons preserve set meaning but do not
+  explicitly convey an authoritative overall win/loss/unknown result. Historical label/contrast/SSR checks
+  must not be presented as current evidence. All 29 existing tests pass; four mounted theme/width DOM checks
+  show no overflow and matched player/score sides. Two current screenshots inspected; broader limits remain
+  in the child brief. No application changes or new extraction.
+  Explicit approval: `Approve DR-006m with documented limits and commit`.
+  This accepts the disclosed absence of explicit overall results and unchecked limits, not unperformed checks.
   DR-006n remains separate bracket score/connector contrast work.
 - Parent stays Backlog until required follow-ups are resolved; approved DR-006a-k are not reopened.
-- Exact next action: reconcile DR-006m's recent-result/current-score evidence against later approved changes
-  and the mounted player profile in a fresh invocation. DR-006l approval does not complete this parent.
+- Exact next action: scope DR-006n bracket score/connector contrast against its mounted consumer.
+  Do not start that candidate here or restore old recent-result icons implicitly.
+  Commit only the approved DR-006m documentation handoff; no push.
+  DR-006l approval does not complete this parent.
 
 [player-detail]: ../../../libs/frontend/pages/player/src/pages/detail/page-detail.component.html
 [recent]: ../../../libs/frontend/components/games/recent/src/player/recent-games-player.component.html

@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006m [Recent-game result and score evidence](work-items/DR-006m-recent-game-evidence.md) is Done,
+2026-11-23, on the existing `main` branch, starting from a clean worktree.
+Documentation-only reconciliation confirms later commit `a78b0401`, current guide and tests deliberately remove
+overall result icons/labels and use winning-set Tags with plain losing/tied values. No application edits or extraction.
+The mounted player profile passes four light/dark 390px/1440px DOM overflow/side-correspondence checks.
+Light mobile and dark desktop first-card screenshots inspected; all 29 existing recent-game tests pass.
+Numeric set comparisons are non-color meaning, not an explicit authoritative overall win/loss/unknown result.
+Historical DR-006b/c label/contrast/SSR checks do not establish today's accessibility.
+Current contrast, full keyboard/screen-reader/touch, locales, SSR and nonstandard-result behavior remain unverified.
+Explicit approval, 2026-11-23: `Approve DR-006m with documented limits and commit`.
+This accepts the disclosed limits, not unperformed accessibility/nonstandard-result/SSR checks.
+Only DR-006m is complete; any result-accessibility correction needs separate bounded scope. DR-006 remains open.
+Next candidate: scope DR-006n bracket score/connector contrast; do not begin it here.
+Commit only this approved documentation handoff; no push.
+Required pre-commit workspace lint reproduces existing dependency-check errors in ten untouched projects;
+the other 24 targets pass from cache. Formatting, links, LF and whitespace checks pass; no unrelated fixes.
+
+### Previous focus: Expanded encounter game surfaces (DR-006l)
+
 DR-006l [Expanded encounter game surfaces](work-items/DR-006l-expanded-encounter-games.md) is Done,
 revised 2026-11-23 on the existing `main` branch, preserving the first revision's uncommitted changes.
 Confirmed mounted consumers: club schedule, team detail and competition draw; all three expand eight games.
@@ -3346,7 +3365,7 @@ and linked from their registry rows.
 | [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)              | Shared bracket responsive layout                                             | Done    |
 | [DR-006k](work-items/DR-006k-bracket-semantic-presentation.md)        | Shared bracket semantic heading and completed-border presentation            | Done    |
 | [DR-006l](work-items/DR-006l-expanded-encounter-games.md)             | Expanded encounter game surfaces; shared divided rows                        | Done    |
-| DR-006m                                                               | Recent-game result meaning and current-score evidence reconciliation         | Backlog |
+| [DR-006m](work-items/DR-006m-recent-game-evidence.md)                 | Recent-game result meaning and current-score evidence reconciliation         | Done    |
 | DR-006n                                                               | Bracket score and connector contrast; follow-up not yet scoped               | Backlog |
 | DR-007                                                                | Shared form controls and sync feedback                                       | Backlog |
 | DR-008                                                                | Player detail                                                                | Backlog |
@@ -4044,9 +4063,13 @@ No page-specific override, translation asset or dependency is added during the c
   All three mounted consumers pass twelve before/after layout/content cases and native Enter/Space expansion.
   The [brief](work-items/DR-006l-expanded-encounter-games.md) records the approved alignment revision, Done and limits.
   Approval on 2026-11-23 accepts unchecked limits; this does not reopen approved DR-006i/k or complete DR-006.
-- DR-006m: current recent games differ from DR-006b/c history: losing set values use plain muted text, while
-  explicit result icons/hidden labels are absent. Reconcile later changes and intended non-color result meaning
-  before scoping implementation; do not silently restore old markup or claim historic checks cover today's view.
+- DR-006m: [reconciliation](work-items/DR-006m-recent-game-evidence.md) is Done, 2026-11-23.
+  Later commit `a78b0401`, the current guide and tests deliberately remove result icons/hidden labels;
+  losing/tied set values remain plain muted text. Numeric comparisons communicate sets, not an explicit
+  authoritative overall result. All 29 existing tests and four mounted DOM theme/width cases pass;
+  current contrast, screen-reader/keyboard/touch, locales, SSR and nonstandard-result verification remain open.
+  Explicit approval (`Approve DR-006m with documented limits and commit`) accepts those limits without
+  claiming unperformed checks passed. Do not silently restore historic markup or reuse old evidence.
 - DR-006i started with the shared played summary. At the user's request it also removes all inline component CSS,
   migrating expanded games to native Cards with wrapping player names, semantic winner emphasis, translated
   perspective results, and paired plain-text set scores. Native Button replaces mouse-only expansion.

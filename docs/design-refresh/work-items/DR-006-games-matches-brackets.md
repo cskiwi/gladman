@@ -144,12 +144,16 @@ docs\design-refresh\work-items\DR-006k-bracket-semantic-presentation.md` and `gi
   in the child brief. No application changes or new extraction.
   Explicit approval: `Approve DR-006m with documented limits and commit`.
   This accepts the disclosed absence of explicit overall results and unchecked limits, not unperformed checks.
-  DR-006n remains separate bracket score/connector contrast work.
+- [DR-006n](DR-006n-bracket-contrast.md) implements the separate bracket score/connector contrast slice.
+  Four real light/dark 390px/1440px cases preserve content, geometry, links and inner scrolling.
+  Score contrast is now at least 14.45:1 and connector contrast at least 4.46:1; all 28 links pass keyboard checks.
+  Focused tests and components/tournament lint/build pass. Explicit approval on 2026-11-23:
+  `Approve DR-006n with documented limits and commit`. The child is Done with accepted limits; broader
+  doubles/TBD-browser, screen-reader/touch, locale and SSR checks remain unverified in the child brief.
 - Parent stays Backlog until required follow-ups are resolved; approved DR-006a-k are not reopened.
-- Exact next action: scope DR-006n bracket score/connector contrast against its mounted consumer.
-  Do not start that candidate here or restore old recent-result icons implicitly.
-  Commit only the approved DR-006m documentation handoff; no push.
-  DR-006l approval does not complete this parent.
+- Exact next action: commit only approved DR-006n and its handoff, without push.
+  Next candidate: reconcile the parent's remaining required follow-ups and accepted child limits separately.
+  Do not start that reconciliation or restore old recent-result icons here; child approvals do not complete this parent.
 
 [player-detail]: ../../../libs/frontend/pages/player/src/pages/detail/page-detail.component.html
 [recent]: ../../../libs/frontend/components/games/recent/src/player/recent-games-player.component.html

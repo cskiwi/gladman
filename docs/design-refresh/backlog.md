@@ -5,6 +5,27 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006n [Bracket score and connector contrast](work-items/DR-006n-bracket-contrast.md) is Done,
+2026-11-23, on the existing `main` branch, starting from a clean worktree.
+Mounted KO draw reconfirmed: four rounds, fifteen matches, 28 player links, 26 scores and 28 connector segments.
+Scope only winning score and progression-line contrast; preserve neutral match borders, geometry, content and links.
+Existing KO adapter/shared bracket already separate data and presentation; no new extraction is warranted.
+Winning scores now use semantic emphasized text; progression lines use neutral currentColor/muted text fill.
+Fresh before/after light/dark at 390px/1440px preserves all content, hrefs and match/connector geometry.
+Winning score contrast improves from 2.90:1 / 8.16:1 to 16.30:1 / 14.45:1 (light/dark);
+connector contrast from 1.00:1 / 1.10:1 to 4.46:1 / 6.91:1. No document overflow; all 28 links pass keyboard checks.
+Focused presentation tests and components/tournament lint/build pass; four after screenshots inspected.
+Populated doubles/TBD browser fixtures, screen-reader/touch, locales, SSR and full stale suite remain unverified.
+Explicit approval, 2026-11-23: `Approve DR-006n with documented limits and commit`.
+This accepts the unchecked limits, without claiming unperformed checks passed.
+Required pre-commit workspace lint reproduces existing dependency-check errors in ten untouched projects;
+the other 24 targets pass from cache. Scoped checks, formatting, LF, links and whitespace checks pass.
+Commit only its implementation, tests and handoff; no push or operational mutations.
+Next candidate: reconcile DR-006's remaining required follow-ups and accepted child limits before closing the parent.
+Do not begin that reconciliation here; DR-006 stays open.
+
+### Previous focus: Recent-game result and score evidence (DR-006m)
+
 DR-006m [Recent-game result and score evidence](work-items/DR-006m-recent-game-evidence.md) is Done,
 2026-11-23, on the existing `main` branch, starting from a clean worktree.
 Documentation-only reconciliation confirms later commit `a78b0401`, current guide and tests deliberately remove
@@ -3366,7 +3387,7 @@ and linked from their registry rows.
 | [DR-006k](work-items/DR-006k-bracket-semantic-presentation.md)        | Shared bracket semantic heading and completed-border presentation            | Done    |
 | [DR-006l](work-items/DR-006l-expanded-encounter-games.md)             | Expanded encounter game surfaces; shared divided rows                        | Done    |
 | [DR-006m](work-items/DR-006m-recent-game-evidence.md)                 | Recent-game result meaning and current-score evidence reconciliation         | Done    |
-| DR-006n                                                               | Bracket score and connector contrast; follow-up not yet scoped               | Backlog |
+| [DR-006n](work-items/DR-006n-bracket-contrast.md)                     | Bracket score and connector contrast                                         | Done    |
 | DR-007                                                                | Shared form controls and sync feedback                                       | Backlog |
 | DR-008                                                                | Player detail                                                                | Backlog |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)                  | Player hero actions                                                          | Done    |
@@ -4057,8 +4078,10 @@ No page-specific override, translation asset or dependency is added during the c
 - DR-006k scopes only bracket numbered-palette presentation, not the completed responsive/algorithm scope.
 - DR-006n: isolated mounted KO checks after settled theme transitions measured unchanged winner-score text
   at 2.90:1 light / 8.16:1 dark (13 scores, 12.25px bold), and 28 unchanged connectors at 1.00:1 / 1.10:1.
-  Source confirms these utilities were not changed by DR-006k. Scope a separate contrast-only visualization
-  follow-up with the same mounted consumer, preserving scores, winner meaning, geometry and theme infrastructure.
+  These were not changed by DR-006k. The [contrast-only follow-up](work-items/DR-006n-bracket-contrast.md)
+  now addresses both: scores 16.30:1 / 14.45:1, connectors 4.46:1 / 6.91:1.
+  Four real theme/width comparisons preserve content, geometry and links; no theme infrastructure changes.
+  Explicit approval on 2026-11-23 completes the child with the brief's unchecked verification limits retained.
 - DR-006l: expanded shared encounter games now use divided semantic rows, without nested Cards.
   All three mounted consumers pass twelve before/after layout/content cases and native Enter/Space expansion.
   The [brief](work-items/DR-006l-expanded-encounter-games.md) records the approved alignment revision, Done and limits.

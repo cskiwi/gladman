@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006 [Shared games, matches, and brackets](work-items/DR-006-games-matches-brackets.md) is Done,
+2026-11-23, on the existing `main` branch, starting from a clean worktree.
+Documentation-only completion reconciliation confirms all fourteen DR-006a-n children are approved Done.
+Latest DR-006k/l/m/n commits and current source agree; no application edits, extraction or new implementation child.
+Fresh mounted checks: ten recent/three upcoming player articles, four KO rounds/fifteen matches/28 player links,
+fourteen team encounters, 72 competition-draw encounters and 120 club-schedule encounters.
+Schedule expansion loads eight divided game rows with no nested Cards and collapses after Angular settles.
+Initial hydration/click-timing samples were repeated; only settled results are evidence.
+All child limits remain: missing populated live game/nonzero summary pixels, broader doubles/TBD,
+current recent-result accessibility/contrast, full keyboard/touch/screen-reader, locale and SSR verification.
+DR-006m's accepted absence of explicit overall-result labels is not a current accessibility pass.
+Existing shared-control contrast/focus and breakpoint/page-size discoveries remain separately recorded below.
+No fresh theme/width/contrast matrix or screenshots; only Markdown changed.
+Prettier, LF/local-link/registry assertions and whitespace validation cover this handoff.
+Explicit approval, 2026-11-23: `Approve DR-006 with documented limits and commit`.
+This accepts parent completion and the unchecked limits, without claiming unperformed checks passed.
+Required pre-commit workspace lint reproduces dependency-version errors in the same ten untouched projects;
+the other 24 targets pass from cache. No unrelated fixes; final formatting/link/LF/Done-registry checks pass.
+Commit only this parent brief/backlog handoff; no push or application changes.
+Next candidate is DR-007: confirm a real country/state or sync-control consumer and scope one child
+from the template. No Ready rows remain; do not begin DR-007 or change global theme behavior in this invocation.
+
+### Previous focus: Bracket score and connector contrast (DR-006n)
+
 DR-006n [Bracket score and connector contrast](work-items/DR-006n-bracket-contrast.md) is Done,
 2026-11-23, on the existing `main` branch, starting from a clean worktree.
 Mounted KO draw reconfirmed: four rounds, fifteen matches, 28 player links, 26 scores and 28 connector segments.
@@ -3373,7 +3397,7 @@ and linked from their registry rows.
 | [DR-005c](work-items/DR-005c-sparkline.md)                            | Shared sparkline                                                             | Done    |
 | [DR-005d](work-items/DR-005d-stat-card.md)                            | Shared stat-card                                                             | Done    |
 | [DR-005e](work-items/DR-005e-ranking-progress.md)                     | Shared ranking progress                                                      | Done    |
-| [DR-006](work-items/DR-006-games-matches-brackets.md)                 | Shared games, matches, and brackets                                          | Backlog |
+| [DR-006](work-items/DR-006-games-matches-brackets.md)                 | Shared games, matches, and brackets                                          | Done    |
 | [DR-006a](work-items/DR-006a-recent-game-points.md)                   | Mounted player recent-game point indicators                                  | Done    |
 | [DR-006b](work-items/DR-006b-recent-game-scores.md)                   | Mounted player recent-game set scores                                        | Done    |
 | [DR-006c](work-items/DR-006c-recent-game-results.md)                  | Mounted player recent-game result indicator                                  | Done    |

@@ -6,31 +6,35 @@ description: 'Reconcile approved shared-game children with current consumers and
 ## Identity and scope
 
 - ID: DR-006; authoritative status in the [backlog](../backlog.md).
-- Rules: [design refresh](../README.md). Dependencies: approved DR-006a-j.
+- Rules: [design refresh](../README.md). Dependencies: approved DR-006a-n.
 - Documentation-only parent reconciliation on the current branch, `main`, starting from a clean worktree.
 - Confirm current consumers, retain child approvals and verification limits, and scope remaining work separately.
 - Exclude application edits, global styling, services, calculations, translations, new consumers and dependencies.
-- Keep the parent open while required follow-up work remains; reconciliation is not blanket visual approval.
+- Parent completion is explicitly approved with disclosed limits; reconciliation is not blanket visual approval.
 
 ## Required children
 
-| Child                                          | Approved scope                                          |
-| ---------------------------------------------- | ------------------------------------------------------- |
-| [DR-006a](DR-006a-recent-game-points.md)       | Current-player signed point indicators                  |
-| [DR-006b](DR-006b-recent-game-scores.md)       | Player-relative set scores                              |
-| [DR-006c](DR-006c-recent-game-results.md)      | Recent-game results and Card surface                    |
-| [DR-006d](DR-006d-recent-game-filters.md)      | Recent-game heading and filters                         |
-| [DR-006e](DR-006e-recent-game-loading.md)      | Initial and appended loading placeholders               |
-| [DR-006f](DR-006f-upcoming-game-cards.md)      | Populated upcoming-game cards and expansion             |
-| [DR-006g](DR-006g-upcoming-game-states.md)     | Upcoming heading, date/action, loading and empty states |
-| [DR-006h](DR-006h-upcoming-encounter-cards.md) | Shared upcoming encounter summaries                     |
-| [DR-006i](DR-006i-played-encounter-cards.md)   | Played summaries and expanded games                     |
-| [DR-006j](DR-006j-bracket-tree-responsive.md)  | Bounded knockout bracket scrolling                      |
+| Child                                               | Approved scope                                          |
+| --------------------------------------------------- | ------------------------------------------------------- |
+| [DR-006a](DR-006a-recent-game-points.md)            | Current-player signed point indicators                  |
+| [DR-006b](DR-006b-recent-game-scores.md)            | Player-relative set scores                              |
+| [DR-006c](DR-006c-recent-game-results.md)           | Recent-game results and Card surface                    |
+| [DR-006d](DR-006d-recent-game-filters.md)           | Recent-game heading and filters                         |
+| [DR-006e](DR-006e-recent-game-loading.md)           | Initial and appended loading placeholders               |
+| [DR-006f](DR-006f-upcoming-game-cards.md)           | Populated upcoming-game cards and expansion             |
+| [DR-006g](DR-006g-upcoming-game-states.md)          | Upcoming heading, date/action, loading and empty states |
+| [DR-006h](DR-006h-upcoming-encounter-cards.md)      | Shared upcoming encounter summaries                     |
+| [DR-006i](DR-006i-played-encounter-cards.md)        | Played summaries and expanded games                     |
+| [DR-006j](DR-006j-bracket-tree-responsive.md)       | Bounded knockout bracket scrolling                      |
+| [DR-006k](DR-006k-bracket-semantic-presentation.md) | Neutral semantic bracket boundaries and headings        |
+| [DR-006l](DR-006l-expanded-encounter-games.md)      | Shared divided expanded-game rows and score alignment   |
+| [DR-006m](DR-006m-recent-game-evidence.md)          | Current recent-game result and score evidence           |
+| [DR-006n](DR-006n-bracket-contrast.md)              | Winning-score and progression-connector contrast        |
 
-All ten rows remain Done with their original approvals. Their historical before/after evidence does not
-establish the exact current presentation or complete parent coverage.
+All fourteen children remain Done with their recorded approvals and verification limits.
+Historical before/after evidence does not establish today's complete presentation or accessibility coverage.
 
-## Reconciliation checklist
+## Initial reconciliation checklist (2026-11-21)
 
 - [x] Read all ten child briefs and reconcile approvals with current source.
 - [x] Confirm routed player and knockout bracket consumers without mutations.
@@ -150,10 +154,114 @@ docs\design-refresh\work-items\DR-006k-bracket-semantic-presentation.md` and `gi
   Focused tests and components/tournament lint/build pass. Explicit approval on 2026-11-23:
   `Approve DR-006n with documented limits and commit`. The child is Done with accepted limits; broader
   doubles/TBD-browser, screen-reader/touch, locale and SSR checks remain unverified in the child brief.
-- Parent stays Backlog until required follow-ups are resolved; approved DR-006a-k are not reopened.
-- Exact next action: commit only approved DR-006n and its handoff, without push.
-  Next candidate: reconcile the parent's remaining required follow-ups and accepted child limits separately.
-  Do not start that reconciliation or restore old recent-result icons here; child approvals do not complete this parent.
+- DR-006n was committed as `53b91e3f`; the clean worktree and current template confirm its implementation.
+  DR-006m (`f9c6ca5b`), DR-006l (`7c924cd6`) and DR-006k (`f83c4c9d`) are also committed.
+  The current reconciliation below supersedes the earlier instruction to commit DR-006n or scope another child.
+
+## Completion reconciliation (2026-11-23)
+
+### Acceptance and current implementation
+
+- [x] Reconcile all fourteen Done child rows and recorded approvals against current source.
+- [x] Reconfirm routed player, bracket and all three shared encounter consumers.
+- [x] Distinguish resolved follow-ups from accepted limits and separately recorded work.
+- [x] Persist the current handoff without reopening completed children or changing application code.
+- [x] Format changed documents and validate local links, LF, whitespace and registry consistency.
+- [x] Obtain parent completion approval with the disclosed limits, or scope a specific requested follow-up.
+
+Current source confirms the recent-games player retains native point/winning-set Tags, plain losing/tied values,
+named heading/filter markup and loading branches. DR-006m supersedes the old DR-006b/c score/result presentation:
+there is no explicit authoritative overall win/loss/unknown label. Do not silently restore it or treat set comparisons
+as an equivalent accessibility result.
+
+Upcoming player cards retain the named busy section, date/month/time, native assembly action, three-card initial
+view, expansion and loading/empty branches. Shared encounters retain upcoming/played summaries and named lazy
+expansion; DR-006l now renders divided semantic game rows with shared desktop tracks, not nested game Cards.
+The KO adapter still supplies the shared bracket. Its bounded scroll geometry, neutral borders, semantic headings,
+emphasized winning-score text and muted currentColor connectors match DR-006j/k/n.
+
+The recorded k-n follow-ups are resolved within their approved scopes; no additional required implementation child
+was identified by this reconciliation. Existing dispatchers own data, while shared encounters and the KO/bracket
+components already provide reusable presentation. No new smart/presentational extraction is justified.
+Template search across `apps` and `libs` finds no mounted `app-match-row` or `app-upcoming-match` caller.
+Team game branches still appear only inside dispatchers, with no production caller selecting that branch.
+Skip them; do not add redesign-only consumers.
+
+### Fresh read-only mounted evidence
+
+Used one newly opened integrated-browser page and the existing port-3000 server, in dark mode at 1024px.
+The user's pre-existing unshared page was not used. No viewport, theme preference, account state or server data changed.
+Routes are the same real consumers listed above:
+
+| Consumer         | Current observed content                                                                                   |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- |
+| Player detail    | Ten recent articles, 24 winning-set Tags, no hidden overall-result labels; three upcoming articles/actions |
+| KO draw          | One bracket, four rounds, fifteen matches, 28 player links and 28 semantic connector segments              |
+| Club team detail | Fourteen shared encounters; four named expansion buttons and ten upcoming times                            |
+| Competition draw | 72 shared encounters; twenty named expansion buttons and 52 upcoming times                                 |
+| Club schedule    | 120 shared encounters; 41 named expansion buttons and 79 upcoming times                                    |
+
+The first club-schedule expansion loads eight game articles and zero nested Cards; collapse subsequently settles
+to `aria-expanded="false"`. This exercises a read-only game query, not an operational mutation.
+The live expanded games still omit player memberships/set scores; no populated-data or contrast pass is inferred.
+The player route contains none of the unused legacy/team game hosts.
+
+Initial navigation briefly exposed server-rendered bracket markup before hydration replaced it, producing a zero-host
+aggregate. Repeating after four rounds/28 links were present and settled confirms the populated bracket above,
+including zero numbered primary/surface classes. Immediate post-click collapse sampling likewise preceded Angular's
+update; the settled check confirms collapse. These transient samples are not accepted as passing evidence.
+An existing transition-aborted console error appeared during navigation; it was not investigated or fixed.
+
+These are presence and limited expansion checks, not new light/dark/narrow/wide pixels, keyboard, contrast,
+screen-reader, touch, alternate-locale, loading/error/permission or SSR/hydration verification.
+No screenshots or personal fixture data were added to the repository.
+
+### Limits, validation and exact next action
+
+- All child approvals remain intact, including their unchecked criteria. Historical commands are not fresh passes.
+- DR-006d's full keyboard-selection check, earlier screenshot gaps and upcoming assembly-navigation/locale/SSR
+  limits remain accepted child limits, not verified outcomes.
+- DR-006i/l still lack populated live expanded-player/badge/set-score and nonzero summary visual verification.
+  DR-006l's synthetic fixture evidence is not populated production evidence.
+- DR-006k/n still lack populated doubles/TBD browser, touch, screen-reader, locale and SSR verification.
+  The stale full bracket suite's six historical failures were not rerun or fixed.
+- DR-006m accepts the absence of explicit overall-result meaning; current recent-game contrast, nonstandard
+  results, full keyboard/screen-reader/touch and SSR coverage remain unverified.
+- Existing breakpoint/page-size behavior remains separately recorded under DR-006b in the backlog.
+  Shared secondary-Button focus/contrast and other SelectButton consumers remain under DR-007/shared-control
+  audit scope; parent closure would not resolve them or authorize a hidden theme change.
+- Passed: initial clean worktree/current `main`, latest scoped commit history, source/route searches and the
+  settled mounted checks above. No application utilities, CSS, services, dependencies or extraction changed.
+- Documentation validation: repository Prettier on the backlog and this brief, read-only Node assertions for
+  front matter/LF/trailing whitespace/local links, all fourteen Done child rows, parent Review/current focus,
+  and `git --no-pager diff --check`.
+  The assertions pass for 443 backlog local targets and 34 brief local targets; no Ready registry rows remain.
+  Exact formatter and whitespace commands:
+
+  ```powershell
+  npx --no-install prettier --write docs\design-refresh\backlog.md docs\design-refresh\work-items\DR-006-games-matches-brackets.md
+  git --no-pager diff --check
+  ```
+
+  Git warns about future checkout conversion; the actual document contents are verified LF-only.
+
+- Browser cleanup attempted only `page.close()` for the newly opened verification page. The tool returned
+  `Page not found`; closure is not independently confirmed. No close-all or shared-browser cleanup was attempted.
+- Not run: Nx build/test, because this invocation changes only Markdown.
+  Required pre-commit `npx nx run-many --target=lint --output-style=static` reproduces the existing
+  `@nx/dependency-checks` version-specifier errors in ten untouched projects: `backend-health`, `backend-seo`,
+  `backend-translate`, `backend-ranking`, `shared`, `backend-authorization`, `backend-search`, `utils`,
+  `backend-database` and `backend-graphql`. The other 24 targets pass from cache.
+  No unrelated dependency corrections are included.
+- Explicit parent approval, 2026-11-23: `Approve DR-006 with documented limits and commit`.
+  This completes DR-006 with all child limits and the current reconciliation limits disclosed above.
+  Unchecked child criteria remain unchecked; no unperformed visual/accessibility/locale/SSR check becomes a pass.
+  Approval authorizes only this parent brief/backlog commit, not a push or another implementation slice.
+  Final formatting, relative-link/LF/whitespace and registry checks pass with parent/current focus Done,
+  all fourteen children Done and DR-007 still Backlog.
+- After parent approval, next candidate is DR-007: confirm a real country/state or sync-control consumer,
+  create a bounded brief from the existing template and select only one shared-control concern.
+  No Ready rows currently exist; DR-007 remains unscoped Backlog and is not started here.
 
 [player-detail]: ../../../libs/frontend/pages/player/src/pages/detail/page-detail.component.html
 [recent]: ../../../libs/frontend/components/games/recent/src/player/recent-games-player.component.html

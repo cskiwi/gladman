@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-073 [Shared sync menu Escape focus restoration](work-items/DR-073-sync-menu-focus.md) is Done after explicit approval,
+2026-11-23, on existing `main`, starting with a clean worktree.
+Corrects only shared sync-menu Escape focus return, using its native `aria-controls` association.
+Preserves native appearance, actions, translated names and loading; no operational mutations or new extraction/styles.
+Nine focused tests and scoped components/competition/tournament lint/build pass; existing warnings only.
+Twenty mounted light/dark 390px/1440px cases pass: 32 first/last-visible Escape checks plus Tab/outside dismissal.
+Controls retain mounted counts 13/36/37/1/1; tournament details expose 15/16 on their initial active tabs.
+Initial hidden-tab and unsettled-arrow samples are invalid; settled visible-control repeats pass.
+No full screenshot matrix, contrast, screen-reader/touch, exhaustive locales/permissions or SSR check is claimed.
+Explicit approval: `Approve DR-073 with documented limits and commit`.
+Completion accepts the unchecked limits and narrow native-focus workaround, without claiming unperformed checks passed.
+Required workspace lint reproduces dependency-version errors in ten unchanged manifests; the other 24 targets pass.
+Commit only this approved slice and handoff; no push. DR-007 stays open.
+Exact next action: reconcile remaining DR-007 sync-action/dialog scope against mounted consumers before parent closure.
+DR-065 is unrelated builder feedback, not a DR-007 prerequisite. Do not start that reconciliation in this invocation.
+
+### Previous focus: Shared sync dropdown accessible name (DR-067)
+
 DR-067 [Shared sync dropdown accessible name](work-items/DR-067-sync-dropdown-name.md) is Done after explicit approval,
 2026-11-23, on existing `main`, starting with a clean worktree.
 Completed: native SplitButton expand-button label in en/nl_BE/fr_BE, six tests and mounted-consumer verification.
@@ -3668,7 +3686,7 @@ and linked from their registry rows.
 | [DR-070b](work-items/DR-070b-ranking-average-explanations.md)         | Ranking table average explanations                                           | Done    |
 | [DR-071](work-items/DR-071-simulation-level-stepper.md)               | Native simulation level stepper accessibility reconciliation                 | Done    |
 | [DR-072](work-items/DR-072-tier-badge-native-styling.md)              | Shared tier badge styling without scoped token bindings                      | Done    |
-| DR-073                                                                | Shared sync menu Escape focus restoration                                    | Backlog |
+| [DR-073](work-items/DR-073-sync-menu-focus.md)                        | Shared sync menu Escape focus restoration                                    | Done    |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -3685,7 +3703,8 @@ and linked from their registry rows.
 - Scope a separate DR-007 follow-up against all mounted competition/tournament detail/draw consumers.
   Preserve main/menu actions, translated names and permission/loading behavior. Use native capabilities first;
   do not trigger sync/cache operations for tests. DR-067 changes only naming, not native focus behavior.
-- No brief or implementation yet; DR-067 is approved Done with this focus-restoration limit preserved.
+- Scoped in [the brief](work-items/DR-073-sync-menu-focus.md); DR-067 remains approved Done with its original
+  verification limits preserved.
 
 ### DR-069: Competition editor save-all invalid-form result handling
 

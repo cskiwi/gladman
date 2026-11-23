@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, ElementRef, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -86,6 +86,7 @@ export interface SyncButtonConfig {
   templateUrl: './sync-button.component.html',
 })
 export class SyncButtonComponent {
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly apollo = inject(Apollo);
   private readonly messageService = inject(MessageService);
   public translate = inject(TranslateService);
@@ -97,6 +98,18 @@ export class SyncButtonComponent {
   loading = signal(false);
   gameSyncDialogVisible = signal(false);
   matchCodes = '';
+
+  /** Restores this dropdown's Escape focus even when its menu is appended to body. */
+  restoreMenuFocus(event: Event): void {
+    const target = event.target;
+    if (!(target instanceof Element) || !target.closest('[role="menu"]')) return;
+
+    const trigger = this.element.nativeElement.querySelector<HTMLButtonElement>('button[aria-haspopup="true"]');
+    const overlayId = trigger?.getAttribute('aria-controls');
+    if (overlayId && target.ownerDocument.getElementById(overlayId)?.contains(target)) {
+      trigger?.focus();
+    }
+  }
 
   // Helper methods for template
   getSyncIcon(level: SyncLevel): string {

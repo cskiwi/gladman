@@ -20,12 +20,17 @@ description: 'Bounded shared-control slices and their mounted consumers.'
 - [x] Reconcile country/state work against its existing approved brief.
 - [x] Confirm a current sync-indicator consumer and scope one implementation child.
 - [x] Complete and obtain review for DR-007a, approved 2026-11-23 with its documented limits.
-- [ ] Reconcile remaining sync action/dialog work and DR-065 before closing this parent.
+- [ ] Reconcile remaining sync action/dialog work before closing this parent.
 
 DR-007 remains open until its required children and follow-ups are resolved.
 Latest slice: DR-067, localized native dropdown naming across mounted sync-control consumers, is approved Done.
 Six focused tests, scoped lint/build and twenty mounted theme/width cases pass; see its evidence and unchecked limits.
 Settled native Escape dismissal loses trigger focus, recorded separately as DR-073; it is not fixed by naming.
 Explicit approval, 2026-11-23: `Approve DR-067 with documented limits and commit`.
-Its unchecked criteria remain recorded. Next action: scope DR-073. Leave the unmounted game dialog unchanged.
+Its unchecked criteria remain recorded.
+[DR-073](DR-073-sync-menu-focus.md) corrects Escape focus return and is approved Done, 2026-11-23.
+Nine focused tests, scoped lint/build and twenty mounted theme/width cases pass; see its evidence and limits.
+Explicit approval: `Approve DR-073 with documented limits and commit`; unchecked limits remain recorded.
+Next action: reconcile remaining mounted sync-action/dialog scope before closing DR-007.
+DR-065 is unrelated builder feedback, not a prerequisite; leave the unmounted game dialog unchanged.
 DR-007a is approved Done; preserve its unchecked verification limits and scoped zero-gap layout exception.

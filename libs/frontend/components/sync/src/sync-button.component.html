@@ -9,6 +9,7 @@
     [label]="getSyncLabel(cfg.level) | translate"
     [expandAriaLabel]="'all.sync.button.moreActions' | translate"
     [model]="getSyncItems(cfg.level)"
+    (document:keydown.escape)="restoreMenuFocus($event)"
   />
 }
 

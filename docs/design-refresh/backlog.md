@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-007b [Localized mounted sync-action feedback](work-items/DR-007b-sync-action-feedback.md) is Done after explicit approval,
+2026-11-23, on existing `main`, starting with a clean worktree.
+Localize only shared mounted event/sub-event/draw and cache notifications; preserve operations and native styling.
+Implementation and 33 focused tests pass; three-project lint/build passes (15 tasks, seven cached).
+Headings/failure details use en/nl_BE/fr_BE assets; optional display names fall back to their entity IDs.
+Existing shared controller remains the reuse boundary; no extra smart/presentational extraction is warranted.
+User restart resolved the localhost:3000 connection blocker; updated code and locale assets are confirmed.
+Fresh mounted counts remain 13/36/37/1/1 across competition/tournament detail/draw routes.
+Safe fixtures check 252 localized notifications and twenty light/dark 390px/1440px mounted cases.
+Eight early geometry samples were unsettled; all twenty longer-settled repeats pass, including GUID wrapping.
+Alert attributes, close names and main-button focus pass; 24 Enter/Space dismissals pass without operational commands.
+Light/dark Toast images inspected; no full viewport screenshot matrix or contrast/accessibility/SSR pass claimed.
+Existing dark Toast detail text is nearly invisible before/after; recorded separately as DR-074, no theme edits.
+Full screen-reader/touch, contrast, exhaustive permission/locale workflows and SSR/hydration remain unverified.
+Explicit approval: `Approve DR-007b with documented limits and commit`.
+This accepts the unchecked limits and DR-074 contrast issue, not unperformed checks.
+Required pre-commit workspace lint reproduces dependency-version errors in ten unchanged manifests;
+24 targets pass, nineteen cached. No unrelated fixes.
+No operational mutations, unused game-dialog changes, new extraction or global styles.
+Commit only this approved slice and handoff; no push. DR-007 remains open for parent completion reconciliation.
+Exact next action: reconcile DR-007 parent completion in the next invocation; do not start another slice here.
+
+### Previous focus: Shared controls reconciliation (DR-007)
+
 DR-007 [Shared form controls and sync feedback](work-items/DR-007-shared-controls.md) reconciliation is complete
 and approved for commit, 2026-11-23, on existing `main`, starting with a clean worktree.
 The parent remains In progress for its required child; this approval completes only the documentation-only slice.
@@ -3499,7 +3523,7 @@ and linked from their registry rows.
 | [DR-006n](work-items/DR-006n-bracket-contrast.md)                     | Bracket score and connector contrast                                         | Done        |
 | [DR-007](work-items/DR-007-shared-controls.md)                        | Shared form controls and sync feedback                                       | In progress |
 | [DR-007a](work-items/DR-007a-sync-status-presentation.md)             | Compact semantic sync-status presentation                                    | Done        |
-| [DR-007b](work-items/DR-007b-sync-action-feedback.md)                 | Localized mounted sync-action and cache notifications                        | Ready       |
+| [DR-007b](work-items/DR-007b-sync-action-feedback.md)                 | Localized mounted sync-action and cache notifications                        | Done        |
 | DR-008                                                                | Player detail                                                                | Backlog     |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)                  | Player hero actions                                                          | Done        |
 | [DR-008b](work-items/DR-008b-player-sidebar-cards.md)                 | Player detail sidebar cards (form, record, match-ups, teams)                 | Done        |
@@ -3710,12 +3734,25 @@ and linked from their registry rows.
 | [DR-071](work-items/DR-071-simulation-level-stepper.md)               | Native simulation level stepper accessibility reconciliation                 | Done        |
 | [DR-072](work-items/DR-072-tier-badge-native-styling.md)              | Shared tier badge styling without scoped token bindings                      | Done        |
 | [DR-073](work-items/DR-073-sync-menu-focus.md)                        | Shared sync menu Escape focus restoration                                    | Done        |
+| DR-074                                                                | Native Toast dark detail-text contrast audit                                 | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-074: Native Toast dark detail-text contrast audit
+
+- DR-007b's safe native error Toast fixtures expose nearly invisible detail text in dark mode, before and after
+  notification localization; light text is readable. This is not caused by changed message content.
+- Mounted competition error detail resolves to `oklch(0.14 0.02 250)` over a translucent error background
+  `color(srgb 0.937255 0.266667 0.266667 / 0.16)` on the dark application canvas.
+  Baseline and settled after images confirm the issue; no precise contrast ratio is claimed.
+- Audit native Toast semantic tokens across severities and actual shared consumers in its own bounded slice.
+  Preserve native announcements, queue/result semantics, close names and focus behavior.
+  Do not fix this via per-page styles or as a hidden side effect of DR-007b; no operational mutation is needed.
+- Not a prerequisite for localization review. Any completion approval must disclose this outstanding contrast issue.
 
 ### DR-073: Shared sync menu Escape focus restoration
 

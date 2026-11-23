@@ -222,14 +222,16 @@ export class SyncButtonComponent {
 
       this.messageService.add({
         severity: 'success',
-        summary: 'Success',
+        summary: this.translate.instant('all.common.success'),
         detail: this.translate.instant('all.sync.button.eventSyncQueued', { id: cfg.eventId }),
       });
     } catch (e: unknown) {
       this.messageService.add({
         severity: 'error',
-        summary: 'Error',
-        detail: `Failed to sync ${cfg.eventName}`,
+        summary: this.translate.instant('all.common.error'),
+        detail: this.translate.instant('all.sync.button.eventSyncFailed', {
+          name: cfg.eventName?.trim() || cfg.eventId,
+        }),
       });
     } finally {
       this.loading.set(false);
@@ -254,14 +256,16 @@ export class SyncButtonComponent {
 
       this.messageService.add({
         severity: 'success',
-        summary: 'Success',
+        summary: this.translate.instant('all.common.success'),
         detail: this.translate.instant('all.sync.button.subEventSyncQueued', { id: cfg.subEventId }),
       });
     } catch (e: unknown) {
       this.messageService.add({
         severity: 'error',
-        summary: 'Error',
-        detail: `Failed to sync sub-event ${cfg.subEventName}`,
+        summary: this.translate.instant('all.common.error'),
+        detail: this.translate.instant('all.sync.button.subEventSyncFailed', {
+          name: cfg.subEventName?.trim() || cfg.subEventId,
+        }),
       });
     } finally {
       this.loading.set(false);
@@ -286,14 +290,16 @@ export class SyncButtonComponent {
 
       this.messageService.add({
         severity: 'success',
-        summary: 'Success',
+        summary: this.translate.instant('all.common.success'),
         detail: this.translate.instant('all.sync.button.drawSyncQueued', { id: cfg.drawId }),
       });
     } catch (e: unknown) {
       this.messageService.add({
         severity: 'error',
-        summary: 'Error',
-        detail: `Failed to sync draw ${cfg.drawName}`,
+        summary: this.translate.instant('all.common.error'),
+        detail: this.translate.instant('all.sync.button.drawSyncFailed', {
+          name: cfg.drawName?.trim() || cfg.drawId,
+        }),
       });
     } finally {
       this.loading.set(false);
@@ -375,21 +381,21 @@ export class SyncButtonComponent {
       if (result.data?.[resultKey]) {
         this.messageService.add({
           severity: 'success',
-          summary: 'Cache Cleared',
+          summary: this.translate.instant('all.common.success'),
           detail: this.translate.instant('all.sync.button.cacheCleared'),
         });
       } else {
         this.messageService.add({
           severity: 'warn',
-          summary: 'Cache Clear',
+          summary: this.translate.instant('all.cache.clear'),
           detail: this.translate.instant('all.sync.button.cacheEmpty'),
         });
       }
     } catch (e: unknown) {
       this.messageService.add({
         severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to clear API cache',
+        summary: this.translate.instant('all.common.error'),
+        detail: this.translate.instant('all.sync.button.cacheClearFailed'),
       });
     } finally {
       this.loading.set(false);

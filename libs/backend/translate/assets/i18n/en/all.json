@@ -1453,6 +1453,10 @@
       "eventSyncQueued": "Event sync queued successfully for {{id}}",
       "subEventSyncQueued": "Sub-event sync queued successfully for {{id}}",
       "drawSyncQueued": "Draw sync queued successfully for {{id}}",
+      "eventSyncFailed": "Failed to sync {{name}}",
+      "subEventSyncFailed": "Failed to sync sub-event {{name}}",
+      "drawSyncFailed": "Failed to sync draw {{name}}",
+      "cacheClearFailed": "Failed to clear API cache",
       "cacheCleared": "Cleared cached API entries",
       "cacheEmpty": "No cache entries found"
     }

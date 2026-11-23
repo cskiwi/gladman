@@ -1453,6 +1453,10 @@
       "eventSyncQueued": "Synchronisation de l'événement planifiée pour {{id}}",
       "subEventSyncQueued": "Synchronisation du sous-événement planifiée pour {{id}}",
       "drawSyncQueued": "Synchronisation du tableau planifiée pour {{id}}",
+      "eventSyncFailed": "Échec de la synchronisation de {{name}}",
+      "subEventSyncFailed": "Échec de la synchronisation du sous-événement {{name}}",
+      "drawSyncFailed": "Échec de la synchronisation du tableau {{name}}",
+      "cacheClearFailed": "Échec de la suppression du cache de l'API",
       "cacheCleared": "Cache API vidé",
       "cacheEmpty": "Aucune entrée de cache trouvée"
     }

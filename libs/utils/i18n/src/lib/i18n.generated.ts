@@ -1460,6 +1460,10 @@ export type I18nTranslations = {
                 "eventSyncQueued": string;
                 "subEventSyncQueued": string;
                 "drawSyncQueued": string;
+                "eventSyncFailed": string;
+                "subEventSyncFailed": string;
+                "drawSyncFailed": string;
+                "cacheClearFailed": string;
                 "cacheCleared": string;
                 "cacheEmpty": string;
             };

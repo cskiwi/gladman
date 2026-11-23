@@ -1453,6 +1453,10 @@
       "eventSyncQueued": "Event-synchronisatie ingepland voor {{id}}",
       "subEventSyncQueued": "Onderdeel-synchronisatie ingepland voor {{id}}",
       "drawSyncQueued": "Reeks-synchronisatie ingepland voor {{id}}",
+      "eventSyncFailed": "Synchronisatie van {{name}} mislukt",
+      "subEventSyncFailed": "Synchronisatie van onderdeel {{name}} mislukt",
+      "drawSyncFailed": "Synchronisatie van reeks {{name}} mislukt",
+      "cacheClearFailed": "API-cache wissen mislukt",
       "cacheCleared": "API-cache gewist",
       "cacheEmpty": "Geen cache-items gevonden"
     }

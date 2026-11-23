@@ -30,7 +30,8 @@ description: 'Bounded shared-control slices and their mounted consumers.'
 - [x] Complete and obtain review for DR-007a, approved 2026-11-23 with its documented limits.
 - [x] Reconcile remaining sync action/dialog work against current application consumers.
 - [x] User approves the completed documentation-only reconciliation for commit, 2026-11-23: `commit`.
-- [ ] Complete and obtain review for DR-007b before closing this parent.
+- [x] Complete and obtain review for DR-007b, approved with documented limits.
+- [ ] Reconcile all completed child evidence and accepted limits before closing this parent.
 
 DR-007 remains open until its required children and follow-ups are resolved.
 DR-018b1, DR-007a, DR-067 and DR-073 remain approved Done; preserve their unchecked verification limits.
@@ -75,17 +76,26 @@ Fresh hydrated browser inventory at the unchanged dark 1288px by 1272px viewport
 
 ## Remaining work and verification limits
 
-- DR-007b is the one required next child: localize mounted event/sub-event/draw and cache Toast feedback.
-  Existing queued/cleared/empty details are translated, but headings and failure details remain hard-coded English.
-  Native success/error/warn severities already exist; reuse them without restyling Toast or changing the theme.
+- DR-007b is the required active child: mounted event/sub-event/draw and cache Toast feedback is now localized.
+  Existing queued/cleared/empty details remain unchanged; headings reuse common/cache translations.
+  Four new failure keys per locale preserve entity context, falling back to the ID when the display name is absent.
+  Native success/error/warn severities and shared presentation are unchanged.
+  Thirty-three focused tests and scoped three-project lint/build pass.
+  User restart resolved the connection blocker. Five-route light/dark 390px/1440px notification fixtures pass
+  settled geometry, locale, alert-attribute and dismissal checks.
+  DR-007b is approved Done: `Approve DR-007b with documented limits and commit`.
+  Unchecked operational/accessibility/SSR and screenshot limits remain; approval is not a pass for those checks.
+  Existing native Toast dark detail contrast is separately tracked as DR-074; no hidden theme changes.
 - Main sync dispatch includes children; menu sync excludes them. Cache commands distinguish their children flag.
   Preserve those operation contracts, loading disablement and existing queue-versus-completed meaning.
   The [resolvers](../../../libs/backend/graphql/src/resolvers/system/sync.resolver.ts) return true after queuing
   event/sub-event/draw work and throw on permission failures; no queue/cache operation was run for this audit.
-- Existing [nine shared tests](../../../libs/frontend/components/sync/src/sync-button.component.spec.ts) cover
-  names, locale updates, disablement and focus isolation, not operation-notification outcomes.
-  DR-007b must add mocked outcome coverage; source inspection is not live success/error verification.
-- Fresh browser work checks inventory only: no screenshot, light/narrow, contrast, keyboard, screen-reader/touch,
+- Existing [shared tests](../../../libs/frontend/components/sync/src/sync-button.component.spec.ts) now include
+  the nine naming/loading/focus cases plus 24 mocked notification/payload/disablement/name-fallback regressions.
+  Mocked success/error outcomes are not live operational verification.
+- The remaining evidence below is historical documentation-only reconciliation, not DR-007b verification.
+  DR-007b's current evidence and pending review are recorded above and in its brief.
+- That reconciliation's browser work checked inventory only: no screenshot, light/narrow, contrast, keyboard, screen-reader/touch,
   alternate locale, operational transition or SSR/hydration regression pass is claimed.
   Hidden tournament panels were counted, not individually opened or workflow-verified.
 - First probe raced hydration and passed a removed element to Angular debug lookup; discard that sample.
@@ -105,7 +115,7 @@ Fresh hydrated browser inventory at the unchanged dark 1288px by 1272px viewport
 - No application Nx tasks were needed during this documentation-only reconciliation.
   Previous child results are not rerun or relabeled as fresh.
 - No new exception. Parent closure is not requested: finish DR-007b and review its evidence first.
-  Exact next action: implement the Ready DR-007b brief; do not start its implementation in this invocation.
+  Current next action: reconcile parent completion and all accepted child limits in the next invocation.
 - Explicit approval, 2026-11-23: `commit`. The reconciliation slice is complete and approved with the
   disclosed verification limits. This does not close DR-007 or approve unimplemented DR-007b.
   Preserve the open child and unchecked criteria; commit only these three handoff documents, without pushing.

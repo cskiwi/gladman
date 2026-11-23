@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
 import { TierBadgeComponent } from '@app/frontend-components/tier-badge';
 
 type Variant = 'played' | 'upcoming';
@@ -13,7 +14,7 @@ type Variant = 'played' | 'upcoming';
 @Component({
   selector: 'app-encounter-card',
   standalone: true,
-  imports: [DatePipe, TranslateModule, SkeletonModule, CardModule, ButtonModule, RouterModule, TierBadgeComponent],
+  imports: [DatePipe, TranslateModule, SkeletonModule, CardModule, ButtonModule, TagModule, RouterModule, TierBadgeComponent],
   templateUrl: './encounter-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -40,9 +40,9 @@ establish the exact current presentation or complete parent coverage.
 - [x] Format changed documents and validate links, LF, whitespace and registry consistency.
 - [x] Obtain review of this reconciliation and its disclosed limits.
 
-## Current source and evidence
+## Reconciliation source and evidence
 
-Source inspection on 2026-11-21:
+Source inspection on 2026-11-21, before the separately implemented DR-006k/l follow-ups:
 
 - [Player detail][player-detail] imports both game dispatchers; their player branches render
   [recent games][recent] and [upcoming games][upcoming].
@@ -117,11 +117,29 @@ docs\design-refresh\work-items\DR-006k-bracket-semantic-presentation.md` and `gi
   This approves only the documentation reconciliation and commit, not parent completion or unperformed checks.
   Parent returns to Backlog for its remaining work; preserve unchecked child criteria, especially
   screenshots/keyboard limits, populated expanded-game data and nonzero encounter scores.
-- [DR-006k](DR-006k-bracket-semantic-presentation.md) is Ready for bracket semantic presentation only.
-  DR-006l records expanded-game surfaces; DR-006m records recent-result/current-score evidence reconciliation.
-  Neither is scoped for implementation yet. Keep the parent open until required follow-ups are resolved.
-- Next action: implement only Ready DR-006k in a fresh invocation. Do not reopen DR-006j scrolling or
-  begin another implementation here. No application changes require Nx validation after approval.
+- At reconciliation, DR-006k was Ready and DR-006l/m were unscoped Backlog follow-ups.
+  The latest follow-up state below supersedes that historical next action.
+
+## Follow-up progress
+
+- [DR-006k](DR-006k-bracket-semantic-presentation.md) is Done with its recorded approval and limits.
+- [DR-006l](DR-006l-expanded-encounter-games.md) replaces nested game Card wrappers with shared divided
+  semantic rows. All three real mounted consumers retain eight games with no nested Cards or overflow
+  in twelve light/dark 390px/1440px cases. Enter/Space and controlled IDs pass.
+  Twenty focused tests and components/club/competition lint/build pass; populated visual and broader
+  accessibility/locale/SSR limits remain in the child brief. The initial revision awaited user review.
+- DR-006l review feedback, 2026-11-23: shared subgrid tracks now align the 72px metadata rail and score boundary.
+  Scores/player spacing and responsive pairing follow the unchanged player-profile reference.
+  Fifty encounter/profile tests and scoped lint/build pass; 24 live plus eight synthetic populated cases fit
+  four widths in both themes. Live populated/contrast/full-traversal/locale/SSR limits remain.
+  Nx Cloud cache artifact upload failed after successful targets.
+  Explicit approval on 2026-11-23, `Approve DR-006l with documented limits and commit`, completes the revised child.
+  Child is Done with unchecked limits retained; workspace lint still fails in ten untouched dependency-check projects.
+- DR-006m remains the separate recent-result/current-score evidence reconciliation.
+  DR-006n remains separate bracket score/connector contrast work.
+- Parent stays Backlog until required follow-ups are resolved; approved DR-006a-k are not reopened.
+- Exact next action: reconcile DR-006m's recent-result/current-score evidence against later approved changes
+  and the mounted player profile in a fresh invocation. DR-006l approval does not complete this parent.
 
 [player-detail]: ../../../libs/frontend/pages/player/src/pages/detail/page-detail.component.html
 [recent]: ../../../libs/frontend/components/games/recent/src/player/recent-games-player.component.html

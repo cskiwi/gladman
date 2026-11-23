@@ -5,6 +5,36 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-006l [Expanded encounter game surfaces](work-items/DR-006l-expanded-encounter-games.md) is Done,
+revised 2026-11-23 on the existing `main` branch, preserving the first revision's uncommitted changes.
+Confirmed mounted consumers: club schedule, team detail and competition draw; all three expand eight games.
+Removed per-game nested Cards in the shared encounter, using divided semantic rows inside the
+unchanged summary Card. Expansion, loading, scores, player routes/levels and translated outcomes remain.
+No new extraction, theme/CSS change, services, dependencies or operational mutations.
+Before/after light/dark at 390px/1440px: all twelve cases retain eight games, unchanged rendered content
+and no document/row overflow. After: zero nested Cards, semantic row separators and no final-row separator.
+Enter/Space expansion and controlled IDs pass. All twenty focused tests and components/club/competition
+lint/build pass, with existing warnings/cache results. Four after screenshots inspected.
+Live games omit memberships/set scores; populated real-game visuals, contrast/full traversal, touch, locales,
+screen-reader use and SSR remain unverified. No new production consumers were added.
+Review feedback, 2026-11-23: align the shifting left divider and match player-profile game presentation.
+Final revision shares column sizing, adopts the profile's 72px rail, winning-set Tags and responsive pairing.
+Both rail/score dividers align across all rows at 640px/768px/1440px; mobile sides align with their own scores.
+Profile itself remains unchanged. Fifty encounter/profile tests and scoped lint/build pass.
+Nx Cloud artifact upload failed with ECONNABORTED after successful targets; this is not a build failure.
+Twenty-four mounted plus eight explicitly synthetic populated theme/width cases pass without overflow.
+The synthetic read-only response override checks long Singles/Doubles/Mixed names, badges and three-set scores;
+it changes no server data and does not establish populated live-game verification.
+Explicit approval, 2026-11-23: `Approve DR-006l with documented limits and commit`.
+Completion accepts the unchecked limits, without claiming those checks passed.
+Required pre-commit workspace lint fails in ten untouched projects on dependency-version checks;
+scoped frontend checks pass. No unrelated fixes or push.
+Next candidate: reconcile DR-006m's recent-game result meaning/current-score evidence against later approved
+changes and its actual mounted player consumer; scope only that concern in a fresh invocation.
+DR-006 stays open; DR-006n remains separate. Commit only the approved DR-006l slice and its handoff.
+
+### Previous focus: Bracket semantic presentation (DR-006k)
+
 DR-006k [Bracket semantic presentation](work-items/DR-006k-bracket-semantic-presentation.md) is Done,
 2026-11-21, on the existing `main` branch, with explicit approval:
 `Approve revised DR-006k with the documented limits and commit`.
@@ -3315,7 +3345,7 @@ and linked from their registry rows.
 | [DR-006i](work-items/DR-006i-played-encounter-cards.md)               | Shared played encounter cards and expanded presentation                      | Done    |
 | [DR-006j](work-items/DR-006j-bracket-tree-responsive.md)              | Shared bracket responsive layout                                             | Done    |
 | [DR-006k](work-items/DR-006k-bracket-semantic-presentation.md)        | Shared bracket semantic heading and completed-border presentation            | Done    |
-| DR-006l                                                               | Expanded encounter game surfaces; nested-Card follow-up, not yet scoped      | Backlog |
+| [DR-006l](work-items/DR-006l-expanded-encounter-games.md)             | Expanded encounter game surfaces; shared divided rows                        | Done    |
 | DR-006m                                                               | Recent-game result meaning and current-score evidence reconciliation         | Backlog |
 | DR-006n                                                               | Bracket score and connector contrast; follow-up not yet scoped               | Backlog |
 | DR-007                                                                | Shared form controls and sync feedback                                       | Backlog |
@@ -4010,9 +4040,10 @@ No page-specific override, translation asset or dependency is added during the c
   at 2.90:1 light / 8.16:1 dark (13 scores, 12.25px bold), and 28 unchanged connectors at 1.00:1 / 1.10:1.
   Source confirms these utilities were not changed by DR-006k. Scope a separate contrast-only visualization
   follow-up with the same mounted consumer, preserving scores, winner meaning, geometry and theme infrastructure.
-- DR-006l: expanded shared encounter games still render Cards inside the summary Card. Current club schedule
-  expansion confirms eight nested game Cards. Scope a surface-only native Panel/semantic-layout alternative,
-  preserving lazy loading, links, score ordering and all three shared consumers. Do not change it during DR-006k.
+- DR-006l: expanded shared encounter games now use divided semantic rows, without nested Cards.
+  All three mounted consumers pass twelve before/after layout/content cases and native Enter/Space expansion.
+  The [brief](work-items/DR-006l-expanded-encounter-games.md) records the approved alignment revision, Done and limits.
+  Approval on 2026-11-23 accepts unchecked limits; this does not reopen approved DR-006i/k or complete DR-006.
 - DR-006m: current recent games differ from DR-006b/c history: losing set values use plain muted text, while
   explicit result icons/hidden labels are absent. Reconcile later changes and intended non-color result meaning
   before scoping implementation; do not silently restore old markup or claim historic checks cover today's view.

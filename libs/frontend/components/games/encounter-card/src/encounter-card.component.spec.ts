@@ -245,12 +245,22 @@ describe('EncounterCardComponent presentation', () => {
     fixture.detectChanges();
     const cards: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('#encounter-games-encounter article');
     expect(cards).toHaveLength(2);
-    expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(3);
+    expect(fixture.debugElement.queryAll(By.directive(Card))).toHaveLength(1);
+    expect(fixture.nativeElement.querySelector('#encounter-games-encounter p-card')).toBeNull();
+    expect(Array.from(cards).map((card) => card.textContent?.match(/#\d/)?.[0])).toEqual(['#1', '#2']);
     expect(cards[0].textContent).toContain('#1');
     expect(cards[0].querySelector('a')?.getAttribute('href')).toBe('/players/player-slug');
-    expect(Array.from(cards[0].querySelectorAll('.grid-cols-2 > span')).map((score) => score.textContent?.trim())).toEqual(['21', '12', '21', '15']);
-    expect(cards[0].querySelectorAll('.grid-cols-2 > .font-semibold')).toHaveLength(2);
-    expect(fixture.nativeElement.querySelector('.g-card, .enc-expanded, p-tag')).toBeNull();
+    expect(Array.from(cards[0].querySelectorAll('[data-score-side="1"] [data-set-score]')).map((score) => score.textContent?.trim())).toEqual([
+      '21',
+      '21',
+    ]);
+    expect(Array.from(cards[0].querySelectorAll('[data-score-side="2"] [data-set-score]')).map((score) => score.textContent?.trim())).toEqual([
+      '12',
+      '15',
+    ]);
+    expect(cards[0].querySelectorAll('[data-score-side="1"] p-tag[severity="success"]')).toHaveLength(2);
+    expect(cards[0].querySelector('[data-score-side="2"] p-tag')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.g-card, .enc-expanded')).toBeNull();
     expect(loader).not.toHaveBeenCalled();
   });
 
@@ -292,7 +302,7 @@ describe('EncounterCardComponent presentation', () => {
     expect(article.textContent).toContain('all.competition.won');
     expect(article.querySelectorAll('a')).toHaveLength(1);
     expect(article.querySelectorAll('app-tier-badge')).toHaveLength(1);
-    expect(article.querySelector('.text-right.font-semibold')?.textContent).toContain('Away Player');
+    expect(article.querySelector('[data-game-side="2"] .font-semibold')?.textContent).toContain('Away Player');
     expect(fixture.componentInstance.getPlayerLevel(game, 'player')).toBe(level);
   });
 
@@ -315,9 +325,37 @@ describe('EncounterCardComponent presentation', () => {
     fixture.detectChanges();
     fixture.nativeElement.querySelector('button').click();
     fixture.detectChanges();
-    const scores: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('#encounter-games-encounter .grid-cols-2 > span');
+    const scores: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('#encounter-games-encounter [data-set-score]');
     expect(Array.from(scores).map((score) => score.textContent?.trim())).toEqual(['0', '21']);
-    expect(scores[0].classList.contains('font-semibold')).toBe(false);
-    expect(scores[1].classList.contains('font-semibold')).toBe(true);
+    expect(scores[0].querySelector('p-tag')).toBeNull();
+    expect(scores[1].querySelector('p-tag')?.getAttribute('severity')).toBe('success');
+  });
+
+  it('keeps three-set home/away scores paired and highlights only each set winner like profile games', () => {
+    fixture.componentRef.setInput('variant', 'played');
+    fixture.componentRef.setInput('encounter', {
+      ...encounter,
+      games: [
+        {
+          id: 'mixed-results',
+          set1Team1: 21,
+          set1Team2: 12,
+          set2Team1: 10,
+          set2Team2: 21,
+          set3Team1: 20,
+          set3Team2: 22,
+        },
+      ],
+    });
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('button').click();
+    fixture.detectChanges();
+    const article: HTMLElement = fixture.nativeElement.querySelector('#encounter-games-encounter article');
+    const home = article.querySelector('[data-score-side="1"]');
+    const away = article.querySelector('[data-score-side="2"]');
+    expect(Array.from(home?.querySelectorAll('[data-set-score]') ?? []).map((score) => score.textContent?.trim())).toEqual(['21', '10', '20']);
+    expect(Array.from(away?.querySelectorAll('[data-set-score]') ?? []).map((score) => score.textContent?.trim())).toEqual(['12', '21', '22']);
+    expect(Array.from(home?.querySelectorAll('p-tag') ?? []).map((tag) => tag.textContent?.trim())).toEqual(['21']);
+    expect(Array.from(away?.querySelectorAll('p-tag') ?? []).map((tag) => tag.textContent?.trim())).toEqual(['21', '22']);
   });
 });

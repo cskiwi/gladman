@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-007a [Compact semantic sync-status presentation](work-items/DR-007a-sync-status-presentation.md)
+is Done after explicit approval, 2026-11-23, on existing `main`, starting with a clean worktree.
+Replaces palette-colored sync icons with compact native Tag severities and translated accessible image names.
+Existing shared presentational component is reused; no extra extraction, styles, theme or consumer edits.
+Mounted competition/new tournament/imported tournament retain thirteen/36/37 indicators in all twelve
+light/dark 390px/1440px cases, with zero unnamed indicators or sub-event header overflow.
+Twenty browser-only all-status fixture cases pass; minimum icon contrast is 4.52:1 light / 8.73:1 dark.
+Six focused tests and scoped components/competition/tournament lint/build pass; existing warnings only.
+Narrow document overflow predates this slice and remains DR-066. No sync/cache operation was activated.
+Light/dark narrow screenshots inspected; complete wide screenshots, screen-reader/touch, locales,
+SSR/hydration and actual operational transitions remain unverified; approval accepts these disclosed limits.
+Country/state integration is already approved Done under DR-018b1; do not restart it.
+Review feedback: native icon-only Tag has extra right spacing from its empty label and native gap.
+A scoped `gap-0!` layout exception removes only that gap; all twelve mounted cases now have equal 7px padding.
+Six focused tests and scoped lint/build pass again; fresh narrow light/dark screenshots inspected.
+Explicit approval: `Approve DR-007a with documented limits and commit`.
+Required workspace lint reproduces dependency-version errors in ten untouched projects; the other 24 pass.
+No unrelated fixes. Commit only this approved implementation, tests and repository handoff; no push.
+Next action: scope one sync action/dialog slice under DR-007 against existing DR-065 and mounted consumers.
+Do not begin it here or restart completed country/state work.
+Parent DR-007 stays open for remaining sync-action/dialog scope and existing DR-065.
+
+### Previous focus: Shared games, matches, and brackets completion (DR-006)
+
 DR-006 [Shared games, matches, and brackets](work-items/DR-006-games-matches-brackets.md) is Done,
 2026-11-23, on the existing `main` branch, starting from a clean worktree.
 Documentation-only completion reconciliation confirms all fourteen DR-006a-n children are approved Done.
@@ -3412,7 +3436,8 @@ and linked from their registry rows.
 | [DR-006l](work-items/DR-006l-expanded-encounter-games.md)             | Expanded encounter game surfaces; shared divided rows                        | Done    |
 | [DR-006m](work-items/DR-006m-recent-game-evidence.md)                 | Recent-game result meaning and current-score evidence reconciliation         | Done    |
 | [DR-006n](work-items/DR-006n-bracket-contrast.md)                     | Bracket score and connector contrast                                         | Done    |
-| DR-007                                                                | Shared form controls and sync feedback                                       | Backlog |
+| [DR-007](work-items/DR-007-shared-controls.md)                        | Shared form controls and sync feedback                                       | Backlog |
+| [DR-007a](work-items/DR-007a-sync-status-presentation.md)             | Compact semantic sync-status presentation                                    | Done    |
 | DR-008                                                                | Player detail                                                                | Backlog |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)                  | Player hero actions                                                          | Done    |
 | [DR-008b](work-items/DR-008b-player-sidebar-cards.md)                 | Player detail sidebar cards (form, record, match-ups, teams)                 | Done    |
@@ -4128,6 +4153,8 @@ No page-specific override, translation asset or dependency is added during the c
 - DR-007: [country/state controls][country-state] and [sync controls][sync-controls]. Preserve validation,
   disabled/loading states, and operation feedback. The [club-search area][club-search] currently contains service logic,
   not a visual component to redesign.
+  Country/state integration is already approved Done under DR-018b1, with its recorded limits.
+  DR-007a scopes only mounted shared status indicators; sync actions/dialogs and DR-065 remain separate.
 - DR-015e discovery for shared-control/theme follow-up: native secondary text Button active text measured
   4.46:1 in light mode, and its default dark focus ring measured 1.40:1 against the content surface.
   At the user's request DR-015e uses no `[dt]`. Its hero-only keyboard ring addresses focus without an outline;

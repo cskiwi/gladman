@@ -1,8 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { BadgeModule } from 'primeng/badge';
-import { ChipModule } from 'primeng/chip';
+import { TagModule, TagSeverity } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 
 export type SyncStatusType = 'synced' | 'syncing' | 'queued' | 'failed' | 'never-synced';
@@ -19,7 +17,7 @@ export interface SyncStatusConfig {
   selector: 'app-sync-status-indicator',
   standalone: true,
   host: { class: 'inline-block' },
-  imports: [CommonModule, TranslateModule, BadgeModule, ChipModule, TooltipModule],
+  imports: [TranslateModule, TagModule, TooltipModule],
   templateUrl: './sync-status-indicator.component.html',
 })
 export class SyncStatusIndicatorComponent {
@@ -79,16 +77,16 @@ export class SyncStatusIndicatorComponent {
     return icons[status];
   });
 
-  statusClass = computed(() => {
+  statusSeverity = computed(() => {
     const status = this.syncStatus();
-    const classes: Record<SyncStatusType, string> = {
-      synced: 'text-green-600',
-      syncing: 'text-blue-600 animate-pulse',
-      queued: 'text-orange-600',
-      failed: 'text-red-600',
-      'never-synced': 'text-gray-500',
+    const severities: Record<SyncStatusType, TagSeverity> = {
+      synced: 'success',
+      syncing: 'info',
+      queued: 'warn',
+      failed: 'danger',
+      'never-synced': 'secondary',
     };
-    return classes[status];
+    return severities[status];
   });
 
   statusTooltip = computed(() => {

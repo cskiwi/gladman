@@ -1,6 +1,11 @@
 @if (config(); as cfg) {
-  <div class="flex items-center gap-1">
-    <!-- Compact Sync Status Icon -->
-    <i [class]="statusIcon()" [ngClass]="statusClass()" [pTooltip]="fullStatusTooltip() | translate" tooltipPosition="top"></i>
-  </div>
+  <p-tag
+    class="gap-0!"
+    [icon]="statusIcon()"
+    [severity]="statusSeverity()"
+    role="img"
+    [attr.aria-label]="statusLabel() | translate"
+    [pTooltip]="fullStatusTooltip() | translate"
+    tooltipPosition="top"
+  />
 }

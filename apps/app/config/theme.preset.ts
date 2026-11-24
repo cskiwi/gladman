@@ -75,10 +75,10 @@ export const BadmanPreset = definePreset(Aura, {
       },
       dark: {
         primary: {
-          color: 'oklch(0.78 0.15 210)',
-          contrastColor: 'oklch(0.14 0.02 250)',
-          hoverColor: 'oklch(0.85 0.15 210)',
-          activeColor: 'oklch(0.72 0.14 210)',
+          color: 'oklch(0.78 0.12 210)',
+          contrastColor: '{surface.0}',
+          hoverColor: 'oklch(0.84 0.10 210)',
+          activeColor: 'oklch(0.72 0.12 210)',
         },
         // NOTE: This surface scale is INVERTED vs. the typical Aura
         // convention (0 = darkest, 950 = lightest) so Tailwind utility
@@ -89,28 +89,28 @@ export const BadmanPreset = definePreset(Aura, {
         // mode (e.g. form-field background) must be overridden below
         // to pull from the low end of our scale instead.
         surface: {
-          0: 'oklch(0.10 0.02 250)',
-          50: 'oklch(0.21 0.02 250)',
-          100: 'oklch(0.27 0.02 250)',
-          200: 'oklch(0.34 0.025 250)',
+          0: 'oklch(0.16 0.015 250)',
+          50: 'oklch(0.22 0.018 250)',
+          100: 'oklch(0.28 0.02 250)',
+          200: 'oklch(0.35 0.022 250)',
           300: 'oklch(0.44 0.025 250)',
-          400: 'oklch(0.52 0.02 250)',
-          500: 'oklch(0.62 0.015 250)',
-          600: 'oklch(0.70 0.012 250)',
-          700: 'oklch(0.80 0.01 250)',
+          400: 'oklch(0.56 0.02 250)',
+          500: 'oklch(0.65 0.015 250)',
+          600: 'oklch(0.75 0.012 250)',
+          700: 'oklch(0.83 0.01 250)',
           800: 'oklch(0.88 0.008 250)',
           900: 'oklch(0.94 0.005 250)',
           950: 'oklch(0.98 0.003 250)',
         },
         text: {
-          color: 'oklch(0.94 0.005 250)',
-          hoverColor: 'oklch(0.98 0.003 250)',
-          mutedColor: 'oklch(0.68 0.012 250)',
-          hoverMutedColor: 'oklch(0.78 0.01 250)',
+          color: '{surface.900}',
+          hoverColor: '{surface.950}',
+          mutedColor: '{surface.600}',
+          hoverMutedColor: '{surface.700}',
         },
         highlight: {
-          background: 'oklch(0.78 0.15 210 / 0.16)',
-          focusBackground: 'oklch(0.78 0.15 210 / 0.24)',
+          background: 'oklch(0.78 0.12 210 / 0.16)',
+          focusBackground: 'oklch(0.78 0.12 210 / 0.24)',
           color: 'oklch(0.88 0.10 210)',
           focusColor: 'oklch(0.94 0.05 210)',
         },
@@ -127,8 +127,8 @@ export const BadmanPreset = definePreset(Aura, {
           filledBackground: '{surface.100}',
           filledHoverBackground: '{surface.200}',
           filledFocusBackground: '{surface.50}',
-          borderColor: '{surface.300}',
-          hoverBorderColor: '{surface.400}',
+          borderColor: '{surface.400}',
+          hoverBorderColor: '{surface.500}',
           focusBorderColor: '{primary.color}',
           invalidBorderColor: '{red.400}',
           color: '{text.color}',
@@ -210,10 +210,7 @@ export const BadmanPreset = definePreset(Aura, {
         }
       `,
     },
-    // Aura's dark Button outlined/text "secondary" variant defaults to
-    // `{surface.400}` for the foreground, which in our inverted dark
-    // surface scale is a mid-dark gray — producing dark-on-dark text.
-    // Remap to semantic text tokens so the label stays legible.
+    // Keep secondary actions neutral, with legible labels in every state.
     button: {
       colorScheme: {
         dark: {
@@ -236,15 +233,15 @@ export const BadmanPreset = definePreset(Aura, {
           },
           outlined: {
             secondary: {
-              color: '{text.muted.color}',
-              borderColor: '{surface.300}',
+              color: '{text.color}',
+              borderColor: '{surface.400}',
               hoverBackground: '{surface.100}',
               activeBackground: '{surface.200}',
             },
           },
           text: {
             secondary: {
-              color: '{text.muted.color}',
+              color: '{text.color}',
               hoverBackground: '{surface.100}',
               activeBackground: '{surface.200}',
             },
@@ -290,11 +287,11 @@ export const BadmanPreset = definePreset(Aura, {
               },
             },
             outlined: {
-              color: '{text.muted.color}',
+              color: '{text.color}',
               borderColor: '{surface.400}',
             },
             simple: {
-              color: '{text.muted.color}',
+              color: '{text.color}',
             },
           },
         },
@@ -313,6 +310,27 @@ export const BadmanPreset = definePreset(Aura, {
     toast: {
       colorScheme: {
         dark: {
+          // Aura uses surface.0 for details; our inverted scale makes it dark.
+          info: {
+            background: 'color-mix(in srgb, {blue.500} 12%, {content.background})',
+            color: '{blue.300}',
+            detailColor: '{text.color}',
+          },
+          success: {
+            background: 'color-mix(in srgb, {green.500} 12%, {content.background})',
+            color: '{green.300}',
+            detailColor: '{text.color}',
+          },
+          warn: {
+            background: 'color-mix(in srgb, {yellow.500} 12%, {content.background})',
+            color: '{yellow.300}',
+            detailColor: '{text.color}',
+          },
+          error: {
+            background: 'color-mix(in srgb, {red.500} 12%, {content.background})',
+            color: '{red.300}',
+            detailColor: '{text.color}',
+          },
           secondary: {
             background: '{surface.100}',
             borderColor: '{surface.200}',
@@ -394,19 +412,19 @@ export const BadmanPreset = definePreset(Aura, {
             background: '{surface.50}',
             checkedBackground: '{surface.50}',
             hoverBackground: '{surface.100}',
-            borderColor: '{surface.300}',
-            color: '{surface.600}',
-            hoverColor: '{surface.700}',
-            checkedColor: '{surface.950}',
-            checkedBorderColor: '{surface.300}',
+            borderColor: '{surface.400}',
+            color: '{text.muted.color}',
+            hoverColor: '{text.color}',
+            checkedColor: '{highlight.color}',
+            checkedBorderColor: '{primary.color}',
           },
           content: {
-            checkedBackground: '{surface.200}',
+            checkedBackground: '{highlight.background}',
           },
           icon: {
-            color: '{surface.600}',
-            hoverColor: '{surface.700}',
-            checkedColor: '{surface.950}',
+            color: '{text.muted.color}',
+            hoverColor: '{text.color}',
+            checkedColor: '{highlight.color}',
           },
         },
       },

@@ -217,6 +217,23 @@ export const BadmanPreset = definePreset(Aura, {
     button: {
       colorScheme: {
         dark: {
+          root: {
+            secondary: {
+              background: '{surface.100}',
+              hoverBackground: '{surface.200}',
+              activeBackground: '{surface.300}',
+              borderColor: '{surface.100}',
+              hoverBorderColor: '{surface.200}',
+              activeBorderColor: '{surface.300}',
+              color: '{text.color}',
+              hoverColor: '{text.hoverColor}',
+              activeColor: '{text.color}',
+              focusRing: {
+                color: '{primary.color}',
+                shadow: 'none',
+              },
+            },
+          },
           outlined: {
             secondary: {
               color: '{text.muted.color}',
@@ -230,6 +247,84 @@ export const BadmanPreset = definePreset(Aura, {
               color: '{text.muted.color}',
               hoverBackground: '{surface.100}',
               activeBackground: '{surface.200}',
+            },
+          },
+        },
+      },
+    },
+    badge: {
+      colorScheme: {
+        dark: {
+          secondary: {
+            background: '{surface.100}',
+            color: '{text.color}',
+          },
+        },
+      },
+    },
+    inlinemessage: {
+      colorScheme: {
+        dark: {
+          secondary: {
+            background: '{surface.100}',
+            borderColor: '{surface.200}',
+            color: '{text.color}',
+            shadow: 'none',
+          },
+        },
+      },
+    },
+    message: {
+      colorScheme: {
+        dark: {
+          secondary: {
+            background: '{surface.100}',
+            borderColor: '{surface.200}',
+            color: '{text.color}',
+            shadow: 'none',
+            closeButton: {
+              hoverBackground: '{surface.200}',
+              focusRing: {
+                color: '{primary.color}',
+                shadow: 'none',
+              },
+            },
+            outlined: {
+              color: '{text.muted.color}',
+              borderColor: '{surface.400}',
+            },
+            simple: {
+              color: '{text.muted.color}',
+            },
+          },
+        },
+      },
+    },
+    tag: {
+      colorScheme: {
+        dark: {
+          secondary: {
+            background: '{surface.100}',
+            color: '{text.color}',
+          },
+        },
+      },
+    },
+    toast: {
+      colorScheme: {
+        dark: {
+          secondary: {
+            background: '{surface.100}',
+            borderColor: '{surface.200}',
+            color: '{text.color}',
+            detailColor: '{text.muted.color}',
+            shadow: 'none',
+            closeButton: {
+              hoverBackground: '{surface.200}',
+              focusRing: {
+                color: '{primary.color}',
+                shadow: 'none',
+              },
             },
           },
         },

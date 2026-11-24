@@ -1,5 +1,5 @@
 import { AllowAnonymous } from '@app/backend-authorization';
-import { I18nTranslations } from '@app/utils-i18n';
+import type { I18nTranslations } from '@app/utils-i18n';
 import { Controller, Get, Param, Res } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { Response } from 'express';

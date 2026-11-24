@@ -25,7 +25,8 @@ export function langulageInitializer(translate: TranslateService, cookieService:
 
       await setLang(savedLang);
     } catch (err) {
-      console.error('Error', err);
+      console.error('Failed to initialize translations', err);
+      throw err;
     }
   };
 }

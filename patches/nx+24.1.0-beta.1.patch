@@ -1,0 +1,60 @@
+diff --git a/node_modules/nx/dist/src/native/index.js b/node_modules/nx/dist/src/native/index.js
+index 69883ce..51a2e78 100644
+--- a/node_modules/nx/dist/src/native/index.js
++++ b/node_modules/nx/dist/src/native/index.js
+@@ -125,6 +125,7 @@ Module._load = function (request, parent, isMain) {
+   if (useNativeFileCache && isNxNativeModule) {
+     const nativeLocation = require.resolve(modulePath);
+     const fileName = basename(nativeLocation);
++    const sourceStats = statSync(nativeLocation);
+ 
+     // null when the cache dir cannot be created *and trusted*; loading in place
+     // from node_modules is safer than loading out of a directory we don't own.
+@@ -140,7 +141,8 @@ Module._load = function (request, parent, isMain) {
+       nxVersion +
+       '-' +
+       createHash('sha256')
+-        .update(nativeLocation)
++        // A reinstalled binding must not replace a DLL still loaded on Windows.
++        .update(`${nativeLocation}:${sourceStats.size}:${sourceStats.mtimeMs}`)
+         .digest('hex')
+         .substring(0, 12);
+ 
+@@ -151,17 +153,17 @@ Module._load = function (request, parent, isMain) {
+     );
+     // This is the path that will get loaded
+     const tmpFile = join(nativeFileCacheLocation, cacheKey + '-' + fileName);
+-    const sourceStats = statSync(nativeLocation);
+     const expectedFileSize = sourceStats.size;
+     const existingFileStats = lstatsOrNull(tmpFile);
+ 
+     // Size alone does not detect a rebuilt binding: a small Rust edit routinely
+     // produces a byte-identical size. The copy is taken after the build, so a
+     // cache entry older than the source means the source was rebuilt since.
+-    const isFresh =
+-      isTrustedCacheEntry(existingFileStats) &&
+-      existingFileStats.size === expectedFileSize &&
+-      existingFileStats.mtimeMs >= sourceStats.mtimeMs;
++    const isFreshCacheEntry = (stats) =>
++      isTrustedCacheEntry(stats) &&
++      stats.size === expectedFileSize &&
++      stats.mtimeMs >= sourceStats.mtimeMs;
++    const isFresh = isFreshCacheEntry(existingFileStats);
+ 
+     const loadFromCache = () => {
+       try {
+@@ -207,6 +209,14 @@ Module._load = function (request, parent, isMain) {
+         try {
+           renameSync(tmpTmpFile, tmpFile);
+         } catch (e) {
++          // Another Nx process may have published and loaded the same binding.
++          if (
++            ['EACCES', 'EPERM', 'EEXIST'].includes(e.code) &&
++            isFreshCacheEntry(lstatsOrNull(tmpFile))
++          ) {
++            removeIfPresent(tmpTmpFile);
++            return loadFromCache();
++          }
+           // Unguarded, this throws out of `require` and native-bindings.js
+           // reports it as a missing optional dependency, which it is not.
+           cacheError = e;

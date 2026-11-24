@@ -9,13 +9,13 @@
         "title": "Informations"
       },
       "searchIndex": {
+        "completed": "Indexation terminée",
         "description": "Indice de gestion",
         "selectAll": "Sélectionner tout",
         "selectNone": "Ne rien choisir",
         "selectTypes": "Sélectionner les types à indexer",
         "startIndexing": "Début de l'indexation",
-        "title": "Indexation",
-        "completed": "Indexation terminée"
+        "title": "Indexation"
       },
       "sync": {
         "title": "Synchronisation"
@@ -112,6 +112,7 @@
           "women": "Dames"
         },
         "form": "Forme récente",
+        "less": "Afficher moins",
         "levels": {
           "double": "D",
           "doubleFull": "Double",
@@ -120,12 +121,11 @@
           "single": "S",
           "singleFull": "Simple"
         },
-        "less": "Afficher moins",
         "more": "+{{count}} de plus",
         "noMatch": "Aucune équipe pour ce filtre.",
         "noPlayers": "Aucun joueur dans cette équipe.",
-        "player": "Joueur",
         "played": "{{count}} joués",
+        "player": "Joueur",
         "view": "Voir l'équipe",
         "won": "{{count}} gagnés",
         "you": "Vous"
@@ -144,55 +144,6 @@
     "teamBuilder": {
       "addPlayer": "Ajouter un joueur...",
       "addTeam": "Ajouter une Équipe",
-      "validation": {
-        "minPlayers": "Au moins {{min}} titulaires nécessaires, {{count}} présents",
-        "minMales": "Au moins {{min}} titulaires masculins nécessaires, {{count}} présents",
-        "minFemales": "Au moins {{min}} titulaires féminines nécessaires, {{count}} présentes",
-        "maxPlayers": "Maximum {{max}} joueurs autorisés, {{count}} présents",
-        "minIndex": "L'indice {{index}} est inférieur au minimum de {{min}}",
-        "maxIndex": "L'indice {{index}} dépasse le maximum de {{max}}",
-        "femaleInMens": "{{count}} joueuses dans une équipe masculine",
-        "maleInWomens": "{{count}} joueurs dans une équipe féminine",
-        "playersTooStrong": "{{count}} joueurs sont peut-être trop forts pour cette série (niveau max. : {{maxLevel}}) : {{names}}",
-        "playerTooStrong": "Le joueur est trop fort pour cette série (niveau max. : {{maxLevel}})",
-        "overAssigned": "Équipes souhaitées : {{desired}} ; équipes attribuées : {{count}} (trop)",
-        "underAssigned": "Équipes souhaitées : {{desired}} ; équipes attribuées : {{count}} (trop peu)"
-      },
-      "feedback": {
-        "surveyImported": "Enquête importée",
-        "importCounts": "Joueurs associés : {{matched}} ; nouveaux joueurs créés : {{created}}",
-        "surveyUpdated": "Enquête mise à jour",
-        "surveyUpdatedFor": "Données de l'enquête mises à jour pour {{name}}",
-        "settingsUpdated": "Paramètres mis à jour",
-        "settingsUpdatedDetail": "Les paramètres de la composition d'équipes ont été mis à jour",
-        "removeTitle": "Supprimer l'équipe",
-        "removeMessage": "Supprimer cette équipe ? Les joueurs seront déplacés vers les joueurs non attribués.",
-        "saveMessage": "Enregistrer {{updated}} équipes modifiées et {{created}} nouvelles équipes avec {{players}} joueurs pour la saison {{season}} ?",
-        "saveRemoved": "Équipes à supprimer : {{count}}.",
-        "saveWarnings": "Équipes avec des avertissements de validation : {{count}}.",
-        "playerAdded": "Joueur ajouté",
-        "playerAddedDetail": "{{name}} ajouté au groupe de joueurs",
-        "alreadyPresent": "Déjà présent",
-        "alreadyPresentDetail": "{{name}} est déjà dans la composition",
-        "saved": "Enregistré",
-        "savedDetail": "Équipes enregistrées pour la saison {{season}}",
-        "saveFailed": "Échec de l'enregistrement des équipes",
-        "loadFailed": "Échec du chargement des données de composition"
-      },
-      "subEvent": {
-        "auto": "Automatique",
-        "autoHelp": "Déterminer automatiquement la série selon la position et l'indice d'équipe",
-        "otherGroup": "Autres séries",
-        "selection": "Sélectionner une série",
-        "title": "Changer la série de {{name}}"
-      },
-      "player": {
-        "cannotMeet75": "Ne peut pas assurer 75 % de présence",
-        "indicatorCount": "{{count}} indications du joueur",
-        "lowPerformance": "Faibles performances ({{percent}} % de victoires)",
-        "lowPresence": "Faible présence ({{percent}} % de présence)",
-        "stopping": "Arrête la compétition"
-      },
       "card": {
         "backups": "Remplaçants",
         "changeSubEvent": "Changer la série de {{name}} : {{subEvent}}",
@@ -233,28 +184,49 @@
         "warnings": "Avertissements : {{count}}"
       },
       "dropToRemove": "Déposez ici pour supprimer",
+      "feedback": {
+        "alreadyPresent": "Déjà présent",
+        "alreadyPresentDetail": "{{name}} est déjà dans la composition",
+        "importCounts": "Joueurs associés : {{matched}} ; nouveaux joueurs créés : {{created}}",
+        "loadFailed": "Échec du chargement des données de composition",
+        "playerAdded": "Joueur ajouté",
+        "playerAddedDetail": "{{name}} ajouté au groupe de joueurs",
+        "removeMessage": "Supprimer cette équipe ? Les joueurs seront déplacés vers les joueurs non attribués.",
+        "removeTitle": "Supprimer l'équipe",
+        "saved": "Enregistré",
+        "savedDetail": "Équipes enregistrées pour la saison {{season}}",
+        "saveFailed": "Échec de l'enregistrement des équipes",
+        "saveMessage": "Enregistrer {{updated}} équipes modifiées et {{created}} nouvelles équipes avec {{players}} joueurs pour la saison {{season}} ?",
+        "saveRemoved": "Équipes à supprimer : {{count}}.",
+        "saveWarnings": "Équipes avec des avertissements de validation : {{count}}.",
+        "settingsUpdated": "Paramètres mis à jour",
+        "settingsUpdatedDetail": "Les paramètres de la composition d'équipes ont été mis à jour",
+        "surveyImported": "Enquête importée",
+        "surveyUpdated": "Enquête mise à jour",
+        "surveyUpdatedFor": "Données de l'enquête mises à jour pour {{name}}"
+      },
       "import": {
-        "cancelCreate": "Annuler la création de {{name}}",
-        "confidenceLevels": {
-          "high": "Élevée",
-          "medium": "Moyenne",
-          "low": "Faible",
-          "none": "Non apparié"
-        },
-        "empty": "Aucune réponse trouvée. Annulez et choisissez un autre fichier.",
-        "failed": "Impossible de traiter l'enquête. Vérifiez le fichier Excel et réessayez.",
-        "fileHint": "Fichiers Excel (.xlsx, .xls), jusqu'à 10 Mo. Vérifiez les correspondances avant de confirmer.",
-        "selectPlayer": "Sélectionner un joueur pour {{name}}",
         "cancel": "Annuler",
+        "cancelCreate": "Annuler la création de {{name}}",
         "chooseFile": "Choisir un Fichier",
         "confidence": "Confiance",
+        "confidenceLevels": {
+          "high": "Élevée",
+          "low": "Faible",
+          "medium": "Moyenne",
+          "none": "Non apparié"
+        },
         "confirm": "Confirmer",
         "createNew": "Créer Nouveau",
         "description": "Téléchargez le fichier Excel avec les réponses des joueurs",
+        "empty": "Aucune réponse trouvée. Annulez et choisissez un autre fichier.",
+        "failed": "Impossible de traiter l'enquête. Vérifiez le fichier Excel et réessayez.",
+        "fileHint": "Fichiers Excel (.xlsx, .xls), jusqu'à 10 Mo. Vérifiez les correspondances avant de confirmer.",
         "matched": "joueurs trouvés",
         "matchedPlayer": "Joueur Trouvé",
         "matching": "Recherche des joueurs...",
         "searchPlayer": "Rechercher un joueur...",
+        "selectPlayer": "Sélectionner un joueur pour {{name}}",
         "surveyName": "Nom de l'Enquête",
         "title": "Importer l'Enquête",
         "toCreate": "à créer",
@@ -262,6 +234,13 @@
         "willCreate": "Sera créé"
       },
       "noStoppingPlayers": "Aucun joueur qui arrête",
+      "player": {
+        "cannotMeet75": "Ne peut pas assurer 75 % de présence",
+        "indicatorCount": "{{count}} indications du joueur",
+        "lowPerformance": "Faibles performances ({{percent}} % de victoires)",
+        "lowPresence": "Faible présence ({{percent}} % de présence)",
+        "stopping": "Arrête la compétition"
+      },
       "playerPool": "Joueurs Non Assignés",
       "playersStopping": "Joueurs qui arrêtent",
       "removedPlayers": "Joueurs Supprimés",
@@ -280,7 +259,28 @@
         "presenceThresholdHelp": "Signaler les joueurs en dessous de ce pourcentage de présence",
         "title": "Paramètres"
       },
-      "tab": "Composition d'Équipe"
+      "subEvent": {
+        "auto": "Automatique",
+        "autoHelp": "Déterminer automatiquement la série selon la position et l'indice d'équipe",
+        "otherGroup": "Autres séries",
+        "selection": "Sélectionner une série",
+        "title": "Changer la série de {{name}}"
+      },
+      "tab": "Composition d'Équipe",
+      "validation": {
+        "femaleInMens": "{{count}} joueuses dans une équipe masculine",
+        "maleInWomens": "{{count}} joueurs dans une équipe féminine",
+        "maxIndex": "L'indice {{index}} dépasse le maximum de {{max}}",
+        "maxPlayers": "Maximum {{max}} joueurs autorisés, {{count}} présents",
+        "minFemales": "Au moins {{min}} titulaires féminines nécessaires, {{count}} présentes",
+        "minIndex": "L'indice {{index}} est inférieur au minimum de {{min}}",
+        "minMales": "Au moins {{min}} titulaires masculins nécessaires, {{count}} présents",
+        "minPlayers": "Au moins {{min}} titulaires nécessaires, {{count}} présents",
+        "overAssigned": "Équipes souhaitées : {{desired}} ; équipes attribuées : {{count}} (trop)",
+        "playersTooStrong": "{{count}} joueurs sont peut-être trop forts pour cette série (niveau max. : {{maxLevel}}) : {{names}}",
+        "playerTooStrong": "Le joueur est trop fort pour cette série (niveau max. : {{maxLevel}})",
+        "underAssigned": "Équipes souhaitées : {{desired}} ; équipes attribuées : {{count}} (trop peu)"
+      }
     },
     "teamComparison": "Comparaison des Équipes",
     "totalGames": "Matchs",
@@ -361,19 +361,19 @@
     "title": "Recherche de clubs"
   },
   "common": {
-    "firstChoice": "Premier choix : {{choice}}",
-    "remarks": "Remarques",
-    "secondChoice": "Deuxième choix : {{choice}}",
     "actions": "Actions",
     "cancel": "Annuler",
     "error": "Erreur",
+    "firstChoice": "Premier choix : {{choice}}",
     "level": "Niveau",
     "name": "Nom",
     "no": "Non",
+    "remarks": "Remarques",
     "required": "Ce champ est obligatoire",
     "save": "Enregistrer",
     "search": "Rechercher",
     "season": "Saison",
+    "secondChoice": "Deuxième choix : {{choice}}",
     "selectSeason": "Sélectionner la saison",
     "success": "Succès",
     "unknown": "Inconnu",
@@ -393,7 +393,6 @@
     "details": "Détails du concours",
     "draw": "Calendrier",
     "drawFallbackName": "Calendrier {{number}}",
-    "noDrawsYet": "Aucun calendrier configuré pour le moment",
     "draws": "Série",
     "edit": {
       "actions": {
@@ -523,6 +522,7 @@
     "no_standings": "Aucun classement disponible",
     "no_standings_description": "Le classement des équipes de cette série n'est pas encore disponible.",
     "no_upcoming_encounters": "Aucun match à venir.",
+    "noDrawsYet": "Aucun calendrier configuré pour le moment",
     "official": "Concours Officiel",
     "openDate": "Abonnements ouverts",
     "participant": "Participant",
@@ -626,8 +626,8 @@
       },
       "retry-load": "Réessayer",
       "season": "Saison",
-      "select-team": "Sélectionnez un club et une équipe ci-dessus pour composer votre équipe.",
       "select-all": "Sélection/désélection de tous les joueurs",
+      "select-team": "Sélectionnez un club et une équipe ci-dessus pour composer votre équipe.",
       "single1": "Unique 1",
       "single2": "Cheville 2",
       "single3": "Cheville 3",
@@ -883,16 +883,6 @@
     "toggleLight": "Passer au mode clair"
   },
   "player": {
-    "newPlayer": "Nouveau joueur",
-    "survey": {
-      "canMeet75": "Peut jouer 75 % des rencontres",
-      "edit": "Modifier le questionnaire",
-      "empty": "Aucune donnée de questionnaire disponible",
-      "firstChoice": "Premier choix",
-      "secondChoice": "Deuxième choix",
-      "teamsWanted": "Nombre d'équipes souhaité",
-      "unavailability": "Indisponibilité"
-    },
     "allGames": "Tous les matchs",
     "competitionPlayer": "Joueur de ligue",
     "detail": {
@@ -984,6 +974,7 @@
     "headToHead": "Duels mutuels",
     "maxRating": "Max. Valeur nominale",
     "minRating": "Min. Cote",
+    "newPlayer": "Nouveau joueur",
     "noGames": "Aucune correspondance",
     "noGamesDescription": "Ce joueur n'a pas encore joué de match",
     "noPerformanceData": "Pas de données sur les performances",
@@ -998,6 +989,15 @@
     "playerType": "Type de joueur",
     "recentGames": "Correspondances récentes",
     "resultsFound": "{{count}} résultats trouvés",
+    "survey": {
+      "canMeet75": "Peut jouer 75 % des rencontres",
+      "edit": "Modifier le questionnaire",
+      "empty": "Aucune donnée de questionnaire disponible",
+      "firstChoice": "Premier choix",
+      "secondChoice": "Deuxième choix",
+      "teamsWanted": "Nombre d'équipes souhaité",
+      "unavailability": "Indisponibilité"
+    },
     "tournamentHistory": "Historique du tournoi",
     "tryDifferentFilters": "Essayer d'autres filtres",
     "yearsOld": "d'un an"
@@ -1025,8 +1025,6 @@
     }
   },
   "ranking": {
-    "summary": "Simple {{single}}, double {{double}}, mixte {{mix}}",
-    "summaryWithoutMixed": "Simple {{single}}, double {{double}}",
     "breakdown": {
       "add-game": {
         "add": "Ajouter un concours",
@@ -1057,7 +1055,6 @@
       "downgrade-average": "Rétrogradation moyenne",
       "drops-next-period": "Ne compte pas dans la période suivante",
       "enable-remove-games": "Supprimer les correspondances",
-      "game-details": "Détails du match",
       "enable-toggle-latest-x": "Modifier les correspondances comptées",
       "evolution": "L'évolution",
       "export": {
@@ -1080,6 +1077,7 @@
         "WON": "Gagné"
       },
       "filters": "Filtres",
+      "game-details": "Détails du match",
       "games": {
         "none": "Aucune correspondance",
         "one": "1 match",
@@ -1112,11 +1110,11 @@
       "outOfScopeWonGames": "Matchs gagnés non utilisés",
       "period": {
         "choose-end-date": "Choisir la date de fin de la période",
-        "presets": "Périodes prédéfinies",
         "last-point-update": "Mise à jour des points précédents",
         "last-ranking-update": "Mise à jour des classements antérieurs",
         "next-point-update": "Prochaine mise à jour des points",
         "next-ranking-update": "Prochaine mise à jour du classement",
+        "presets": "Périodes prédéfinies",
         "title": "Période"
       },
       "points": "Points",
@@ -1164,7 +1162,9 @@
       "to-downgrade": "{{points}} pts pour descendre",
       "to-upgrade": "{{points}} pts pour monter",
       "upgrade-reached": "Seuil de montée atteint"
-    }
+    },
+    "summary": "Simple {{single}}, double {{double}}, mixte {{mix}}",
+    "summaryWithoutMixed": "Simple {{single}}, double {{double}}"
   },
   "search": {
     "loading": "Recherche en cours...",
@@ -1193,6 +1193,18 @@
     }
   },
   "sync": {
+    "button": {
+      "cacheCleared": "Cache API vidé",
+      "cacheClearFailed": "Échec de la suppression du cache de l'API",
+      "cacheEmpty": "Aucune entrée de cache trouvée",
+      "drawSyncFailed": "Échec de la synchronisation du tableau {{name}}",
+      "drawSyncQueued": "Synchronisation du tableau planifiée pour {{id}}",
+      "eventSyncFailed": "Échec de la synchronisation de {{name}}",
+      "eventSyncQueued": "Synchronisation de l'événement planifiée pour {{id}}",
+      "moreActions": "Autres actions de synchronisation",
+      "subEventSyncFailed": "Échec de la synchronisation du sous-événement {{name}}",
+      "subEventSyncQueued": "Synchronisation du sous-événement planifiée pour {{id}}"
+    },
     "dashboard": {
       "actions": {
         "clearAll": "Effacer tous les jobs",
@@ -1202,6 +1214,7 @@
         "clearCompleted": "Effacer les terminés",
         "clearCompletedError": "Échec de la suppression des jobs terminés",
         "clearCompletedSuccess": "Jobs terminés supprimés avec succès",
+        "clearCompletedSuccessCount": "{{count}} jobs terminés supprimés (jobs avec sous-jobs échoués conservés)",
         "clearCompletedTooltip": "Supprimer les jobs terminés, garder les jobs échoués pour le débogage",
         "competitionSync": "Synchronisation de la concurrence",
         "competitionSyncError": "Échec de la programmation de la synchronisation des compétitions",
@@ -1229,8 +1242,7 @@
         "tournamentSync": "Synchronisation des tournois",
         "tournamentSyncError": "Échec de la synchronisation des tournois",
         "tournamentSyncQueued": "Synchronisation du tournoi programmée avec succès",
-        "tournamentSyncTooltip": "Synchroniser les tournois en cours et à venir",
-        "clearCompletedSuccessCount": "{{count}} jobs terminés supprimés (jobs avec sous-jobs échoués conservés)"
+        "tournamentSyncTooltip": "Synchroniser les tournois en cours et à venir"
       },
       "jobs": {
         "actions": "Actions",
@@ -1447,18 +1459,6 @@
       "queued": "En attente de synchronisation",
       "synced": "Synchronisation réussie",
       "syncing": "Synchronisation en cours"
-    },
-    "button": {
-      "moreActions": "Autres actions de synchronisation",
-      "eventSyncQueued": "Synchronisation de l'événement planifiée pour {{id}}",
-      "subEventSyncQueued": "Synchronisation du sous-événement planifiée pour {{id}}",
-      "drawSyncQueued": "Synchronisation du tableau planifiée pour {{id}}",
-      "eventSyncFailed": "Échec de la synchronisation de {{name}}",
-      "subEventSyncFailed": "Échec de la synchronisation du sous-événement {{name}}",
-      "drawSyncFailed": "Échec de la synchronisation du tableau {{name}}",
-      "cacheClearFailed": "Échec de la suppression du cache de l'API",
-      "cacheCleared": "Cache API vidé",
-      "cacheEmpty": "Aucune entrée de cache trouvée"
     }
   },
   "system": {
@@ -1469,45 +1469,32 @@
     }
   },
   "team": {
-    "membership": {
-      "BACKUP": {
-        "assign": "Définir {{name}} comme remplaçant",
-        "label": "Réserve",
-        "short": "R"
-      },
-      "REGULAR": {
-        "assign": "Définir {{name}} comme titulaire",
-        "label": "Titulaire",
-        "short": "T"
-      }
-    },
-    "numbered": "Équipe {{number}}",
     "captain": "Capitaine",
     "captain-label": "Capitaine",
-    "draw-label": "Série",
     "detail": {
       "loadError": "Impossible de charger les détails de l'équipe. Veuillez réessayer.",
       "loading": "Chargement des détails de l'équipe...",
       "roster": {
-        "membership": "Appartenance",
-        "winPercentage": "Victoires %",
-        "member": "Membre",
-        "gameOnly": "Matchs uniquement",
-        "addPlayer": "Ajouter {{name}} à l'équipe",
-        "removePlayer": "Retirer {{name}} de l'équipe",
         "addError": "Impossible d'ajouter le joueur à l'équipe. Veuillez réessayer.",
-        "removeError": "Impossible de retirer le joueur de l'équipe. Veuillez réessayer."
+        "addPlayer": "Ajouter {{name}} à l'équipe",
+        "gameOnly": "Matchs uniquement",
+        "member": "Membre",
+        "membership": "Appartenance",
+        "removeError": "Impossible de retirer le joueur de l'équipe. Veuillez réessayer.",
+        "removePlayer": "Retirer {{name}} de l'équipe",
+        "winPercentage": "Victoires %"
       },
       "stats": {
-        "roster": "Joueurs",
-        "seasonRecord": "Bilan de la saison",
-        "record": "{{won}} victoires, {{lost}} défaites",
-        "winRate": "{{rate}}% de victoires",
         "encounters": "Rencontres",
         "nextEncounter": "Prochaine rencontre",
-        "versus": "{{home}} contre {{away}}"
+        "record": "{{won}} victoires, {{lost}} défaites",
+        "roster": "Joueurs",
+        "seasonRecord": "Bilan de la saison",
+        "versus": "{{home}} contre {{away}}",
+        "winRate": "{{rate}}% de victoires"
       }
     },
+    "draw-label": "Série",
     "edit": {
       "abbreviation": {
         "label": "Abréviation",
@@ -1601,10 +1588,23 @@
     "filterByTeam": "Filtrer par équipe",
     "games": "Correspondances",
     "level-tooltip": "Niveau Min/Max",
+    "membership": {
+      "BACKUP": {
+        "assign": "Définir {{name}} comme remplaçant",
+        "label": "Réserve",
+        "short": "R"
+      },
+      "REGULAR": {
+        "assign": "Définir {{name}} comme titulaire",
+        "label": "Titulaire",
+        "short": "T"
+      }
+    },
     "name": "Nom de l'équipe",
     "no-players": "Pas de joueurs",
     "no-players-description": "Cette équipe n'a pas encore de joueurs.",
     "noTeams": "Aucune équipe trouvée pour cette saison",
+    "numbered": "Équipe {{number}}",
     "overview": {
       "title": "Vue d'ensemble des équipes"
     },
@@ -1647,8 +1647,8 @@
         "filterByStatus": "Filtrer par statut",
         "groupBySubEvent": "Groupe par composante",
         "initialize": "Initialiser les enregistrements",
-        "initializeFailed": "Impossible d'initialiser les enregistrements",
         "initializeCheckins": "Initialisation de l'enregistrement",
+        "initializeFailed": "Impossible d'initialiser les enregistrements",
         "initializeFirst": "Initialiser d'abord les check-ins",
         "initializeHint": "",
         "markNoShow": "Marquer comme absent",
@@ -1681,9 +1681,9 @@
         "allEntriesAssigned": "Toutes les inscriptions ont été attribuées",
         "applySeeding": "Appliquer les têtes de série",
         "assign": "Attribuer",
-        "assignEntriesFailed": "Impossible d'attribuer les inscriptions",
         "assigned": "Attribuées",
         "assignedDescription": "Placées dans un tableau",
+        "assignEntriesFailed": "Impossible d'attribuer les inscriptions",
         "assignSelected": "",
         "autoSeed": "Attribuer les têtes de série automatiquement",
         "clearSeeds": "Effacer les têtes de série",
@@ -1703,8 +1703,8 @@
         "entries": "",
         "entry": "Inscription",
         "generateEntries": "Générer les inscriptions",
-        "generateEntriesFailed": "Impossible de générer les inscriptions",
         "generateEntriesDescription": "",
+        "generateEntriesFailed": "Impossible de générer les inscriptions",
         "knockout": "Élimination directe",
         "maxLevel": "",
         "maxLevelHelp": "",
@@ -1720,8 +1720,8 @@
         "noEntriesHint": "",
         "noEntriesYet": "Aucune inscription générée pour le moment",
         "qualification": "Qualification",
-        "removeFromDraw": "Retirer du tableau",
         "removeEntryFailed": "Impossible de retirer l'inscription du tableau",
+        "removeFromDraw": "Retirer du tableau",
         "roundRobin": "Poule",
         "seed": "Tête de série",
         "seedByRanking": "Par classement",
@@ -1775,8 +1775,8 @@
         "enrollmentsCount": "",
         "filterByStatus": "Filtrer par statut",
         "filterBySubEvent": "Filtrer par composant",
-        "guestEmail": "Adresse e-mail de l'invité",
         "guest": "Invité",
+        "guestEmail": "Adresse e-mail de l'invité",
         "guestName": "Nom de l'invité",
         "lookingForPartner": "Recherche d'un partenaire",
         "manualEnrollmentDescription": "Ajoutez un joueur à cette épreuve. Sélectionnez un membre existant ou inscrivez un invité.",
@@ -1797,11 +1797,12 @@
         "playerSearchHelp": "Saisissez au moins deux caractères d'un nom ou numéro de membre, puis sélectionnez un résultat.",
         "playerSearchNoData": "La recherche n'a renvoyé aucune donnée de joueur",
         "playerSearchPlaceholder": "Rechercher un joueur...",
+        "playerSearchTooLong": "La recherche ne peut pas dépasser {{max}} caractères",
         "position": "",
         "preferred": "Souhaité",
         "promote": "",
-        "promoteFromWaitingList": "Promotion à partir de la liste d'attente",
         "promoteFailed": "Impossible de promouvoir depuis la liste d'attente",
+        "promoteFromWaitingList": "Promotion à partir de la liste d'attente",
         "queryNoData": "La demande n'a renvoyé aucune donnée d'inscription",
         "schedulePublished": "Inscriptions visibles",
         "search": "",
@@ -1817,8 +1818,7 @@
         "waitingList": "Liste d'attente",
         "waitingListDescription": "Sur la liste d'attente",
         "withdraw": "",
-        "withdrawn": "Retiré",
-        "playerSearchTooLong": "La recherche ne peut pas dépasser {{max}} caractères"
+        "withdrawn": "Retiré"
       },
       "noPermission": "Vous n'avez pas l'autorisation de gérer ce tournoi",
       "phases": {
@@ -1833,54 +1833,65 @@
         "title": "Stades du tournoi"
       },
       "schedule": {
-        "totalSlotsDescription": "Créneaux du jour sélectionné ou de tous les jours, y compris les créneaux terminés.",
-        "availableDescription": "Créneaux disponibles pour attribuer un match.",
-        "scheduledDescription": "Créneaux avec un match dont le début est prévu.",
-        "inProgressDescription": "Créneaux avec un match en cours.",
-        "blockedDescription": "Créneaux indisponibles pour la planification.",
-        "unscheduledGamesDescription": "Matchs du tournoi en attente d'un créneau, indépendamment du filtre de date.",
-        "dropHere": "Déposez un match ici",
-        "blockSlot": "Bloquer le créneau",
-        "unblockSlot": "Débloquer le créneau",
-        "removeFromSlot": "Retirer le match du créneau",
-        "live": "En direct",
-        "completed": "Terminé",
-        "gamesCount": "{{count}} matchs",
-        "defaultCourt": "Terrain",
         "allDates": "Tous les jours",
         "autoSchedule": "Planification automatique",
         "autoScheduleDescription": "Attribuez automatiquement les matchs non planifiés aux créneaux disponibles selon la stratégie choisie.",
         "available": "Disponible",
+        "availableDescription": "Créneaux disponibles pour attribuer un match.",
         "blocked": "BLOQUÉ",
+        "blockedDescription": "Créneaux indisponibles pour la planification.",
+        "blockSlot": "Bloquer le créneau",
         "breakBetween": "Pause entre les créneaux",
         "breakBetweenSlots": "Pause entre les créneaux",
         "byLevel": "Au niveau",
         "categoryOrder": "Ordre de la catégorie",
+        "completed": "Terminé",
         "conflicts": "Conflits",
         "courts": "Champs",
         "date": "",
         "dates": "Jours",
+        "defaultCourt": "Terrain",
+        "deleteSlotConfirm": {
+          "accept": "Supprimer",
+          "header": "Supprimer le créneau",
+          "message": "Voulez-vous vraiment supprimer ce créneau ?"
+        },
         "dragToAssign": "Faire glisser le match vers le créneau horaire",
+        "dropHere": "Déposez un match ici",
         "endTime": "Heure de fin",
         "filterByDate": "Filtrer par date",
+        "gamesCount": "{{count}} matchs",
         "generateSlots": "Générer des créneaux horaires",
         "hideUnscheduled": "Masquer les matchs non programmés",
         "inProgress": "En cours",
+        "inProgressDescription": "Créneaux avec un match en cours.",
+        "live": "En direct",
         "minimizeWait": "Minimiser le temps d'attente",
         "minRestTime": "Temps de repos minimum (min)",
+        "moreConflicts": "... et {{count}} de plus",
         "noConflicts": "Aucun conflit n'a été trouvé",
         "noSlots": "",
         "noSlotsHint": "",
         "noUnscheduledGames": "Tous les matches sont programmés",
         "publish": "",
+        "publishConfirm": {
+          "accept": "Publier",
+          "header": "Publier le planning",
+          "message": "Voulez-vous vraiment publier le planning ? Les joueurs pourront voir les heures de leurs matchs."
+        },
         "publishSchedule": "Publier la planification",
         "random": "Au hasard",
+        "removeFromSlot": "Retirer le match du créneau",
         "results": "Résultat",
         "runScheduler": "Lancer le planificateur",
         "scheduled": "Prévu",
+        "scheduledDescription": "Créneaux avec un match dont le début est prévu.",
+        "scheduledGames": "Planifiés : {{count}} matchs",
         "selectCourts": "Sélectionner les champs",
         "selectDates": "Sélectionner les jours",
+        "selectVenue": "Sélectionnez un lieu",
         "showUnscheduled": "Afficher les matchs non programmés",
+        "skippedGames": "Ignorés : {{count}} matchs",
         "slotDuration": "Durée du créneau horaire",
         "startTime": "Heure de début",
         "strategies": {
@@ -1890,48 +1901,27 @@
           "RANDOM": "Aléatoire"
         },
         "strategy": "Stratégie",
+        "tbd": "à déterminer",
         "time": "Heure",
         "title": "Gestion du calendrier",
         "totalSlots": "Total des créneaux horaires",
+        "totalSlotsDescription": "Créneaux du jour sélectionné ou de tous les jours, y compris les créneaux terminés.",
+        "unblockSlot": "Débloquer le créneau",
         "unscheduled": "",
         "unscheduledGames": "Matchs non programmés",
-        "scheduledGames": "Planifiés : {{count}} matchs",
-        "skippedGames": "Ignorés : {{count}} matchs",
-        "moreConflicts": "... et {{count}} de plus",
+        "unscheduledGamesDescription": "Matchs du tournoi en attente d'un créneau, indépendamment du filtre de date.",
         "venue": "Lieu",
-        "selectVenue": "Sélectionnez un lieu",
-        "tbd": "à déterminer",
-        "versus": "{{home}} contre {{away}}",
-        "publishConfirm": {
-          "header": "Publier le planning",
-          "message": "Voulez-vous vraiment publier le planning ? Les joueurs pourront voir les heures de leurs matchs.",
-          "accept": "Publier"
-        },
-        "deleteSlotConfirm": {
-          "header": "Supprimer le créneau",
-          "message": "Voulez-vous vraiment supprimer ce créneau ?",
-          "accept": "Supprimer"
-        }
+        "versus": "{{home}} contre {{away}}"
       },
       "settings": {
-        "advancePhaseConfirm": {
-          "header": "Phase suivante",
-          "message": "Passer le tournoi à la phase suivante ? Cela modifie ce que les joueurs et les administrateurs peuvent faire.",
-          "accept": "Phase suivante"
-        },
-        "goBackPhaseConfirm": {
-          "header": "Phase précédente",
-          "message": "Revenir à la phase précédente du tournoi ? Cela modifie ce que les joueurs et les administrateurs peuvent faire.",
-          "accept": "Phase précédente"
-        },
-        "deleteSubEventConfirm": {
-          "header": "Supprimer le sous-événement",
-          "message": "Voulez-vous vraiment supprimer ce sous-événement ? Cette action est irréversible.",
-          "accept": "Supprimer"
-        },
         "actions": "Actions",
         "addSubEvent": "Ajouter une partie",
         "advancePhase": "Passage à la phase suivante",
+        "advancePhaseConfirm": {
+          "accept": "Phase suivante",
+          "header": "Phase suivante",
+          "message": "Passer le tournoi à la phase suivante ? Cela modifie ce que les joueurs et les administrateurs peuvent faire."
+        },
         "allowGuests": "Sans partenaire",
         "allowGuestsDescription": "Permet de s'inscrire sans partenaire",
         "any": "Tous",
@@ -1943,6 +1933,11 @@
         "currentPhase": "Phase actuelle",
         "dates": "Données",
         "deleteSubEvent": "Retirer la pièce",
+        "deleteSubEventConfirm": {
+          "accept": "Supprimer",
+          "header": "Supprimer le sous-événement",
+          "message": "Voulez-vous vraiment supprimer ce sous-événement ? Cette action est irréversible."
+        },
         "editSubEvent": "Modifier la partie",
         "enrollment": "Inscription",
         "enrollmentClose": "Abonnements Fermer",
@@ -1955,6 +1950,11 @@
         "gameType": "Type de jeu",
         "general": "Paramètres généraux",
         "generalDescription": "Configurer les informations et les dates de base du tournoi",
+        "goBackPhaseConfirm": {
+          "accept": "Phase précédente",
+          "header": "Phase précédente",
+          "message": "Revenir à la phase précédente du tournoi ? Cela modifie ce que les joueurs et les administrateurs peuvent faire."
+        },
         "guestEnrollment": "Abonnements invités autorisés",
         "lastDay": "Dernier jour",
         "level": "Niveau",
@@ -2038,7 +2038,6 @@
     },
     "drawFallbackName": "Série {{number}}",
     "draws": "Série",
-    "noDrawsYet": "Aucune série configurée pour le moment",
     "edit": {
       "actions": {
         "cancel": "Annuler",
@@ -2159,6 +2158,7 @@
     "matches": "Correspondances",
     "men": "Hommes",
     "mixed": "Mixte",
+    "noDrawsYet": "Aucune série configurée pour le moment",
     "number": "Numéro du tournoi",
     "official": "Tournoi officiel",
     "openDate": "Abonnements ouverts",

@@ -16,7 +16,8 @@
     "migrate": "npx cross-env RUN_MIGRATIONS=true nx run backend-database:migration-run",
     "migrate:undo": "npx cross-env RUN_MIGRATIONS=true nx run backend-database:migration-revert",
     "tunnel": "cloudflared tunnel run angular-dev",
-    "knip": "knip"
+    "knip": "knip",
+    "postinstall": "patch-package --error-on-fail"
   },
   "private": true,
   "dependencies": {

@@ -9,13 +9,13 @@
         "title": "Informatie"
       },
       "searchIndex": {
+        "completed": "Indexering voltooid",
         "description": "Beheer index",
         "selectAll": "Alles selecteren",
         "selectNone": "Niets selecteren",
         "selectTypes": "Selecteer types om te indexeren",
         "startIndexing": "Indexering starten",
-        "title": "Indexering",
-        "completed": "Indexering voltooid"
+        "title": "Indexering"
       },
       "sync": {
         "title": "Synchronisatie"
@@ -112,6 +112,7 @@
           "women": "Dames"
         },
         "form": "Recente vorm",
+        "less": "Minder tonen",
         "levels": {
           "double": "D",
           "doubleFull": "Dubbel",
@@ -120,12 +121,11 @@
           "single": "E",
           "singleFull": "Enkel"
         },
-        "less": "Minder tonen",
         "more": "+{{count}} meer",
         "noMatch": "Geen teams voor deze filter.",
         "noPlayers": "Nog geen spelers in dit team.",
-        "player": "Speler",
         "played": "{{count}} gespeeld",
+        "player": "Speler",
         "view": "Team bekijken",
         "won": "{{count}} gewonnen",
         "you": "Jij"
@@ -144,55 +144,6 @@
     "teamBuilder": {
       "addPlayer": "Speler toevoegen...",
       "addTeam": "Team Toevoegen",
-      "validation": {
-        "minPlayers": "Minstens {{min}} basisspelers nodig, er zijn er {{count}}",
-        "minMales": "Minstens {{min}} mannelijke basisspelers nodig, er zijn er {{count}}",
-        "minFemales": "Minstens {{min}} vrouwelijke basisspelers nodig, er zijn er {{count}}",
-        "maxPlayers": "Maximaal {{max}} spelers toegestaan, er zijn er {{count}}",
-        "minIndex": "Ploegindex {{index}} ligt onder het minimum van {{min}}",
-        "maxIndex": "Ploegindex {{index}} overschrijdt het maximum van {{max}}",
-        "femaleInMens": "{{count}} vrouwelijke spelers in een herenploeg",
-        "maleInWomens": "{{count}} mannelijke spelers in een damesploeg",
-        "playersTooStrong": "{{count}} spelers zijn mogelijk te sterk voor deze reeks (max. niveau: {{maxLevel}}): {{names}}",
-        "playerTooStrong": "Speler is te sterk voor deze reeks (max. niveau: {{maxLevel}})",
-        "overAssigned": "Gewenste ploegen: {{desired}}; toegewezen ploegen: {{count}} (te veel)",
-        "underAssigned": "Gewenste ploegen: {{desired}}; toegewezen ploegen: {{count}} (te weinig)"
-      },
-      "feedback": {
-        "surveyImported": "Enquête geïmporteerd",
-        "importCounts": "Gekoppelde spelers: {{matched}}; nieuwe spelers aangemaakt: {{created}}",
-        "surveyUpdated": "Enquête bijgewerkt",
-        "surveyUpdatedFor": "Enquêtegegevens bijgewerkt voor {{name}}",
-        "settingsUpdated": "Instellingen bijgewerkt",
-        "settingsUpdatedDetail": "De instellingen van de ploegopstelling zijn bijgewerkt",
-        "removeTitle": "Ploeg verwijderen",
-        "removeMessage": "Deze ploeg verwijderen? De spelers worden naar de niet-toegewezen spelers verplaatst.",
-        "saveMessage": "{{updated}} bijgewerkte en {{created}} nieuwe ploegen met {{players}} spelers opslaan voor seizoen {{season}}?",
-        "saveRemoved": "Te verwijderen ploegen: {{count}}.",
-        "saveWarnings": "Ploegen met validatiewaarschuwingen: {{count}}.",
-        "playerAdded": "Speler toegevoegd",
-        "playerAddedDetail": "{{name}} toegevoegd aan de spelerspool",
-        "alreadyPresent": "Al aanwezig",
-        "alreadyPresentDetail": "{{name}} staat al in de ploegopstelling",
-        "saved": "Opgeslagen",
-        "savedDetail": "Ploegen opgeslagen voor seizoen {{season}}",
-        "saveFailed": "Ploegen opslaan mislukt",
-        "loadFailed": "Gegevens voor de ploegopstelling laden mislukt"
-      },
-      "subEvent": {
-        "auto": "Automatisch",
-        "autoHelp": "Bepaal de reeks automatisch op basis van positie en ploegindex",
-        "otherGroup": "Overige reeksen",
-        "selection": "Reeks selecteren",
-        "title": "Reeks wijzigen voor {{name}}"
-      },
-      "player": {
-        "cannotMeet75": "Kan niet aan 75% aanwezigheid voldoen",
-        "indicatorCount": "{{count}} spelermeldingen",
-        "lowPerformance": "Lage prestaties ({{percent}}% gewonnen)",
-        "lowPresence": "Lage aanwezigheid ({{percent}}% aanwezig)",
-        "stopping": "Stopt met competitie"
-      },
       "card": {
         "backups": "Reservespelers",
         "changeSubEvent": "Reeks wijzigen voor {{name}}: {{subEvent}}",
@@ -233,28 +184,49 @@
         "warnings": "Waarschuwingen: {{count}}"
       },
       "dropToRemove": "Sleep hier om te verwijderen",
+      "feedback": {
+        "alreadyPresent": "Al aanwezig",
+        "alreadyPresentDetail": "{{name}} staat al in de ploegopstelling",
+        "importCounts": "Gekoppelde spelers: {{matched}}; nieuwe spelers aangemaakt: {{created}}",
+        "loadFailed": "Gegevens voor de ploegopstelling laden mislukt",
+        "playerAdded": "Speler toegevoegd",
+        "playerAddedDetail": "{{name}} toegevoegd aan de spelerspool",
+        "removeMessage": "Deze ploeg verwijderen? De spelers worden naar de niet-toegewezen spelers verplaatst.",
+        "removeTitle": "Ploeg verwijderen",
+        "saved": "Opgeslagen",
+        "savedDetail": "Ploegen opgeslagen voor seizoen {{season}}",
+        "saveFailed": "Ploegen opslaan mislukt",
+        "saveMessage": "{{updated}} bijgewerkte en {{created}} nieuwe ploegen met {{players}} spelers opslaan voor seizoen {{season}}?",
+        "saveRemoved": "Te verwijderen ploegen: {{count}}.",
+        "saveWarnings": "Ploegen met validatiewaarschuwingen: {{count}}.",
+        "settingsUpdated": "Instellingen bijgewerkt",
+        "settingsUpdatedDetail": "De instellingen van de ploegopstelling zijn bijgewerkt",
+        "surveyImported": "Enquête geïmporteerd",
+        "surveyUpdated": "Enquête bijgewerkt",
+        "surveyUpdatedFor": "Enquêtegegevens bijgewerkt voor {{name}}"
+      },
       "import": {
-        "cancelCreate": "Aanmaken van {{name}} annuleren",
-        "confidenceLevels": {
-          "high": "Hoog",
-          "medium": "Gemiddeld",
-          "low": "Laag",
-          "none": "Niet gematcht"
-        },
-        "empty": "Geen enquêteresultaten gevonden. Annuleer en kies een ander bestand.",
-        "failed": "De enquête kon niet worden verwerkt. Controleer het Excel-bestand en probeer opnieuw.",
-        "fileHint": "Excel-bestanden (.xlsx, .xls), maximaal 10 MB. Controleer de matches voordat je bevestigt.",
-        "selectPlayer": "Speler selecteren voor {{name}}",
         "cancel": "Annuleren",
+        "cancelCreate": "Aanmaken van {{name}} annuleren",
         "chooseFile": "Bestand Kiezen",
         "confidence": "Betrouwbaarheid",
+        "confidenceLevels": {
+          "high": "Hoog",
+          "low": "Laag",
+          "medium": "Gemiddeld",
+          "none": "Niet gematcht"
+        },
         "confirm": "Bevestigen",
         "createNew": "Nieuw Aanmaken",
         "description": "Upload het Excel-bestand met de spelersenquête",
+        "empty": "Geen enquêteresultaten gevonden. Annuleer en kies een ander bestand.",
+        "failed": "De enquête kon niet worden verwerkt. Controleer het Excel-bestand en probeer opnieuw.",
+        "fileHint": "Excel-bestanden (.xlsx, .xls), maximaal 10 MB. Controleer de matches voordat je bevestigt.",
         "matched": "spelers gematcht",
         "matchedPlayer": "Gematchte Speler",
         "matching": "Spelers matchen...",
         "searchPlayer": "Zoek speler...",
+        "selectPlayer": "Speler selecteren voor {{name}}",
         "surveyName": "Naam Enquête",
         "title": "Enquête Importeren",
         "toCreate": "aan te maken",
@@ -262,6 +234,13 @@
         "willCreate": "Wordt aangemaakt"
       },
       "noStoppingPlayers": "Geen spelers die stoppen",
+      "player": {
+        "cannotMeet75": "Kan niet aan 75% aanwezigheid voldoen",
+        "indicatorCount": "{{count}} spelermeldingen",
+        "lowPerformance": "Lage prestaties ({{percent}}% gewonnen)",
+        "lowPresence": "Lage aanwezigheid ({{percent}}% aanwezig)",
+        "stopping": "Stopt met competitie"
+      },
       "playerPool": "Niet-toegewezen Spelers",
       "playersStopping": "Spelers die stoppen",
       "removedPlayers": "Verwijderde Spelers",
@@ -280,7 +259,28 @@
         "presenceThresholdHelp": "Markeer spelers onder dit aanwezigheidspercentage",
         "title": "Instellingen"
       },
-      "tab": "Ploegopstelling"
+      "subEvent": {
+        "auto": "Automatisch",
+        "autoHelp": "Bepaal de reeks automatisch op basis van positie en ploegindex",
+        "otherGroup": "Overige reeksen",
+        "selection": "Reeks selecteren",
+        "title": "Reeks wijzigen voor {{name}}"
+      },
+      "tab": "Ploegopstelling",
+      "validation": {
+        "femaleInMens": "{{count}} vrouwelijke spelers in een herenploeg",
+        "maleInWomens": "{{count}} mannelijke spelers in een damesploeg",
+        "maxIndex": "Ploegindex {{index}} overschrijdt het maximum van {{max}}",
+        "maxPlayers": "Maximaal {{max}} spelers toegestaan, er zijn er {{count}}",
+        "minFemales": "Minstens {{min}} vrouwelijke basisspelers nodig, er zijn er {{count}}",
+        "minIndex": "Ploegindex {{index}} ligt onder het minimum van {{min}}",
+        "minMales": "Minstens {{min}} mannelijke basisspelers nodig, er zijn er {{count}}",
+        "minPlayers": "Minstens {{min}} basisspelers nodig, er zijn er {{count}}",
+        "overAssigned": "Gewenste ploegen: {{desired}}; toegewezen ploegen: {{count}} (te veel)",
+        "playersTooStrong": "{{count}} spelers zijn mogelijk te sterk voor deze reeks (max. niveau: {{maxLevel}}): {{names}}",
+        "playerTooStrong": "Speler is te sterk voor deze reeks (max. niveau: {{maxLevel}})",
+        "underAssigned": "Gewenste ploegen: {{desired}}; toegewezen ploegen: {{count}} (te weinig)"
+      }
     },
     "teamComparison": "Team Vergelijking",
     "totalGames": "Wedstrijden",
@@ -361,19 +361,19 @@
     "title": "Clubs Zoeken"
   },
   "common": {
-    "firstChoice": "Eerste keuze: {{choice}}",
-    "remarks": "Opmerkingen",
-    "secondChoice": "Tweede keuze: {{choice}}",
     "actions": "Acties",
     "cancel": "Annuleren",
     "error": "Fout",
+    "firstChoice": "Eerste keuze: {{choice}}",
     "level": "Niveau",
     "name": "Naam",
     "no": "Nee",
+    "remarks": "Opmerkingen",
     "required": "Dit veld is verplicht",
     "save": "Opslaan",
     "search": "Zoeken",
     "season": "Seizoen",
+    "secondChoice": "Tweede keuze: {{choice}}",
     "selectSeason": "Selecteer seizoen",
     "success": "Succes",
     "unknown": "Onbekend",
@@ -393,7 +393,6 @@
     "details": "Competitie Details",
     "draw": "Poule",
     "drawFallbackName": "Poule {{number}}",
-    "noDrawsYet": "Nog geen poules ingesteld",
     "draws": "Poules",
     "edit": {
       "actions": {
@@ -523,6 +522,7 @@
     "no_standings": "Nog geen stand beschikbaar",
     "no_standings_description": "De stand van de teams in deze reeks is nog niet beschikbaar.",
     "no_upcoming_encounters": "Geen komende wedstrijden.",
+    "noDrawsYet": "Nog geen poules ingesteld",
     "official": "Officiële Competitie",
     "openDate": "Inschrijvingen Open",
     "participant": "Deelnemer",
@@ -626,8 +626,8 @@
       },
       "retry-load": "Opnieuw proberen",
       "season": "Seizoen",
-      "select-team": "Selecteer hierboven een club en ploeg om je opstelling samen te stellen.",
       "select-all": "Alle spelers selecteren/deselecteren",
+      "select-team": "Selecteer hierboven een club en ploeg om je opstelling samen te stellen.",
       "single1": "Enkel 1",
       "single2": "Enkel 2",
       "single3": "Enkel 3",
@@ -883,16 +883,6 @@
     "toggleLight": "Lichte modus inschakelen"
   },
   "player": {
-    "newPlayer": "Nieuwe speler",
-    "survey": {
-      "canMeet75": "Kan 75% van de wedstrijden spelen",
-      "edit": "Enquête bewerken",
-      "empty": "Geen enquêtegegevens beschikbaar",
-      "firstChoice": "Eerste keuze",
-      "secondChoice": "Tweede keuze",
-      "teamsWanted": "Gewenst aantal ploegen",
-      "unavailability": "Onbeschikbaarheid"
-    },
     "allGames": "Alle Wedstrijden",
     "competitionPlayer": "Competitiespeler",
     "detail": {
@@ -984,6 +974,7 @@
     "headToHead": "Onderlinge Duels",
     "maxRating": "Max. Rating",
     "minRating": "Min. Rating",
+    "newPlayer": "Nieuwe speler",
     "noGames": "Geen wedstrijden",
     "noGamesDescription": "Deze speler heeft nog geen wedstrijden gespeeld",
     "noPerformanceData": "Geen prestatie gegevens",
@@ -998,6 +989,15 @@
     "playerType": "Spelertype",
     "recentGames": "Recente Wedstrijden",
     "resultsFound": "{{count}} resultaten gevonden",
+    "survey": {
+      "canMeet75": "Kan 75% van de wedstrijden spelen",
+      "edit": "Enquête bewerken",
+      "empty": "Geen enquêtegegevens beschikbaar",
+      "firstChoice": "Eerste keuze",
+      "secondChoice": "Tweede keuze",
+      "teamsWanted": "Gewenst aantal ploegen",
+      "unavailability": "Onbeschikbaarheid"
+    },
     "tournamentHistory": "Toernooi Geschiedenis",
     "tryDifferentFilters": "Probeer andere filters",
     "yearsOld": "jaar oud"
@@ -1025,8 +1025,6 @@
     }
   },
   "ranking": {
-    "summary": "Enkel {{single}}, dubbel {{double}}, gemengd {{mix}}",
-    "summaryWithoutMixed": "Enkel {{single}}, dubbel {{double}}",
     "breakdown": {
       "add-game": {
         "add": "Wedstrijd toevoegen",
@@ -1057,7 +1055,6 @@
       "downgrade-average": "Avg. degradatie",
       "drops-next-period": "Telt niet meer mee in volgende periode",
       "enable-remove-games": "Wedstrijden verwijderen",
-      "game-details": "Wedstrijddetails",
       "enable-toggle-latest-x": "Meegetelde wedstrijden wijzigen",
       "evolution": "Evolutie",
       "export": {
@@ -1080,6 +1077,7 @@
         "WON": "Gewonnen"
       },
       "filters": "Filters",
+      "game-details": "Wedstrijddetails",
       "games": {
         "none": "Geen wedstrijden",
         "one": "1 wedstrijd",
@@ -1112,11 +1110,11 @@
       "outOfScopeWonGames": "Niet gebruikte gewonnen wedstrijden",
       "period": {
         "choose-end-date": "Kies de einddatum van de periode",
-        "presets": "Vaste periodes",
         "last-point-update": "Afgelopen punten update",
         "last-ranking-update": "Afgelopen klassementen update",
         "next-point-update": "Volgende punten update",
         "next-ranking-update": "Volgende klassementen update",
+        "presets": "Vaste periodes",
         "title": "Periode"
       },
       "points": "Punten",
@@ -1164,7 +1162,9 @@
       "to-downgrade": "{{points}} pt tot degradatie",
       "to-upgrade": "{{points}} pt tot promotie",
       "upgrade-reached": "Promotiedrempel bereikt"
-    }
+    },
+    "summary": "Enkel {{single}}, dubbel {{double}}, gemengd {{mix}}",
+    "summaryWithoutMixed": "Enkel {{single}}, dubbel {{double}}"
   },
   "search": {
     "loading": "Zoeken...",
@@ -1193,6 +1193,18 @@
     }
   },
   "sync": {
+    "button": {
+      "cacheCleared": "API-cache gewist",
+      "cacheClearFailed": "API-cache wissen mislukt",
+      "cacheEmpty": "Geen cache-items gevonden",
+      "drawSyncFailed": "Synchronisatie van reeks {{name}} mislukt",
+      "drawSyncQueued": "Reeks-synchronisatie ingepland voor {{id}}",
+      "eventSyncFailed": "Synchronisatie van {{name}} mislukt",
+      "eventSyncQueued": "Event-synchronisatie ingepland voor {{id}}",
+      "moreActions": "Meer synchronisatieacties",
+      "subEventSyncFailed": "Synchronisatie van onderdeel {{name}} mislukt",
+      "subEventSyncQueued": "Onderdeel-synchronisatie ingepland voor {{id}}"
+    },
     "dashboard": {
       "actions": {
         "clearAll": "Alle jobs wissen",
@@ -1202,6 +1214,7 @@
         "clearCompleted": "Voltooide wissen",
         "clearCompletedError": "Fout bij het verwijderen van voltooide jobs",
         "clearCompletedSuccess": "Voltooide jobs succesvol verwijderd",
+        "clearCompletedSuccessCount": "{{count}} voltooide jobs verwijderd (jobs met mislukte subjobs behouden)",
         "clearCompletedTooltip": "Verwijder voltooide jobs, bewaar gefaalde jobs voor debugging",
         "competitionSync": "Competitie sync",
         "competitionSyncError": "Mislukt om competitie sync te plannen",
@@ -1229,8 +1242,7 @@
         "tournamentSync": "Toernooi sync",
         "tournamentSyncError": "Mislukt om toernooi sync te plannen",
         "tournamentSyncQueued": "Toernooi  sync succesvol gepland",
-        "tournamentSyncTooltip": "Synchroniseer huidige en aankomende toernooien",
-        "clearCompletedSuccessCount": "{{count}} voltooide jobs verwijderd (jobs met mislukte subjobs behouden)"
+        "tournamentSyncTooltip": "Synchroniseer huidige en aankomende toernooien"
       },
       "jobs": {
         "actions": "Acties",
@@ -1447,18 +1459,6 @@
       "queued": "In wachtrij voor synchronisatie",
       "synced": "Succesvol gesynchroniseerd",
       "syncing": "Synchronisatie bezig"
-    },
-    "button": {
-      "moreActions": "Meer synchronisatieacties",
-      "eventSyncQueued": "Event-synchronisatie ingepland voor {{id}}",
-      "subEventSyncQueued": "Onderdeel-synchronisatie ingepland voor {{id}}",
-      "drawSyncQueued": "Reeks-synchronisatie ingepland voor {{id}}",
-      "eventSyncFailed": "Synchronisatie van {{name}} mislukt",
-      "subEventSyncFailed": "Synchronisatie van onderdeel {{name}} mislukt",
-      "drawSyncFailed": "Synchronisatie van reeks {{name}} mislukt",
-      "cacheClearFailed": "API-cache wissen mislukt",
-      "cacheCleared": "API-cache gewist",
-      "cacheEmpty": "Geen cache-items gevonden"
     }
   },
   "system": {
@@ -1469,45 +1469,32 @@
     }
   },
   "team": {
-    "membership": {
-      "BACKUP": {
-        "assign": "{{name}} reservespeler maken",
-        "label": "Reserve",
-        "short": "R"
-      },
-      "REGULAR": {
-        "assign": "{{name}} basisspeler maken",
-        "label": "Basis",
-        "short": "B"
-      }
-    },
-    "numbered": "Ploeg {{number}}",
     "captain": "Kapitein",
     "captain-label": "Kapitein",
-    "draw-label": "Reeks",
     "detail": {
       "loadError": "De ploeggegevens konden niet worden geladen. Probeer het opnieuw.",
       "loading": "Ploeggegevens laden...",
       "roster": {
-        "membership": "Lidmaatschap",
-        "winPercentage": "Winst %",
-        "member": "Lid",
-        "gameOnly": "Alleen wedstrijden",
-        "addPlayer": "{{name}} toevoegen aan de ploeg",
-        "removePlayer": "{{name}} verwijderen uit de ploeg",
         "addError": "De speler kon niet aan de ploeg worden toegevoegd. Probeer het opnieuw.",
-        "removeError": "De speler kon niet uit de ploeg worden verwijderd. Probeer het opnieuw."
+        "addPlayer": "{{name}} toevoegen aan de ploeg",
+        "gameOnly": "Alleen wedstrijden",
+        "member": "Lid",
+        "membership": "Lidmaatschap",
+        "removeError": "De speler kon niet uit de ploeg worden verwijderd. Probeer het opnieuw.",
+        "removePlayer": "{{name}} verwijderen uit de ploeg",
+        "winPercentage": "Winst %"
       },
       "stats": {
-        "roster": "Spelers",
-        "seasonRecord": "Seizoensbalans",
-        "record": "{{won}} gewonnen, {{lost}} verloren",
-        "winRate": "{{rate}}% gewonnen",
         "encounters": "Ontmoetingen",
         "nextEncounter": "Volgende ontmoeting",
-        "versus": "{{home}} tegen {{away}}"
+        "record": "{{won}} gewonnen, {{lost}} verloren",
+        "roster": "Spelers",
+        "seasonRecord": "Seizoensbalans",
+        "versus": "{{home}} tegen {{away}}",
+        "winRate": "{{rate}}% gewonnen"
       }
     },
+    "draw-label": "Reeks",
     "edit": {
       "abbreviation": {
         "label": "Afkorting",
@@ -1601,10 +1588,23 @@
     "filterByTeam": "Filter op team",
     "games": "Wedstrijden",
     "level-tooltip": "Min / Max niveau",
+    "membership": {
+      "BACKUP": {
+        "assign": "{{name}} reservespeler maken",
+        "label": "Reserve",
+        "short": "R"
+      },
+      "REGULAR": {
+        "assign": "{{name}} basisspeler maken",
+        "label": "Basis",
+        "short": "B"
+      }
+    },
     "name": "Teamnaam",
     "no-players": "Geen spelers",
     "no-players-description": "Dit team heeft nog geen spelers.",
     "noTeams": "Geen teams gevonden voor dit seizoen",
+    "numbered": "Ploeg {{number}}",
     "overview": {
       "title": "Teams Overzicht"
     },
@@ -1647,8 +1647,8 @@
         "filterByStatus": "Filter op status",
         "groupBySubEvent": "Groepeer op onderdeel",
         "initialize": "Check-ins initialiseren",
-        "initializeFailed": "Check-ins initialiseren is mislukt",
         "initializeCheckins": "Check-ins initialiseren",
+        "initializeFailed": "Check-ins initialiseren is mislukt",
         "initializeFirst": "Initialiseer eerst de check-ins",
         "initializeHint": "",
         "markNoShow": "Niet verschenen",
@@ -1681,9 +1681,9 @@
         "allEntriesAssigned": "Alle inschrijvingen zijn toegewezen",
         "applySeeding": "Seeding toepassen",
         "assign": "Toewijzen",
-        "assignEntriesFailed": "Inschrijvingen toewijzen is mislukt",
         "assigned": "Toegewezen",
         "assignedDescription": "Toegewezen aan een loting",
+        "assignEntriesFailed": "Inschrijvingen toewijzen is mislukt",
         "assignSelected": "",
         "autoSeed": "Automatisch seeden",
         "clearSeeds": "Seeding wissen",
@@ -1703,8 +1703,8 @@
         "entries": "",
         "entry": "Inschrijving",
         "generateEntries": "Inschrijvingen genereren",
-        "generateEntriesFailed": "Inschrijvingen genereren is mislukt",
         "generateEntriesDescription": "",
+        "generateEntriesFailed": "Inschrijvingen genereren is mislukt",
         "knockout": "Rechtstreekse uitschakeling",
         "maxLevel": "",
         "maxLevelHelp": "",
@@ -1720,8 +1720,8 @@
         "noEntriesHint": "",
         "noEntriesYet": "Nog geen inschrijvingen gegenereerd",
         "qualification": "Kwalificatie",
-        "removeFromDraw": "Uit loting verwijderen",
         "removeEntryFailed": "Inschrijving uit loting verwijderen is mislukt",
+        "removeFromDraw": "Uit loting verwijderen",
         "roundRobin": "Poule",
         "seed": "Seeding",
         "seedByRanking": "Op rangschikking",
@@ -1775,8 +1775,8 @@
         "enrollmentsCount": "",
         "filterByStatus": "Filter op status",
         "filterBySubEvent": "Filter op onderdeel",
-        "guestEmail": "E-mailadres gast",
         "guest": "Gast",
+        "guestEmail": "E-mailadres gast",
         "guestName": "Naam gast",
         "lookingForPartner": "Zoekt partner",
         "manualEnrollmentDescription": "Voeg een speler toe aan dit onderdeel. Selecteer een bestaand lid of schrijf een gast in.",
@@ -1797,11 +1797,12 @@
         "playerSearchHelp": "Typ minstens twee tekens van een naam of lidnummer en selecteer een resultaat.",
         "playerSearchNoData": "De zoekopdracht heeft geen spelersgegevens teruggegeven",
         "playerSearchPlaceholder": "Zoek een speler...",
+        "playerSearchTooLong": "De zoekopdracht mag niet langer zijn dan {{max}} tekens",
         "position": "",
         "preferred": "Voorkeur",
         "promote": "",
-        "promoteFromWaitingList": "Promoveren van wachtlijst",
         "promoteFailed": "Promoveren van de wachtlijst mislukt",
+        "promoteFromWaitingList": "Promoveren van wachtlijst",
         "queryNoData": "De aanvraag heeft geen inschrijvingsgegevens teruggegeven",
         "schedulePublished": "Inschrijvingen zichtbaar",
         "search": "",
@@ -1817,8 +1818,7 @@
         "waitingList": "Wachtlijst",
         "waitingListDescription": "Op de wachtlijst",
         "withdraw": "",
-        "withdrawn": "Teruggetrokken",
-        "playerSearchTooLong": "De zoekopdracht mag niet langer zijn dan {{max}} tekens"
+        "withdrawn": "Teruggetrokken"
       },
       "noPermission": "Je hebt geen toestemming om dit toernooi te beheren",
       "phases": {
@@ -1833,54 +1833,65 @@
         "title": "Toernooi Fases"
       },
       "schedule": {
-        "totalSlotsDescription": "Tijdslots voor de gekozen dag of alle dagen, inclusief voltooide tijdslots.",
-        "availableDescription": "Tijdslots waaraan een wedstrijd kan worden toegewezen.",
-        "scheduledDescription": "Tijdslots met een wedstrijd die nog moet starten.",
-        "inProgressDescription": "Tijdslots met een wedstrijd die momenteel bezig is.",
-        "blockedDescription": "Tijdslots die niet beschikbaar zijn voor de planning.",
-        "unscheduledGamesDescription": "Toernooiwedstrijden die nog een tijdslot nodig hebben, ongeacht het datumfilter.",
-        "dropHere": "Sleep een wedstrijd hierheen",
-        "blockSlot": "Tijdslot blokkeren",
-        "unblockSlot": "Tijdslot deblokkeren",
-        "removeFromSlot": "Wedstrijd uit tijdslot verwijderen",
-        "live": "Live",
-        "completed": "Afgelopen",
-        "gamesCount": "{{count}} wedstrijden",
-        "defaultCourt": "Veld",
         "allDates": "Alle dagen",
         "autoSchedule": "Automatisch plannen",
         "autoScheduleDescription": "Wijs niet geplande wedstrijden automatisch toe aan beschikbare tijdslots volgens de gekozen strategie.",
         "available": "Beschikbaar",
+        "availableDescription": "Tijdslots waaraan een wedstrijd kan worden toegewezen.",
         "blocked": "Geblokkeerd",
+        "blockedDescription": "Tijdslots die niet beschikbaar zijn voor de planning.",
+        "blockSlot": "Tijdslot blokkeren",
         "breakBetween": "Pauze tussen slots",
         "breakBetweenSlots": "Pauze tussen slots",
         "byLevel": "Op niveau",
         "categoryOrder": "Volgorde categorie",
+        "completed": "Afgelopen",
         "conflicts": "Conflicten",
         "courts": "Velden",
         "date": "",
         "dates": "Dagen",
+        "defaultCourt": "Veld",
+        "deleteSlotConfirm": {
+          "accept": "Verwijderen",
+          "header": "Tijdslot verwijderen",
+          "message": "Weet je zeker dat je dit tijdslot wilt verwijderen?"
+        },
         "dragToAssign": "Sleep wedstrijd naar tijdslot",
+        "dropHere": "Sleep een wedstrijd hierheen",
         "endTime": "Eindtijd",
         "filterByDate": "Filter op datum",
+        "gamesCount": "{{count}} wedstrijden",
         "generateSlots": "Tijdslots genereren",
         "hideUnscheduled": "Niet geplande wedstrijden verbergen",
         "inProgress": "Bezig",
+        "inProgressDescription": "Tijdslots met een wedstrijd die momenteel bezig is.",
+        "live": "Live",
         "minimizeWait": "Wachttijd minimaliseren",
         "minRestTime": "Minimale rusttijd (min)",
+        "moreConflicts": "... en nog {{count}} meer",
         "noConflicts": "Geen conflicten gevonden",
         "noSlots": "",
         "noSlotsHint": "",
         "noUnscheduledGames": "Alle wedstrijden zijn gepland",
         "publish": "",
+        "publishConfirm": {
+          "accept": "Publiceren",
+          "header": "Schema publiceren",
+          "message": "Weet je zeker dat je het schema wilt publiceren? Spelers kunnen dan hun wedstrijdtijden zien."
+        },
         "publishSchedule": "Planning publiceren",
         "random": "Willekeurig",
+        "removeFromSlot": "Wedstrijd uit tijdslot verwijderen",
         "results": "Resultaat",
         "runScheduler": "Planner uitvoeren",
         "scheduled": "Gepland",
+        "scheduledDescription": "Tijdslots met een wedstrijd die nog moet starten.",
+        "scheduledGames": "Gepland: {{count}} wedstrijden",
         "selectCourts": "Selecteer velden",
         "selectDates": "Selecteer dagen",
+        "selectVenue": "Selecteer een locatie",
         "showUnscheduled": "Niet geplande wedstrijden tonen",
+        "skippedGames": "Overgeslagen: {{count}} wedstrijden",
         "slotDuration": "Duur tijdslot",
         "startTime": "Starttijd",
         "strategies": {
@@ -1890,48 +1901,27 @@
           "RANDOM": "Willekeurig"
         },
         "strategy": "Strategie",
+        "tbd": "nog te bepalen",
         "time": "Tijd",
         "title": "Planning Beheren",
         "totalSlots": "Totaal tijdslots",
+        "totalSlotsDescription": "Tijdslots voor de gekozen dag of alle dagen, inclusief voltooide tijdslots.",
+        "unblockSlot": "Tijdslot deblokkeren",
         "unscheduled": "",
         "unscheduledGames": "Niet geplande wedstrijden",
-        "scheduledGames": "Gepland: {{count}} wedstrijden",
-        "skippedGames": "Overgeslagen: {{count}} wedstrijden",
-        "moreConflicts": "... en nog {{count}} meer",
+        "unscheduledGamesDescription": "Toernooiwedstrijden die nog een tijdslot nodig hebben, ongeacht het datumfilter.",
         "venue": "Locatie",
-        "selectVenue": "Selecteer een locatie",
-        "tbd": "nog te bepalen",
-        "versus": "{{home}} tegen {{away}}",
-        "publishConfirm": {
-          "header": "Schema publiceren",
-          "message": "Weet je zeker dat je het schema wilt publiceren? Spelers kunnen dan hun wedstrijdtijden zien.",
-          "accept": "Publiceren"
-        },
-        "deleteSlotConfirm": {
-          "header": "Tijdslot verwijderen",
-          "message": "Weet je zeker dat je dit tijdslot wilt verwijderen?",
-          "accept": "Verwijderen"
-        }
+        "versus": "{{home}} tegen {{away}}"
       },
       "settings": {
-        "advancePhaseConfirm": {
-          "header": "Fase vooruit",
-          "message": "Het toernooi naar de volgende fase brengen? Dit wijzigt wat spelers en beheerders kunnen doen.",
-          "accept": "Volgende fase"
-        },
-        "goBackPhaseConfirm": {
-          "header": "Fase terug",
-          "message": "Het toernooi terug naar de vorige fase brengen? Dit wijzigt wat spelers en beheerders kunnen doen.",
-          "accept": "Vorige fase"
-        },
-        "deleteSubEventConfirm": {
-          "header": "Subevenement verwijderen",
-          "message": "Weet je zeker dat je dit subevenement wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
-          "accept": "Verwijderen"
-        },
         "actions": "Acties",
         "addSubEvent": "Onderdeel toevoegen",
         "advancePhase": "Naar volgende fase",
+        "advancePhaseConfirm": {
+          "accept": "Volgende fase",
+          "header": "Fase vooruit",
+          "message": "Het toernooi naar de volgende fase brengen? Dit wijzigt wat spelers en beheerders kunnen doen."
+        },
         "allowGuests": "Zonder partner",
         "allowGuestsDescription": "Laat toe om zonder partner in te schrijven",
         "any": "Alle",
@@ -1943,6 +1933,11 @@
         "currentPhase": "Huidige fase",
         "dates": "Data",
         "deleteSubEvent": "Onderdeel verwijderen",
+        "deleteSubEventConfirm": {
+          "accept": "Verwijderen",
+          "header": "Subevenement verwijderen",
+          "message": "Weet je zeker dat je dit subevenement wilt verwijderen? Dit kan niet ongedaan worden gemaakt."
+        },
         "editSubEvent": "Onderdeel bewerken",
         "enrollment": "Inschrijving",
         "enrollmentClose": "Inschrijvingen sluiten",
@@ -1955,6 +1950,11 @@
         "gameType": "Speltype",
         "general": "Algemene instellingen",
         "generalDescription": "Configureer basis toernooiinformatie en datums",
+        "goBackPhaseConfirm": {
+          "accept": "Vorige fase",
+          "header": "Fase terug",
+          "message": "Het toernooi terug naar de vorige fase brengen? Dit wijzigt wat spelers en beheerders kunnen doen."
+        },
         "guestEnrollment": "Gastinschrijvingen toegestaan",
         "lastDay": "Laatste dag",
         "level": "Niveau",
@@ -2038,7 +2038,6 @@
     },
     "drawFallbackName": "Reeks {{number}}",
     "draws": "Reeks",
-    "noDrawsYet": "Nog geen reeksen ingesteld",
     "edit": {
       "actions": {
         "cancel": "Annuleren",
@@ -2159,6 +2158,7 @@
     "matches": "Wedstrijden",
     "men": "Heren",
     "mixed": "Gemengd",
+    "noDrawsYet": "Nog geen reeksen ingesteld",
     "number": "Toernooi Nummer",
     "official": "Officieel Toernooi",
     "openDate": "Inschrijvingen Open",

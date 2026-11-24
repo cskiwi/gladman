@@ -9,13 +9,13 @@
         "title": "Information"
       },
       "searchIndex": {
+        "completed": "Indexing completed",
         "description": "Management index",
         "selectAll": "Select All",
         "selectNone": "Select None",
         "selectTypes": "Select Types to Index",
         "startIndexing": "Start Indexing",
-        "title": "Indexing",
-        "completed": "Indexing completed"
+        "title": "Indexing"
       },
       "sync": {
         "title": "Synchronization"
@@ -112,6 +112,7 @@
           "women": "Women"
         },
         "form": "Recent form",
+        "less": "Show less",
         "levels": {
           "double": "D",
           "doubleFull": "Doubles",
@@ -120,12 +121,11 @@
           "single": "S",
           "singleFull": "Singles"
         },
-        "less": "Show less",
         "more": "+{{count}} more",
         "noMatch": "No teams match this filter.",
         "noPlayers": "No players in this team yet.",
-        "player": "Player",
         "played": "{{count}} played",
+        "player": "Player",
         "view": "View team",
         "won": "{{count}} won",
         "you": "You"
@@ -144,55 +144,6 @@
     "teamBuilder": {
       "addPlayer": "Add player...",
       "addTeam": "Add Team",
-      "validation": {
-        "minPlayers": "Need at least {{min}} base players, have {{count}}",
-        "minMales": "Need at least {{min}} male base players, have {{count}}",
-        "minFemales": "Need at least {{min}} female base players, have {{count}}",
-        "maxPlayers": "Maximum {{max}} players allowed, have {{count}}",
-        "minIndex": "Team index {{index}} is below minimum {{min}}",
-        "maxIndex": "Team index {{index}} exceeds maximum {{max}}",
-        "femaleInMens": "{{count}} female players in a men's team",
-        "maleInWomens": "{{count}} male players in a women's team",
-        "playersTooStrong": "{{count}} players may be too strong for this sub-event (max level: {{maxLevel}}): {{names}}",
-        "playerTooStrong": "Player is too strong for this sub-event (max level: {{maxLevel}})",
-        "overAssigned": "Desired teams: {{desired}}; assigned teams: {{count}} (too many)",
-        "underAssigned": "Desired teams: {{desired}}; assigned teams: {{count}} (too few)"
-      },
-      "feedback": {
-        "surveyImported": "Survey imported",
-        "importCounts": "Matched players: {{matched}}; new players created: {{created}}",
-        "surveyUpdated": "Survey updated",
-        "surveyUpdatedFor": "Survey data updated for {{name}}",
-        "settingsUpdated": "Settings updated",
-        "settingsUpdatedDetail": "Team builder settings have been updated",
-        "removeTitle": "Remove team",
-        "removeMessage": "Remove this team? Players will be moved to the unassigned pool.",
-        "saveMessage": "Save {{updated}} updated and {{created}} new teams with {{players}} players for season {{season}}?",
-        "saveRemoved": "Teams to be removed: {{count}}.",
-        "saveWarnings": "Teams with validation warnings: {{count}}.",
-        "playerAdded": "Player added",
-        "playerAddedDetail": "{{name}} added to the pool",
-        "alreadyPresent": "Already present",
-        "alreadyPresentDetail": "{{name}} is already in the builder",
-        "saved": "Saved",
-        "savedDetail": "Teams saved for season {{season}}",
-        "saveFailed": "Failed to save teams",
-        "loadFailed": "Failed to load team builder data"
-      },
-      "subEvent": {
-        "auto": "Automatic",
-        "autoHelp": "Determine the sub-event automatically from standing and team index",
-        "otherGroup": "Other sub-events",
-        "selection": "Select sub-event",
-        "title": "Change sub-event for {{name}}"
-      },
-      "player": {
-        "cannotMeet75": "Cannot meet 75% availability",
-        "indicatorCount": "{{count}} player indicators",
-        "lowPerformance": "Low performance ({{percent}}% win rate)",
-        "lowPresence": "Low presence ({{percent}}% attendance)",
-        "stopping": "Stopping competition"
-      },
       "card": {
         "backups": "Backups",
         "changeSubEvent": "Change sub-event for {{name}}: {{subEvent}}",
@@ -233,28 +184,49 @@
         "warnings": "Warnings: {{count}}"
       },
       "dropToRemove": "Drop here to remove",
+      "feedback": {
+        "alreadyPresent": "Already present",
+        "alreadyPresentDetail": "{{name}} is already in the builder",
+        "importCounts": "Matched players: {{matched}}; new players created: {{created}}",
+        "loadFailed": "Failed to load team builder data",
+        "playerAdded": "Player added",
+        "playerAddedDetail": "{{name}} added to the pool",
+        "removeMessage": "Remove this team? Players will be moved to the unassigned pool.",
+        "removeTitle": "Remove team",
+        "saved": "Saved",
+        "savedDetail": "Teams saved for season {{season}}",
+        "saveFailed": "Failed to save teams",
+        "saveMessage": "Save {{updated}} updated and {{created}} new teams with {{players}} players for season {{season}}?",
+        "saveRemoved": "Teams to be removed: {{count}}.",
+        "saveWarnings": "Teams with validation warnings: {{count}}.",
+        "settingsUpdated": "Settings updated",
+        "settingsUpdatedDetail": "Team builder settings have been updated",
+        "surveyImported": "Survey imported",
+        "surveyUpdated": "Survey updated",
+        "surveyUpdatedFor": "Survey data updated for {{name}}"
+      },
       "import": {
-        "cancelCreate": "Cancel creation of {{name}}",
-        "confidenceLevels": {
-          "high": "High",
-          "medium": "Medium",
-          "low": "Low",
-          "none": "Unmatched"
-        },
-        "empty": "No survey responses found. Cancel and choose another file.",
-        "failed": "The survey could not be processed. Check the Excel file and try again.",
-        "fileHint": "Excel files (.xlsx, .xls), up to 10 MB. Review matches before confirming.",
-        "selectPlayer": "Select a player for {{name}}",
         "cancel": "Cancel",
+        "cancelCreate": "Cancel creation of {{name}}",
         "chooseFile": "Choose File",
         "confidence": "Confidence",
+        "confidenceLevels": {
+          "high": "High",
+          "low": "Low",
+          "medium": "Medium",
+          "none": "Unmatched"
+        },
         "confirm": "Confirm",
         "createNew": "Create New",
         "description": "Upload the Excel file with player survey responses",
+        "empty": "No survey responses found. Cancel and choose another file.",
+        "failed": "The survey could not be processed. Check the Excel file and try again.",
+        "fileHint": "Excel files (.xlsx, .xls), up to 10 MB. Review matches before confirming.",
         "matched": "players matched",
         "matchedPlayer": "Matched Player",
         "matching": "Matching players...",
         "searchPlayer": "Search player...",
+        "selectPlayer": "Select a player for {{name}}",
         "surveyName": "Survey Name",
         "title": "Import Survey",
         "toCreate": "to create",
@@ -262,6 +234,13 @@
         "willCreate": "Will create"
       },
       "noStoppingPlayers": "No players stopping",
+      "player": {
+        "cannotMeet75": "Cannot meet 75% availability",
+        "indicatorCount": "{{count}} player indicators",
+        "lowPerformance": "Low performance ({{percent}}% win rate)",
+        "lowPresence": "Low presence ({{percent}}% attendance)",
+        "stopping": "Stopping competition"
+      },
       "playerPool": "Unassigned Players",
       "playersStopping": "Players Stopping",
       "removedPlayers": "Removed Players",
@@ -280,7 +259,28 @@
         "presenceThresholdHelp": "Flag players below this attendance percentage",
         "title": "Settings"
       },
-      "tab": "Team Builder"
+      "subEvent": {
+        "auto": "Automatic",
+        "autoHelp": "Determine the sub-event automatically from standing and team index",
+        "otherGroup": "Other sub-events",
+        "selection": "Select sub-event",
+        "title": "Change sub-event for {{name}}"
+      },
+      "tab": "Team Builder",
+      "validation": {
+        "femaleInMens": "{{count}} female players in a men's team",
+        "maleInWomens": "{{count}} male players in a women's team",
+        "maxIndex": "Team index {{index}} exceeds maximum {{max}}",
+        "maxPlayers": "Maximum {{max}} players allowed, have {{count}}",
+        "minFemales": "Need at least {{min}} female base players, have {{count}}",
+        "minIndex": "Team index {{index}} is below minimum {{min}}",
+        "minMales": "Need at least {{min}} male base players, have {{count}}",
+        "minPlayers": "Need at least {{min}} base players, have {{count}}",
+        "overAssigned": "Desired teams: {{desired}}; assigned teams: {{count}} (too many)",
+        "playersTooStrong": "{{count}} players may be too strong for this sub-event (max level: {{maxLevel}}): {{names}}",
+        "playerTooStrong": "Player is too strong for this sub-event (max level: {{maxLevel}})",
+        "underAssigned": "Desired teams: {{desired}}; assigned teams: {{count}} (too few)"
+      }
     },
     "teamComparison": "Team Comparison",
     "totalGames": "Games",
@@ -361,19 +361,19 @@
     "title": "Search Clubs"
   },
   "common": {
-    "firstChoice": "First choice: {{choice}}",
-    "remarks": "Remarks",
-    "secondChoice": "Second choice: {{choice}}",
     "actions": "Actions",
     "cancel": "Cancel",
     "error": "Error",
+    "firstChoice": "First choice: {{choice}}",
     "level": "Level",
     "name": "Name",
     "no": "No",
+    "remarks": "Remarks",
     "required": "This field is required",
     "save": "Save",
     "search": "Search",
     "season": "Season",
+    "secondChoice": "Second choice: {{choice}}",
     "selectSeason": "Select season",
     "success": "Success",
     "unknown": "Unknown",
@@ -393,7 +393,6 @@
     "details": "Competition Details",
     "draw": "Draw",
     "drawFallbackName": "Draw {{number}}",
-    "noDrawsYet": "No draws configured yet",
     "draws": "Draws",
     "edit": {
       "actions": {
@@ -523,6 +522,7 @@
     "no_standings": "No Standings Available",
     "no_standings_description": "This draw doesn't have any standings data yet.",
     "no_upcoming_encounters": "No upcoming encounters.",
+    "noDrawsYet": "No draws configured yet",
     "official": "Official Competition",
     "openDate": "Registration Opens",
     "participant": "Participant",
@@ -626,8 +626,8 @@
       },
       "retry-load": "Try again",
       "season": "Season",
-      "select-team": "Select a club and team above to assemble your lineup.",
       "select-all": "Select/deselect all players",
+      "select-team": "Select a club and team above to assemble your lineup.",
       "single1": "Single 1",
       "single2": "Single 2",
       "single3": "Single 3",
@@ -883,16 +883,6 @@
     "toggleLight": "Switch to light mode"
   },
   "player": {
-    "newPlayer": "New player",
-    "survey": {
-      "canMeet75": "Can attend 75% of matches",
-      "edit": "Edit survey",
-      "empty": "No survey data available",
-      "firstChoice": "First choice",
-      "secondChoice": "Second choice",
-      "teamsWanted": "Teams wanted",
-      "unavailability": "Unavailability"
-    },
     "allGames": "All Games",
     "competitionPlayer": "Competition Player",
     "detail": {
@@ -984,6 +974,7 @@
     "headToHead": "Head to Head",
     "maxRating": "Max. Rating",
     "minRating": "Min. Rating",
+    "newPlayer": "New player",
     "noGames": "No games",
     "noGamesDescription": "This player hasn't played any games yet",
     "noPerformanceData": "No performance data",
@@ -998,6 +989,15 @@
     "playerType": "Player type",
     "recentGames": "Recent Games",
     "resultsFound": "{{count}} results found",
+    "survey": {
+      "canMeet75": "Can attend 75% of matches",
+      "edit": "Edit survey",
+      "empty": "No survey data available",
+      "firstChoice": "First choice",
+      "secondChoice": "Second choice",
+      "teamsWanted": "Teams wanted",
+      "unavailability": "Unavailability"
+    },
     "tournamentHistory": "Tournament History",
     "tryDifferentFilters": "Try different filters",
     "yearsOld": "years old"
@@ -1025,8 +1025,6 @@
     }
   },
   "ranking": {
-    "summary": "Singles {{single}}, doubles {{double}}, mixed {{mix}}",
-    "summaryWithoutMixed": "Singles {{single}}, doubles {{double}}",
     "breakdown": {
       "add-game": {
         "add": "Add game",
@@ -1057,7 +1055,6 @@
       "downgrade-average": "Avg. demotion",
       "drops-next-period": "Drops next period",
       "enable-remove-games": "Remove games",
-      "game-details": "Game details",
       "enable-toggle-latest-x": "Toggle included games",
       "evolution": "Evolution",
       "export": {
@@ -1080,6 +1077,7 @@
         "WON": "Won"
       },
       "filters": "Filters",
+      "game-details": "Game details",
       "games": {
         "none": "No games",
         "one": "1 game",
@@ -1112,11 +1110,11 @@
       "outOfScopeWonGames": "Unused matches won",
       "period": {
         "choose-end-date": "Choose period end date",
-        "presets": "Period presets",
         "last-point-update": "Past points update",
         "last-ranking-update": "Past rankings update",
         "next-point-update": "Next points update",
         "next-ranking-update": "Next rankings update",
+        "presets": "Period presets",
         "title": "Period"
       },
       "points": "Points",
@@ -1164,7 +1162,9 @@
       "to-downgrade": "{{points}} pts to downgrade",
       "to-upgrade": "{{points}} pts to upgrade",
       "upgrade-reached": "Upgrade threshold reached"
-    }
+    },
+    "summary": "Singles {{single}}, doubles {{double}}, mixed {{mix}}",
+    "summaryWithoutMixed": "Singles {{single}}, doubles {{double}}"
   },
   "search": {
     "loading": "Searching...",
@@ -1193,6 +1193,18 @@
     }
   },
   "sync": {
+    "button": {
+      "cacheCleared": "Cleared cached API entries",
+      "cacheClearFailed": "Failed to clear API cache",
+      "cacheEmpty": "No cache entries found",
+      "drawSyncFailed": "Failed to sync draw {{name}}",
+      "drawSyncQueued": "Draw sync queued successfully for {{id}}",
+      "eventSyncFailed": "Failed to sync {{name}}",
+      "eventSyncQueued": "Event sync queued successfully for {{id}}",
+      "moreActions": "More sync actions",
+      "subEventSyncFailed": "Failed to sync sub-event {{name}}",
+      "subEventSyncQueued": "Sub-event sync queued successfully for {{id}}"
+    },
     "dashboard": {
       "actions": {
         "clearAll": "Clear all jobs",
@@ -1202,6 +1214,7 @@
         "clearCompleted": "Clear completed",
         "clearCompletedError": "Failed to clear completed jobs",
         "clearCompletedSuccess": "Completed jobs cleared successfully",
+        "clearCompletedSuccessCount": "Cleared {{count}} completed jobs (kept jobs with failed children)",
         "clearCompletedTooltip": "Remove completed jobs, keeping failed job trees for debugging",
         "competitionSync": "Competition sync",
         "competitionSyncError": "Failed to schedule competition sync",
@@ -1229,8 +1242,7 @@
         "tournamentSync": "Tournament sync",
         "tournamentSyncError": "Failed to schedule tournament sync",
         "tournamentSyncQueued": "Tournament sync successfully scheduled",
-        "tournamentSyncTooltip": "Synchronize current and upcoming tournaments",
-        "clearCompletedSuccessCount": "Cleared {{count}} completed jobs (kept jobs with failed children)"
+        "tournamentSyncTooltip": "Synchronize current and upcoming tournaments"
       },
       "jobs": {
         "actions": "Actions",
@@ -1447,18 +1459,6 @@
       "queued": "Queued for synchronization",
       "synced": "Successfully synchronized",
       "syncing": "Synchronization in progress"
-    },
-    "button": {
-      "moreActions": "More sync actions",
-      "eventSyncQueued": "Event sync queued successfully for {{id}}",
-      "subEventSyncQueued": "Sub-event sync queued successfully for {{id}}",
-      "drawSyncQueued": "Draw sync queued successfully for {{id}}",
-      "eventSyncFailed": "Failed to sync {{name}}",
-      "subEventSyncFailed": "Failed to sync sub-event {{name}}",
-      "drawSyncFailed": "Failed to sync draw {{name}}",
-      "cacheClearFailed": "Failed to clear API cache",
-      "cacheCleared": "Cleared cached API entries",
-      "cacheEmpty": "No cache entries found"
     }
   },
   "system": {
@@ -1469,45 +1469,32 @@
     }
   },
   "team": {
-    "membership": {
-      "BACKUP": {
-        "assign": "Make {{name}} a reserve player",
-        "label": "Reserve",
-        "short": "R"
-      },
-      "REGULAR": {
-        "assign": "Make {{name}} a base player",
-        "label": "Base",
-        "short": "B"
-      }
-    },
-    "numbered": "Team {{number}}",
     "captain": "Captain",
     "captain-label": "Captain",
-    "draw-label": "Draw",
     "detail": {
       "loadError": "Unable to load the team details. Please try again.",
       "loading": "Loading team details...",
       "roster": {
-        "membership": "Membership",
-        "winPercentage": "Win %",
-        "member": "Member",
-        "gameOnly": "Games only",
-        "addPlayer": "Add {{name}} to the team",
-        "removePlayer": "Remove {{name}} from the team",
         "addError": "Unable to add the player to the team. Please try again.",
-        "removeError": "Unable to remove the player from the team. Please try again."
+        "addPlayer": "Add {{name}} to the team",
+        "gameOnly": "Games only",
+        "member": "Member",
+        "membership": "Membership",
+        "removeError": "Unable to remove the player from the team. Please try again.",
+        "removePlayer": "Remove {{name}} from the team",
+        "winPercentage": "Win %"
       },
       "stats": {
-        "roster": "Players",
-        "seasonRecord": "Season record",
-        "record": "{{won}} won, {{lost}} lost",
-        "winRate": "{{rate}}% wins",
         "encounters": "Encounters",
         "nextEncounter": "Next encounter",
-        "versus": "{{home}} vs {{away}}"
+        "record": "{{won}} won, {{lost}} lost",
+        "roster": "Players",
+        "seasonRecord": "Season record",
+        "versus": "{{home}} vs {{away}}",
+        "winRate": "{{rate}}% wins"
       }
     },
+    "draw-label": "Draw",
     "edit": {
       "abbreviation": {
         "label": "Abbreviation",
@@ -1601,10 +1588,23 @@
     "filterByTeam": "Filter by team",
     "games": "Games",
     "level-tooltip": "Min / Max level",
+    "membership": {
+      "BACKUP": {
+        "assign": "Make {{name}} a reserve player",
+        "label": "Reserve",
+        "short": "R"
+      },
+      "REGULAR": {
+        "assign": "Make {{name}} a base player",
+        "label": "Base",
+        "short": "B"
+      }
+    },
     "name": "Team Name",
     "no-players": "No Players",
     "no-players-description": "This team doesn't have any players yet.",
     "noTeams": "No teams found for this season",
+    "numbered": "Team {{number}}",
     "overview": {
       "title": "Teams Overview"
     },
@@ -1647,8 +1647,8 @@
         "filterByStatus": "Filter by status",
         "groupBySubEvent": "Group by component",
         "initialize": "Initialize Check-ins",
-        "initializeFailed": "Failed to initialize check-ins",
         "initializeCheckins": "Initializing check-ins",
+        "initializeFailed": "Failed to initialize check-ins",
         "initializeFirst": "Initialize check-ins first",
         "initializeHint": "Click 'Initialize Check-ins' to create check-in records for all confirmed enrollments",
         "markNoShow": "Mark No Show",
@@ -1681,9 +1681,9 @@
         "allEntriesAssigned": "All entries have been assigned",
         "applySeeding": "Apply Seeding",
         "assign": "Assign",
-        "assignEntriesFailed": "Failed to assign entries",
         "assigned": "Assigned",
         "assignedDescription": "Placed in a draw",
+        "assignEntriesFailed": "Failed to assign entries",
         "assignSelected": "Assign Selected",
         "autoSeed": "Auto Seed",
         "clearSeeds": "Clear Seeds",
@@ -1703,8 +1703,8 @@
         "entries": "Entries",
         "entry": "Registration",
         "generateEntries": "Generate Entries",
-        "generateEntriesFailed": "Failed to generate entries",
         "generateEntriesDescription": "Create entries from confirmed enrollments",
+        "generateEntriesFailed": "Failed to generate entries",
         "knockout": "Knockout",
         "maxLevel": "Max Level",
         "maxLevelHelp": "Highest player level allowed",
@@ -1720,8 +1720,8 @@
         "noEntriesHint": "Generate entries from confirmed enrollments first",
         "noEntriesYet": "No registrations generated yet",
         "qualification": "Qualification",
-        "removeFromDraw": "Remove from Draw",
         "removeEntryFailed": "Failed to remove entry from draw",
+        "removeFromDraw": "Remove from Draw",
         "roundRobin": "Pool / Round robin",
         "seed": "Seed",
         "seedByRanking": "By Ranking",
@@ -1775,8 +1775,8 @@
         "enrollmentsCount": "enrollments",
         "filterByStatus": "Filter by status",
         "filterBySubEvent": "Filter by part",
-        "guestEmail": "Guest Email",
         "guest": "Guest",
+        "guestEmail": "Guest Email",
         "guestName": "Guest Name",
         "lookingForPartner": "Seeks partner",
         "manualEnrollmentDescription": "Add a player directly to this event. You can search for existing members or add a guest.",
@@ -1797,11 +1797,12 @@
         "playerSearchHelp": "Type at least two characters of a name or member ID, then select a result.",
         "playerSearchNoData": "Player search returned no player data",
         "playerSearchPlaceholder": "Search for player...",
+        "playerSearchTooLong": "Player search must not exceed {{max}} characters",
         "position": "Position",
         "preferred": "Preferred",
         "promote": "Promote from Waiting List",
-        "promoteFromWaitingList": "Promote from waiting list",
         "promoteFailed": "Failed to promote from waiting list",
+        "promoteFromWaitingList": "Promote from waiting list",
         "queryNoData": "Enrollment query returned no enrollment data",
         "schedulePublished": "Registrations visible",
         "search": "Search",
@@ -1817,8 +1818,7 @@
         "waitingList": "Waiting",
         "waitingListDescription": "On waiting list",
         "withdraw": "Withdraw",
-        "withdrawn": "Withdrawn",
-        "playerSearchTooLong": "Player search must not exceed {{max}} characters"
+        "withdrawn": "Withdrawn"
       },
       "noPermission": "You do not have permission to manage this tournament",
       "phases": {
@@ -1833,54 +1833,65 @@
         "title": "Tournament Stages"
       },
       "schedule": {
-        "totalSlotsDescription": "Slots for the selected date, or all dates, including completed slots.",
-        "availableDescription": "Slots available for assigning a game.",
-        "scheduledDescription": "Slots with a game scheduled to start.",
-        "inProgressDescription": "Slots with a game currently being played.",
-        "blockedDescription": "Slots unavailable for scheduling.",
-        "unscheduledGamesDescription": "Tournament games awaiting a slot, regardless of the date filter.",
-        "dropHere": "Drop a game here",
-        "blockSlot": "Block slot",
-        "unblockSlot": "Unblock slot",
-        "removeFromSlot": "Remove game from slot",
-        "live": "Live",
-        "completed": "Done",
-        "gamesCount": "{{count}} games",
-        "defaultCourt": "Court",
         "allDates": "All Dates",
         "autoSchedule": "Auto Schedule",
         "autoScheduleDescription": "Automatically assign unscheduled games to available slots based on the selected strategy.",
         "available": "Available",
+        "availableDescription": "Slots available for assigning a game.",
         "blocked": "Blocked",
+        "blockedDescription": "Slots unavailable for scheduling.",
+        "blockSlot": "Block slot",
         "breakBetween": "Break Between Slots",
         "breakBetweenSlots": "Break between slots",
         "byLevel": "On level",
         "categoryOrder": "Order Category",
+        "completed": "Done",
         "conflicts": "Conflicts",
         "courts": "Courts",
         "date": "Date",
         "dates": "Dates",
+        "defaultCourt": "Court",
+        "deleteSlotConfirm": {
+          "accept": "Delete",
+          "header": "Delete time slot",
+          "message": "Are you sure you want to delete this time slot?"
+        },
         "dragToAssign": "Drag match to time slot",
+        "dropHere": "Drop a game here",
         "endTime": "End Time",
         "filterByDate": "Filter by date",
+        "gamesCount": "{{count}} games",
         "generateSlots": "Generate Slots",
         "hideUnscheduled": "Hide Unscheduled",
         "inProgress": "In Progress",
+        "inProgressDescription": "Slots with a game currently being played.",
+        "live": "Live",
         "minimizeWait": "Minimize waiting time",
         "minRestTime": "Minimum Rest Time",
+        "moreConflicts": "... and {{count}} more",
         "noConflicts": "No conflicts found",
         "noSlots": "No time slots available",
         "noSlotsHint": "Generate time slots to start scheduling games",
         "noUnscheduledGames": "All matches are scheduled",
         "publish": "Publish Schedule",
+        "publishConfirm": {
+          "accept": "Publish",
+          "header": "Publish schedule",
+          "message": "Are you sure you want to publish the schedule? Players will be able to see their game times."
+        },
         "publishSchedule": "Publish schedule",
         "random": "Random",
+        "removeFromSlot": "Remove game from slot",
         "results": "Scheduling Results",
         "runScheduler": "Run Scheduler",
         "scheduled": "Scheduled",
+        "scheduledDescription": "Slots with a game scheduled to start.",
+        "scheduledGames": "Scheduled: {{count}} games",
         "selectCourts": "Select Courts",
         "selectDates": "Select days",
+        "selectVenue": "Select a venue",
         "showUnscheduled": "Show Unscheduled",
+        "skippedGames": "Skipped: {{count}} games",
         "slotDuration": "Slot Duration",
         "startTime": "Start Time",
         "strategies": {
@@ -1890,48 +1901,27 @@
           "RANDOM": "Random"
         },
         "strategy": "Strategy",
+        "tbd": "TBD",
         "time": "Time",
         "title": "Schedule",
         "totalSlots": "Total Slots",
+        "totalSlotsDescription": "Slots for the selected date, or all dates, including completed slots.",
+        "unblockSlot": "Unblock slot",
         "unscheduled": "Unscheduled",
         "unscheduledGames": "Unscheduled Games",
-        "scheduledGames": "Scheduled: {{count}} games",
-        "skippedGames": "Skipped: {{count}} games",
-        "moreConflicts": "... and {{count}} more",
+        "unscheduledGamesDescription": "Tournament games awaiting a slot, regardless of the date filter.",
         "venue": "Venue",
-        "selectVenue": "Select a venue",
-        "tbd": "TBD",
-        "versus": "{{home}} vs {{away}}",
-        "publishConfirm": {
-          "header": "Publish schedule",
-          "message": "Are you sure you want to publish the schedule? Players will be able to see their game times.",
-          "accept": "Publish"
-        },
-        "deleteSlotConfirm": {
-          "header": "Delete time slot",
-          "message": "Are you sure you want to delete this time slot?",
-          "accept": "Delete"
-        }
+        "versus": "{{home}} vs {{away}}"
       },
       "settings": {
-        "advancePhaseConfirm": {
-          "header": "Advance phase",
-          "message": "Move the tournament to the next phase? This changes what players and administrators can do.",
-          "accept": "Next phase"
-        },
-        "goBackPhaseConfirm": {
-          "header": "Go back a phase",
-          "message": "Move the tournament back to the previous phase? This changes what players and administrators can do.",
-          "accept": "Previous phase"
-        },
-        "deleteSubEventConfirm": {
-          "header": "Delete sub-event",
-          "message": "Are you sure you want to delete this sub-event? This cannot be undone.",
-          "accept": "Delete"
-        },
         "actions": "Actions",
         "addSubEvent": "Add Sub-Event",
         "advancePhase": "Advance Phase",
+        "advancePhaseConfirm": {
+          "accept": "Next phase",
+          "header": "Advance phase",
+          "message": "Move the tournament to the next phase? This changes what players and administrators can do."
+        },
         "allowGuests": "Without a partner",
         "allowGuestsDescription": "Allows you to enroll without a partner",
         "any": "Any",
@@ -1943,6 +1933,11 @@
         "currentPhase": "Current Phase",
         "dates": "Dates",
         "deleteSubEvent": "Delete Sub-Event",
+        "deleteSubEventConfirm": {
+          "accept": "Delete",
+          "header": "Delete sub-event",
+          "message": "Are you sure you want to delete this sub-event? This cannot be undone."
+        },
         "editSubEvent": "Edit Sub-Event",
         "enrollment": "Enrollment",
         "enrollmentClose": "Enrollment Close",
@@ -1955,6 +1950,11 @@
         "gameType": "Game Type",
         "general": "General Settings",
         "generalDescription": "Configure basic tournament information and dates",
+        "goBackPhaseConfirm": {
+          "accept": "Previous phase",
+          "header": "Go back a phase",
+          "message": "Move the tournament back to the previous phase? This changes what players and administrators can do."
+        },
         "guestEnrollment": "Guest registrations allowed",
         "lastDay": "Last Day",
         "level": "Level",
@@ -2038,7 +2038,6 @@
     },
     "drawFallbackName": "Draw {{number}}",
     "draws": "Draws",
-    "noDrawsYet": "No draws configured yet",
     "edit": {
       "actions": {
         "cancel": "Cancel",
@@ -2159,6 +2158,7 @@
     "matches": "Matches",
     "men": "Men",
     "mixed": "Mixed",
+    "noDrawsYet": "No draws configured yet",
     "number": "Tournament Number",
     "official": "Official Tournament",
     "openDate": "Registration Opens",

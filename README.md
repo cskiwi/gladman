@@ -97,6 +97,24 @@ SWC loader for transpilation. TypeScript checking runs alongside bundling, and t
 The API's SWC target matches its TypeScript target (ES2021) so Nest GraphQL can distinguish arrow-function type
 factories from constructors at runtime.
 
+### Translation types and Windows watchers
+
+The API generates and updates `libs/i18n/src/lib/i18n.generated.ts` at runtime through `nestjs-i18n`.
+This is the single generated type file, exported by `@app/utils-i18n`; no manual generation command is needed.
+The file is excluded from Nx's file watcher to avoid type-only changes restarting the API.
+It is not imported by the Angular application and does not require a browser reload.
+Changes to translation JSON files still follow the normal asset rebuild/reload behavior.
+Translation HTTP requests retry network failures and HTTP 502/503/504 responses once per second for up to
+30 seconds, allowing the API to finish restarting before the reloaded page initializes.
+Other errors fail immediately; exhausted retries fail initialization explicitly.
+PrimeNG's translation subscription reports errors through Angular's error handler rather than throwing an
+unhandled RxJS error that terminates the SSR development process.
+
+`npm install` applies a version-specific Nx patch to keep reinstalled native bindings in separate cache entries
+and handle concurrent cache writes on Windows. Native caching stays enabled; the fix does not load locked
+bindings directly from `node_modules`. Revisit the patch when upgrading Nx.
+Restart the development command once after applying these changes so the new watcher and native loader are used.
+
 ### Building the Applications
 
 #### Build Frontend

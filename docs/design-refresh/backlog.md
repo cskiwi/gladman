@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-074 [Native Toast contrast verification](work-items/DR-074-toast-contrast.md) is Done after explicit approval, 2026-11-25,
+on existing `main`. Investigation only: verify the committed `8af9f4ff` correction, not another theme redesign.
+Checked mounted sync Toast consumers with safe browser-only fixtures in light/dark at 390px/1440px.
+Measured native summary/detail contrast, geometry, alert attributes, close names and keyboard dismissal.
+No sync/cache operations, new extraction, application changes or unrelated generated i18n edits.
+Completed 120 safe cases across all five routes: all details and dark summaries exceed 4.5:1.
+Bounds, GUID wrapping, alert attributes, close names, trigger focus and Enter/Space dismissal pass.
+Settled light/dark error crops inspected; no full screenshot matrix, screen-reader, locale or SSR pass.
+Light success/warn/error summaries fail 4.5:1; separate DR-075 records the finding, with no restyling here.
+Initial logged-out tournament-detail blocker resolved after user login; fresh counts are 13/36/37/1/1.
+Remaining 48 tournament-detail checks pass except the same light summaries; total thirty light-summary failures.
+Explicit approval: `Approve DR-074 with documented limits and commit`; unchecked limits remain unchecked.
+Required workspace lint: 22 targets pass from cache, twelve fail existing dependency checks outside this slice.
+Commit only the approved audit brief/backlog; preserve unrelated generated i18n. No push.
+Exact next action: scope DR-075's native light-summary token correction against real consumers.
+Do not start DR-075 or another implementation slice here.
+
+### Previous focus: Shared controls parent completion (DR-007)
+
 DR-007 [Shared form controls and sync feedback](work-items/DR-007-shared-controls.md) parent completion
 reconciliation is Done after explicit approval, 2026-11-25, on existing `main`.
 Only the parent brief and backlog are in scope; preserve the unrelated generated i18n worktree change.
@@ -3754,7 +3773,8 @@ and linked from their registry rows.
 | [DR-071](work-items/DR-071-simulation-level-stepper.md)               | Native simulation level stepper accessibility reconciliation                 | Done    |
 | [DR-072](work-items/DR-072-tier-badge-native-styling.md)              | Shared tier badge styling without scoped token bindings                      | Done    |
 | [DR-073](work-items/DR-073-sync-menu-focus.md)                        | Shared sync menu Escape focus restoration                                    | Done    |
-| DR-074                                                                | Native Toast dark detail-text contrast audit                                 | Backlog |
+| [DR-074](work-items/DR-074-toast-contrast.md)                         | Native Toast dark detail-text contrast audit                                 | Done    |
+| DR-075                                                                | Native Toast light summary-text contrast                                     | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -3762,8 +3782,22 @@ and linked from their registry rows.
 
 ## App and shared surfaces
 
+### DR-075: Native Toast light summary-text contrast
+
+- DR-074 measured 120 safe native Toast fixtures across competition/tournament details and both draw routes.
+  Light success/warn/error summaries at 390px/1440px resolve to approximately 3.16:1 / 2.85:1 / 4.44:1.
+  Draw-route summaries are ordinary text (14px, weight 500), requiring 4.5:1.
+- Detail text and dark summaries pass the available matrix; this is separate from the already corrected dark detail.
+- Scope a native theme-token correction in a future slice, checking real consumers and preserving native severities,
+  announcements, close names and focus. No page-specific workaround, operations or new wrapper.
+- See [DR-074 evidence](work-items/DR-074-toast-contrast.md) for sRGB/alpha measurement limits and the
+  initially blocked and subsequently completed authenticated tournament-detail verification.
+  This discovery is not implemented.
+
 ### DR-074: Native Toast dark detail-text contrast audit
 
+- Scoped as a documentation-only current-theme verification in [the brief](work-items/DR-074-toast-contrast.md),
+  2026-11-25. Do not repeat the committed styling fix or run operational commands.
 - Historical DR-007b safe native error Toast fixtures exposed nearly invisible detail text in dark mode, before and after
   notification localization; light text is readable. This is not caused by changed message content.
 - At that baseline, mounted competition error detail resolved to `oklch(0.14 0.02 250)` over a translucent error background

@@ -1154,6 +1154,8 @@ export type I18nTranslations = {
                 "double": string;
                 "double-points": string;
                 "edit": string;
+                "load-error": string;
+                "loading": string;
                 "mix": string;
                 "mix-points": string;
                 "next-ranking": string;

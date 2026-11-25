@@ -17,7 +17,7 @@ description: 'Bounded migration of the mounted player editor, one form or shared
 - [DR-011a: Profile form](DR-011a-player-profile.md): selected first; profile child only.
 - [DR-011b: Editor chrome and feedback](DR-011b-player-editor-chrome.md): approved with documented limits.
 - [DR-011c: Claims form](DR-011c-player-claims.md): approved with documented limits.
-- DR-011d: Ranking form. Scope separately before promotion.
+- [DR-011d: Ranking editor](DR-011d-player-ranking.md): split into history/read states and dialog/mutations.
 
 ## Reconciliation and handoff
 
@@ -67,7 +67,15 @@ to refresh its presentation.
 - Explicit DR-011c approval on 2026-11-25: `Approve DR-011c with documented limits and commit`.
   Preserve unchecked visual/accessibility, browser-state, locale, real-save/navigation and SSR/hydration criteria.
   Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures matching DR-011b.
-- DR-011 remains open. Exact next candidate: scope DR-011d ranking form and confirm its mounted consumer
-  in a subsequent invocation; do not start it here.
+- DR-011d mounted Ranking tab confirmed on 2026-11-25: 41 groups/313 rows.
+  [DR-011d1](DR-011d1-ranking-history.md) selects only history/read states; DR-011d2 retains dialog/mutation scope.
+- DR-011d1: native named history Tables and dated edit Buttons, explicit read feedback and stale-response protection.
+  Ten ranking tests plus eleven editor regressions and player lint/build pass; twenty existing lint warnings.
+  Settled theme/width geometry, keyboard entry and sampled contrast pass; final history crops inspected.
+  Preserve unchecked full visual/accessibility, locale and SSR/hydration criteria. No real ranking mutation submitted.
+- Explicit DR-011d1 approval: `Approve DR-011d1 with documented limits and commit`; child is Done.
+  Preserve its unchecked verification limits.
+  Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures matching DR-011c.
+- DR-011 remains open. Next candidate: scope DR-011d2 in a subsequent invocation; do not start it here.
 
 [page]: ../../../libs/frontend/pages/player/src/pages/edit/page-edit.component.ts

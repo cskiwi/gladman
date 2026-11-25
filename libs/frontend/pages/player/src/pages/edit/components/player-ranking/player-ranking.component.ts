@@ -11,6 +11,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageModule } from 'primeng/message';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
 
 import { Player, RankingPlace } from '@app/models';
 import { RankingSystemService } from '@app/frontend-modules-graphql/ranking';
@@ -72,9 +74,10 @@ const REMOVE_RANKING_PLACE_MUTATION = gql`
     MessageModule,
     ProgressBarModule,
     ToggleSwitchModule,
+    TableModule,
+    TagModule,
     TranslateModule,
     DatePipe,
-    TranslateModule,
   ],
   templateUrl: './player-ranking.component.html',
   styleUrl: './player-ranking.component.scss',
@@ -84,10 +87,18 @@ export class PlayerRankingComponent {
   private readonly fb = inject(FormBuilder);
   private readonly messageService = inject(MessageService);
   private readonly rankingSystemService = inject(RankingSystemService);
+  private rankingRequest = 0;
 
   readonly player = input<Player | null>(null);
 
-  readonly loading = signal(false);
+  readonly loading = signal(true);
+  readonly loadError = signal(false);
+  readonly disciplines = ['single', 'double', 'mix'] as const;
+  readonly disciplineLabels = {
+    single: 'all.game.filter.singles',
+    double: 'all.game.filter.doubles',
+    mix: 'all.game.filter.mixed',
+  } as const;
   readonly rankingGroups = signal<[RankingPlace | undefined, RankingPlace[]][]>([]);
   readonly dialogVisible = signal(false);
   readonly editingPlace = signal<Partial<RankingPlace> | null>(null);
@@ -109,14 +120,23 @@ export class PlayerRankingComponent {
     effect(() => {
       const player = this.player();
       const systemId = this.rankingSystemService.systemId();
+      const systemLoaded = this.rankingSystemService.loaded();
       if (player?.id && systemId) {
         this.loadRankingPlaces(player.id, systemId);
+      } else {
+        this.rankingRequest++;
+        this.rankingGroups.set([]);
+        this.loading.set(!systemLoaded);
+        this.loadError.set(systemLoaded);
       }
     });
   }
 
   private async loadRankingPlaces(playerId: string, systemId: string): Promise<void> {
+    const request = ++this.rankingRequest;
     this.loading.set(true);
+    this.loadError.set(false);
+    this.rankingGroups.set([]);
     try {
       const result = await lastValueFrom(
         this.apollo.query<{ player: { rankingPlaces: RankingPlace[] } }>({
@@ -129,10 +149,16 @@ export class PlayerRankingComponent {
         }),
       );
 
-      const places = result.data?.player?.rankingPlaces ?? [];
-      this.rankingGroups.set(this.groupPlaces(places));
+      if (result.error || !result.data?.player?.rankingPlaces) {
+        throw new Error('Ranking history could not be loaded');
+      }
+      if (request === this.rankingRequest) {
+        this.rankingGroups.set(this.groupPlaces(result.data.player.rankingPlaces));
+      }
+    } catch {
+      if (request === this.rankingRequest) this.loadError.set(true);
     } finally {
-      this.loading.set(false);
+      if (request === this.rankingRequest) this.loading.set(false);
     }
   }
 

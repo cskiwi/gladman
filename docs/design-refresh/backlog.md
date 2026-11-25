@@ -5,6 +5,38 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-011d1 [Ranking history and read states](work-items/DR-011d1-ranking-history.md) is Done after explicit approval on existing `main`,
+2026-11-25, starting with a clean worktree. Mounted Ranking tab confirmed at `/players/glenn-latomme/edit`.
+Retained 41 groups/313 rows; native named Tables, dated edit Buttons and explicit read states replace custom rows.
+Zero points are visible; missing points remain absent. Failed/partial/missing reads cannot masquerade as empty,
+and stale responses cannot overwrite a changed player/system context.
+Existing page/form-child separation retained; no new wrapper, styles, dependencies or shared/global changes.
+Dialog markup is unchanged; mutations, permissions, other forms and parent chrome remain excluded.
+Two read-state keys added to all three locale catalogs and their generated type; Dutch rendering verified.
+Ten ranking tests plus eleven parent regressions and player lint/build pass; twenty existing lint warnings remain.
+Final settled light/dark 390px/1440px checks pass geometry, contained scrolling, visible Tab focus and Enter/Escape.
+Multiple expansion and Enter/Space collapse verified; read-state browser fixtures show loading/error/empty distinctly.
+Sampled rank/metadata contrast passes both themes; history crops inspected.
+User date-layout feedback addressed: plain date cells match rank typography/color and top alignment.
+By subsequent user choice, update Tags now appear in dated accordion headings, never in date/body cells.
+Separate native edit icons stay in the leading Actions column.
+Four theme/width cases confirm identical date/rank text top offsets (5.25px), with and without updates.
+Twenty-one tests and player lint/build pass again; final light-narrow update-group crop inspected.
+Canonical localized discipline headers resolve as Enkel/Dubbel/Gemengd; metadata is simply Punten: value.
+English/Dutch/French header/points keys are verified in actual catalogs and a locale-switching component test.
+History utility tokens 63 -> 20, class attributes 19 -> 13. No new styling exceptions.
+Full screenshot/contrast audit, screen-reader/touch, locale switching and SSR/hydration checks remain unperformed.
+Inherited DR-033/034/076 findings remain open; no real ranking save/delete or operational action submitted.
+Temporary browser fixtures removed; original home URL, dark presentation and 1571x1272 geometry restored.
+External Browser Task Group finalized; no services started, stopped or restarted.
+Explicit approval: `Approve DR-011d1 with documented limits and commit`; unchecked verification limits stay unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce the existing dependency-check failures from DR-011c.
+Commit only this approved slice and handoff; no push.
+Exact next candidate: scope DR-011d2 separately in a subsequent invocation. Do not start it here.
+DR-011 and DR-011d remain open.
+
+### Previous focus: Player claims form (DR-011c)
+
 DR-011c [Player claims form](work-items/DR-011c-player-claims.md) is Done after explicit approval on existing `main`, 2026-11-25,
 starting with a clean worktree. Mounted Claims tab confirmed at `/players/glenn-latomme/edit`: 59 choices/18 categories.
 Refreshed only child grouping, accessible selection and loading/error/save states with native Panels/Checkboxes.
@@ -3794,7 +3826,9 @@ and linked from their registry rows.
 | [DR-011a](work-items/DR-011a-player-profile.md)                       | Player profile form                                                          | Done        |
 | [DR-011b](work-items/DR-011b-player-editor-chrome.md)                 | Player editor chrome, tab state and feedback                                 | Done        |
 | [DR-011c](work-items/DR-011c-player-claims.md)                        | Player claims form                                                           | Done        |
-| DR-011d                                                               | Player ranking form (scope before promotion)                                 | Backlog     |
+| [DR-011d](work-items/DR-011d-player-ranking.md)                       | Player ranking editor                                                        | In progress |
+| [DR-011d1](work-items/DR-011d1-ranking-history.md)                    | Ranking history and read states                                              | Done        |
+| DR-011d2                                                              | Ranking dialog, validation and mutation feedback (scope before promotion)    | Backlog     |
 | DR-011e                                                               | Admin identifiers: editability/persistence (optional functional follow-up)   | Backlog     |
 | DR-012                                                                | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)                     | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |

@@ -42,7 +42,7 @@ describe('Player editor chrome', () => {
         provideRouter([{ path: 'players/:playerId/edit', component: PageEditComponent }]),
         { provide: Apollo, useValue: { query, mutate } },
         { provide: AuthService, useValue: { user: signal(null), hasAnyPermission: permissions } },
-        { provide: RankingSystemService, useValue: { systemId: signal(null) } },
+        { provide: RankingSystemService, useValue: { systemId: signal(null), loaded: signal(true) } },
       ],
     }).compileComponents();
   });

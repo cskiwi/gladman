@@ -1147,6 +1147,8 @@
       "double": "Double",
       "double-points": "Double point",
       "edit": "Editer le classement",
+      "load-error": "Impossible de charger l'historique du classement. Rechargez la page pour réessayer.",
+      "loading": "Chargement de l'historique du classement...",
       "mix": "Mixte",
       "mix-points": "Points mixtes",
       "next-ranking": "Classement suivant",

@@ -1,83 +1,91 @@
 @if (loading()) {
-  <p-progressbar mode="indeterminate" />
+  <p-progressbar mode="indeterminate" [attr.aria-label]="'all.ranking.edit.loading' | translate" />
+  <p role="status" class="text-muted-color">{{ 'all.ranking.edit.loading' | translate }}</p>
+} @else if (loadError()) {
+  <p-message severity="error">{{ 'all.ranking.edit.load-error' | translate }}</p-message>
 } @else {
-  <div>
+  <div class="mb-4">
     <button pButton type="button" [outlined]="true" (click)="openEditDialog()">
       <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
       <span pButtonLabel>{{ 'all.ranking.edit.add' | translate }}</span>
     </button>
   </div>
-  <div class="flex flex-col gap-4">
+  @if (rankingGroups().length === 0) {
+    <p-message severity="info">{{ 'all.ranking.edit.no-ranking' | translate }}</p-message>
+  } @else {
     <p-accordion [multiple]="true" [value]="['0']">
       @for (group of rankingGroups(); track $index; let i = $index) {
         <p-accordion-panel [value]="i.toString()">
           <p-accordion-header>
-            <div class="flex items-center justify-between w-full pr-4">
+            <span class="flex flex-wrap items-center gap-2">
               @if (group[0]) {
-                <span class="font-medium text-color">
+                <span>
                   {{ group[0].rankingDate | date: 'mediumDate' }}
-                  <span class="text-muted-color ml-2"> {{ group[0].single }} / {{ group[0].double }} / {{ group[0].mix }} </span>
+                  <span class="text-muted-color"> {{ group[0].single }} / {{ group[0].double }} / {{ group[0].mix }} </span>
                 </span>
+                <p-tag severity="info" [value]="'all.ranking.edit.update-possible' | translate" />
               } @else {
-                <span class="font-medium text-color-emphasis">
+                <span>
                   {{ 'all.ranking.edit.next-ranking' | translate }}
                 </span>
               }
               <span class="text-sm text-muted-color"> {{ group[1].length }} {{ 'all.ranking.edit.updates' | translate }} </span>
-            </div>
+            </span>
           </p-accordion-header>
-          <p-accordion-content>
-            <div class="flex flex-col gap-1">
-              @for (place of group[1]; track place.id) {
-                <div
-                  class="flex items-center justify-between p-3 rounded-border cursor-pointer border border-surface hover:bg-emphasis"
-                  (click)="openEditDialog(place)"
-                >
-                  <div class="flex flex-col gap-1">
-                    <div class="flex items-center gap-2">
-                      <span class="font-medium text-color">{{ place.rankingDate | date: 'mediumDate' }}</span>
-                      @if (place.updatePossible) {
-                        <span class="text-xs px-2 py-0.5 bg-highlight rounded-border text-color-emphasis">
-                          {{ 'all.ranking.edit.update-possible' | translate }}
-                        </span>
+          <p-accordion-content class="overflow-x-auto">
+            <p-table [value]="group[1]" size="small" [scrollable]="true">
+              <ng-template #colgroup>
+                <caption class="sr-only">
+                  {{
+                    'all.player.edit.tabs.ranking' | translate
+                  }}:
+                  {{
+                    group[0] ? (group[0].rankingDate | date: 'mediumDate') : ('all.ranking.edit.next-ranking' | translate)
+                  }}
+                </caption>
+              </ng-template>
+              <ng-template #header>
+                <tr>
+                  <th scope="col">{{ 'all.common.actions' | translate }}</th>
+                  <th scope="col">{{ 'all.ranking.edit.date' | translate }}</th>
+                  @for (discipline of disciplines; track discipline) {
+                    <th scope="col">{{ disciplineLabels[discipline] | translate }}</th>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #body let-place>
+                <tr>
+                  <td class="align-top">
+                    <p-button
+                      icon="pi pi-pencil"
+                      severity="secondary"
+                      size="small"
+                      [text]="true"
+                      [ariaLabel]="('all.ranking.edit.edit' | translate) + ': ' + (place.rankingDate | date: 'mediumDate')"
+                      (onClick)="openEditDialog(place)"
+                    />
+                  </td>
+                  <td class="align-top">
+                    <span class="whitespace-nowrap">{{ place.rankingDate | date: 'mediumDate' }}</span>
+                  </td>
+                  @for (discipline of disciplines; track discipline) {
+                    <td class="align-top">
+                      {{ place[discipline] }}
+                      @if (place[discipline + 'Points'] !== null && place[discipline + 'Points'] !== undefined) {
+                        <div class="text-sm text-muted-color whitespace-nowrap">
+                          {{ 'all.ranking.breakdown.points' | translate }}: {{ place[discipline + 'Points'] }}
+                        </div>
                       }
-                    </div>
-                    @if (place.singlePoints || place.doublePoints || place.mixPoints) {
-                      <div class="text-sm text-muted-color flex gap-3">
-                        @if (place.singlePoints) {
-                          <span>{{ 'all.ranking.edit.single' | translate }}: {{ place.singlePoints }}</span>
-                        }
-                        @if (place.doublePoints) {
-                          <span>{{ 'all.ranking.edit.double' | translate }}: {{ place.doublePoints }}</span>
-                        }
-                        @if (place.mixPoints) {
-                          <span>{{ 'all.ranking.edit.mix' | translate }}: {{ place.mixPoints }}</span>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <div class="flex items-center gap-4 text-sm font-medium text-color">
-                    <span>{{ place.single }}</span>
-                    <span class="text-muted-color">/</span>
-                    <span>{{ place.double }}</span>
-                    <span class="text-muted-color">/</span>
-                    <span>{{ place.mix }}</span>
-                    <i class="pi pi-pencil text-muted-color text-xs"></i>
-                  </div>
-                </div>
-              }
-            </div>
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+            </p-table>
           </p-accordion-content>
         </p-accordion-panel>
       }
-
-      @if (rankingGroups().length === 0) {
-        <div class="text-center text-muted-color py-8">
-          {{ 'all.ranking.edit.no-ranking' | translate }}
-        </div>
-      }
     </p-accordion>
-  </div>
+  }
 }
 
 <p-dialog

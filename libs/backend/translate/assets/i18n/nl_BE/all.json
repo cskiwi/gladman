@@ -920,6 +920,8 @@
         },
         "description": "Beheer speler rechten en toegangsrechten.",
         "messages": {
+          "no-claims": "Er zijn geen rechten beschikbaar.",
+          "no-permission": "Je hebt geen toestemming om spelerrechten te bewerken.",
           "saving": "Rechten opslaan..."
         },
         "noClaims": "Geen rechten toegewezen",

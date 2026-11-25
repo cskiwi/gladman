@@ -927,6 +927,8 @@ export type I18nTranslations = {
                     };
                     "description": string;
                     "messages": {
+                        "no-claims": string;
+                        "no-permission": string;
                         "saving": string;
                     };
                     "noClaims": string;

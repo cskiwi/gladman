@@ -920,6 +920,8 @@
         },
         "description": "Manage player permissions and access rights.",
         "messages": {
+          "no-claims": "No permissions are available.",
+          "no-permission": "You do not have permission to edit player permissions.",
           "saving": "Saving permissions..."
         },
         "noClaims": "No permissions assigned",

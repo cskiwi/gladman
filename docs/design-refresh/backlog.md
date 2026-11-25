@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-011c [Player claims form](work-items/DR-011c-player-claims.md) is Done after explicit approval on existing `main`, 2026-11-25,
+starting with a clean worktree. Mounted Claims tab confirmed at `/players/glenn-latomme/edit`: 59 choices/18 categories.
+Refreshed only child grouping, accessible selection and loading/error/save states with native Panels/Checkboxes.
+Fixed asynchronous permission initialization, bulk-action dirty tracking and pending/failed/unconfirmed save handling.
+Added two missing claims-state keys in the three existing catalogs and their generated i18n type.
+Existing page/form separation retained; no new wrapper, shared/global styles or adjacent form changes.
+Three focused suites/28 tests and player lint/build pass; twenty existing lint warnings remain.
+Four settled safe-fixture light/dark 390px/1440px cases pass geometry and native checkbox/category keyboard checks.
+Real mounted counts and settled external-browser current-save activation verified; no real save submitted.
+Utility tokens 60 -> 43; class attributes 19 -> 13; no new styling exceptions or dependencies.
+Further screenshot/contrast, browser states and translated-label checks interrupted by local frontend/API unavailability.
+Observed GraphQL 502/SSR timeout; localhost 5000 had no listener. Temporary frontend helper did not reach readiness;
+stopped only that helper. Did not restart shared services or backend jobs.
+Browser fixtures removed, viewport restored and Browser Task Group finalized. No full visual/accessibility,
+locale, real-save/navigation or SSR/hydration pass claimed. DR-033/034/076 inherited findings remain open.
+Explicit approval: `Approve DR-011c with documented limits and commit`; unchecked verification limits stay unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce existing dependency-check failures matching DR-011b.
+Commit only this approved child and its handoff; no push. DR-011 remains open.
+Exact next candidate: scope DR-011d ranking form and confirm its mounted consumer in a subsequent invocation.
+Do not begin it here; preserve DR-011c's disclosed verification limits.
+
+### Previous focus: Player editor chrome and feedback (DR-011b)
+
 DR-011b [Player editor chrome and feedback](work-items/DR-011b-player-editor-chrome.md) is Done after explicit approval on existing
 `main`, 2026-11-25, starting with a clean worktree.
 Mounted consumer confirmed at `/players/glenn-latomme/edit`. Refreshed only parent chrome/native tabs/load-save feedback;
@@ -3770,7 +3793,7 @@ and linked from their registry rows.
 | [DR-011](work-items/DR-011-player-editing.md)                         | Player editing                                                               | In progress |
 | [DR-011a](work-items/DR-011a-player-profile.md)                       | Player profile form                                                          | Done        |
 | [DR-011b](work-items/DR-011b-player-editor-chrome.md)                 | Player editor chrome, tab state and feedback                                 | Done        |
-| DR-011c                                                               | Player claims form (scope before promotion)                                  | Backlog     |
+| [DR-011c](work-items/DR-011c-player-claims.md)                        | Player claims form                                                           | Done        |
 | DR-011d                                                               | Player ranking form (scope before promotion)                                 | Backlog     |
 | DR-011e                                                               | Admin identifiers: editability/persistence (optional functional follow-up)   | Backlog     |
 | DR-012                                                                | Club detail and browsing tabs                                                | Done        |
@@ -4819,13 +4842,18 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-011c (2026-11-25): native grouped claims, late-loaded permission controls and dirty/save lifecycle refreshed.
+  Two missing claims-state locale keys restored; no unrelated/shared style or auth-policy change.
+  Ten claims tests plus eighteen editor/profile regressions pass; final player lint/build pass.
+  Four safe-fixture theme/width keyboard/geometry checks pass; remaining visual/state/locale checks need responsive
+  frontend/API. User explicitly approved completion with those limits; see the [brief](work-items/DR-011c-player-claims.md).
 - DR-011b (2026-11-25): native player-editor light Save all text is 3.65:1 (existing DR-033);
   native unsaved warn Message is 2.83:1 (existing DR-034). Dark samples pass at 10.10:1 and 7.65:1.
   New DR-076 records shared page-header subtitle text at 4.46:1 on the light app canvas, below 4.5:1;
   dark passes at 8.74:1. Confirm all mounted shared-header consumers before any theme/shared change.
   No page-local color overrides or shared/global changes were introduced.
   The player-claims permission predicate is false in a focused page test while asynchronously added claim controls
-  remain enabled; review initialization in existing DR-011c, not this chrome slice.
+  remain enabled; DR-011c now fixes initialization with focused regression tests and is approved with documented limits.
 - DR-072 (DR-005 reconciliation, 2026-11-21): [tier badge][tier-badge] was identified supplying scoped `[dt]`
   tokens to its native Tag. DR-072 now replaces them with an explicitly user-approved semantic custom badge;
   it is Done with explicit completion approval and the documented limits. Native contrast Tags were rejected during review.

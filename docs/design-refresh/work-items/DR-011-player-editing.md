@@ -16,7 +16,7 @@ description: 'Bounded migration of the mounted player editor, one form or shared
 
 - [DR-011a: Profile form](DR-011a-player-profile.md): selected first; profile child only.
 - [DR-011b: Editor chrome and feedback](DR-011b-player-editor-chrome.md): approved with documented limits.
-- DR-011c: Claims form. Scope separately before promotion.
+- [DR-011c: Claims form](DR-011c-player-claims.md): approved with documented limits.
 - DR-011d: Ranking form. Scope separately before promotion.
 
 ## Reconciliation and handoff
@@ -37,8 +37,8 @@ to refresh its presentation.
   It also replaces parent palette/inline feedback and restores a local native Toast outlet; approved with limits.
 - Light native Button/warn Message contrast remains DR-033/034; shared subtitle contrast is new DR-076.
   Preserve the child's unchecked contrast/full-accessibility, locale, live-save and SSR/hydration criteria.
-- In the DR-011b page test, asynchronously added claims controls remain enabled even when the permission predicate
-  is false. Review child initialization within DR-011c; the parent slice does not change claims permissions.
+- In the DR-011b page test, asynchronously added claims controls remained enabled when the permission predicate
+  was false. DR-011c fixes child initialization with focused tests without changing the permission predicate.
 - Profile `sub` and `memberId` controls are editable for administrators but are absent from its update payload.
   Preserve that behavior here; decide their intended editability/persistence in optional functional DR-011e.
   This follow-up does not gate the design parent; it needs a separate scope/decision before promotion.
@@ -58,7 +58,16 @@ to refresh its presentation.
 - Explicit DR-011b approval on 2026-11-25: `Approve DR-011b with documented limits and commit`.
   Preserve unchecked contrast/full-accessibility, locale, live-save and SSR/hydration criteria.
   Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures outside this slice.
-- Exact next candidate: scope DR-011c, including its recorded asynchronous permission-control finding.
-  It is not started; DR-011 remains open for its remaining children.
+- DR-011c: native category Panels, labelled Checkbox descriptions, bulk dirty tracking and guarded save lifecycle.
+  Ten claims tests plus eighteen editor/profile regressions and player lint/build pass; twenty existing warnings.
+  Two missing locale keys added to all three catalogs and their generated i18n type.
+  Four safe-fixture theme/width keyboard/geometry cases pass; real catalog counts/current-save activation confirmed.
+  Local frontend/API interruption prevented remaining screenshot/contrast, browser-state and locale verification.
+  Fixtures removed and temporary helper stopped; no operational mutation or shared service restart.
+- Explicit DR-011c approval on 2026-11-25: `Approve DR-011c with documented limits and commit`.
+  Preserve unchecked visual/accessibility, browser-state, locale, real-save/navigation and SSR/hydration criteria.
+  Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures matching DR-011b.
+- DR-011 remains open. Exact next candidate: scope DR-011d ranking form and confirm its mounted consumer
+  in a subsequent invocation; do not start it here.
 
 [page]: ../../../libs/frontend/pages/player/src/pages/edit/page-edit.component.ts

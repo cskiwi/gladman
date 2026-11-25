@@ -15,7 +15,7 @@ description: 'Bounded migration of the mounted player editor, one form or shared
 ## Required children
 
 - [DR-011a: Profile form](DR-011a-player-profile.md): selected first; profile child only.
-- DR-011b: Editor chrome, tab state, loading/error and save feedback. Scope separately before promotion.
+- [DR-011b: Editor chrome and feedback](DR-011b-player-editor-chrome.md): approved with documented limits.
 - DR-011c: Claims form. Scope separately before promotion.
 - DR-011d: Ranking form. Scope separately before promotion.
 
@@ -33,9 +33,12 @@ to refresh its presentation.
 
 ### Deferred findings
 
-- The parent binds legacy `activeIndexChange` instead of native Tabs value change; current-tab saving can target
-  the wrong form. Investigate within DR-011b, not as a hidden profile change.
-- Parent unsaved/error palette markup, progress inline height and local Toast provider/rendering need DR-011b review.
+- DR-011b replaces legacy `activeIndexChange` with native Tabs value change and verifies actual selected-tab saves.
+  It also replaces parent palette/inline feedback and restores a local native Toast outlet; approved with limits.
+- Light native Button/warn Message contrast remains DR-033/034; shared subtitle contrast is new DR-076.
+  Preserve the child's unchecked contrast/full-accessibility, locale, live-save and SSR/hydration criteria.
+- In the DR-011b page test, asynchronously added claims controls remain enabled even when the permission predicate
+  is false. Review child initialization within DR-011c; the parent slice does not change claims permissions.
 - Profile `sub` and `memberId` controls are editable for administrators but are absent from its update payload.
   Preserve that behavior here; decide their intended editability/persistence in optional functional DR-011e.
   This follow-up does not gate the design parent; it needs a separate scope/decision before promotion.
@@ -50,7 +53,12 @@ to refresh its presentation.
 - Native Panels, fluid/named controls and semantic validation are scoped to the profile child.
 - Preserve the child's unchecked full visual/accessibility, locale, live-save and SSR/hydration criteria.
 - Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures recorded in the child.
-- Exact next candidate: scope DR-011b editor chrome, tab state and feedback in a subsequent invocation.
-  No other implementation child is started.
+- DR-011b: eleven page tests plus the seven profile tests and player lint/build pass, with 20 existing lint warnings.
+  Settled theme/width geometry and native keyboard checks pass; inherited light contrast failures remain disclosed.
+- Explicit DR-011b approval on 2026-11-25: `Approve DR-011b with documented limits and commit`.
+  Preserve unchecked contrast/full-accessibility, locale, live-save and SSR/hydration criteria.
+  Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures outside this slice.
+- Exact next candidate: scope DR-011c, including its recorded asynchronous permission-control finding.
+  It is not started; DR-011 remains open for its remaining children.
 
 [page]: ../../../libs/frontend/pages/player/src/pages/edit/page-edit.component.ts

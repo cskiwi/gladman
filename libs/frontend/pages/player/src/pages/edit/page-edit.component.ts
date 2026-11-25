@@ -4,7 +4,6 @@ import { Apollo, gql } from 'apollo-angular';
 
 import { lastValueFrom } from 'rxjs';
 
-import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -50,7 +49,6 @@ const GET_PLAYER_WITH_DETAILS = gql`
   selector: 'app-page-edit',
   standalone: true,
   imports: [
-    CardModule,
     ButtonModule,
     MessageModule,
     ProgressBarModule,
@@ -65,7 +63,7 @@ const GET_PLAYER_WITH_DETAILS = gql`
   ],
   providers: [MessageService],
   templateUrl: './page-edit.component.html',
-  styleUrl: './page-edit.component.scss',
+  host: { class: 'block' },
 })
 export class PageEditComponent {
   private readonly route = inject(ActivatedRoute);
@@ -83,6 +81,7 @@ export class PageEditComponent {
   // Loading and error states
   readonly loadingPlayer = signal(false);
   readonly error = signal<string | null>(null);
+  readonly saving = signal(false);
 
   // Current tab index
   readonly activeTabIndex = signal('0');
@@ -104,8 +103,9 @@ export class PageEditComponent {
           }),
         );
 
-        return result?.data?.player || null;
-      } catch (err) {
+        if (!result.data?.player) throw new Error('Player not found');
+        return result.data.player;
+      } catch {
         this.error.set('Failed to load player data');
         return null;
       } finally {
@@ -121,7 +121,9 @@ export class PageEditComponent {
   // Removed: currentUser and userPermissions, now handled by child components via AuthService
 
   async saveCurrentTab(): Promise<void> {
+    if (this.saving() || !this.hasCurrentTabChanges) return;
     const activeTab = this.activeTabIndex();
+    this.saving.set(true);
 
     try {
       switch (activeTab) {
@@ -143,26 +145,23 @@ export class PageEditComponent {
           break;
         }
       }
-    } catch (err) {
-      // Error handling is done in the individual components
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Some changes could not be saved',
+      });
+    } finally {
+      this.saving.set(false);
     }
   }
 
   async saveAll(): Promise<void> {
-    const promises: Promise<void>[] = [];
-
+    if (this.saving()) return;
     const profileComponent = this.profileComponent();
     const claimsComponent = this.claimsComponent();
 
-    if (profileComponent?.isDirty) {
-      promises.push(profileComponent.saveProfile());
-    }
-
-    if (claimsComponent?.isDirty) {
-      promises.push(claimsComponent.saveClaims());
-    }
-
-    if (promises.length === 0) {
+    if (!this.hasUnsavedChanges) {
       this.messageService.add({
         severity: 'info',
         summary: 'No Changes',
@@ -171,8 +170,24 @@ export class PageEditComponent {
       return;
     }
 
+    this.saving.set(true);
     try {
-      await Promise.all(promises);
+      // The profile reports validation locally without rejecting its save promise.
+      if (profileComponent?.isDirty && !profileComponent.isValid) {
+        await profileComponent.saveProfile();
+        return;
+      }
+
+      const promises: Promise<void>[] = [];
+      if (profileComponent?.isDirty) {
+        promises.push(profileComponent.saveProfile());
+      }
+      if (claimsComponent?.isDirty) {
+        promises.push(claimsComponent.saveClaims());
+      }
+      const results = await Promise.allSettled(promises);
+      const failure = results.find((result) => result.status === 'rejected');
+      if (failure) throw failure.reason;
 
       this.messageService.add({
         severity: 'success',
@@ -182,12 +197,14 @@ export class PageEditComponent {
 
       // Navigate back to player detail page
       this.router.navigate(['..'], { relativeTo: this.route });
-    } catch (err) {
+    } catch {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Some changes could not be saved',
       });
+    } finally {
+      this.saving.set(false);
     }
   }
 
@@ -202,7 +219,9 @@ export class PageEditComponent {
     return (profileComponent?.isDirty ?? false) || (claimsComponent?.isDirty ?? false);
   }
 
-  onActiveIndexChange(event: any): void {
-    this.activeTabIndex.set(event.index?.toString() || '0');
+  get hasCurrentTabChanges(): boolean {
+    if (this.activeTabIndex() === '0') return this.profileComponent()?.isDirty ?? false;
+    if (this.activeTabIndex() === '1') return this.claimsComponent()?.isDirty ?? false;
+    return false;
   }
 }

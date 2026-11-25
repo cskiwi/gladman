@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-011b [Player editor chrome and feedback](work-items/DR-011b-player-editor-chrome.md) is Done after explicit approval on existing
+`main`, 2026-11-25, starting with a clean worktree.
+Mounted consumer confirmed at `/players/glenn-latomme/edit`. Refreshed only parent chrome/native tabs/load-save feedback;
+child forms and shared/global styling remain unchanged. Existing page/form separation retained.
+Native tab changes now select the correct save target; pristine/Ranking current-save is disabled.
+Named loading, explicit missing/read failure, native unsaved Message and a responsive local Toast replace custom feedback.
+Pending saves prevent duplicate dispatch; invalid profile and rejected/partial saves cannot report all-save success.
+Eleven page tests plus seven existing profile tests and player lint/build pass; 20 existing lint warnings remain.
+Four settled light/dark 390px/1440px normal cases pass geometry, retained edits and native tab keyboard/focus checks.
+Loading/error and busy/Toast fixtures exercised without a real mutation; final Toast bounds/dismissal pass all four cases.
+Narrow Toast viewport-unit clipping was corrected using its native percentage breakpoint option.
+Light primary Button/warning Message/subtitle contrast fails at 3.65/2.83/4.46:1; retained under DR-033/034/076,
+not patched through page-local or global styling. Dark samples pass. Full audit and live-save/locale/SSR checks remain open.
+Sanitized dark-wide/light-narrow header crops inspected; no full screenshot or screen-reader/touch pass claimed.
+Temporary browser fixtures removed; original home URL, dark preference and measured 1571x1272 geometry restored.
+Browser Task Group finalized; temporary frontend helper stopped after recovery from an existing-server interruption.
+DR-011c must also review asynchronously added claims controls remaining enabled in a permission-false test.
+Explicit approval: `Approve DR-011b with documented limits and commit`; unchecked verification limits stay unchecked.
+Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures outside this slice.
+Commit only its page implementation/tests and DR-011/b handoff; no push.
+Exact next candidate: scope DR-011c claims form, including its recorded permission initialization finding,
+in a subsequent invocation. Do not start it here. DR-011 remains open.
+
+### Previous focus: Player profile form (DR-011a)
+
 DR-011a [Player profile form](work-items/DR-011a-player-profile.md) is Done after explicit approval on existing `main`,
 2026-11-25,
 starting with a clean worktree. Mounted consumer confirmed at `/players/glenn-latomme/edit`, default Profile tab.
@@ -3744,7 +3769,7 @@ and linked from their registry rows.
 | [DR-010g](work-items/DR-010g-ranking-breakdown-row-actions.md)        | Simulation row actions                                                       | Done        |
 | [DR-011](work-items/DR-011-player-editing.md)                         | Player editing                                                               | In progress |
 | [DR-011a](work-items/DR-011a-player-profile.md)                       | Player profile form                                                          | Done        |
-| DR-011b                                                               | Player editor chrome, tab state and feedback (scope before promotion)        | Backlog     |
+| [DR-011b](work-items/DR-011b-player-editor-chrome.md)                 | Player editor chrome, tab state and feedback                                 | Done        |
 | DR-011c                                                               | Player claims form (scope before promotion)                                  | Backlog     |
 | DR-011d                                                               | Player ranking form (scope before promotion)                                 | Backlog     |
 | DR-011e                                                               | Admin identifiers: editability/persistence (optional functional follow-up)   | Backlog     |
@@ -3946,6 +3971,7 @@ and linked from their registry rows.
 | [DR-073](work-items/DR-073-sync-menu-focus.md)                        | Shared sync menu Escape focus restoration                                    | Done        |
 | [DR-074](work-items/DR-074-toast-contrast.md)                         | Native Toast dark detail-text contrast audit                                 | Done        |
 | [DR-075](work-items/DR-075-toast-light-summary-contrast.md)           | Native Toast light summary-text contrast                                     | Done        |
+| DR-076                                                                | Shared page-header subtitle contrast on the app canvas                       | Backlog     |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -4793,6 +4819,13 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-011b (2026-11-25): native player-editor light Save all text is 3.65:1 (existing DR-033);
+  native unsaved warn Message is 2.83:1 (existing DR-034). Dark samples pass at 10.10:1 and 7.65:1.
+  New DR-076 records shared page-header subtitle text at 4.46:1 on the light app canvas, below 4.5:1;
+  dark passes at 8.74:1. Confirm all mounted shared-header consumers before any theme/shared change.
+  No page-local color overrides or shared/global changes were introduced.
+  The player-claims permission predicate is false in a focused page test while asynchronously added claim controls
+  remain enabled; review initialization in existing DR-011c, not this chrome slice.
 - DR-072 (DR-005 reconciliation, 2026-11-21): [tier badge][tier-badge] was identified supplying scoped `[dt]`
   tokens to its native Tag. DR-072 now replaces them with an explicitly user-approved semantic custom badge;
   it is Done with explicit completion approval and the documented limits. Native contrast Tags were rejected during review.

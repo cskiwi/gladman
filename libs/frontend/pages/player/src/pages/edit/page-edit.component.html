@@ -10,16 +10,16 @@
         <span>{{ 'all.player.edit.subtitle' | translate }}</span>
       </ng-container>
       <ng-container actions>
-        <div class="flex gap-3">
-          <button pButton type="button" (click)="saveAll()" [disabled]="!hasUnsavedChanges">
+        <div class="flex flex-wrap gap-2" [attr.aria-busy]="saving()">
+          <button pButton type="button" (click)="saveAll()" [disabled]="!hasUnsavedChanges || saving()" [loading]="saving()">
             <i pButtonIcon class="pi pi-save" aria-hidden="true"></i>
             <span pButtonLabel>{{ 'all.player.edit.actions.save-all' | translate }}</span>
           </button>
-          <button pButton type="button" [outlined]="true" (click)="saveCurrentTab()">
+          <button pButton type="button" [outlined]="true" (click)="saveCurrentTab()" [disabled]="!hasCurrentTabChanges || saving()">
             <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
             <span pButtonLabel>{{ 'all.player.edit.actions.save-current' | translate }}</span>
           </button>
-          <button pButton type="button" severity="secondary" [outlined]="true" (click)="cancel()">
+          <button pButton type="button" severity="secondary" [outlined]="true" (click)="cancel()" [disabled]="saving()">
             <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
             <span pButtonLabel>{{ 'all.player.edit.actions.cancel' | translate }}</span>
           </button>
@@ -27,30 +27,25 @@
       </ng-container>
     </app-page-header>
 
-    <div class="p-4">
-      <!-- Unsaved changes indicator -->
+    <div class="min-w-0">
       @if (hasUnsavedChanges) {
-        <div class="mb-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
-          <div class="flex items-center gap-2 text-orange-800">
-            <i class="pi pi-exclamation-triangle"></i>
-            <span class="font-medium">{{ 'all.player.edit.messages.unsaved-changes' | translate }}</span>
-          </div>
+        <div class="mb-4">
+          <p-message severity="warn">{{ 'all.player.edit.messages.unsaved-changes' | translate }}</p-message>
         </div>
       }
 
-      <!-- Tabbed Interface -->
-      <p-tabs [value]="activeTabIndex()" (activeIndexChange)="onActiveIndexChange($event)">
+      <p-tabs [value]="activeTabIndex()" (valueChange)="$event !== undefined && activeTabIndex.set($event.toString())">
         <p-tablist>
           <p-tab value="0">
-            <i class="pi pi-user mr-2"></i>
+            <i class="pi pi-user" aria-hidden="true"></i>
             {{ 'all.player.edit.tabs.profile' | translate }}
           </p-tab>
           <p-tab value="1">
-            <i class="pi pi-shield mr-2"></i>
+            <i class="pi pi-shield" aria-hidden="true"></i>
             {{ 'all.player.edit.tabs.claims' | translate }}
           </p-tab>
           <p-tab value="2">
-            <i class="pi pi-chart-bar mr-2"></i>
+            <i class="pi pi-chart-bar" aria-hidden="true"></i>
             {{ 'all.player.edit.tabs.ranking' | translate }}
           </p-tab>
         </p-tablist>
@@ -73,14 +68,13 @@
   }
 } @else {
   <div class="p-4">
-    <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
-    <p class="text-center text-muted-color mt-4">{{ 'all.player.edit.messages.loading' | translate }}</p>
+    <p-progressbar mode="indeterminate" [attr.aria-label]="'all.player.edit.messages.loading' | translate" />
+    <p role="status" class="text-center text-muted-color mt-4">{{ 'all.player.edit.messages.loading' | translate }}</p>
   </div>
 }
 
 @if (error(); as errorMessage) {
-  <div class="flex items-center justify-center p-8 text-red-600">
-    <i class="pi pi-exclamation-triangle mr-2"></i>
-    <span>{{ errorMessage }}</span>
-  </div>
+  <p-message severity="error">{{ errorMessage }}</p-message>
 }
+
+<p-toast position="top-right" [breakpoints]="{ '640px': { width: '95%', right: '2.5%' } }" />

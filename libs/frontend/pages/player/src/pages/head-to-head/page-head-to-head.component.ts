@@ -11,6 +11,7 @@ import { DetailService } from './page-head-to-head.service';
 import { HeadToHeadGridComponent } from './head-to-head-grid/head-to-head-grid.component';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -21,6 +22,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
   selector: 'app-page-head-to-head',
   imports: [
     CardModule,
+    PanelModule,
     ProgressBarModule,
     ButtonModule,
     RouterModule,
@@ -98,16 +100,11 @@ export class PageHeadToHeadComponent {
   isOpponentMode = computed(() => this.viewModeSignal() === 'opponents');
 
   // UI state management
-  filtersExpanded = signal(true);
   showExplanation = signal(this.shouldShowExplanation());
 
   private shouldShowExplanation(): boolean {
     if (typeof localStorage === 'undefined') return true;
     return localStorage.getItem('partners-explanation-dismissed') !== 'true';
-  }
-
-  toggleFilters(): void {
-    this.filtersExpanded.update((expanded) => !expanded);
   }
 
   dismissExplanation(): void {

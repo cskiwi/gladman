@@ -5,6 +5,28 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-008 [Player detail](work-items/DR-008-player-detail.md) parent reconciliation is Done after explicit approval,
+2026-11-25, on existing `main`; preserve the unrelated generated i18n worktree change.
+Documentation-only: reconciled approved DR-008a-c and shared DR-004/DR-005/DR-006 with current source and mounted route.
+Fresh dark 1288x1272 checks: one hero/ranking host, four native sidebar Cards, ten recent/three upcoming articles,
+31 tier badges, ten current-form Tags and correct player-relative ranking hrefs; no legacy hosts or nested sidebar Cards.
+Existing shared presentation already supplies reuse; no additional smart/presentational split or new child is justified.
+No application edits, theme/viewport changes, operational mutations or new exceptions.
+Scoped Prettier, 481 local-link checks, LF/frontmatter/registry and whitespace validation pass.
+No application build/test rerun for this documentation-only slice; required pre-commit workspace lint is recorded
+in the brief. Historical child results are not fresh passes.
+Retain all child approvals and unchecked theme/width, state, keyboard/contrast, locale, tests and SSR/hydration limits.
+Aggregate DOM presence is not a fresh visual/accessibility pass; document language remains `en` beside Dutch copy.
+UI-only Follow, repeated stats-service instances, W/L copy and broken homepage ranking destinations remain deferred.
+Explicit approval on 2026-11-25: `Commit`; retain all unchecked verification limits.
+Required workspace lint: 22 targets pass from cache, twelve reproduce existing dependency-check failures
+outside this documentation slice; no unrelated fixes.
+Commit only this parent brief/backlog, preserving unrelated generated i18n. No push.
+Exact next candidate: DR-009; confirm mounted head-to-head scope and create a bounded brief before promotion.
+Do not begin DR-009 or another implementation slice here.
+
+### Previous focus: Native Toast light summary contrast (DR-075)
+
 DR-075 [Native Toast light summary contrast](work-items/DR-075-toast-light-summary-contrast.md) is Done after explicit approval,
 2026-11-25, on existing `main`; preserve the unrelated generated i18n worktree change.
 Corrected only light success/warn/error native foreground tokens; no page, template or dark-theme changes.
@@ -3582,7 +3604,7 @@ and linked from their registry rows.
 | [DR-007](work-items/DR-007-shared-controls.md)                        | Shared form controls and sync feedback                                       | Done    |
 | [DR-007a](work-items/DR-007a-sync-status-presentation.md)             | Compact semantic sync-status presentation                                    | Done    |
 | [DR-007b](work-items/DR-007b-sync-action-feedback.md)                 | Localized mounted sync-action and cache notifications                        | Done    |
-| DR-008                                                                | Player detail                                                                | Backlog |
+| [DR-008](work-items/DR-008-player-detail.md)                          | Player detail                                                                | Done    |
 | [DR-008a](work-items/DR-008a-player-hero-actions.md)                  | Player hero actions                                                          | Done    |
 | [DR-008b](work-items/DR-008b-player-sidebar-cards.md)                 | Player detail sidebar cards (form, record, match-ups, teams)                 | Done    |
 | [DR-008c](work-items/DR-008c-player-page-chrome.md)                   | Player detail page chrome (hero identity, actions copy, loading/error)       | Done    |
@@ -4383,8 +4405,15 @@ embedded workflows are tracked even where they do not have their own URL.
 Project: `frontend-pages-player`. Source: [player feature][players]; [routes][player-routes].
 
 - DR-008: `/players/:playerId`. Include current form, season record, strongest matchups, teams, and ranking summaries.
-- DR-008 discovery from DR-004 verification: the player hero's existing icon-only overflow menu lacks an accessible
-  name. Add a localized label and verify keyboard/menu behavior in the player slice; no shared API change is needed.
+- DR-008 parent reconciliation confirms DR-008a-c and shared DR-004/DR-005/DR-006 cover current mounted presentation;
+  see the [parent brief](work-items/DR-008-player-detail.md) for fresh aggregate evidence and retained review limits.
+- DR-004's earlier unnamed-overflow discovery is resolved by approved DR-008a; current markup retains its translated
+  name/title and existing Edit menu. Do not restart completed hero work.
+- Legacy `rank-spark` and `show-level` components have no application caller in current TS/HTML search and no mounted
+  hosts. Defer redesign; the page's active `ShowLevelService` is not a component consumer.
+- Existing UI-only Follow, three independent stats-service instances and untranslated W/L letters remain deferred
+  functional/data/localization concerns, not missing native styling. No consolidation or new wrapper was added.
+- Fresh DR-008 evidence observes Dutch content with document `lang="en"`; language accessibility remains unverified.
 - The user explicitly deferred the logged-in homepage ranking header to player/profile work; leave it unchanged in
   DR-004's table-surface correction.
 - DR-005e discovery for DR-008/DR-002 follow-up: the shared ranking strip's existing relative links resolve to

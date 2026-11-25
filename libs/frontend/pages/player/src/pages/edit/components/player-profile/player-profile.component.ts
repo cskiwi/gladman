@@ -4,8 +4,7 @@ import { Apollo, gql } from 'apollo-angular';
 
 import { lastValueFrom } from 'rxjs';
 
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -39,8 +38,7 @@ const UPDATE_PLAYER_PROFILE = gql`
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CardModule,
-    ButtonModule,
+    PanelModule,
     InputTextModule,
     SelectModule,
     DatePickerModule,

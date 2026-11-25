@@ -9,7 +9,7 @@ import { HeadToHeadGrid } from './sort.type';
   selector: 'app-head-to-head-grid',
   imports: [TableModule, TranslateModule, AsyncPipe, DecimalPipe],
   templateUrl: './head-to-head-grid.component.html',
-  styleUrl: './head-to-head-grid.component.scss',
+  host: { class: 'block min-w-0' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeadToHeadGridComponent {
@@ -37,7 +37,7 @@ export class HeadToHeadGridComponent {
     if (this.viewMode() === 'opponents') {
       baseColumns.push({
         header: this.translate.stream('all.head-to-head.partner'),
-        field: 'partner',
+        field: 'partner.fullName',
         sortable: true,
       });
     }

@@ -20,7 +20,9 @@ description: 'Bounded rollout for the mounted player comparison route.'
 - [DR-009b](DR-009b-head-to-head-guidance.md): page guidance and loading/error presentation is approved Done.
   Native title/dismissal and page feedback implemented; service failure reads/messages guarded.
   Eight focused tests and player lint/build pass; explicit approval on 2026-11-25 retains documented limits.
-- DR-009c: matchup grid presentation and states. Scope separately; existing gray palette classes remain here.
+- [DR-009c](DR-009c-head-to-head-grid.md): matchup grid presentation and empty-state slice, approved Done on 2026-11-25.
+  Native sizing/scrolling, semantic metadata and explicit empty results; local partner-name sorting/club fields corrected.
+  Thirteen focused page/grid tests and player lint/build pass; approval retains the child's unchecked verification limits.
 
 ## Evidence and handoff
 
@@ -36,4 +38,5 @@ description: 'Bounded rollout for the mounted player comparison route.'
 - DR-009a's checks and remaining review limits are recorded in its brief; do not generalize them to the whole route.
 - DR-009b's fresh four guidance/eight page-state theme/width cases and keyboard/persistence checks are recorded
   in its brief; do not generalize them to grid internals or the whole route.
-- Exact next candidate: scope DR-009c grid/states in the next invocation; keep this parent open.
+- Exact next action: reconcile parent scope against approved DR-009a/b/c in the next invocation.
+  Keep this parent open until that reconciliation; preserve all child approvals and unchecked verification limits.

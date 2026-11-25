@@ -5,6 +5,27 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-009c [Head-to-head matchup grid](work-items/DR-009c-head-to-head-grid.md) is Done after explicit approval on existing `main`,
+2026-11-25, starting with a clean worktree.
+Confirmed mounted consumer: `/players/glenn-latomme/head-to-head`, fifteen partner and 34 opponent rows.
+Native small/scrollable table, semantic club metadata, named table and translated empty row implemented.
+Fixed local partner-name sorting and partner-club field rendering; no service calculations or filter/page-state edits.
+Retained existing smart page/presentational grid boundary; deleted local grid SCSS, no shared/global changes.
+Thirteen focused tests and player lint/build pass; twelve tasks, ten cached, 24 existing lint warnings.
+Settled light/dark 390px/1440px checks pass geometry, empty/recovery, sorting and native keyboard-focus checks.
+Real rows/totals remain 15/26 and 34/35; 24 opponent partner-club labels and ten missing-partner markers.
+Sampled metadata contrast passes at 7.82:1 dark / 4.87:1 light. Screenshot crops inspected, not a full matrix.
+Full screenshot/contrast audit, screen-reader/touch, locale/workflow and SSR/hydration checks remain open.
+Initial viewport/dark presentation restored; no operations, dependencies or new styling exceptions.
+Explicit approval: `Approve DR-009c with documented limits and commit`; unchecked verification limits stay unchecked.
+Required workspace lint: 22 targets pass from cache; twelve fail existing dependency checks, matching DR-009a/b.
+Commit only this approved slice and its handoff; no push.
+Exact next action for the next invocation: reconcile DR-009 parent scope against approved DR-009a/b/c,
+retaining all disclosed verification limits. DR-009 stays open until that reconciliation.
+No other slice is started.
+
+### Previous focus: Head-to-head guidance and page states (DR-009b)
+
 DR-009b [Head-to-head guidance and page states](work-items/DR-009b-head-to-head-guidance.md) is Done after explicit approval,
 2026-11-25, on existing `main`, starting with a clean worktree.
 Mounted consumer confirmed at `/players/glenn-latomme/head-to-head`: guidance and fifteen populated partner rows.
@@ -3648,7 +3669,7 @@ and linked from their registry rows.
 | [DR-009](work-items/DR-009-player-head-to-head.md)                    | Player head-to-head                                                          | In progress |
 | [DR-009a](work-items/DR-009a-head-to-head-filters.md)                 | Head-to-head filters                                                         | Done        |
 | [DR-009b](work-items/DR-009b-head-to-head-guidance.md)                | Head-to-head guidance and page states                                        | Done        |
-| DR-009c                                                               | Head-to-head matchup grid                                                    | Backlog     |
+| [DR-009c](work-items/DR-009c-head-to-head-grid.md)                    | Head-to-head matchup grid                                                    | Done        |
 | [DR-010](work-items/DR-010-ranking-breakdown.md)                      | Player ranking breakdown                                                     | Done        |
 | [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)             | Ranking breakdown header                                                     | Done        |
 | [DR-010b](work-items/DR-010b-ranking-breakdown-period.md)             | Ranking breakdown period selection                                           | Done        |
@@ -4462,7 +4483,7 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-009a migrates only its native filter Panel; completion is approved with recorded limits.
-  DR-009b guidance/page states is approved Done with recorded limits; DR-009c grid remains unstarted.
+  DR-009b guidance/page states and DR-009c grid are approved Done with recorded limits; parent reconciliation remains.
   Existing page/grid boundaries provide reuse
   without another single-consumer wrapper.
 - DR-009 follow-up: native Select no-match/status messages remain English beside Dutch field names. Investigate

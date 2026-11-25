@@ -1,9 +1,19 @@
 @if (isBrowser()) {
-  <p-table [value]="dataSource()" [loading]="loading()" [sortField]="'winRate'" [sortOrder]="-1" styleClass="p-datatable-sm">
+  <p-table
+    [value]="dataSource()"
+    [loading]="loading()"
+    sortField="winRate"
+    [sortOrder]="-1"
+    size="small"
+    [scrollable]="true"
+    [pt]="{
+      table: { 'aria-label': (viewMode() === 'partners' ? 'all.head-to-head.filters.partners' : 'all.head-to-head.filters.opponents') | translate },
+    }"
+  >
     <ng-template #header>
       <tr>
         @for (col of columns(); track col) {
-          <th [pSortableColumn]="col.field">
+          <th scope="col" class="whitespace-nowrap" [pSortableColumn]="col.field">
             {{ col.header | async }}
             <p-sorticon [field]="col.field" />
           </th>
@@ -13,24 +23,22 @@
     <ng-template #body let-rowData>
       <tr>
         @for (col of columns(); track col) {
-          <td>
+          <td class="whitespace-nowrap">
             @switch (col.field) {
               @case ('player.fullName') {
-                <div>
-                  <div>{{ rowData.player?.fullName }}</div>
-                  @if (rowData.club?.name) {
-                    <div class="text-gray-500 text-xs">{{ rowData.club.name }}</div>
-                  }
-                </div>
+                <div>{{ rowData.player?.fullName }}</div>
+                @if (rowData.club?.name) {
+                  <div class="text-muted-color text-sm">{{ rowData.club.name }}</div>
+                }
               }
-              @case ('partner') {
+              @case ('partner.fullName') {
                 @if (rowData.partner) {
-                  <div>
-                    <div>{{ rowData.partner.fullName }}</div>
-                    <div class="text-gray-500 text-xs">{{ rowData.partner.name }}</div>
-                  </div>
+                  <div>{{ rowData.partner.fullName }}</div>
+                  @if (rowData.partnerClub?.name) {
+                    <div class="text-muted-color text-sm">{{ rowData.partnerClub.name }}</div>
+                  }
                 } @else {
-                  <span class="text-gray-400">-</span>
+                  <span class="text-muted-color">-</span>
                 }
               }
               @case ('winRate') {
@@ -45,30 +53,33 @@
       </tr>
     </ng-template>
 
-    <ng-template #footer>
+    <ng-template #emptymessage>
       <tr>
-        @for (col of columns(); track col) {
-          <td class="font-bold text-right">
-            @switch (col.field) {
-              @case ('winRate') {
-                {{ 'all.head-to-head.grid.average' | translate }}: {{ averageWinRate | number: '1.0-2' }} %
-              }
-              @case ('amountOfGames') {
-                {{ 'all.head-to-head.grid.total' | translate }}: {{ totalGames }}
-              }
-              @default {
-                <!-- empty for alignment -->
-              }
-            }
-          </td>
-        }
+        <td [attr.colspan]="columns().length">
+          <p role="status" class="m-0 text-muted-color">{{ 'all.player.noResults' | translate }}</p>
+        </td>
       </tr>
+    </ng-template>
+
+    <ng-template #footer>
+      @if (dataSource().length) {
+        <tr>
+          @for (col of columns(); track col) {
+            <td class="whitespace-nowrap">
+              @switch (col.field) {
+                @case ('winRate') {
+                  {{ 'all.head-to-head.grid.average' | translate }}: {{ averageWinRate | number: '1.0-2' }} %
+                }
+                @case ('amountOfGames') {
+                  {{ 'all.head-to-head.grid.total' | translate }}: {{ totalGames }}
+                }
+              }
+            </td>
+          }
+        </tr>
+      }
     </ng-template>
   </p-table>
 } @else {
-  <!-- SSR fallback -->
-  <div class="p-4 text-center">
-    <i class="pi pi-spin pi-spinner text-2xl"></i>
-    <p class="mt-2">{{ 'all.head-to-head.grid.loading' | translate }}</p>
-  </div>
+  <p role="status" class="m-0 text-muted-color">{{ 'all.head-to-head.grid.loading' | translate }}</p>
 }

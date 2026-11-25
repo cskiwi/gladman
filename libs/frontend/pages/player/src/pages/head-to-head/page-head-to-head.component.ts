@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { MessageModule } from 'primeng/message';
 import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
@@ -24,6 +25,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
     CardModule,
     PanelModule,
     ProgressBarModule,
+    MessageModule,
     ButtonModule,
     RouterModule,
     TranslateModule,

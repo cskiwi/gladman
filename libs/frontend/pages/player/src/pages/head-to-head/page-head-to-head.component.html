@@ -139,48 +139,40 @@
 </p-panel>
 
 @if (showExplanation()) {
-  <div class="info-section mb-3">
-    <p-card>
-      <ng-template pTemplate="header">
-        <div class="px-3 py-1 flex justify-between items-center">
-          <h3 class="text-base font-medium m-0">{{ 'all.head-to-head.info.title' | translate }}</h3>
-          <button
-            pButton
-            type="button"
-            class="!w-8 !h-8 !p-0 text-gray-400 hover:text-gray-600"
-            iconOnly
-            [text]="true"
-            [rounded]="true"
-            size="small"
-            (click)="dismissExplanation()"
-            [attr.aria-label]="'Close explanation'"
-          >
-            <i pButtonIcon class="pi pi-times" aria-hidden="true"></i>
-          </button>
-        </div>
-      </ng-template>
-      <div class="px-3 pb-3 -mt-1 space-y-2">
-        <p class="text-sm">{{ 'all.head-to-head.info.description' | translate }}</p>
-        <ul class="list-disc list-inside space-y-1 ml-2 text-sm">
-          <li>{{ 'all.head-to-head.info.partners-mode' | translate }}</li>
-          <li>{{ 'all.head-to-head.info.opponents-mode' | translate }}</li>
-          <li>{{ 'all.head-to-head.info.partner-filter' | translate }}</li>
-          <li>{{ 'all.head-to-head.info.club-display' | translate }}</li>
-        </ul>
+  <p-card role="region" aria-labelledby="head-to-head-guidance-title">
+    <ng-template #title>
+      <div class="flex items-center justify-between gap-3">
+        <h2 id="head-to-head-guidance-title" class="m-0 text-lg font-semibold">{{ 'all.head-to-head.info.title' | translate }}</h2>
+        <p-button
+          icon="pi pi-times"
+          severity="secondary"
+          variant="text"
+          [rounded]="true"
+          size="small"
+          [ariaLabel]="'all.button.close' | translate"
+          (onClick)="dismissExplanation()"
+        />
       </div>
-    </p-card>
-  </div>
+    </ng-template>
+    <p class="m-0">{{ 'all.head-to-head.info.description' | translate }}</p>
+    <ul class="mb-0 space-y-2 pl-5">
+      <li>{{ 'all.head-to-head.info.partners-mode' | translate }}</li>
+      <li>{{ 'all.head-to-head.info.opponents-mode' | translate }}</li>
+      <li>{{ 'all.head-to-head.info.partner-filter' | translate }}</li>
+      <li>{{ 'all.head-to-head.info.club-display' | translate }}</li>
+    </ul>
+  </p-card>
 }
 
-<div class="head-to-heads">
+@if (error(); as errorMessage) {
+  <p-message severity="error">{{ errorMessage }}</p-message>
+} @else if (loading()) {
+  <p-card>
+    <p class="mt-0" role="status">{{ 'all.head-to-head.grid.loading' | translate }}</p>
+    <p-progressbar mode="indeterminate" [attr.aria-label]="'all.head-to-head.grid.loading' | translate" />
+  </p-card>
+} @else {
   <p-card>
     <app-head-to-head-grid [dataSource]="data()" [loading]="loading()" [viewMode]="filter.get('viewMode')?.value ?? 'partners'" />
   </p-card>
-</div>
-
-@if (error()) {
-  <div class="error flex items-center gap-2 p-4 text-red-600">
-    <i class="pi pi-exclamation-triangle"></i>
-    {{ error() }}
-  </div>
 }

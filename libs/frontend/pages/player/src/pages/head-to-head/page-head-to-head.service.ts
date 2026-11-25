@@ -102,15 +102,12 @@ export class DetailService {
           }
           return result.data.player;
         })
-        .catch((err) => {
-          this.handleError(err);
-          throw err;
-        });
+        .catch((err) => this.handleError(err));
     },
   });
 
   // Public selectors
-  player = computed(() => this.gamePlayerResource.value() ?? null);
+  player = computed(() => (this.gamePlayerResource.hasValue() ? this.gamePlayerResource.value() : null));
   memberships = computed(() => this.player()?.gamePlayerMemberships ?? []);
   loading = computed(() => this.gamePlayerResource.isLoading());
   error = computed(() => this.gamePlayerResource.error()?.message || null);
@@ -339,10 +336,16 @@ export class DetailService {
       });
   });
 
-  private handleError(err: HttpErrorResponse) {
-    if (err.status === 404 && err.url) {
+  private handleError(err: unknown): never {
+    if (err instanceof HttpErrorResponse && err.status === 404 && err.url) {
       throw new Error('Failed to load player');
     }
-    throw new Error(err.statusText);
+    if (err instanceof HttpErrorResponse && err.statusText) {
+      throw new Error(err.statusText);
+    }
+    if (err instanceof Error && err.message) {
+      throw err;
+    }
+    throw new Error('Failed to load player');
   }
 }

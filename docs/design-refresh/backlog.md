@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-009b [Head-to-head guidance and page states](work-items/DR-009b-head-to-head-guidance.md) is Done after explicit approval,
+2026-11-25, on existing `main`, starting with a clean worktree.
+Mounted consumer confirmed at `/players/glenn-latomme/head-to-head`: guidance and fifteen populated partner rows.
+Restored native guidance title/translated dismissal and loading/error feedback; filters, grid and calculations preserved.
+Guarded failed resource reads and retained non-HTTP error messages instead of silently showing empty results.
+Eight focused tests and player lint/build pass; twelve tasks, ten cached. No shared/global changes or new wrapper.
+Four guidance and eight settled loading/error light/dark 390px/1440px cases pass names, state and geometry checks.
+Enter/Space dismissal persists after reload; Tab continues to the table. All browser fixtures/preferences restored.
+Dark guidance crops inspected; full screenshot matrix, measured contrast, screen-reader/touch, locale/workflow and
+SSR/hydration checks remain open. No operations, dependencies or new styling exceptions.
+Explicit approval: `Approve DR-009b with documented limits and commit`; unchecked limits remain unchecked.
+Required workspace lint: 22 targets pass from cache; twelve other targets fail, matching DR-009a's failing target list.
+Commit only this approved slice and its handoff; no push.
+Exact next candidate: scope DR-009c grid/states in the next invocation; do not start it here.
+DR-009 remains open; DR-009c is not started.
+
+### Previous focus: Head-to-head filters (DR-009a)
+
 DR-009a [Head-to-head filters](work-items/DR-009a-head-to-head-filters.md) is Done after explicit approval on existing `main`,
 2026-11-25, starting with a clean worktree.
 Mounted consumer confirmed at `/players/glenn-latomme/head-to-head`: filters and fifteen populated partner rows.
@@ -3629,7 +3647,7 @@ and linked from their registry rows.
 | [DR-008c](work-items/DR-008c-player-page-chrome.md)                   | Player detail page chrome (hero identity, actions copy, loading/error)       | Done        |
 | [DR-009](work-items/DR-009-player-head-to-head.md)                    | Player head-to-head                                                          | In progress |
 | [DR-009a](work-items/DR-009a-head-to-head-filters.md)                 | Head-to-head filters                                                         | Done        |
-| DR-009b                                                               | Head-to-head guidance and page states                                        | Backlog     |
+| [DR-009b](work-items/DR-009b-head-to-head-guidance.md)                | Head-to-head guidance and page states                                        | Done        |
 | DR-009c                                                               | Head-to-head matchup grid                                                    | Backlog     |
 | [DR-010](work-items/DR-010-ranking-breakdown.md)                      | Player ranking breakdown                                                     | Done        |
 | [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)             | Ranking breakdown header                                                     | Done        |
@@ -4444,11 +4462,14 @@ Project: `frontend-pages-player`. Source: [player feature][players]; [routes][pl
   player identity; do not treat preserving these existing links as a passing homepage navigation check.
 - DR-009: `/players/:playerId/head-to-head`. Include comparison selection and the matchup grid.
 - DR-009a migrates only its native filter Panel; completion is approved with recorded limits.
-  DR-009b guidance/page states and DR-009c grid remain unstarted. Existing page/grid boundaries provide reuse
+  DR-009b guidance/page states is approved Done with recorded limits; DR-009c grid remains unstarted.
+  Existing page/grid boundaries provide reuse
   without another single-consumer wrapper.
 - DR-009 follow-up: native Select no-match/status messages remain English beside Dutch field names. Investigate
   shared PrimeNG locale feedback separately, without changing global settings as a page-only side effect.
   One-time option translations and the existing partner-club field's opponent-club caption also remain outside DR-009a.
+- DR-009 follow-up: service load-failure/status messages remain English. DR-009b preserves meaningful failures and
+  ensures they render, but does not localize backend/HTTP messages or redesign service error translation.
 - DR-010: `/players/:playerId/ranking/:type`. DR-010a covers the header and DR-010b covers period selection.
   DR-010c covers filters and view toggles; DR-010d covers the games table. DR-010e covers only the Add simulated
   game dialog. DR-010f covers the simulation toolbar and settings popover. DR-010g covers simulation row actions.

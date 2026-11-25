@@ -309,6 +309,17 @@ export const BadmanPreset = definePreset(Aura, {
     },
     toast: {
       colorScheme: {
+        light: {
+          success: {
+            color: '{green.700}',
+          },
+          warn: {
+            color: '{yellow.700}',
+          },
+          error: {
+            color: '{red.700}',
+          },
+        },
         dark: {
           // Aura uses surface.0 for details; our inverted scale makes it dark.
           info: {

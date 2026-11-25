@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-075 [Native Toast light summary contrast](work-items/DR-075-toast-light-summary-contrast.md) is Done after explicit approval,
+2026-11-25, on existing `main`; preserve the unrelated generated i18n worktree change.
+Corrected only light success/warn/error native foreground tokens; no page, template or dark-theme changes.
+Light summary contrast improves from 3.16/2.85/4.44:1 to 4.80/4.77/5.94:1.
+All 120 settled native checks across five routes pass; current mounted counts remain 13/36/37/1/1.
+Four actual localized shell-info fixture checks also pass; no operational command or refresh was activated.
+App lint/build and 29 dependency tasks pass; existing admin/sync-admin dynamic-import warnings only.
+Narrow light warning before/after crops inspected; dark screenshot capture failed.
+Full screenshot/pixel, screen-reader/touch, locale/permission/operational, other-workflow and SSR checks remain open.
+Native Toast already centralizes styling; no extra smart/presentational extraction or new styling exception.
+Explicit approval: `Approve DR-075 with documented limits and commit`; unchecked limits remain unchecked.
+Required workspace lint: 22 targets pass from cache, twelve reproduce existing dependency-check failures outside this slice.
+Commit only its preset/brief/backlog; preserve unrelated generated i18n. No push.
+Exact next candidate: reconcile DR-008's remaining mounted player-detail scope against completed DR-008a-c
+and shared DR-005/DR-006 before selecting a new child; no completed work should be restarted.
+Do not begin another implementation slice in this invocation.
+
+### Previous focus: Native Toast contrast verification (DR-074)
+
 DR-074 [Native Toast contrast verification](work-items/DR-074-toast-contrast.md) is Done after explicit approval, 2026-11-25,
 on existing `main`. Investigation only: verify the committed `8af9f4ff` correction, not another theme redesign.
 Checked mounted sync Toast consumers with safe browser-only fixtures in light/dark at 390px/1440px.
@@ -3774,7 +3793,7 @@ and linked from their registry rows.
 | [DR-072](work-items/DR-072-tier-badge-native-styling.md)              | Shared tier badge styling without scoped token bindings                      | Done    |
 | [DR-073](work-items/DR-073-sync-menu-focus.md)                        | Shared sync menu Escape focus restoration                                    | Done    |
 | [DR-074](work-items/DR-074-toast-contrast.md)                         | Native Toast dark detail-text contrast audit                                 | Done    |
-| DR-075                                                                | Native Toast light summary-text contrast                                     | Backlog |
+| [DR-075](work-items/DR-075-toast-light-summary-contrast.md)           | Native Toast light summary-text contrast                                     | Done    |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -3788,11 +3807,11 @@ and linked from their registry rows.
   Light success/warn/error summaries at 390px/1440px resolve to approximately 3.16:1 / 2.85:1 / 4.44:1.
   Draw-route summaries are ordinary text (14px, weight 500), requiring 4.5:1.
 - Detail text and dark summaries pass the available matrix; this is separate from the already corrected dark detail.
-- Scope a native theme-token correction in a future slice, checking real consumers and preserving native severities,
+- Scoped in [the brief](work-items/DR-075-toast-light-summary-contrast.md), checking real consumers and preserving severities,
   announcements, close names and focus. No page-specific workaround, operations or new wrapper.
 - See [DR-074 evidence](work-items/DR-074-toast-contrast.md) for sRGB/alpha measurement limits and the
   initially blocked and subsequently completed authenticated tournament-detail verification.
-  This discovery is not implemented.
+  The correction and 120 settled native/four shell checks pass; user approved completion with the brief's limits.
 
 ### DR-074: Native Toast dark detail-text contrast audit
 

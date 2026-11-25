@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HeadToHeadGridComponent } from './head-to-head-grid.component';
 import { HeadToHeadGrid } from './sort.type';
 
@@ -41,7 +41,7 @@ describe(HeadToHeadGridComponent.name, () => {
   }
 
   it('renders named partner results with descending win rate and unchanged unweighted aggregates', () => {
-    expect(host().querySelector('table')?.getAttribute('aria-label')).toBe('all.head-to-head.filters.partners');
+    expect(host().querySelector('table > caption')?.textContent?.trim()).toBe('all.head-to-head.filters.partners');
     expect(host().querySelectorAll('th')).toHaveLength(3);
     expect(bodyRows()[0].cells[0].textContent).toContain('Beta Player');
     expect(bodyRows()[1].cells[0].textContent).toContain('Example Club');
@@ -54,7 +54,7 @@ describe(HeadToHeadGridComponent.name, () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(host().querySelector('table')?.getAttribute('aria-label')).toBe('all.head-to-head.filters.opponents');
+    expect(host().querySelector('table > caption')?.textContent?.trim()).toBe('all.head-to-head.filters.opponents');
     const headers = host().querySelectorAll<HTMLElement>('th');
     expect(headers).toHaveLength(4);
     expect(headers[2].textContent).toContain('all.head-to-head.win-rate-against');
@@ -78,6 +78,7 @@ describe(HeadToHeadGridComponent.name, () => {
     await fixture.whenStable();
 
     expect(bodyRows()).toHaveLength(1);
+    expect(host().querySelector('table > caption')?.textContent?.trim()).toBe(`all.head-to-head.filters.${mode}`);
     expect(bodyRows()[0].cells[0].colSpan).toBe(columns);
     expect(bodyRows()[0].querySelector('[role="status"]')?.textContent).toBe('all.player.noResults');
     expect(host().querySelector('tfoot')?.textContent?.trim()).toBe('');
@@ -87,6 +88,36 @@ describe(HeadToHeadGridComponent.name, () => {
     expect(host().querySelector('[role="status"]')).toBeNull();
     expect(bodyRows()).toHaveLength(2);
     expect(host().querySelector('tfoot')?.textContent).toContain('62.5 %');
+  });
+
+  it('updates the native table caption when the mode or language changes', async () => {
+    const translate = TestBed.inject(TranslateService);
+    translate.setTranslation('en', {
+      'all.head-to-head.filters.partners': 'Partners',
+      'all.head-to-head.filters.opponents': 'Opponents',
+    });
+    translate.setTranslation('nl', {
+      'all.head-to-head.filters.partners': 'Partners',
+      'all.head-to-head.filters.opponents': 'Tegenstanders',
+    });
+    translate.use('en');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const table = host().querySelector('table');
+    expect(table?.firstElementChild?.tagName).toBe('CAPTION');
+    expect(table?.caption?.textContent?.trim()).toBe('Partners');
+    expect(table?.hasAttribute('aria-label')).toBe(false);
+
+    fixture.componentRef.setInput('viewMode', 'opponents');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(table?.caption?.textContent?.trim()).toBe('Opponents');
+
+    translate.use('nl');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(table?.caption?.textContent?.trim()).toBe('Tegenstanders');
   });
 
   it('retains a missing-partner marker and omits unavailable club metadata', async () => {

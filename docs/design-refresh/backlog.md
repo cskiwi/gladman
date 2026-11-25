@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-009d [Head-to-head table name without pass-through](work-items/DR-009d-head-to-head-table-name.md)
+is Done after explicit approval on existing `main`, 2026-11-25, starting with a clean worktree.
+Mounted consumer freshly confirmed at `/players/glenn-latomme/head-to-head`: Partners has fifteen rows/total 26;
+Tegenstanders has 34 rows/total 35. Preserve both translated actual table names without `[pt]` or `[dt]`.
+Only the grid template, focused tests and this handoff are in scope; no new extraction or shared/global changes.
+Replaced pass-through with a translated native caption through the existing `colgroup` template pattern.
+Fourteen focused tests and player lint/build pass; 24 existing lint warnings remain.
+Eight settled light/dark 390px/1440px mode cases pass actual table names, populated/empty/recovery,
+contained scrolling and Enter/Space sorting/focus. Totals and averages remain unchanged.
+Existing smart/presentational separation retained; no styles, dependencies, shared settings or operations added.
+SSR/hydration, full screenshot/contrast audit and screen-reader/touch verification remain unperformed.
+Browser restored to dark 1571x1272, Partners, minimum zero.
+Explicit approval: `Approve DR-009d with documented limits and commit`; unchecked verification limits stay unchecked.
+Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures outside this slice.
+Commit only its implementation/tests/handoff; no push.
+Exact next candidate: scope DR-011 player editing, first confirming the mounted consumer and choosing one form
+before promotion. Do not start DR-011 or another implementation slice here.
+
+### Previous focus: Head-to-head parent reconciliation (DR-009)
+
 DR-009 [Player head-to-head](work-items/DR-009-player-head-to-head.md) parent reconciliation completed on existing `main`,
 2026-11-25, starting with a clean worktree. Parent is Done by explicit `commit` approval with disclosed limits.
 Approved children DR-009a/b/c are committed as `dcaefdfe`, `910de41b` and `287b77ab`; their limits remain unchanged.
@@ -3692,7 +3712,7 @@ and linked from their registry rows.
 | [DR-009a](work-items/DR-009a-head-to-head-filters.md)                 | Head-to-head filters                                                         | Done    |
 | [DR-009b](work-items/DR-009b-head-to-head-guidance.md)                | Head-to-head guidance and page states                                        | Done    |
 | [DR-009c](work-items/DR-009c-head-to-head-grid.md)                    | Head-to-head matchup grid                                                    | Done    |
-| [DR-009d](work-items/DR-009d-head-to-head-table-name.md)              | Head-to-head table name without pass-through                                 | Ready   |
+| [DR-009d](work-items/DR-009d-head-to-head-table-name.md)              | Head-to-head table name without pass-through                                 | Done    |
 | [DR-010](work-items/DR-010-ranking-breakdown.md)                      | Player ranking breakdown                                                     | Done    |
 | [DR-010a](work-items/DR-010a-ranking-breakdown-header.md)             | Ranking breakdown header                                                     | Done    |
 | [DR-010b](work-items/DR-010b-ranking-breakdown-period.md)             | Ranking breakdown period selection                                           | Done    |

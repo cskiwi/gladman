@@ -24,7 +24,8 @@ description: 'Bounded rollout for the mounted player comparison route.'
   Native sizing/scrolling, semantic metadata and explicit empty results; local partner-name sorting/club fields corrected.
   Thirteen focused page/grid tests and player lint/build pass; approval retains the child's unchecked verification limits.
 - [DR-009d](DR-009d-head-to-head-table-name.md): follow-up to preserve translated table naming without
-  the existing `[pt]` binding, which conflicts with the user's standing no-`[pt]`/`[dt]` rule. Ready, not implemented.
+  pass-through. Native translated caption implemented and approved Done on 2026-11-25 with disclosed limits.
+  Historical parent approval and child verification limits remain unchanged.
 
 ## Parent reconciliation checklist
 
@@ -32,7 +33,7 @@ description: 'Bounded rollout for the mounted player comparison route.'
 - [x] Confirm a hydrated application consumer and the existing smart/presentational boundary.
 - [x] Preserve child approvals and their unchecked verification limits without claiming fresh passes.
 - [x] Record uncovered work as a bounded child rather than expanding this documentation slice.
-- [ ] Complete and review the disclosed DR-009d compliance follow-up.
+- [x] Complete and review the disclosed DR-009d compliance follow-up with its disclosed verification limits.
 - [x] Obtain parent completion approval with remaining verification limits disclosed.
 
 ## Evidence and handoff
@@ -43,7 +44,7 @@ description: 'Bounded rollout for the mounted player comparison route.'
 - Existing page/container plus `HeadToHeadGridComponent` already separates data orchestration from grid presentation.
   The filter has one real consumer; another smart/presentational split would not provide genuine reuse.
 - Explicit `commit` approval on 2026-11-25 accepts parent completion with the disclosed limits and open DR-009d.
-  That follow-up remains unchecked and is not represented as implemented or verified.
+  At parent approval, that follow-up was not yet implemented or verified; see its subsequent approval below.
 - The former hard-coded guidance close name is translated by DR-009b; it is no longer outstanding.
   One-time translated option labels, partner-club caption semantics, English service failures and native Select
   no-match/status copy remain separate locale follow-ups. Do not change global locale behavior in this page slice.
@@ -80,9 +81,16 @@ description: 'Bounded rollout for the mounted player comparison route.'
 
 - Explicit approval on 2026-11-25: `commit`. Mark this reconciliation Done with disclosed verification limits.
 - Retain all child unchecked screenshot/theme/width, interaction, accessibility, locale and SSR/hydration limits.
-  DR-009d remains Ready; this approval does not authorize claiming the `[pt]` requirement has been fixed.
+  DR-009d was Ready at parent approval; that approval did not establish the `[pt]` requirement had been fixed.
 - Commit only this parent brief, DR-009d brief and backlog; no application changes or push.
 - Required pre-commit `npx nx run-many --target=lint --output-style=static`: 22 targets pass; twelve fail existing
   dependency checks, matching DR-009a/b/c: shared, backend-health, backend-seo, backend-ranking, backend-search,
   i18n, backend-authorization, backend-translate, utils, backend-database, frontend-modules-translation
   and backend-graphql. No unrelated manifests or failures are changed.
+
+### DR-009d follow-up approval
+
+- On 2026-11-25, explicit `Approve DR-009d with documented limits and commit` approves the native caption fix.
+- The compliance follow-up is Done; retain its unchecked screen-reader, full visual/contrast and SSR checks.
+  Historical parent/child approvals and their limits above are unchanged.
+- Exact next candidate: scope DR-011 player editing after confirming a mounted consumer, one form at a time.

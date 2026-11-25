@@ -1,15 +1,12 @@
 @if (isBrowser()) {
-  <p-table
-    [value]="dataSource()"
-    [loading]="loading()"
-    sortField="winRate"
-    [sortOrder]="-1"
-    size="small"
-    [scrollable]="true"
-    [pt]="{
-      table: { 'aria-label': (viewMode() === 'partners' ? 'all.head-to-head.filters.partners' : 'all.head-to-head.filters.opponents') | translate },
-    }"
-  >
+  <p-table [value]="dataSource()" [loading]="loading()" sortField="winRate" [sortOrder]="-1" size="small" [scrollable]="true">
+    <ng-template #colgroup>
+      <caption class="sr-only">
+        {{
+          (viewMode() === 'partners' ? 'all.head-to-head.filters.partners' : 'all.head-to-head.filters.opponents') | translate
+        }}
+      </caption>
+    </ng-template>
     <ng-template #header>
       <tr>
         @for (col of columns(); track col) {

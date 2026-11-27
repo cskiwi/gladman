@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029m [Unused pair-value rule retirement](work-items/DR-029m-unused-pair-value.md) is Done
+on existing `main`, 2026-11-27, starting with a clean worktree.
+Fresh 1,310-file tracked inventory finds only the two definitions; removed only the eleven-line global block.
+Preserve Toolbar, Card-flush, generic small, form widths, all components and theme tokens.
+Served CSS confirms removal and retained overrides; home light/dark 390px/1440px geometry matches.
+All six supplied dark-wide feature route samples match; four native theme Enter/focus checks pass.
+App lint/build pass: 31 successful tasks, 29 cached; no app test target.
+Required pre-commit workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Full visual/accessibility/state/locale/workflow/SSR regression remains unchecked; inherited findings stay open.
+Existing navigation/auth-reload errors remain; returned home/dark at documented 1571 x 1272 baseline viewport.
+No component extraction, dependencies, operational mutations, new branch/worktree or second slice.
+Explicit approval: `commit`, 2026-11-27; unperformed checks remain unchecked.
+Approved commit scope: only stylesheet/brief/backlog on existing `main`; no push.
+Exact next invocation: separately scope DR-029n; not started.
+DR-029n must separately verify generated Toolbar center/end consumers; retain used start and Card-flush.
+DR-029 remains open; inherited findings and final regression remain unresolved.
+
+### Previous focus: Remaining global layout selector inventory (DR-029l)
+
 DR-029l [Remaining global layout selector inventory](work-items/DR-029l-global-layout-inventory.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Documentation-only scope: pair-value, Toolbar-region and Card-flush global rules.
@@ -4251,7 +4270,8 @@ and linked from their registry rows.
 | [DR-029j](work-items/DR-029j-error-required-hint-inventory.md)        | Inventory global error/required/hint selectors before any retirement         | Done    |
 | [DR-029k](work-items/DR-029k-unused-feedback-selectors.md)            | Recheck and retire only unused error/required/hint selectors after DR-029j   | Done    |
 | [DR-029l](work-items/DR-029l-global-layout-inventory.md)              | Inventory remaining pair-value, Toolbar-region and Card-flush global rules   | Done    |
-| DR-029m                                                               | Recheck and retire only unmatched global pair-value rule after DR-029l       | Backlog |
+| [DR-029m](work-items/DR-029m-unused-pair-value.md)                    | Recheck and retire only unmatched global pair-value rule after DR-029l       | Done    |
+| DR-029n                                                               | Verify unmatched Toolbar center/end consumers after DR-029m                  | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |

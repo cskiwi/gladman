@@ -52,17 +52,6 @@ p-select:not(.p-paginator-rpp-dropdown) {
   width: 100%;
 }
 
-.pair-value-group {
-  display: flex;
-  gap: 1rem;
-  padding: 0.5rem 0;
-
-  .pair-value {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
 small {
   font-size: small;
   color: var(--p-text-muted-color);

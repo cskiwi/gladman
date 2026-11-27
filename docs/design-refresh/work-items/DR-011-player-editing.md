@@ -84,8 +84,9 @@ to refresh its presentation.
 - Explicit DR-011d2 approval on 2026-11-27: `Approve with documented limits and commit`.
   Preserve unchecked verification limits and DR-033 contrast failures.
   Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures from DR-011d1.
-- DR-011 remains open. Approved commit scope: only DR-011d2 and its handoff, without pushing.
-  Exact next action: reconcile DR-011d, then DR-011 separately in subsequent invocations.
-  Do not start another implementation slice here.
+- Ranking children are committed on existing `main`: DR-011d1 `89b7c6ec`, DR-011d2 `f83321a5`.
+  DR-011d evidence was reconciled and explicitly approved with documented limits on 2026-11-27; ranking parent is Done.
+- DR-011 remains open. Exact next action: reconcile DR-011 separately against all required children,
+  retaining their accepted verification limits. Do not start another implementation slice or push here.
 
 [page]: ../../../libs/frontend/pages/player/src/pages/edit/page-edit.component.ts

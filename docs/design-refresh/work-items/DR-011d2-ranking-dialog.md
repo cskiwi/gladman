@@ -137,10 +137,10 @@ description: 'Responsive native ranking fields and explicit independently saved 
   DR-011d2 is Done by that approval, retaining the unchecked full visual/accessibility, screen-reader/touch,
   locale, live-save/delete and SSR/hydration criteria and disclosed DR-033 contrast failures.
   Approval does not claim those checks passed.
-- Commit only this approved child and handoff on existing `main`; no push.
-- Exact next candidate: reconcile DR-011d against its two completed children in a subsequent invocation,
-  then reconcile DR-011 separately, preserving all accepted child verification limits.
-  Both parents remain open; do not start another implementation slice here.
+- Approved child and handoff are committed on existing `main` as `f83321a5`; no push requested.
+- Parent evidence was reconciled and explicitly approved with documented limits on 2026-11-27 in
+  [DR-011d](DR-011d-player-ranking.md). Next: reconcile DR-011 separately, preserving all accepted child limits.
+  Do not restart this child or start another implementation slice here.
 
 [component]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-ranking/player-ranking.component.ts
 [template]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-ranking/player-ranking.component.html

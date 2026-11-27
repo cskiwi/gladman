@@ -5,6 +5,23 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-011d [Player ranking editor](work-items/DR-011d-player-ranking.md) parent reconciliation
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Both approved children are present and committed: history `89b7c6ec`, dialog `f83321a5`.
+Confirmed the root/player route and actual Ranking tab consumer in current source; no fresh browser pass claimed.
+Reconciled child evidence and corrected stale commit/next-action instructions; child checklist limits stay unchecked.
+Existing page/form separation and list-driven dialog fields need no extra smart/presentational wrapper.
+Retain DR-033 light Save/Delete contrast failures, inherited DR-034/076 and all unperformed visual/accessibility,
+screen-reader/touch, locale, live-mutation and SSR/hydration checks. Existing workspace lint failures remain unresolved.
+Documentation-only scope: no application, shared/global style, dependency, service or operational changes.
+Scoped Prettier, `git diff --check`, LF/frontmatter and 523 local link targets pass; no application checks rerun.
+Explicit approval: `Approve with documented limits and commit`; child unchecked checks and failures remain unchanged.
+Approved commit scope: only this reconciliation/handoff; no push.
+Exact next invocation: reconcile DR-011 separately against all required children and their accepted limits.
+DR-011 remains open; do not start another implementation slice or optional DR-011e here.
+
+### Previous focus: Ranking dialog, validation and mutation feedback (DR-011d2)
+
 DR-011d2 [Ranking dialog, validation and mutation feedback](work-items/DR-011d2-ranking-dialog.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Mounted Ranking tab confirmed at `/players/glenn-latomme/edit`: 41 groups/313 rows.
@@ -3851,7 +3868,7 @@ and linked from their registry rows.
 | [DR-011a](work-items/DR-011a-player-profile.md)                       | Player profile form                                                          | Done        |
 | [DR-011b](work-items/DR-011b-player-editor-chrome.md)                 | Player editor chrome, tab state and feedback                                 | Done        |
 | [DR-011c](work-items/DR-011c-player-claims.md)                        | Player claims form                                                           | Done        |
-| [DR-011d](work-items/DR-011d-player-ranking.md)                       | Player ranking editor                                                        | In progress |
+| [DR-011d](work-items/DR-011d-player-ranking.md)                       | Player ranking editor                                                        | Done        |
 | [DR-011d1](work-items/DR-011d1-ranking-history.md)                    | Ranking history and read states                                              | Done        |
 | [DR-011d2](work-items/DR-011d2-ranking-dialog.md)                     | Ranking dialog, validation and mutation feedback                             | Done        |
 | DR-011e                                                               | Admin identifiers: editability/persistence (optional functional follow-up)   | Backlog     |

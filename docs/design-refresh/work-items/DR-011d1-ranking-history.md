@@ -169,10 +169,12 @@ description: 'Native ranking history tables, accessible edit entry points and ex
 
 ### Exact next action
 
-- Commit only the approved DR-011d1 slice and its handoff on existing `main`. Do not push without a separate request.
+- Approved slice and handoff are committed on existing `main` as `89b7c6ec`.
+  DR-011d2 is also approved and committed as `f83321a5`; do not restart either child.
 - Preserve the accepted unperformed visual/accessibility/locale/SSR checks as unchecked.
-- DR-011/DR-011d stay open; scope DR-011d2 dialog/validation/mutation feedback in a subsequent invocation,
-  after this child's approved completion. Do not start it here.
+- Parent evidence was reconciled and explicitly approved with documented limits on 2026-11-27 in
+  [DR-011d](DR-011d-player-ranking.md). Next: reconcile DR-011 separately.
+  No additional child implementation or push is requested.
 
 [component]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-ranking/player-ranking.component.ts
 [template]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-ranking/player-ranking.component.html

@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-011d2 [Ranking dialog, validation and mutation feedback](work-items/DR-011d2-ranking-dialog.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Mounted Ranking tab confirmed at `/players/glenn-latomme/edit`: 41 groups/313 rows.
+Scope only responsive dialog fields, validation and independently saved mutation feedback.
+Preserve history, permissions, adjacent forms and shared/global styles; no live mutation for visual verification.
+Keep existing page/form separation; no additional real consumer justifies extraction.
+Native responsive Dialog, named fluid fields, validation Messages and native submit footer implemented.
+Typed/explicit payloads preserve values and omit response metadata; guarded pending and confirmation lifecycle
+prevents duplicate, partial/false-success and stale-context feedback. Local close restores opener focus.
+39 ranking/editor tests and player lint/build pass; sixteen existing lint warnings remain.
+Four settled light/dark 390px/1440px cases pass normal/calendar geometry and final keyboard/focus restoration.
+Four theme/width invalid/pending/error presentation fixtures pass without real mutations.
+Dialog utility tokens 66 -> 26; class/styleClass attributes 31 -> 10. No new styling exception or dependency.
+Light Save/Delete text contrast fails at 3.65/3.76:1 under DR-033; dark samples pass.
+Inherited DR-034/076 and full visual/accessibility, screen-reader/touch, locale, live-save/delete and SSR checks remain open.
+Two dialog screenshots inspected; no private screenshot/log committed. No service/authentication/storage changes.
+Explicit approval: `Approve with documented limits and commit`; unchecked verification limits remain unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce existing dependency-check failures from DR-011d1.
+Commit only this approved child and handoff; no push.
+Exact next candidate: reconcile DR-011d against its two completed children in a subsequent invocation,
+then reconcile DR-011 separately with all child verification limits intact.
+Do not start another implementation slice. DR-011/DR-011d remain open.
+
+### Previous focus: Ranking history and read states (DR-011d1)
+
 DR-011d1 [Ranking history and read states](work-items/DR-011d1-ranking-history.md) is Done after explicit approval on existing `main`,
 2026-11-25, starting with a clean worktree. Mounted Ranking tab confirmed at `/players/glenn-latomme/edit`.
 Retained 41 groups/313 rows; native named Tables, dated edit Buttons and explicit read states replace custom rows.
@@ -3828,7 +3853,7 @@ and linked from their registry rows.
 | [DR-011c](work-items/DR-011c-player-claims.md)                        | Player claims form                                                           | Done        |
 | [DR-011d](work-items/DR-011d-player-ranking.md)                       | Player ranking editor                                                        | In progress |
 | [DR-011d1](work-items/DR-011d1-ranking-history.md)                    | Ranking history and read states                                              | Done        |
-| DR-011d2                                                              | Ranking dialog, validation and mutation feedback (scope before promotion)    | Backlog     |
+| [DR-011d2](work-items/DR-011d2-ranking-dialog.md)                     | Ranking dialog, validation and mutation feedback                             | Done        |
 | DR-011e                                                               | Admin identifiers: editability/persistence (optional functional follow-up)   | Backlog     |
 | DR-012                                                                | Club detail and browsing tabs                                                | Done        |
 | [DR-012a](work-items/DR-012a-club-page-chrome.md)                     | Club detail page chrome (hero identity, actions copy, loading/error)         | Done        |
@@ -4263,6 +4288,13 @@ Scope translation/error-copy work separately; DR-021f1 adds no dictionary or ser
   synthetic-populated native Assign normal text also fails light at 3.65:1 and passes dark at 10.63:1.
   Selection text passes at 4.67:1 light / 10.30:1 dark; badge text passes at 7.74:1 / 9.51:1.
   Retain this additional consumer in the shared audit, without page-specific color workarounds.
+
+### DR-033 additional evidence: player ranking dialog
+
+- [DR-011d2](work-items/DR-011d2-ranking-dialog.md), mounted `/players/glenn-latomme/edit`, 2026-11-27:
+  settled native light Save/Delete text fails at 3.65/3.76:1; dark passes at 10.10/6.27:1.
+- Label/Close text passes in both themes. Early transition color readings are not evidence.
+  No page/global styling workaround; include this surviving dialog in the shared audit.
 
 ### DR-032/034 historical evidence: withdrawn sub-event enrollment chrome
 

@@ -1,5 +1,5 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 import { lastValueFrom } from 'rxjs';
 
@@ -17,7 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { Player, RankingPlace } from '@app/models';
 import { RankingSystemService } from '@app/frontend-modules-graphql/ranking';
 import { MessageService } from 'primeng/api';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 
 const ALL_RANKING_QUERY = gql`
@@ -86,14 +86,21 @@ export class PlayerRankingComponent {
   private readonly apollo = inject(Apollo);
   private readonly fb = inject(FormBuilder);
   private readonly messageService = inject(MessageService);
+  private readonly translate = inject(TranslateService);
   private readonly rankingSystemService = inject(RankingSystemService);
   private rankingRequest = 0;
+  private dialogTrigger?: HTMLElement;
 
   readonly player = input<Player | null>(null);
 
   readonly loading = signal(true);
   readonly loadError = signal(false);
   readonly disciplines = ['single', 'double', 'mix'] as const;
+  readonly pointFields = {
+    single: 'singlePoints',
+    double: 'doublePoints',
+    mix: 'mixPoints',
+  } as const;
   readonly disciplineLabels = {
     single: 'all.game.filter.singles',
     double: 'all.game.filter.doubles',
@@ -102,18 +109,20 @@ export class PlayerRankingComponent {
   readonly rankingGroups = signal<[RankingPlace | undefined, RankingPlace[]][]>([]);
   readonly dialogVisible = signal(false);
   readonly editingPlace = signal<Partial<RankingPlace> | null>(null);
+  readonly pendingAction = signal<'saving' | 'deleting' | null>(null);
+  readonly dialogError = signal<string | null>(null);
 
   readonly isNewPlace = computed(() => !this.editingPlace()?.id);
 
-  readonly editForm: FormGroup = this.fb.group({
-    rankingDate: [null, Validators.required],
+  readonly editForm = this.fb.group({
+    rankingDate: this.fb.control<Date | null>(null, Validators.required),
     updatePossible: [false],
-    single: [null, [Validators.required, Validators.min(1)]],
-    double: [null, [Validators.required, Validators.min(1)]],
-    mix: [null, [Validators.required, Validators.min(1)]],
-    singlePoints: [null],
-    doublePoints: [null],
-    mixPoints: [null],
+    single: this.fb.control<number | null>(null, [Validators.required, Validators.min(1)]),
+    double: this.fb.control<number | null>(null, [Validators.required, Validators.min(1)]),
+    mix: this.fb.control<number | null>(null, [Validators.required, Validators.min(1)]),
+    singlePoints: this.fb.control<number | null>(null, Validators.min(0)),
+    doublePoints: this.fb.control<number | null>(null, Validators.min(0)),
+    mixPoints: this.fb.control<number | null>(null, Validators.min(0)),
   });
 
   constructor() {
@@ -121,6 +130,13 @@ export class PlayerRankingComponent {
       const player = this.player();
       const systemId = this.rankingSystemService.systemId();
       const systemLoaded = this.rankingSystemService.loaded();
+      untracked(() => {
+        const editing = this.editingPlace();
+        if (editing && (editing.playerId !== player?.id || editing.systemId !== systemId)) {
+          this.dialogVisible.set(false);
+          this.editingPlace.set(null);
+        }
+      });
       if (player?.id && systemId) {
         this.loadRankingPlaces(player.id, systemId);
       } else {
@@ -193,13 +209,24 @@ export class PlayerRankingComponent {
     return [...groupMap.values()].map((group) => [group.find((p) => p.updatePossible), group]);
   }
 
-  openEditDialog(place?: RankingPlace): void {
+  openEditDialog(place?: Partial<RankingPlace>, event?: Event): void {
+    if (this.pendingAction()) return;
     const systemId = this.rankingSystemService.systemId();
     const playerId = this.player()?.id;
+    if (!playerId || !systemId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('all.common.error'),
+        detail: this.translate.instant('all.ranking.edit.context-error'),
+      });
+      return;
+    }
+    if (event?.currentTarget instanceof HTMLElement) this.dialogTrigger = event.currentTarget;
 
     this.editingPlace.set(place ? { ...place, playerId, systemId } : { playerId, systemId });
+    this.dialogError.set(null);
 
-    this.editForm.patchValue({
+    this.editForm.reset({
       rankingDate: place?.rankingDate ? new Date(place.rankingDate) : null,
       updatePossible: place?.updatePossible ?? false,
       single: place?.single ?? null,
@@ -213,83 +240,86 @@ export class PlayerRankingComponent {
     this.dialogVisible.set(true);
   }
 
+  restoreDialogFocus(): void {
+    if (this.dialogTrigger?.isConnected) this.dialogTrigger.focus();
+    this.dialogTrigger = undefined;
+  }
+
   async onSave(): Promise<void> {
+    if (this.pendingAction()) return;
     if (this.editForm.invalid) {
       this.editForm.markAllAsTouched();
+      this.dialogError.set('all.ranking.edit.invalid');
       return;
     }
 
     const editing = this.editingPlace();
-    if (!editing) return;
-
-    const payload = { ...editing, ...this.editForm.value };
-
-    try {
-      if (editing.id) {
-        await lastValueFrom(
-          this.apollo.mutate({
-            mutation: UPDATE_RANKING_PLACE_MUTATION,
-            variables: { data: payload },
-          }),
-        );
-      } else {
-        await lastValueFrom(
-          this.apollo.mutate({
-            mutation: NEW_RANKING_PLACE_MUTATION,
-            variables: { data: payload },
-          }),
-        );
-      }
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: editing.id ? 'Ranking place updated' : 'Ranking place created',
-      });
-
-      this.dialogVisible.set(false);
-      const systemId = this.rankingSystemService.systemId();
-      if (this.player()?.id && systemId) {
-        await this.loadRankingPlaces(this.player()!.id!, systemId);
-      }
-    } catch {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to save ranking place',
-      });
+    if (!this.hasCurrentContext(editing)) {
+      this.dialogError.set('all.ranking.edit.context-error');
+      return;
     }
+    await this.persistPlace(editing, false);
   }
 
   async onDelete(): Promise<void> {
+    if (this.pendingAction()) return;
     const editing = this.editingPlace();
-    if (!editing?.id) return;
+    if (!editing?.id || !this.hasCurrentContext(editing)) {
+      this.dialogError.set('all.ranking.edit.context-error');
+      return;
+    }
+    await this.persistPlace(editing, true);
+  }
 
+  private hasCurrentContext(editing: Partial<RankingPlace> | null): editing is Partial<RankingPlace> & { playerId: string; systemId: string } {
+    return (
+      !!editing?.playerId && !!editing.systemId && editing.playerId === this.player()?.id && editing.systemId === this.rankingSystemService.systemId()
+    );
+  }
+
+  private async persistPlace(editing: Partial<RankingPlace> & { playerId: string; systemId: string }, deleting: boolean): Promise<void> {
+    this.pendingAction.set(deleting ? 'deleting' : 'saving');
+    this.dialogError.set(null);
+    const payload = {
+      ...this.editForm.getRawValue(),
+      playerId: editing.playerId,
+      systemId: editing.systemId,
+      ...(editing.id ? { id: editing.id } : {}),
+    };
+    this.editForm.disable({ emitEvent: false });
     try {
-      await lastValueFrom(
-        this.apollo.mutate({
-          mutation: REMOVE_RANKING_PLACE_MUTATION,
-          variables: { id: editing.id },
+      const result = await lastValueFrom(
+        this.apollo.mutate<{
+          newRankingPlace?: { id: string } | null;
+          updateRankingPlace?: { id: string } | null;
+          removeRankingPlace?: boolean;
+        }>({
+          mutation: deleting ? REMOVE_RANKING_PLACE_MUTATION : editing.id ? UPDATE_RANKING_PLACE_MUTATION : NEW_RANKING_PLACE_MUTATION,
+          variables: deleting ? { id: editing.id } : { data: payload },
         }),
       );
-
+      const confirmed = deleting
+        ? result.data?.removeRankingPlace === true
+        : editing.id
+          ? result.data?.updateRankingPlace?.id === editing.id
+          : !!result.data?.newRankingPlace?.id;
+      if (result.error || !confirmed) throw new Error('Ranking mutation was not confirmed');
+      if (this.editingPlace() !== editing || !this.hasCurrentContext(editing)) return;
       this.messageService.add({
         severity: 'success',
-        summary: 'Success',
-        detail: 'Ranking place removed',
+        summary: this.translate.instant('all.common.success'),
+        detail: this.translate.instant(`all.ranking.edit.${deleting ? 'deleted' : editing.id ? 'updated' : 'created'}`),
       });
-
+      this.editForm.markAsPristine();
       this.dialogVisible.set(false);
-      const systemId = this.rankingSystemService.systemId();
-      if (this.player()?.id && systemId) {
-        await this.loadRankingPlaces(this.player()!.id!, systemId);
-      }
+      await this.loadRankingPlaces(editing.playerId, editing.systemId);
     } catch {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to remove ranking place',
-      });
+      if (this.editingPlace() === editing && this.hasCurrentContext(editing)) {
+        this.dialogError.set(deleting ? 'all.ranking.edit.delete-error' : 'all.ranking.edit.save-error');
+      }
+    } finally {
+      this.editForm.enable({ emitEvent: false });
+      this.pendingAction.set(null);
     }
   }
 }

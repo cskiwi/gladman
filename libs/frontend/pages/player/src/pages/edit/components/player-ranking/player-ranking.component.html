@@ -5,7 +5,7 @@
   <p-message severity="error">{{ 'all.ranking.edit.load-error' | translate }}</p-message>
 } @else {
   <div class="mb-4">
-    <button pButton type="button" [outlined]="true" (click)="openEditDialog()">
+    <button pButton type="button" [outlined]="true" (click)="openEditDialog(undefined, $event)">
       <i pButtonIcon class="pi pi-plus" aria-hidden="true"></i>
       <span pButtonLabel>{{ 'all.ranking.edit.add' | translate }}</span>
     </button>
@@ -62,7 +62,7 @@
                       size="small"
                       [text]="true"
                       [ariaLabel]="('all.ranking.edit.edit' | translate) + ': ' + (place.rankingDate | date: 'mediumDate')"
-                      (onClick)="openEditDialog(place)"
+                      (onClick)="openEditDialog(place, $event)"
                     />
                   </td>
                   <td class="align-top">
@@ -92,74 +92,114 @@
   [visible]="dialogVisible()"
   (visibleChange)="dialogVisible.set($event)"
   [modal]="true"
-  [style]="{ width: '480px' }"
+  styleClass="w-full max-w-lg m-2"
   [header]="isNewPlace() ? ('all.ranking.edit.add' | translate) : ('all.ranking.edit.edit' | translate)"
-  [closable]="true"
+  [closable]="!pendingAction()"
+  [closeOnEscape]="!pendingAction()"
+  [closeAriaLabel]="'all.button.close' | translate"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="restoreDialogFocus()"
 >
-  <form [formGroup]="editForm" class="flex flex-col gap-4 pt-2">
-    <div class="field">
-      <label class="block mb-1 font-medium text-color">{{ 'all.ranking.edit.date' | translate }}</label>
-      <p-datepicker formControlName="rankingDate" [showIcon]="true" dateFormat="dd/mm/yy" [showButtonBar]="true" styleClass="w-full" />
-      @if (editForm.get('rankingDate')?.invalid && editForm.get('rankingDate')?.touched) {
-        <small class="p-error">{{ 'all.common.required' | translate }}</small>
+  <form id="ranking-edit-form" [formGroup]="editForm" (ngSubmit)="onSave()" class="grid gap-4">
+    @if (dialogError(); as error) {
+      <p-message severity="error">{{ error | translate }}</p-message>
+    }
+    @if (pendingAction(); as action) {
+      <p role="status" class="text-muted-color">{{ 'all.ranking.edit.' + action | translate }}</p>
+    }
+    <div class="grid gap-2">
+      <label id="ranking-edit-date-label" for="ranking-edit-date">{{ 'all.ranking.edit.date' | translate }}</label>
+      <p-datepicker
+        inputId="ranking-edit-date"
+        formControlName="rankingDate"
+        [showIcon]="true"
+        dateFormat="dd/mm/yy"
+        [showButtonBar]="true"
+        [fluid]="true"
+        [invalid]="editForm.controls.rankingDate.invalid && editForm.controls.rankingDate.touched"
+        [ariaLabelledBy]="
+          editForm.controls.rankingDate.invalid && editForm.controls.rankingDate.touched
+            ? 'ranking-edit-date-label ranking-edit-date-error'
+            : 'ranking-edit-date-label'
+        "
+      />
+      @if (editForm.controls.rankingDate.invalid && editForm.controls.rankingDate.touched) {
+        <p-message id="ranking-edit-date-error" severity="error" size="small" variant="simple">{{ 'all.common.required' | translate }}</p-message>
       }
     </div>
 
-    <div class="field flex items-center gap-3">
-      <p-toggleswitch formControlName="updatePossible" inputId="updatePossible" />
-      <label for="updatePossible" class="text-color">{{ 'all.ranking.edit.update-possible' | translate }}</label>
+    <div class="flex items-center gap-3">
+      <p-toggleswitch formControlName="updatePossible" inputId="ranking-edit-update" />
+      <label for="ranking-edit-update">{{ 'all.ranking.edit.update-possible' | translate }}</label>
     </div>
 
-    <div class="grid grid-cols-3 gap-3">
-      <div class="field">
-        <label class="block mb-1 font-medium text-color">{{ 'all.ranking.edit.single' | translate }}</label>
-        <p-inputnumber formControlName="single" [min]="1" [showButtons]="false" styleClass="w-full" />
-      </div>
-      <div class="field">
-        <label class="block mb-1 font-medium text-color">{{ 'all.ranking.edit.double' | translate }}</label>
-        <p-inputnumber formControlName="double" [min]="1" [showButtons]="false" styleClass="w-full" />
-      </div>
-      <div class="field">
-        <label class="block mb-1 font-medium text-color">{{ 'all.ranking.edit.mix' | translate }}</label>
-        <p-inputnumber formControlName="mix" [min]="1" [showButtons]="false" styleClass="w-full" />
-      </div>
-    </div>
-
-    <div class="grid grid-cols-3 gap-3">
-      <div class="field">
-        <label class="block mb-1 text-sm text-muted-color">{{ 'all.ranking.edit.single-points' | translate }}</label>
-        <p-inputnumber formControlName="singlePoints" [min]="0" [showButtons]="false" styleClass="w-full" />
-      </div>
-      <div class="field">
-        <label class="block mb-1 text-sm text-muted-color">{{ 'all.ranking.edit.double-points' | translate }}</label>
-        <p-inputnumber formControlName="doublePoints" [min]="0" [showButtons]="false" styleClass="w-full" />
-      </div>
-      <div class="field">
-        <label class="block mb-1 text-sm text-muted-color">{{ 'all.ranking.edit.mix-points' | translate }}</label>
-        <p-inputnumber formControlName="mixPoints" [min]="0" [showButtons]="false" styleClass="w-full" />
-      </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      @for (discipline of disciplines; track discipline) {
+        @let rank = editForm.controls[discipline];
+        @let points = editForm.controls[pointFields[discipline]];
+        <div class="grid min-w-0 gap-2">
+          <label [for]="'ranking-edit-' + discipline">{{ disciplineLabels[discipline] | translate }}</label>
+          <p-inputnumber
+            [inputId]="'ranking-edit-' + discipline"
+            [formControlName]="discipline"
+            [min]="1"
+            [fluid]="true"
+            [invalid]="rank.invalid && rank.touched"
+            [ariaDescribedBy]="rank.invalid && rank.touched ? 'ranking-edit-' + discipline + '-error' : undefined"
+          />
+          @if (rank.invalid && rank.touched) {
+            <p-message [id]="'ranking-edit-' + discipline + '-error'" severity="error" size="small" variant="simple">
+              {{ (rank.hasError('required') ? 'all.common.required' : 'all.ranking.edit.min-rank') | translate }}
+            </p-message>
+          }
+        </div>
+        <div class="grid min-w-0 gap-2">
+          <label [for]="'ranking-edit-' + pointFields[discipline]">
+            {{ disciplineLabels[discipline] | translate }}: {{ 'all.ranking.breakdown.points' | translate }}
+          </label>
+          <p-inputnumber
+            [inputId]="'ranking-edit-' + pointFields[discipline]"
+            [formControlName]="pointFields[discipline]"
+            [min]="0"
+            [fluid]="true"
+            [invalid]="points.invalid && points.touched"
+            [ariaDescribedBy]="points.invalid && points.touched ? 'ranking-edit-' + pointFields[discipline] + '-error' : undefined"
+          />
+          @if (points.invalid && points.touched) {
+            <p-message [id]="'ranking-edit-' + pointFields[discipline] + '-error'" severity="error" size="small" variant="simple">
+              {{ 'all.ranking.edit.min-points' | translate }}
+            </p-message>
+          }
+        </div>
+      }
     </div>
   </form>
 
-  <ng-template pTemplate="footer">
-    <div class="flex justify-between">
+  <ng-template #footer>
+    <div class="flex flex-wrap justify-end gap-2">
       @if (!isNewPlace()) {
-        <button pButton type="button" severity="danger" [outlined]="true" (click)="onDelete()">
-          <i pButtonIcon class="pi pi-trash" aria-hidden="true"></i>
-          <span pButtonLabel>{{ 'all.button.delete' | translate }}</span>
-        </button>
-      } @else {
-        <span></span>
+        <p-button
+          icon="pi pi-trash"
+          severity="danger"
+          [outlined]="true"
+          [label]="'all.button.delete' | translate"
+          [loading]="pendingAction() === 'deleting'"
+          [disabled]="!!pendingAction()"
+          (onClick)="onDelete()"
+        />
       }
-      <div class="flex gap-2">
-        <button pButton type="button" severity="secondary" [outlined]="true" (click)="dialogVisible.set(false)">
-          <span pButtonLabel>{{ 'all.button.close' | translate }}</span>
-        </button>
-        <button pButton type="button" (click)="onSave()">
-          <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
-          <span pButtonLabel>{{ 'all.button.save' | translate }}</span>
-        </button>
-      </div>
+      <p-button
+        severity="secondary"
+        [outlined]="true"
+        [label]="'all.button.close' | translate"
+        [disabled]="!!pendingAction()"
+        (onClick)="dialogVisible.set(false)"
+      />
+      <button pButton type="submit" form="ranking-edit-form" [loading]="pendingAction() === 'saving'" [disabled]="!!pendingAction()">
+        <i pButtonIcon class="pi pi-check" aria-hidden="true"></i>
+        <span pButtonLabel>{{ 'all.button.save' | translate }}</span>
+      </button>
     </div>
   </ng-template>
 </p-dialog>

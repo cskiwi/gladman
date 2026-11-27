@@ -76,6 +76,16 @@ to refresh its presentation.
 - Explicit DR-011d1 approval: `Approve DR-011d1 with documented limits and commit`; child is Done.
   Preserve its unchecked verification limits.
   Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures matching DR-011c.
-- DR-011 remains open. Next candidate: scope DR-011d2 in a subsequent invocation; do not start it here.
+- DR-011d2 is Done after explicit approval: responsive native dialog/validation, typed whitelisted payloads
+  and guarded mutation feedback.
+  39 ranking/editor tests and player lint/build pass; sixteen existing warnings remain.
+  Four theme/width checks cover normal/calendar/invalid/pending/error geometry and final keyboard/focus restoration.
+  Native light Save/Delete contrast fails under DR-033; full accessibility, locale, live mutations and SSR remain unchecked.
+- Explicit DR-011d2 approval on 2026-11-27: `Approve with documented limits and commit`.
+  Preserve unchecked verification limits and DR-033 contrast failures.
+  Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures from DR-011d1.
+- DR-011 remains open. Approved commit scope: only DR-011d2 and its handoff, without pushing.
+  Exact next action: reconcile DR-011d, then DR-011 separately in subsequent invocations.
+  Do not start another implementation slice here.
 
 [page]: ../../../libs/frontend/pages/player/src/pages/edit/page-edit.component.ts

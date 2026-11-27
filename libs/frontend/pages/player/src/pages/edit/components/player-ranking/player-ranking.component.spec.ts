@@ -9,10 +9,10 @@ import { PlayerRankingComponent } from './player-ranking.component';
 
 describe(PlayerRankingComponent.name, () => {
   const places = [
-    { id: 'older', rankingDate: '2026-02-01', single: 7, double: 8, mix: 9, updatePossible: true },
-    { id: 'between', rankingDate: '2026-02-20', single: 6, double: 7, mix: 8, singlePoints: 12 },
-    { id: 'boundary', rankingDate: '2026-03-01', single: 5, double: 6, mix: 7, updatePossible: true },
-    { id: 'next', rankingDate: '2026-03-20', single: 4, double: 5, mix: 6, singlePoints: 0, doublePoints: null },
+    { id: 'older', rankingDate: new Date('2026-02-01'), single: 7, double: 8, mix: 9, updatePossible: true },
+    { id: 'between', rankingDate: new Date('2026-02-20'), single: 6, double: 7, mix: 8, singlePoints: 12 },
+    { id: 'boundary', rankingDate: new Date('2026-03-01'), single: 5, double: 6, mix: 7, updatePossible: true },
+    { id: 'next', rankingDate: new Date('2026-03-20'), single: 4, double: 5, mix: 6, singlePoints: 0 },
   ];
   let fixture: ComponentFixture<PlayerRankingComponent>;
   let systemId: ReturnType<typeof signal<string | null>>;
@@ -20,6 +20,8 @@ describe(PlayerRankingComponent.name, () => {
   let requests: Subject<unknown>[];
   let query: jest.Mock;
   let mutate: jest.Mock;
+  let mutations: Subject<unknown>[];
+  let notifications: jest.SpyInstance;
 
   beforeEach(async () => {
     systemId = signal('example-system');
@@ -30,7 +32,12 @@ describe(PlayerRankingComponent.name, () => {
       requests.push(request);
       return request;
     });
-    mutate = jest.fn();
+    mutations = [];
+    mutate = jest.fn(() => {
+      const request = new Subject<unknown>();
+      mutations.push(request);
+      return request;
+    });
     await TestBed.configureTestingModule({
       imports: [PlayerRankingComponent, TranslateModule.forRoot()],
       providers: [
@@ -40,6 +47,7 @@ describe(PlayerRankingComponent.name, () => {
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(PlayerRankingComponent);
+    notifications = jest.spyOn(TestBed.inject(MessageService), 'add');
     fixture.componentRef.setInput('player', { id: 'example-player' });
     fixture.detectChanges();
   });
@@ -132,13 +140,18 @@ describe(PlayerRankingComponent.name, () => {
 
   it('opens the exact existing place or a blank add form without submitting a mutation', async () => {
     await respond({ data: { player: { rankingPlaces: places } } });
-    host().querySelector<HTMLButtonElement>('button[aria-label="all.ranking.edit.edit: Mar 20, 2026"]')?.click();
+    const trigger = host().querySelector<HTMLButtonElement>('button[aria-label="all.ranking.edit.edit: Mar 20, 2026"]');
+    if (!trigger) throw new Error('Dated edit trigger is missing');
+    const focus = jest.spyOn(trigger, 'focus');
+    trigger.click();
     fixture.detectChanges();
     expect(component().dialogVisible()).toBe(true);
     expect(component().editingPlace()).toEqual(expect.objectContaining({ id: 'next', playerId: 'example-player', systemId: 'example-system' }));
     expect(component().editForm.getRawValue()).toEqual(expect.objectContaining({ rankingDate: new Date('2026-03-20'), single: 4, singlePoints: 0 }));
     component().dialogVisible.set(false);
     fixture.detectChanges();
+    component().restoreDialogFocus();
+    expect(focus).toHaveBeenCalled();
     host().querySelector<HTMLButtonElement>('button')?.click();
     fixture.detectChanges();
     expect(component().isNewPlace()).toBe(true);
@@ -207,5 +220,180 @@ describe(PlayerRankingComponent.name, () => {
     await respond({ data: { player: { rankingPlaces: [] } } });
     expect(component().loadError()).toBe(false);
     expect(host().textContent).toContain('all.ranking.edit.no-ranking');
+  });
+
+  it('renders named dialog fields and a native submit footer with associated validation', async () => {
+    await respond({ data: { player: { rankingPlaces: [] } } });
+    component().openEditDialog();
+    fixture.detectChanges();
+    const dialog = host().querySelector('.p-dialog');
+    expect(dialog?.querySelector('.p-dialog-footer')).not.toBeNull();
+    expect(dialog?.querySelector('button[type="submit"]')?.getAttribute('form')).toBe('ranking-edit-form');
+    expect(dialog?.querySelectorAll('input')).toHaveLength(8);
+    for (const input of Array.from(dialog?.querySelectorAll('input') ?? [])) {
+      expect(dialog?.querySelector(`label[for="${input.id}"]`)).not.toBeNull();
+    }
+    dialog?.querySelector<HTMLButtonElement>('button[type="submit"]')?.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(mutate).not.toHaveBeenCalled();
+    expect(component().dialogError()).toBe('all.ranking.edit.invalid');
+    expect(component().editForm.controls.rankingDate.touched).toBe(true);
+    expect(dialog?.querySelector('#ranking-edit-date')?.getAttribute('aria-labelledby')).toContain('ranking-edit-date-error');
+    expect(dialog?.querySelector('#ranking-edit-single')?.getAttribute('aria-describedby')).toBe('ranking-edit-single-error');
+    expect(dialog?.querySelector('#ranking-edit-single-error')?.textContent).toContain('all.common.required');
+  });
+
+  it('validates rank and point minima while retaining optional points and resets touched errors on reopen', async () => {
+    await respond({ data: { player: { rankingPlaces: places } } });
+    component().openEditDialog(places[3]);
+    component().editForm.patchValue({ single: 0, doublePoints: -1 });
+    await component().onSave();
+    fixture.detectChanges();
+    expect(component().editForm.controls.single.hasError('min')).toBe(true);
+    expect(component().editForm.controls.doublePoints.hasError('min')).toBe(true);
+    expect(host().querySelector('#ranking-edit-single-error')?.textContent).toContain('all.ranking.edit.min-rank');
+    expect(host().querySelector('#ranking-edit-doublePoints-error')?.textContent).toContain('all.ranking.edit.min-points');
+    expect(mutate).not.toHaveBeenCalled();
+    component().editForm.patchValue({ single: 4, doublePoints: null, mixPoints: 0 });
+    expect(component().editForm.valid).toBe(true);
+    component().openEditDialog();
+    fixture.detectChanges();
+    expect(component().editForm.untouched).toBe(true);
+    expect(component().dialogError()).toBeNull();
+    expect(host().querySelector('#ranking-edit-single-error')).toBeNull();
+  });
+
+  it.each(['create', 'update', 'delete'] as const)(
+    'confirms %s exactly once, preserves the payload and refreshes matching history',
+    async (action) => {
+      await respond({ data: { player: { rankingPlaces: places } } });
+      const place = { ...places[3], __typename: 'RankingPlace', singleInactive: true };
+      component().openEditDialog(action === 'create' ? undefined : place);
+      component().editForm.patchValue({ rankingDate: new Date('2026-03-20'), single: 4, double: 5, mix: 6, singlePoints: 0 });
+      const pending = action === 'delete' ? component().onDelete() : component().onSave();
+      fixture.detectChanges();
+      expect(component().pendingAction()).toBe(action === 'delete' ? 'deleting' : 'saving');
+      expect(component().editForm.disabled).toBe(true);
+      expect(host().querySelector('.p-dialog-header button')).toBeNull();
+      for (const button of Array.from(host().querySelectorAll<HTMLButtonElement>('.p-dialog-footer button'))) {
+        expect(button.disabled).toBe(true);
+      }
+      await component().onSave();
+      await component().onDelete();
+      component().openEditDialog();
+      expect(mutate).toHaveBeenCalledTimes(1);
+      const variables = mutate.mock.calls[0][0].variables;
+      expect(variables).toEqual(
+        action === 'delete'
+          ? { id: 'next' }
+          : {
+              data: {
+                ...(action === 'update' ? { id: 'next' } : {}),
+                playerId: 'example-player',
+                systemId: 'example-system',
+                rankingDate: new Date('2026-03-20'),
+                updatePossible: false,
+                single: 4,
+                double: 5,
+                mix: 6,
+                singlePoints: 0,
+                doublePoints: null,
+                mixPoints: null,
+              },
+            },
+      );
+      mutations[0].next({
+        data:
+          action === 'delete'
+            ? { removeRankingPlace: true }
+            : action === 'update'
+              ? { updateRankingPlace: { id: 'next' } }
+              : { newRankingPlace: { id: 'created' } },
+      });
+      mutations[0].complete();
+      await Promise.resolve();
+      await Promise.resolve();
+      expect(query).toHaveBeenCalledTimes(2);
+      await respond({ data: { player: { rankingPlaces: places } } });
+      await pending;
+      fixture.detectChanges();
+      expect(component().dialogVisible()).toBe(false);
+      expect(component().editForm.enabled).toBe(true);
+      expect(component().pendingAction()).toBeNull();
+      expect(notifications).toHaveBeenCalledWith(expect.objectContaining({ severity: 'success' }));
+    },
+  );
+
+  it.each([
+    ['create', 'rejected'],
+    ['create', 'partial'],
+    ['create', 'missing'],
+    ['save', 'rejected'],
+    ['save', 'partial'],
+    ['save', 'missing'],
+    ['save', 'wrong-id'],
+    ['delete', 'rejected'],
+    ['delete', 'partial'],
+    ['delete', 'missing'],
+    ['delete', 'false'],
+  ])('retains the editor and reports %s %s failures without success or refresh', async (action, outcome) => {
+    await respond({ data: { player: { rankingPlaces: places } } });
+    component().openEditDialog(action === 'create' ? undefined : places[3]);
+    component().editForm.patchValue({ rankingDate: new Date('2026-03-20'), single: 4, double: 5, mix: 6 });
+    component().editForm.controls.single.setValue(3);
+    component().editForm.markAsDirty();
+    const pending = action === 'delete' ? component().onDelete() : component().onSave();
+    if (outcome === 'rejected') {
+      mutations[0].error(new Error('Safe mutation failure'));
+    } else {
+      mutations[0].next({
+        data:
+          outcome === 'missing'
+            ? null
+            : action === 'delete'
+              ? { removeRankingPlace: outcome !== 'false' }
+              : action === 'create'
+                ? { newRankingPlace: { id: 'created' } }
+                : { updateRankingPlace: { id: outcome === 'wrong-id' ? 'other' : 'next' } },
+        ...(outcome === 'partial' ? { error: new Error('Safe partial mutation') } : {}),
+      });
+      mutations[0].complete();
+    }
+    await pending;
+    fixture.detectChanges();
+    expect(component().dialogVisible()).toBe(true);
+    expect(component().editForm.controls.single.value).toBe(3);
+    expect(component().editForm.dirty).toBe(true);
+    expect(component().editForm.enabled).toBe(true);
+    expect(component().pendingAction()).toBeNull();
+    expect(host().querySelector('.p-message-error[role="alert"]')?.textContent).toContain(
+      `all.ranking.edit.${action === 'delete' ? 'delete' : 'save'}-error`,
+    );
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(notifications).not.toHaveBeenCalled();
+  });
+
+  it.each(['success', 'failure'])('does not leak stale mutation %s into a different context', async (outcome) => {
+    await respond({ data: { player: { rankingPlaces: places } } });
+    component().openEditDialog(places[3]);
+    const pending = component().onSave();
+    systemId.set('other-system');
+    fixture.detectChanges();
+    expect(component().dialogVisible()).toBe(false);
+    if (outcome === 'success') {
+      mutations[0].next({ data: { updateRankingPlace: { id: 'next' } } });
+      mutations[0].complete();
+    } else {
+      mutations[0].error(new Error('Safe stale mutation failure'));
+    }
+    await pending;
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(notifications).not.toHaveBeenCalled();
+    expect(component().dialogError()).toBeNull();
+    await respond({ data: { player: { rankingPlaces: [] } } });
+    component().openEditDialog();
+    expect(component().editingPlace()?.systemId).toBe('other-system');
+    expect(component().editForm.enabled).toBe(true);
   });
 });

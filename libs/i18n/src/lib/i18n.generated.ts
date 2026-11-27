@@ -1150,19 +1150,30 @@ export type I18nTranslations = {
             };
             "edit": {
                 "add": string;
+                "context-error": string;
+                "created": string;
                 "date": string;
+                "delete-error": string;
+                "deleted": string;
+                "deleting": string;
                 "double": string;
                 "double-points": string;
                 "edit": string;
+                "invalid": string;
                 "load-error": string;
                 "loading": string;
                 "mix": string;
                 "mix-points": string;
+                "min-points": string;
+                "min-rank": string;
                 "next-ranking": string;
                 "no-ranking": string;
+                "save-error": string;
+                "saving": string;
                 "single": string;
                 "single-points": string;
                 "update-possible": string;
+                "updated": string;
                 "updates": string;
             };
             "progress": {

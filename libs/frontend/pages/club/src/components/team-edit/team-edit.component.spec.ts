@@ -6,7 +6,7 @@ import { TeamMembershipType } from '@app/models-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { Apollo } from 'apollo-angular';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { TeamEditComponent } from './team-edit.component';
 
 // UI fixtures do not need the shared models' backend ORM/GraphQL decorators.
@@ -137,5 +137,112 @@ describe('TeamEditComponent add-member dialog', () => {
     expect(fixture.componentInstance.teamPlayerMemberships()).toEqual([membership]);
     expect(fixture.componentInstance.teamForm.dirty).toBe(true);
     expect(mutate).toHaveBeenCalledTimes(1);
+  });
+
+  it('locks pending controls and rejects repeated Save or dismissal until the membership arrives', async () => {
+    const { fixture, dialog, mutate } = await render();
+    const component = fixture.componentInstance;
+    const player = Object.assign(new Player(), { id: 'example-player', fullName: 'Example Player' });
+    const result = new Subject<{ data: { addTeamPlayerMembership: TeamPlayerMembership } }>();
+    mutate.mockReturnValue(result);
+    component.selectedPlayerToAdd.set(player);
+    fixture.detectChanges();
+    footerButton(dialog, 'all.common.save').click();
+    fixture.detectChanges();
+
+    expect(footerButton(dialog, 'all.common.save').disabled).toBe(true);
+    expect(dialog.querySelector('.p-button-loading-icon')).not.toBeNull();
+    expect(footerButton(dialog, 'all.common.cancel').disabled).toBe(true);
+    expect(dialog.querySelector<HTMLInputElement>('#team-add-member-player')?.disabled).toBe(true);
+    expect(dialog.querySelector('#team-add-member-type')?.getAttribute('aria-disabled')).toBe('true');
+    expect(dialog.querySelector('button[aria-label="all.button.close"]')).toBeNull();
+    const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+    document.dispatchEvent(escape);
+    expect(escape.defaultPrevented).toBe(true);
+    await component.addMember();
+    component.cancelAddMember();
+    component.showAddMemberDialog();
+    component.onHide();
+    await component.onSave();
+    expect(component.showAddPlayerDialog()).toBe(true);
+    expect(component.selectedPlayerToAdd()).toBe(player);
+    expect(TestBed.inject(DynamicDialogRef).close).not.toHaveBeenCalled();
+    expect(mutate).toHaveBeenCalledTimes(1);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(dialog.isConnected).toBe(true);
+
+    result.next({ data: { addTeamPlayerMembership: Object.assign(new TeamPlayerMembership(), { id: 'example-membership', player }) } });
+    result.complete();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(component.showAddPlayerDialog()).toBe(false);
+    component.showAddMemberDialog();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const element: HTMLElement = fixture.nativeElement;
+    const reopened = element.querySelector<HTMLElement>('[role="dialog"]');
+    if (!reopened) throw new Error('Missing reopened add-member dialog');
+    expect(footerButton(reopened, 'all.common.cancel').disabled).toBe(false);
+    expect(reopened.querySelector<HTMLInputElement>('#team-add-member-player')?.disabled).toBe(false);
+    expect(component.teamForm.dirty).toBe(true);
+  });
+
+  it.each(['network', 'missing membership', 'synchronous'] as const)('shows a retryable localized error after %s failure', async (failure) => {
+    const { fixture, dialog, mutate } = await render();
+    const component = fixture.componentInstance;
+    const player = Object.assign(new Player(), { id: 'example-player', fullName: 'Example Player' });
+    const membership = Object.assign(new TeamPlayerMembership(), { id: 'example-membership', player });
+    const log = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    if (failure === 'network') mutate.mockReturnValueOnce(throwError(() => new Error('Synthetic failure')));
+    if (failure === 'missing membership') mutate.mockReturnValueOnce(of({ data: { addTeamPlayerMembership: null } }));
+    if (failure === 'synchronous')
+      mutate.mockImplementationOnce(() => {
+        throw new Error('Synthetic synchronous failure');
+      });
+    component.selectedPlayerToAdd.set(player);
+    component.selectedMembershipType.set(TeamMembershipType.BACKUP);
+    try {
+      await component.addMember();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(dialog.querySelector('[role="alert"]')?.textContent).toContain('all.team.detail.roster.addError');
+      expect(log).toHaveBeenCalledTimes(1);
+      expect(footerButton(dialog, 'all.common.save').disabled).toBe(false);
+      expect(footerButton(dialog, 'all.common.cancel').disabled).toBe(false);
+      expect(component.showAddPlayerDialog()).toBe(true);
+      expect(component.selectedPlayerToAdd()).toBe(player);
+      expect(component.selectedMembershipType()).toBe(TeamMembershipType.BACKUP);
+      expect(component.teamPlayerMemberships()).toEqual([]);
+      expect(component.teamForm.pristine).toBe(true);
+
+      const retry = new Subject<{ data: { addTeamPlayerMembership: TeamPlayerMembership } }>();
+      mutate.mockReturnValueOnce(retry);
+      footerButton(dialog, 'all.common.save').click();
+      fixture.detectChanges();
+      expect(dialog.querySelector('[role="alert"]')).toBeNull();
+      expect(mutate.mock.calls[1][0].variables).toEqual({
+        teamId: 'example-team',
+        playerId: player.id,
+        membershipType: TeamMembershipType.BACKUP,
+      });
+      retry.next({ data: { addTeamPlayerMembership: membership } });
+      retry.complete();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.teamPlayerMemberships()).toEqual([membership]);
+      expect(component.teamForm.dirty).toBe(true);
+      expect(component.showAddPlayerDialog()).toBe(false);
+      expect(mutate).toHaveBeenCalledTimes(2);
+
+      component.showAddMemberDialog();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(dialog.querySelector('[role="alert"]')).toBeNull();
+    } finally {
+      log.mockRestore();
+    }
   });
 });

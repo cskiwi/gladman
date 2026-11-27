@@ -203,10 +203,10 @@
   </form>
 
   <div class="flex justify-end gap-2 mt-4">
-    <button pButton type="button" class="p-button-text" (click)="onHide()">
+    <button pButton type="button" class="p-button-text" [disabled]="addingMember()" (click)="onHide()">
       <span pButtonLabel>{{ 'all.common.cancel' | translate }}</span>
     </button>
-    <button pButton type="button" [disabled]="!teamForm.valid || !teamForm.dirty || saving()" (click)="onSave()">
+    <button pButton type="button" [disabled]="!teamForm.valid || !teamForm.dirty || saving() || addingMember()" (click)="onSave()">
       @if (saving()) {
         <i pButtonIcon class="pi pi-spin pi-spinner" aria-hidden="true"></i>
       }
@@ -223,14 +223,20 @@
   [style]="{ width: '450px' }"
   [header]="'all.team.edit.members.add' | translate"
   [closeAriaLabel]="'all.button.close' | translate"
+  [closable]="!addingMember()"
+  [closeOnEscape]="!addingMember()"
 >
   <div class="space-y-4">
+    @if (addMemberError(); as error) {
+      <p-message severity="error">{{ error | translate }}</p-message>
+    }
     <!-- Player Selection -->
     <div>
       <label for="team-add-member-player" class="block text-sm font-medium mb-2">{{ 'all.team.edit.members.player' | translate }}</label>
       <p-autocomplete
         inputId="team-add-member-player"
         [(ngModel)]="selectedPlayerToAdd"
+        [disabled]="addingMember()"
         [suggestions]="playerSuggestions()"
         (completeMethod)="searchPlayer($event)"
         field="fullName"
@@ -267,6 +273,7 @@
         inputId="team-add-member-type"
         ariaLabelledBy="team-add-member-type-label"
         [(ngModel)]="selectedMembershipType"
+        [disabled]="addingMember()"
         [options]="membershipTypeOptions()"
         optionLabel="label"
         optionValue="value"
@@ -277,12 +284,15 @@
 
   <ng-template #footer>
     <div class="flex gap-2">
-      <button pButton type="button" class="p-button-text" (click)="cancelAddMember()">
+      <button pButton type="button" class="p-button-text" [disabled]="addingMember()" (click)="cancelAddMember()">
         <span pButtonLabel>{{ 'all.common.cancel' | translate }}</span>
       </button>
-      <button pButton type="button" [disabled]="!selectedPlayerToAdd()" (click)="addMember()">
-        <span pButtonLabel>{{ 'all.common.save' | translate }}</span>
-      </button>
+      <p-button
+        [label]="'all.common.save' | translate"
+        [loading]="addingMember()"
+        [disabled]="!selectedPlayerToAdd()?.id || addingMember()"
+        (onClick)="addMember()"
+      />
     </div>
   </ng-template>
 </p-dialog>

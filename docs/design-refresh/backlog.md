@@ -5,6 +5,31 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-080 [Mounted club add-member pending and error feedback](work-items/DR-080-add-member-feedback.md)
+is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Fresh source/browser evidence confirms Team bewerken > Lid toevoegen on `/clubs/smash-for-fun`.
+Scope native pending gates and localized inline error/retry feedback, preserving immediate membership persistence.
+User selected keeping the nested dialog open until the request finishes; guard its dismissal and dependent outer actions.
+No extraction is warranted for one dialog without repeated domain structure.
+Exclude outer-editor redesign, shared/global styles, dependencies, live mutations and other routes.
+Native loading/disabled/error states now preserve immediate mutation variables, roster update and dirty form semantics.
+Installed Dialog Escape listener ignores dynamic closeOnEscape; pending-only capture guard preserves idle/overlay Escape.
+Eight focused tests pass with the existing zoneless override; default club tests reproduce DR-059 missing zone.js.
+Club lint/build pass: 12 tasks, 10 cached; 37 existing lint warnings, zero errors.
+Settled light/dark 390px/1440px pending gates, failure/retry/success/reopen and keyboard Cancel checks pass.
+Empty geometry is unchanged; native error Message adds 62px height and fits with footer controls in all four samples.
+All browser mutations were intercepted; no server mutations. Safe dark-wide/light-narrow crops inspected.
+No full contrast/screen-reader/locale/permissions/live-persistence/navigation-during-pending/SSR pass claimed.
+Browser restored home/dark/1571 x 1272 with no dialogs; handlers removed and synthetic cache cleared by navigation.
+Existing player option/selection labels show `[object Object]`; recorded separately as DR-081 without fixing here.
+User approval: `Approve DR-080 with documented limits and commit`, and `Nothing else`; unchecked limits stay unchecked.
+Required pre-commit workspace lint: 22 of 34 pass; twelve reproduce documented dependency-check failures.
+Approved commit scope: component/template/tests/brief/backlog only on existing `main`; no push.
+Exact next invocation: separately scope DR-081 with synthetic search data; it is not started.
+DR-059 and inherited findings remain open; no new branch/worktree or second slice.
+
+### Previous focus: Mounted club add-member dialog footer (DR-079)
+
 DR-079 [Mounted club add-member dialog footer](work-items/DR-079-add-member-footer.md)
 is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Fresh mounted consumer: club overview Team bewerken opens TeamEditComponent; Lid toevoegen opens the nested Dialog.
@@ -4432,7 +4457,8 @@ and linked from their registry rows.
 | [DR-077](work-items/DR-077-add-member-control-names.md)               | Mounted club team-edit add-member dialog control names                       | Done    |
 | [DR-078](work-items/DR-078-planning-narrow-overflow.md)               | Tournament admin Planning narrow content overflow                            | Done    |
 | [DR-079](work-items/DR-079-add-member-footer.md)                      | Mounted club add-member dialog missing footer actions                        | Done    |
-| DR-080                                                                | Mounted club add-member pending and error feedback                           | Backlog |
+| [DR-080](work-items/DR-080-add-member-feedback.md)                    | Mounted club add-member pending and error feedback                           | Done    |
+| DR-081                                                                | Mounted club add-member player option and selection labels                   | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -4464,7 +4490,21 @@ and linked from their registry rows.
 - Scope separately after DR-079 review: safe mocked pending/failure/retry checks, native loading/disabled and explicit
   localized feedback. Preserve immediate membership persistence and outer team save semantics.
 - Do not submit live member operations, redesign the outer editor or modify global styling/dependencies.
-- No implementation started; create a brief and verify current consumer and existing feedback patterns first.
+- Scoped in [the brief](work-items/DR-080-add-member-feedback.md) with fresh mounted consumer and native API checks.
+- Implemented on existing `main`; user selected keeping the dialog open until the pending request finishes.
+- Reuse localized roster failure feedback; verify only synthetic/intercepted operations, never live membership changes.
+- Native pending/error gates and scoped Escape guard verified by eight tests and settled light/dark 390px/1440px samples.
+- Club lint/build pass; default Jest still requires missing zone.js (DR-059).
+- Done by explicit approval with disclosed limits; workspace lint retains twelve dependency-check failures.
+- Next invocation separately scopes DR-081; commit only the approved slice/handoff on existing `main`, no push.
+
+### DR-081: Mounted club add-member player option and selection labels
+
+- Fresh DR-080 synthetic search shows readable item text but accessible options and selected input say `[object Object]`.
+- Mounted consumer: `/clubs/smash-for-fun` > Team bewerken > Lid toevoegen; existing AutoComplete uses `field="fullName"`.
+- Scope separately after DR-080 review: confirm installed option-label API, preserve search/filter/selection/mutation gates,
+  and verify native option names and selected text with synthetic data.
+- No implementation started; do not redesign the outer editor, introduce consumers, or submit live membership operations.
 
 ### DR-078: Tournament admin Planning narrow content overflow
 

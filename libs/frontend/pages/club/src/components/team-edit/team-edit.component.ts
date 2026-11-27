@@ -1,9 +1,10 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HttpClient } from '@angular/common/http';
 
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
-import { debounceTime, distinctUntilChanged, lastValueFrom } from 'rxjs';
+import { debounceTime, distinctUntilChanged, fromEvent, lastValueFrom } from 'rxjs';
 
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +15,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
+import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -81,6 +83,7 @@ const ADD_TEAM_MEMBERSHIP = gql`
     DatePickerModule,
     DialogModule,
     InputTextModule,
+    MessageModule,
     MultiSelectModule,
     SelectModule,
     TableModule,
@@ -160,8 +163,19 @@ export class TeamEditComponent {
   playerSuggestions = signal<Player[]>([]);
   selectedPlayerToAdd = signal<Player | null>(null);
   selectedMembershipType = signal<TeamMembershipType>(TeamMembershipType.REGULAR);
+  addingMember = signal(false);
+  addMemberError = signal<'all.team.detail.roster.addError' | null>(null);
 
   constructor() {
+    // PrimeNG's installed Escape listener does not recheck closeOnEscape after opening.
+    fromEvent<KeyboardEvent>(inject(DOCUMENT), 'keydown', { capture: true })
+      .pipe(takeUntilDestroyed())
+      .subscribe((event) => {
+        if (event.key === 'Escape' && this.addingMember()) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      });
     const team = this.config.data?.team as Team;
 
     // Initialize form
@@ -272,6 +286,8 @@ export class TeamEditComponent {
   }
 
   showAddMemberDialog(): void {
+    if (this.addingMember()) return;
+    this.addMemberError.set(null);
     this.selectedPlayerToAdd.set(null);
     this.selectedMembershipType.set(TeamMembershipType.REGULAR);
     this.showAddPlayerDialog.set(true);
@@ -308,44 +324,44 @@ export class TeamEditComponent {
       });
   }
 
-  addMember(): void {
+  async addMember(): Promise<void> {
     const player = this.selectedPlayerToAdd();
     const membershipType = this.selectedMembershipType();
     const teamId = this.config.data?.team?.id;
 
-    if (!player || !teamId) {
+    if (this.addingMember() || !player?.id || !teamId) {
       return;
     }
 
-    this.apollo
-      .mutate<{ addTeamPlayerMembership: TeamPlayerMembership }>({
-        mutation: ADD_TEAM_MEMBERSHIP,
-        variables: {
-          teamId,
-          playerId: player.id,
-          membershipType,
-        },
-      })
-      .subscribe({
-        next: (result) => {
-          if (result.data && result.data.addTeamPlayerMembership) {
-            const membership = result.data.addTeamPlayerMembership;
-            // Add the new membership to the list
-            this.teamPlayerMemberships.update((members) => [...members, membership]);
-            this.teamForm.markAsDirty();
-            this.showAddPlayerDialog.set(false);
-          }
-        },
-        error: (err) => {
-          console.error('Error adding team member:', err);
-          // TODO: Show error message to user
-        },
-      });
+    this.addingMember.set(true);
+    this.addMemberError.set(null);
+    try {
+      const result = await lastValueFrom(
+        this.apollo.mutate<{ addTeamPlayerMembership: TeamPlayerMembership }>({
+          mutation: ADD_TEAM_MEMBERSHIP,
+          variables: { teamId, playerId: player.id, membershipType },
+        }),
+      );
+      const membership = result.data?.addTeamPlayerMembership;
+      if (!membership) {
+        throw new Error('Adding team membership returned no membership');
+      }
+      this.teamPlayerMemberships.update((members) => [...members, membership]);
+      this.teamForm.markAsDirty();
+      this.showAddPlayerDialog.set(false);
+    } catch (err) {
+      console.error('Error adding team member:', err);
+      this.addMemberError.set('all.team.detail.roster.addError');
+    } finally {
+      this.addingMember.set(false);
+    }
   }
 
   cancelAddMember(): void {
+    if (this.addingMember()) return;
     this.showAddPlayerDialog.set(false);
     this.selectedPlayerToAdd.set(null);
+    this.addMemberError.set(null);
   }
 
   removeMembership(membership: TeamPlayerMembership): void {
@@ -367,6 +383,7 @@ export class TeamEditComponent {
   }
 
   async onSave(): Promise<void> {
+    if (this.addingMember()) return;
     if (!this.teamForm.valid) {
       this.teamForm.markAllAsTouched();
       return;
@@ -451,6 +468,7 @@ export class TeamEditComponent {
   }
 
   onHide(): void {
+    if (this.addingMember()) return;
     this.dialogRef.close();
   }
 

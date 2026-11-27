@@ -21,8 +21,8 @@ description: 'Read-only consumer inventory before separately scoped global spaci
 
 - Enumerate exact tracked references, then check fragments and runtime custom-property access.
 - Distinguish definitions from reads; an obsolete stylesheet comment is not consumer evidence.
-- Native PrimeNG spacing/radius tokens and Tailwind layout classes are not these custom properties.
-  Do not change either system or redesign unmounted components.
+- Native PrimeNG tokens are separate. The original literal-source inventory missed generated Tailwind
+  radius readers; see the DR-029f correction below. Do not change either system or redesign unmounted components.
 - No markup, utility usage, style rules or behavior changes. No smart/presentational extraction is
   justified for a token inventory; shared component extraction requires actual repeated consumers.
 
@@ -48,10 +48,10 @@ description: 'Read-only consumer inventory before separately scoped global spaci
 | `--space-6`   | 32px  | Definition only; separate retirement candidate. |
 | `--space-7`   | 48px  | Definition only; separate retirement candidate. |
 | `--space-8`   | 64px  | Definition only; separate retirement candidate. |
-| `--radius-sm` | 4px   | Definition only; separate retirement candidate. |
-| `--radius-md` | 8px   | Definition only; separate retirement candidate. |
-| `--radius-lg` | 12px  | Definition only; separate retirement candidate. |
-| `--radius-xl` | 20px  | Definition only; separate retirement candidate. |
+| `--radius-sm` | 4px   | Retain; generated Tailwind radius name.         |
+| `--radius-md` | 8px   | Retain; generated Tailwind radius name.         |
+| `--radius-lg` | 12px  | Retain; generated Tailwind radius name.         |
+| `--radius-xl` | 20px  | Retain; generated Tailwind radius name.         |
 
 - Exact tracked search returns twelve declarations, all in the theme stylesheet, and no external readers.
   The comments claiming component SCSS consumers are not supported by current tracked source.
@@ -70,6 +70,12 @@ description: 'Read-only consumer inventory before separately scoped global spaci
   qualification typography, PrimeNG/Tailwind infrastructure and every other global rule.
 
 ### Validation and next action
+
+- DR-029f correction, 2026-11-27: built Tailwind CSS defines all four radius names and generates
+  `rounded-lg/sm/xl` rules that read them. Unlayered root declarations override layered Tailwind defaults.
+  Literal tracked-source searches did not establish absence of generated consumers.
+  DR-029f retains all four overrides and removes spacing only; DR-029g separately audits radius consumers/cascade.
+  Original approval and its limits remain history; it does not approve radius removal.
 
 ```powershell
 git --no-pager grep -n -P -e '(?<![\w-])(?:--space-[1-8]|--radius-(?:sm|md|lg|xl))(?![\w-])' -- . ':!docs' ':!.github' ':!.claude' ':!package-lock.json'

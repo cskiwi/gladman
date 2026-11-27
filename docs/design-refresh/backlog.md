@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029f [Unused spacing token retirement](work-items/DR-029f-unused-spacing-radius-tokens.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Removed eight unmatched spacing declarations and their obsolete comment from the mounted global theme stylesheet.
+Generated CSS exposes indirect Tailwind radius consumers missed by DR-029e's literal-source inventory.
+Restore/preserve all four radius overrides and correct that inventory and the source comment.
+Preserve compatibility colors/gradient, qualification typography, PrimeNG/Tailwind and all other rules.
+App lint/build pass: 31 successful tasks, 29 cached; no app test target.
+Home samples match in light/dark at 390px/1440px; all six supplied dark-wide route samples match.
+Four native theme Enter/focus checks pass; original home/dark/1571 x 1272 restored.
+Full regression and inherited findings remain unchecked; existing navigation-transition errors remain.
+Explicit approval: `Approve with documented limits and commit`; unchecked criteria remain unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Approved commit scope: only this child and directly related handoff/inventory correction; no push.
+Exact next invocation: separately scope DR-029g radius utility-consumer/cascade investigation;
+retain radius overrides and do not redesign unused components or begin another slice here.
+DR-029 remains open; inherited findings and verification limits remain unresolved.
+
+### Previous focus: Spacing/radius consumer inventory (DR-029e)
+
 DR-029e [Spacing/radius consumer inventory](work-items/DR-029e-spacing-radius-inventory.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Documentation-only scope: inventory twelve global spacing/radius tokens and confirm the mounted stylesheet.
@@ -4120,7 +4139,8 @@ and linked from their registry rows.
 | [DR-029c](work-items/DR-029c-unused-chip-tag-modifiers.md)            | Retire unused global Chip/Tag modifiers and their private pulse animation    | Done    |
 | [DR-029d](work-items/DR-029d-unused-palette-tokens.md)                | Retire four unreferenced global palette/gradient tokens                      | Done    |
 | [DR-029e](work-items/DR-029e-spacing-radius-inventory.md)             | Inventory global spacing/radius token consumers                              | Done    |
-| DR-029f                                                               | Retire unmatched spacing/radius tokens after DR-029e review and fresh checks | Backlog |
+| [DR-029f](work-items/DR-029f-unused-spacing-radius-tokens.md)         | Retire eight unused spacing tokens; preserve Tailwind radius overrides       | Done    |
+| DR-029g                                                               | Investigate radius utility consumers and cascade before any retirement       | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -5019,8 +5039,10 @@ routes][admin-routes] and [sync routes][sync-routes].
 - DR-029d separately retires only four unreferenced palette/gradient tokens after fresh tracked checks.
   Preserve referenced win/loss/rank-gradient tokens, typography, spacing/radius and unused component sources.
 - DR-029e inventories twelve spacing/radius properties: definitions only, no tracked readers found.
-  Retain them until separate retirement. DR-029f is a separate candidate depending on completed DR-029e
-  and fresh exact/indirect consumer checks; do not touch PrimeNG/Tailwind infrastructure or other global rules.
+  Its literal-source search missed generated Tailwind radius readers, corrected during DR-029f.
+- DR-029f removes only eight unused spacing properties; preserve all four radius overrides.
+  DR-029g separately investigates generated radius readers and mounted utility consumers before any retirement.
+  Do not touch PrimeNG/Tailwind infrastructure or other global rules; final regression remains separate.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.
 - Check all migrated routes, shared overlays, translations, theme persistence, and SSR/hydration.

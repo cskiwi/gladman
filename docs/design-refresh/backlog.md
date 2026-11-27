@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-077 [Mounted club add-member dialog control names](work-items/DR-077-add-member-control-names.md)
+is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Fresh source and browser checks confirm club overview Team bewerken opens TeamEditComponent;
+Lid toevoegen opens the nested dialog with unnamed player input/dropdown and close button.
+Scope only native accessible names and label associations in that nested dialog; preserve layout and all data/gates.
+Verify membership Type naming too; do not restyle the outer editor, change global styling or submit any mutations.
+Native player input/dropdown, membership Type and close names now reuse existing translations.
+No extraction is warranted for native accessibility bindings in one real consumer; no new styles or colors.
+Settled light/dark 390px/1440px geometry matches before/after; all four safe keyboard/overlay/close checks pass.
+Club lint/build pass: 12 tasks, 10 cached; lint has 37 existing warnings and no errors.
+Two rendered-control tests pass using the existing tournament zoneless setup override;
+default club tests fail before execution on missing `zone.js`, already tracked as DR-059.
+Inspected safe light-narrow/dark-wide crops; full contrast/screen-reader/locale/state/workflow/SSR checks not run.
+Existing nested footer is absent before/after; record separately as DR-079 without changing it here.
+Browser restored home/dark/1571 x 1272; existing auth/navigation/hydration errors remain.
+User approval: `Approve DR-077 with documented limits and commit`; unchecked verification limits stay unchecked.
+Required workspace lint: 22 of 34 pass; twelve reproduce documented dependency-check failures.
+Exact next invocation: separately scope DR-079 mounted add-member missing footer actions with fresh consumer/API checks.
+DR-079 is not started; commit only approved template/test/brief/backlog on existing `main`, no push.
+DR-029, DR-059 and inherited findings remain open; no dependencies, operational mutations or new branch/worktree.
+
+### Previous focus: Tournament admin Planning narrow overflow (DR-078)
+
 DR-078 [Tournament admin Planning narrow overflow](work-items/DR-078-planning-narrow-overflow.md)
 is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 User rejected the complex descendant selector; replace the non-collapsible outer Panel with native Card.
@@ -4383,14 +4406,27 @@ and linked from their registry rows.
 | [DR-074](work-items/DR-074-toast-contrast.md)                         | Native Toast dark detail-text contrast audit                                 | Done    |
 | [DR-075](work-items/DR-075-toast-light-summary-contrast.md)           | Native Toast light summary-text contrast                                     | Done    |
 | DR-076                                                                | Shared page-header subtitle contrast on the app canvas                       | Backlog |
-| DR-077                                                                | Mounted club team-edit add-member dialog control names                       | Backlog |
+| [DR-077](work-items/DR-077-add-member-control-names.md)               | Mounted club team-edit add-member dialog control names                       | Done    |
 | [DR-078](work-items/DR-078-planning-narrow-overflow.md)               | Tournament admin Planning narrow content overflow                            | Done    |
+| DR-079                                                                | Mounted club add-member dialog missing footer actions                        | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-079: Mounted club add-member dialog missing footer actions
+
+- Fresh DR-077 before/after samples confirm the nested Lid toevoegen dialog on `/clubs/smash-for-fun`
+  has no rendered Save/Cancel footer in light/dark at 390px/1440px.
+- Team bewerken opens TeamEditComponent; Lid toevoegen mounts the nested native Dialog.
+  Its existing template uses `pTemplate="footer"`; confirm the installed API before choosing a fix.
+- Scope separately to native footer projection and safe fixture action/gate verification.
+  Preserve immediate member-mutation behavior and outer team save; do not submit live member operations.
+- No implementation started; exact next action after DR-077 review: create a brief with fresh consumer/API evidence.
+- Default club Jest setup remains the separate existing DR-059 blocker; DR-077 used the existing
+  tournament zoneless setup override without changing infrastructure or dependencies.
 
 ### DR-078: Tournament admin Planning narrow content overflow
 

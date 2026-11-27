@@ -222,17 +222,20 @@
   [modal]="true"
   [style]="{ width: '450px' }"
   [header]="'all.team.edit.members.add' | translate"
+  [closeAriaLabel]="'all.button.close' | translate"
 >
   <div class="space-y-4">
     <!-- Player Selection -->
     <div>
-      <label class="block text-sm font-medium mb-2">{{ 'all.team.edit.members.player' | translate }}</label>
+      <label for="team-add-member-player" class="block text-sm font-medium mb-2">{{ 'all.team.edit.members.player' | translate }}</label>
       <p-autocomplete
+        inputId="team-add-member-player"
         [(ngModel)]="selectedPlayerToAdd"
         [suggestions]="playerSuggestions()"
         (completeMethod)="searchPlayer($event)"
         field="fullName"
         [dropdown]="true"
+        [dropdownAriaLabel]="'all.team.edit.members.player' | translate"
         [showEmptyMessage]="true"
         [emptyMessage]="'all.team.edit.members.noPlayersFound' | translate"
         styleClass="w-full"
@@ -257,8 +260,12 @@
 
     <!-- Membership Type Selection -->
     <div>
-      <label class="block text-sm font-medium mb-2">{{ 'all.team.edit.members.type' | translate }}</label>
+      <label id="team-add-member-type-label" for="team-add-member-type" class="block text-sm font-medium mb-2">
+        {{ 'all.team.edit.members.type' | translate }}
+      </label>
       <p-select
+        inputId="team-add-member-type"
+        ariaLabelledBy="team-add-member-type-label"
         [(ngModel)]="selectedMembershipType"
         [options]="membershipTypeOptions()"
         optionLabel="label"

@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029l [Remaining global layout selector inventory](work-items/DR-029l-global-layout-inventory.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Documentation-only scope: pair-value, Toolbar-region and Card-flush global rules.
+1,310-file tracked inventory finds no pair-value readers; retain every application rule in this slice.
+Builder's generated start region uses flex growth; no center/end templates in either current Toolbar consumer.
+Retain used start and Card-flush; seven Card-flush declarations in four source-mounted templates.
+Club builder/schedule light/dark 390px/1440px geometry sampled; player/live-upcoming dark-wide consumers confirmed.
+Tournament admin Planning is disabled in the sampled phase; do not bypass its gate.
+No component extraction, styling changes, dependencies, operational mutations, new branch/worktree or second slice.
+Formatting/document checks pass; application build/tests and full regression not run.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Original home/dark/1571 x 1272 restored; existing navigation errors remain.
+Explicit approval: `Approve inventory with documented limits and commit`; unperformed checks remain unchecked.
+Approved commit scope: only this brief/backlog; no push.
+Exact next invocation: separately scope DR-029m pair-value-only retirement with fresh checks; not started.
+Unmatched Toolbar center/end retirement requires a later generated-consumer check; retain start and Card-flush.
+DR-029 remains open; inherited findings and final regression remain unresolved.
+
+### Previous focus: Unused global feedback selector retirement (DR-029k)
+
 DR-029k [Unused global feedback selector retirement](work-items/DR-029k-unused-feedback-selectors.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Retired only `.error-text`, `label.required::after`, `small.hint` and their three comments.
@@ -4230,6 +4250,8 @@ and linked from their registry rows.
 | [DR-029i](work-items/DR-029i-autocomplete-child-width.md)             | Verify AutoComplete variants and retire its old direct-child width rule      | Done    |
 | [DR-029j](work-items/DR-029j-error-required-hint-inventory.md)        | Inventory global error/required/hint selectors before any retirement         | Done    |
 | [DR-029k](work-items/DR-029k-unused-feedback-selectors.md)            | Recheck and retire only unused error/required/hint selectors after DR-029j   | Done    |
+| [DR-029l](work-items/DR-029l-global-layout-inventory.md)              | Inventory remaining pair-value, Toolbar-region and Card-flush global rules   | Done    |
+| DR-029m                                                               | Recheck and retire only unmatched global pair-value rule after DR-029l       | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |

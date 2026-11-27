@@ -5,6 +5,29 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-079 [Mounted club add-member dialog footer](work-items/DR-079-add-member-footer.md)
+is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Fresh mounted consumer: club overview Team bewerken opens TeamEditComponent; Lid toevoegen opens the nested Dialog.
+Installed PrimeNG 22 queries a direct `#footer`; the existing `pTemplate="footer"` is not projected.
+Restored only native footer projection; all handlers, classes, gates and translations remain unchanged.
+Exclude outer-editor redesign, shared/global styles, dependencies, operational mutations and other routes.
+No extraction is warranted for one native projection slot with no repeated domain structure.
+Four settled light/dark 390px/1440px samples confirm visible footer actions and unchanged field dimensions.
+Native footer increases dialog height 218.5 to 269px; both buttons fit in the dialog.
+Four keyboard Cancel/reopen/Escape cases pass, with zero observed mutations; outer team Save remains disabled.
+Club lint/build pass: 12 tasks, 10 cached; 37 existing lint warnings, zero errors.
+Four focused rendered-control tests pass with existing zoneless setup override; default tests reproduce DR-059.
+Inspected safe dark-wide/light-narrow crops; full contrast/locale/state/workflow/permissions/SSR checks not run.
+Existing add-member pending/error feedback recorded separately as DR-080; no handler changes in this slice.
+Browser restored home/dark/1571 x 1272; scoped formatting/diff checks pass.
+User approval: `Approve DR-079 with documented limits and commit`, then `Nothing else`; unchecked limits stay unchecked.
+Required pre-commit workspace lint: 22 of 34 pass; twelve reproduce documented dependency-check failures.
+Approved commit scope: only template/test/brief/backlog on existing `main`, no push.
+Exact next invocation: separately scope DR-080 with safe mocked operations; it is not started.
+No new branch/worktree or second slice; DR-059 and inherited findings remain open.
+
+### Previous focus: Mounted club add-member dialog control names (DR-077)
+
 DR-077 [Mounted club add-member dialog control names](work-items/DR-077-add-member-control-names.md)
 is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Fresh source and browser checks confirm club overview Team bewerken opens TeamEditComponent;
@@ -4408,7 +4431,8 @@ and linked from their registry rows.
 | DR-076                                                                | Shared page-header subtitle contrast on the app canvas                       | Backlog |
 | [DR-077](work-items/DR-077-add-member-control-names.md)               | Mounted club team-edit add-member dialog control names                       | Done    |
 | [DR-078](work-items/DR-078-planning-narrow-overflow.md)               | Tournament admin Planning narrow content overflow                            | Done    |
-| DR-079                                                                | Mounted club add-member dialog missing footer actions                        | Backlog |
+| [DR-079](work-items/DR-079-add-member-footer.md)                      | Mounted club add-member dialog missing footer actions                        | Done    |
+| DR-080                                                                | Mounted club add-member pending and error feedback                           | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -4424,9 +4448,23 @@ and linked from their registry rows.
   Its existing template uses `pTemplate="footer"`; confirm the installed API before choosing a fix.
 - Scope separately to native footer projection and safe fixture action/gate verification.
   Preserve immediate member-mutation behavior and outer team save; do not submit live member operations.
-- No implementation started; exact next action after DR-077 review: create a brief with fresh consumer/API evidence.
+- Scoped in [the brief](work-items/DR-079-add-member-footer.md) with fresh mounted consumer and installed API evidence.
+- Native direct `#footer` projection is restored; existing handlers and all outer styling are preserved.
+- Club lint/build and four focused tests pass; light/dark 390px/1440px footer and cancellation checks pass.
+- User approved completion/commit with the brief's limits; unperformed checks remain unchecked.
+- No live member operations or second slice; next invocation separately scopes DR-080.
 - Default club Jest setup remains the separate existing DR-059 blocker; DR-077 used the existing
   tournament zoneless setup override without changing infrastructure or dependencies.
+
+### DR-080: Mounted club add-member pending and error feedback
+
+- DR-079 source inspection confirms `TeamEditComponent.addMember` has no in-flight gate;
+  its failure handler logs an error and retains a TODO for user notification.
+- Mounted consumer is the club overview Team bewerken > Lid toevoegen dialog; footer projection is restored in DR-079.
+- Scope separately after DR-079 review: safe mocked pending/failure/retry checks, native loading/disabled and explicit
+  localized feedback. Preserve immediate membership persistence and outer team save semantics.
+- Do not submit live member operations, redesign the outer editor or modify global styling/dependencies.
+- No implementation started; create a brief and verify current consumer and existing feedback patterns first.
 
 ### DR-078: Tournament admin Planning narrow content overflow
 

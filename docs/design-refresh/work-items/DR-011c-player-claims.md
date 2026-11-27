@@ -133,12 +133,13 @@ description: 'Native grouped claims selection and reliable local permission, dir
   browser-state and translated-label checks plus the disclosed full accessibility, locale, real-save/navigation
   and SSR/hydration limits. Inherited DR-033/034/076 findings remain open.
   Keep those criteria unchecked: acceptance is not evidence that an unperformed or failed check passed.
-- DR-011c is Done by that approval. Commit only its implementation, tests, locale/generated entries and handoff;
-  no push or workflow changes.
+- Approved implementation, tests, locale/generated entries and handoff are committed on existing `main`
+  as `643aee47`; no push or workflow changes.
 - Remaining checks can resume after the local frontend/API recover outside this slice's operational scope,
   without submitting a real permission mutation solely for visual validation.
-- DR-011 remains open. Exact next candidate: scope DR-011d ranking form and confirm its mounted consumer
-  in a subsequent invocation; do not start it here.
+- Required ranking children and their parent are complete.
+  [DR-011](DR-011-player-editing.md) reconciliation is now approved with consolidated limits;
+  parent is Done. Do not restart claims or ranking implementation.
 - Exceptions: none introduced.
 
 [component]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-claims/player-claims.component.ts

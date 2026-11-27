@@ -14,17 +14,18 @@ description: 'Bounded migration of the mounted player editor, one form or shared
 
 ## Required children
 
-- [DR-011a: Profile form](DR-011a-player-profile.md): selected first; profile child only.
+- [DR-011a: Profile form](DR-011a-player-profile.md): approved with documented limits.
 - [DR-011b: Editor chrome and feedback](DR-011b-player-editor-chrome.md): approved with documented limits.
 - [DR-011c: Claims form](DR-011c-player-claims.md): approved with documented limits.
-- [DR-011d: Ranking editor](DR-011d-player-ranking.md): split into history/read states and dialog/mutations.
+- [DR-011d: Ranking editor](DR-011d-player-ranking.md): approved parent with two approved children.
 
 ## Reconciliation and handoff
 
 - [x] Confirm a mounted consumer rather than an export or unused call chain.
 - [x] Split this multi-tab route into independently reviewable children.
-- [ ] Complete and review all required children.
-- [ ] Reconcile the parent against their evidence and retained verification limits.
+- [x] Complete and review all required children with their explicitly accepted verification limits.
+- [x] Reconcile the parent against their evidence and retained verification limits.
+- [x] Obtain explicit parent approval with the consolidated verification limits.
 
 The existing page/container and form-child boundary already separates orchestration from each form.
 Do not introduce a second wrapper without confirmed repeated structure in real consumers.
@@ -68,7 +69,8 @@ to refresh its presentation.
   Preserve unchecked visual/accessibility, browser-state, locale, real-save/navigation and SSR/hydration criteria.
   Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures matching DR-011b.
 - DR-011d mounted Ranking tab confirmed on 2026-11-25: 41 groups/313 rows.
-  [DR-011d1](DR-011d1-ranking-history.md) selects only history/read states; DR-011d2 retains dialog/mutation scope.
+  [DR-011d1](DR-011d1-ranking-history.md) completed history/read states;
+  [DR-011d2](DR-011d2-ranking-dialog.md) completed dialog/mutation scope.
 - DR-011d1: native named history Tables and dated edit Buttons, explicit read feedback and stale-response protection.
   Ten ranking tests plus eleven editor regressions and player lint/build pass; twenty existing lint warnings.
   Settled theme/width geometry, keyboard entry and sampled contrast pass; final history crops inspected.
@@ -86,7 +88,73 @@ to refresh its presentation.
   Required workspace lint: 22 targets pass; twelve reproduce existing dependency-check failures from DR-011d1.
 - Ranking children are committed on existing `main`: DR-011d1 `89b7c6ec`, DR-011d2 `f83321a5`.
   DR-011d evidence was reconciled and explicitly approved with documented limits on 2026-11-27; ranking parent is Done.
-- DR-011 remains open. Exact next action: reconcile DR-011 separately against all required children,
-  retaining their accepted verification limits. Do not start another implementation slice or push here.
+
+### Parent reconciliation, 2026-11-27
+
+- Started with a clean worktree on existing `main`; no branch or worktree creation.
+- Confirmed the current mounted chain: `/players` registration in [app routes][app-routes],
+  `:playerId/edit` in [player routes][player-routes], and Profile/Claims/Ranking children in
+  the [page template][page-template]. This is source confirmation, not a fresh hydrated-browser pass.
+- Read every required child brief, including both ranking children, and inspected current page orchestration
+  and all three child templates. Native Panels/fields, tab/save targeting and Toast, claims grouping/read feedback,
+  ranking Tables and responsive labelled dialog remain present.
+- The existing page/form boundary separates orchestration and child concerns. Ranking fields already render from
+  one discipline list. No additional real consumer justifies another smart/presentational wrapper.
+- Verified the approved implementation and ranking-parent commits in current branch history:
+
+| Required concern | Approved commit | Retained evidence                                                                |
+| ---------------- | --------------- | -------------------------------------------------------------------------------- |
+| DR-011a profile  | `34e06bb5`      | Seven tests, player lint/build, bounded theme/width and keyboard checks          |
+| DR-011b chrome   | `8907a115`      | Eighteen editor/profile tests, player lint/build, bounded chrome/Toast checks    |
+| DR-011c claims   | `643aee47`      | Twenty-eight claims/editor/profile tests, player lint/build, safe-fixture checks |
+| DR-011d1 history | `89b7c6ec`      | Twenty-one ranking/editor tests, player lint/build, bounded history checks       |
+| DR-011d2 dialog  | `f83321a5`      | Thirty-nine ranking/editor tests, player lint/build, bounded dialog checks       |
+| DR-011d parent   | `a96239dd`      | Explicitly approved documentation reconciliation with child limits               |
+
+- These are inherited child results, not newly run application checks. Test totals overlap; do not sum them.
+  All required children are Done by their individual approvals; optional DR-011e does not gate this parent.
+- Utility comparisons remain child-scoped: profile 84 -> 65, chrome 46 -> 24, claims 60 -> 43,
+  history 63 -> 20, dialog 66 -> 26. No new utility/style changes or exceptions in this reconciliation.
+- No application, service, dependency, authentication, storage, browser or operational changes.
+  Documentation-only scope does not require a new application build/test or visual pass.
+
+### Consolidated verification limits
+
+- Keep every unchecked child criterion unchanged. Parent reconciliation does not convert acceptance into a pass.
+- Full screenshot/contrast/accessibility, screen-reader/touch, browser locale switching, live save/delete/permission/
+  navigation and SSR/hydration checks remain unperformed as detailed in each brief.
+- Claims retains its service-interrupted full mounted-catalog theme/width, browser-state, sampled-contrast and
+  translated-label checks. Safe-fixture checks do not establish full real-catalog coverage.
+- Light Button labels fail at 3.65:1 (Save) and 3.76:1 (Delete), warn Message at 2.83:1 and shared subtitle at
+  4.46:1. DR-033/034/076 remain open; no shared/theme workaround or resolved contrast claim.
+- Existing workspace lint: 22 of 34 targets pass; twelve dependency-check failures remain unresolved.
+  The child briefs retain exact commands, target lists and warning counts; no workspace lint rerun in this scope.
+- Existing identifier persistence and localization gaps remain deferred; no optional functional DR-011e started.
+- Explicit parent approval on 2026-11-27: `Approve with documented limits and commit`.
+  DR-011 is Done by that approval. The accepted limits above remain unchecked in every child;
+  approval is not evidence that failed or unperformed checks passed.
+
+### Exact next action
+
+- Commit only this approved reconciliation and directly related handoff on existing `main`; no push.
+- Next invocation: scope one bounded DR-029 cleanup child using the completed DR-029a inventory
+  and a fresh consumer check. No remaining item is Ready; do not promote the entire global cleanup or remove
+  deferred consumers without evidence. Do not restart completed player children or optional DR-011e.
+
+### Documentation validation
+
+- `git --no-pager log -8 --format="%h %s"` and scoped last-change logs confirm the six approved commits above.
+- `npx prettier --write` with exactly the six changed design-refresh documents: passed.
+  With no remaining `In progress` row, the formatter narrows the existing registry status column;
+  historical rows, IDs and statuses are preserved apart from DR-011's transition to Review.
+- `git --no-pager diff --check`: passed.
+- Read-only inline Node assertions: six scoped documents use LF, valid frontmatter and trailing newlines;
+  536 local link targets exist; DR-011/a-e registry rows are unique and match Done/Backlog after approval;
+  every child checklist is unchanged from its committed version.
+- Existing Git LF-to-CRLF warnings do not describe current file bytes; actual documents are verified LF.
+- No application lint/build/test or browser checks run for this documentation-only reconciliation.
 
 [page]: ../../../libs/frontend/pages/player/src/pages/edit/page-edit.component.ts
+[app-routes]: ../../../apps/app/config/app.routes.ts
+[player-routes]: ../../../libs/frontend/pages/player/src/lib.routes.ts
+[page-template]: ../../../libs/frontend/pages/player/src/pages/edit/page-edit.component.html

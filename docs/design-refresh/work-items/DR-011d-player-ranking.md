@@ -78,9 +78,9 @@ Both approved children are committed on existing `main`: history `89b7c6ec`, dia
 
 ### Exact next action
 
-- Commit only this approved reconciliation and its directly related handoff on existing `main`; do not push.
-- Exact next invocation: reconcile DR-011 separately against all required children, retaining their
-  accepted verification limits. Do not start another implementation slice or the optional DR-011e follow-up here.
+- Approved ranking reconciliation and its handoff are committed on existing `main` as `a96239dd`; no push.
+- [DR-011](DR-011-player-editing.md) reconciliation is now approved with every accepted child limit intact;
+  parent is Done. Do not restart ranking or the optional DR-011e follow-up.
 
 [component]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-ranking/player-ranking.component.ts
 [app-routes]: ../../../apps/app/config/app.routes.ts

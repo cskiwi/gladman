@@ -132,10 +132,10 @@ description: 'Native grouped profile fields, semantic validation and explicitly 
   This authorizes completion and the scoped commit with the disclosed full screenshot/contrast,
   screen-reader/touch, locale-switching, live save/workflow and SSR/hydration limits retained unchecked.
   Approval is not evidence that these unperformed checks passed.
-- DR-011a is Done by that approval. Commit only its profile implementation, seven tests and DR-011/a handoff;
-  no push is authorized. Required workspace lint ran with unrelated failures recorded above.
-- Parent DR-011 remains open. Next candidate after approval: scope DR-011b editor chrome/tab state and feedback.
-  Do not begin it or another implementation child in this invocation.
+- Approved profile implementation, seven tests and handoff are committed on existing `main` as `34e06bb5`.
+  Required workspace lint ran with unrelated failures recorded above; no push is authorized.
+- Required sibling children are also complete. [DR-011](DR-011-player-editing.md) reconciliation is now approved
+  with consolidated limits; parent is Done. Do not restart this child or another completed sibling.
 
 [template]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-profile/player-profile.component.html
 [component]: ../../../libs/frontend/pages/player/src/pages/edit/components/player-profile/player-profile.component.ts

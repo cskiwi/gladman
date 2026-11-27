@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029c [Unused Chip/Tag modifier retirement](work-items/DR-029c-unused-chip-tag-modifiers.md) is Done
+on existing `main`, 2026-11-27, starting with a clean worktree.
+Removed only four unmatched global Chip/Tag modifiers and their private pulse animation (43 lines).
+Fresh tracked searches and emitted CSS confirm removal; all excluded tokens and qualification typography remain.
+App lint/build pass (31 successful tasks, 29 cached). No app test target; no new behavior test needed for dead CSS.
+Home heading/cell/native Tag metrics match before/after in light/dark at 390px/1440px.
+Six supplied feature routes retain sampled heading/Tag/cell metrics with zero retired modifier nodes.
+Club rows vary during asynchronous loading (70 before, 45 after); no settled dataset equality claim.
+Four native theme Button Enter/focus checks pass; original home, dark presentation and viewport restored.
+Keep existing transition errors, inherited contrast findings and unchecked full regression limits.
+No component extraction, new styling exception, dependency or operational changes.
+Explicit approval: `Approve with documented limits and commit`, 2026-11-27; unchecked criteria stay unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce existing dependency-check failures.
+Commit only this approved child and handoff; no push.
+Exact next invocation: scope DR-029d for remaining unused palette/gradient tokens using fresh tracked consumer checks.
+DR-029 remains open; this candidate is not started and does not authorize deletion of referenced tokens.
+Do not delete qualification typography, redesign unused components or begin another implementation slice here.
+
+### Previous focus: Unused typography retirement (DR-029b)
+
 DR-029b [Unused typography retirement](work-items/DR-029b-unused-typography.md) is Done on existing
 `main`, 2026-11-27, starting with a clean worktree.
 Removed only four unmatched typography helpers and three private size tokens after fresh tracked consumer checks.
@@ -4062,6 +4082,7 @@ and linked from their registry rows.
 | DR-029                                                                | Legacy styling retirement and final regression                               | Backlog |
 | [DR-029a](work-items/DR-029a-legacy-typography.md)                    | Legacy typography consumer inventory                                         | Done    |
 | [DR-029b](work-items/DR-029b-unused-typography.md)                    | Retire four unused typography helpers and three private size tokens          | Done    |
+| [DR-029c](work-items/DR-029c-unused-chip-tag-modifiers.md)            | Retire unused global Chip/Tag modifiers and their private pulse animation    | Done    |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -4955,6 +4976,8 @@ routes][admin-routes] and [sync routes][sync-routes].
 - DR-029a inventories only global typography. DR-010a removes the player usage; retain `.t-eyebrow` for the
   deferred DR-016 qualification branch. DR-029b removes the four unmatched helpers after fresh exact tracked checks;
   its bounded app/browser checks do not complete the rest of the global stylesheet or the final regression matrix.
+- DR-029c retires only unmatched global Chip/Tag modifiers and their private animation after fresh tracked searches.
+  Keep palette, gradient, spacing and radius tokens unchanged; do not redesign unused components.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.
 - Check all migrated routes, shared overlays, translations, theme persistence, and SSR/hydration.

@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029k [Unused global feedback selector retirement](work-items/DR-029k-unused-feedback-selectors.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Retired only `.error-text`, `label.required::after`, `small.hint` and their three comments.
+Preserved generic `small`, grouped widths, native feedback and every other global rule/component.
+Fresh 1,309-file consumer checks find no class readers; served CSS confirms removal.
+Light/dark 390px/1440px before/after hint styles/geometry match; required properties and labels remain.
+Four native theme Enter/focus and information-tab keyboard checks pass; app lint/build pass.
+Existing narrow overflow remains DR-066; navigation transition errors persist.
+Full visual/accessibility/state/locale/workflow/SSR regression not run; unchecked limits remain preserved.
+No extraction, dependencies, operational mutations, new branch/worktree or second implementation slice.
+Original home/dark/1571 x 1272 restored.
+Explicit approval: `Approve with documented limits and commit`; approved scope only stylesheet/brief/backlog; no push.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Exact next invocation: separately scope remaining pair-value/toolbar/Card-flush global consumer inventory under DR-029.
+DR-029 remains open; inherited findings and final regression remain unresolved.
+
+### Previous focus: Global error, required and hint selector inventory (DR-029j)
+
 DR-029j [Global error, required and hint selector inventory](work-items/DR-029j-error-required-hint-inventory.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Documentation-only scope: inventory `.error-text`, `label.required::after` and `small.hint`.
@@ -4211,7 +4229,7 @@ and linked from their registry rows.
 | [DR-029h](work-items/DR-029h-form-width-inventory.md)                 | Inventory remaining global form-width overrides before any retirement        | Done    |
 | [DR-029i](work-items/DR-029i-autocomplete-child-width.md)             | Verify AutoComplete variants and retire its old direct-child width rule      | Done    |
 | [DR-029j](work-items/DR-029j-error-required-hint-inventory.md)        | Inventory global error/required/hint selectors before any retirement         | Done    |
-| DR-029k                                                               | Recheck and retire only unused error/required/hint selectors after DR-029j   | Backlog |
+| [DR-029k](work-items/DR-029k-unused-feedback-selectors.md)            | Recheck and retire only unused error/required/hint selectors after DR-029j   | Done    |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -5124,8 +5142,9 @@ routes][admin-routes] and [sync routes][sync-routes].
   Broader regression and existing workspace lint failures remain unresolved; unchecked criteria stay unchecked.
   DR-029j inventories error/required/hint selectors: three definitions, no tracked class consumers.
   Served rules confirmed; mounted editor hint samples are ordinary semantic `small`, not `.hint`.
-  Inventory approved with disclosed limits; application styles remain unchanged. DR-029k is a separate retirement candidate
-  depending on approved DR-029j and fresh consumer checks; preserve generic `small` and all other global rules.
+  Inventory approved with disclosed limits; application styles were unchanged in DR-029j.
+  DR-029k retires only these three rules/comments after fresh consumer checks; generic `small` and all other rules remain.
+  App lint/build and bounded before/after checks pass; user approved with disclosed limits; broader regression remains open.
   Do not touch PrimeNG/Tailwind infrastructure or other global rules; final regression remains separate.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.

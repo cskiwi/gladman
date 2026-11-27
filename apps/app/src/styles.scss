@@ -52,24 +52,6 @@ p-select:not(.p-paginator-rpp-dropdown) {
   width: 100%;
 }
 
-// Input field error message
-.error-text {
-  color: var(--p-red-500);
-}
-
-// add required asterisk to label
-label.required::after {
-  content: '*';
-  margin-left: 0.5rem;
-  color: var(--p-red-500);
-}
-
-// Hint font text
-small.hint {
-  font-size: 12px;
-  color: var(--p-text-muted-color);
-}
-
 .pair-value-group {
   display: flex;
   gap: 1rem;

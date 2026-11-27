@@ -5,6 +5,30 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-078 [Tournament admin Planning narrow overflow](work-items/DR-078-planning-narrow-overflow.md)
+is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+User rejected the complex descendant selector; replace the non-collapsible outer Panel with native Card.
+Keep only simple `block`; no styling exception, pt/dt, global change or nested Card.
+Earlier selector validation is superseded; fresh native Card lint/build and 40 focused tests pass.
+Settled light/dark 390px document client/scroll is 375/375px, previously 375/663px.
+Native Card Toolbar is 278.5px narrow/1211.5px wide; native spacing accounts for the 3.5px wide change.
+Native controls, disabled gates and four fresh settled keyboard/filter/toggle checks pass.
+Other four admin tabs sampled in both themes at 390px/1440px; Settings busy subsection remains unverified.
+Transient 15px other-tab transition overflow was sampled; no exhaustive other-tab responsive pass.
+Lint/build pass: 32 tasks, 29 cached; two focused suites/40 tests pass.
+Preserve native Toolbar, all data/gates, global/theme styles and nested Panels; no nested Cards.
+Native Card owns the outer surface; existing nested Panels and loading Panel remain.
+No extraction, dependencies, operational mutations, new branch/worktree or second slice.
+Full contrast/accessibility/state/locale/workflow/SSR regression not run; existing auth/reload errors remain.
+Explicit approval: `Approve DR-078 with documented limits and commit`; unchecked limits stay unchecked.
+Required pre-commit workspace lint: 22 of 34 pass; twelve reproduce documented dependency-check failures.
+Exact next invocation: separately scope DR-077 mounted club add-member control names with fresh consumer checks.
+DR-077 is not started.
+Commit only approved admin component/test/brief/backlog on existing `main`; no push.
+DR-029 and inherited findings remain open.
+
+### Previous focus: Unused Toolbar region override retirement (DR-029o)
+
 DR-029o [Unused Toolbar region override retirement](work-items/DR-029o-unused-toolbar-regions.md)
 is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Removed only unmatched center/end flex selectors and end justification after fresh 1,310-file checks.
@@ -4360,7 +4384,7 @@ and linked from their registry rows.
 | [DR-075](work-items/DR-075-toast-light-summary-contrast.md)           | Native Toast light summary-text contrast                                     | Done    |
 | DR-076                                                                | Shared page-header subtitle contrast on the app canvas                       | Backlog |
 | DR-077                                                                | Mounted club team-edit add-member dialog control names                       | Backlog |
-| DR-078                                                                | Tournament admin Planning narrow content overflow                            | Backlog |
+| [DR-078](work-items/DR-078-planning-narrow-overflow.md)               | Tournament admin Planning narrow content overflow                            | Done    |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -4370,6 +4394,8 @@ and linked from their registry rows.
 
 ### DR-078: Tournament admin Planning narrow content overflow
 
+- Scoped in [the brief](work-items/DR-078-planning-narrow-overflow.md), with fresh root-cause evidence and
+  a native outer Card instead of a complex Panel-internals selector; all five tabs sharing it are sampled.
 - DR-029n observed the enabled Planning tab of
   `/tournament/759e0526-8440-4108-bba3-55a7d8b94e72/admin?tab=schedule` without data mutations.
 - At 390px, the Toolbar is 585.453125px wide and the document scroll width is 663px.

@@ -182,7 +182,7 @@ describe('Tournament administration chrome', () => {
     hasAnyPermission.mockReturnValue(true);
     query.mockReturnValue(of({ data: { tournamentEvent: event(phase) } }));
     const { element } = await mount();
-    expect(element.querySelector('p-panel .p-panel-content p-tabs[scrollable]')).not.toBeNull();
+    expect(element.querySelector('p-card .p-card-content p-tabs[scrollable]')).not.toBeNull();
     const tabs = Array.from(element.querySelectorAll<HTMLElement>('[role="tab"]'));
     expect(tabs.map((tab) => tab.getAttribute('aria-disabled') === 'true')).toEqual(disabled);
     expect(tabs.map((tab) => tab.textContent?.trim())).toEqual(['Settings', 'Enrollments', 'Draws', 'Schedule', 'Check-in']);

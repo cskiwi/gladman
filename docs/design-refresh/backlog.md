@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029n [Toolbar region consumer verification](work-items/DR-029n-toolbar-region-verification.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Investigation only: 1,310 tracked files and installed template conditions show no center/end consumers.
+Eight settled light/dark 390px/1440px samples verify both actual mounted Toolbar consumers.
+Builder uses one start region; imported tournament Planning projects no regions, with its gate respected.
+All application styling, used start, Card-flush and every component remain unchanged.
+Existing narrow Planning page overflow is separately recorded as DR-078; no responsive pass claimed.
+Scoped formatting/diff checks pass; browser returned home/dark at documented 1571 x 1272.
+Full visual/accessibility/state/locale/workflow/SSR regression and application build/tests not run.
+Required pre-commit workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+No extraction, dependencies, data mutations, new branch/worktree or second slice.
+Explicit approval: `Approve inventory with documented limits and commit`; unchecked limits remain unchecked.
+Approved commit scope: only this brief/backlog on existing `main`; no push.
+Exact next invocation: separately scope DR-029o to retire only unmatched center/end overrides with fresh checks.
+DR-029 stays open; inherited findings remain unresolved. DR-029o is not started.
+
+### Previous focus: Unused pair-value rule retirement (DR-029m)
+
 DR-029m [Unused pair-value rule retirement](work-items/DR-029m-unused-pair-value.md) is Done
 on existing `main`, 2026-11-27, starting with a clean worktree.
 Fresh 1,310-file tracked inventory finds only the two definitions; removed only the eleven-line global block.
@@ -4271,7 +4289,8 @@ and linked from their registry rows.
 | [DR-029k](work-items/DR-029k-unused-feedback-selectors.md)            | Recheck and retire only unused error/required/hint selectors after DR-029j   | Done    |
 | [DR-029l](work-items/DR-029l-global-layout-inventory.md)              | Inventory remaining pair-value, Toolbar-region and Card-flush global rules   | Done    |
 | [DR-029m](work-items/DR-029m-unused-pair-value.md)                    | Recheck and retire only unmatched global pair-value rule after DR-029l       | Done    |
-| DR-029n                                                               | Verify unmatched Toolbar center/end consumers after DR-029m                  | Backlog |
+| [DR-029n](work-items/DR-029n-toolbar-region-verification.md)          | Verify unmatched Toolbar center/end consumers after DR-029m                  | Done    |
+| DR-029o                                                               | Retire only unmatched Toolbar center/end overrides after approved DR-029n    | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -4322,12 +4341,25 @@ and linked from their registry rows.
 | [DR-075](work-items/DR-075-toast-light-summary-contrast.md)           | Native Toast light summary-text contrast                                     | Done    |
 | DR-076                                                                | Shared page-header subtitle contrast on the app canvas                       | Backlog |
 | DR-077                                                                | Mounted club team-edit add-member dialog control names                       | Backlog |
+| DR-078                                                                | Tournament admin Planning narrow content overflow                            | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
 [dr-017k]: work-items/DR-017k-assembly-player-summaries.md
 
 ## App and shared surfaces
+
+### DR-078: Tournament admin Planning narrow content overflow
+
+- DR-029n observed the enabled Planning tab of
+  `/tournament/759e0526-8440-4108-bba3-55a7d8b94e72/admin?tab=schedule` without data mutations.
+- At 390px, the Toolbar is 585.453125px wide and the document scroll width is 663px.
+  Both settled themes produce the same Toolbar geometry; the dark crop confirms clipping.
+  At 1440px, Toolbar width is 1215px and document width is 1425px, with no page overflow.
+- No generated start/center/end regions in any sample; this is separate from unmatched global region rules
+  and the topbar-specific DR-066 issue. Source cause not investigated in DR-029n.
+- Scope a separate route/tab investigation preserving native Toolbar, schedule gates, disabled controls,
+  localization and safe read-only verification. Do not generate, schedule or publish data to reproduce it.
 
 ### DR-075: Native Toast light summary-text contrast
 

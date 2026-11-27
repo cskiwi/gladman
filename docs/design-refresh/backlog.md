@@ -5,6 +5,21 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029h [Global form-width override inventory](work-items/DR-029h-form-width-inventory.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Inventoried both global form-width rules, eleven selectors, native fluid APIs and tracked template candidates.
+Confirmed header, club roster/season, head-to-head and assembly consumers; preserve the grouped rule.
+Corrected settled-theme sizing matrices pass in light/dark at 390px/1440px for roster and head-to-head.
+Old AutoComplete direct-child div rule has no sampled matches; keep it pending separate variant verification.
+No application styling/code changes, extraction, dependency or operational mutations.
+Application lint/build/tests and full visual/accessibility/workflow/SSR regression not run: documentation only.
+Explicit approval: `Approve inventory with documented limits and commit`; unperformed checks remain unperformed.
+Approved commit scope: only this brief/backlog; no push.
+Exact next invocation: separately scope DR-029i AutoComplete direct-child width-rule retirement verification; not started.
+DR-029 remains open; inherited findings and final regression remain unresolved.
+
+### Previous focus: Radius utility consumers and cascade (DR-029g)
+
 DR-029g [Radius utility consumers and cascade](work-items/DR-029g-radius-consumers-cascade.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Documentation-only investigation of four retained radius overrides, generated Tailwind readers and mounted consumers.
@@ -4157,7 +4172,8 @@ and linked from their registry rows.
 | [DR-029e](work-items/DR-029e-spacing-radius-inventory.md)             | Inventory global spacing/radius token consumers                              | Done    |
 | [DR-029f](work-items/DR-029f-unused-spacing-radius-tokens.md)         | Retire eight unused spacing tokens; preserve Tailwind radius overrides       | Done    |
 | [DR-029g](work-items/DR-029g-radius-consumers-cascade.md)             | Investigate radius utility consumers and cascade before any retirement       | Done    |
-| DR-029h                                                               | Inventory remaining global form-width overrides before any retirement        | Backlog |
+| [DR-029h](work-items/DR-029h-form-width-inventory.md)                 | Inventory remaining global form-width overrides before any retirement        | Done    |
+| DR-029i                                                               | Verify AutoComplete variants before retiring its old direct-child width rule | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -5062,7 +5078,9 @@ routes][admin-routes] and [sync routes][sync-routes].
   Retain all four values: lg is mounted/conditional; xl preserves unused legacy templates; sm/md are not
   authorized for deletion by this inventory. Unused team dispatch/encounters/matching/match-row/upcoming-match
   remain unchanged. Inventory approved with disclosed limits; bounded cascade samples do not complete final regression.
-  Next, separately scope DR-029h for global form-width overrides, without deleting them in this inventory.
+  DR-029h inventories both global form-width rules and confirms mounted consumers and native fluid alternatives.
+  Retain the grouped rule; sampled AutoComplete hosts have no direct-child div. Inventory approved with limits.
+  Next, separately scope DR-029i variant/consumer verification before retiring only that child rule.
   Do not touch PrimeNG/Tailwind infrastructure or other global rules; final regression remains separate.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.

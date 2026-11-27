@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029o [Unused Toolbar region override retirement](work-items/DR-029o-unused-toolbar-regions.md)
+is Done by explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Removed only unmatched center/end flex selectors and end justification after fresh 1,310-file checks.
+Preserved used start, Card-flush, form widths, every component and theme behavior.
+Both mounted Toolbar consumers match in eight before/after light/dark 390px/1440px samples.
+Eight safe keyboard checks pass; native names and observed disabled states match; served CSS confirms removal.
+App lint/build pass: 31 successful tasks, 29 cached; no app test target.
+DR-078 narrow Planning overflow persists; full visual/contrast/state/locale/workflow/SSR regression not run.
+No extraction, dependencies, operational mutations, new branch/worktree or second slice.
+Browser restored home/dark at captured 1571 x 1272 using explicit override; original override was null.
+Required pre-commit workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Explicit approval: `Approve with documented limits and commit` and `Nothing else`; unchecked limits stay unchecked.
+Approved commit scope: only stylesheet/brief/backlog on existing `main`; no push.
+Exact next invocation: separately scope existing DR-078 narrow Planning overflow with fresh consumer checks.
+DR-078 is not started.
+DR-029 and inherited findings remain open.
+
+### Previous focus: Toolbar region consumer verification (DR-029n)
+
 DR-029n [Toolbar region consumer verification](work-items/DR-029n-toolbar-region-verification.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Investigation only: 1,310 tracked files and installed template conditions show no center/end consumers.
@@ -4290,7 +4309,7 @@ and linked from their registry rows.
 | [DR-029l](work-items/DR-029l-global-layout-inventory.md)              | Inventory remaining pair-value, Toolbar-region and Card-flush global rules   | Done    |
 | [DR-029m](work-items/DR-029m-unused-pair-value.md)                    | Recheck and retire only unmatched global pair-value rule after DR-029l       | Done    |
 | [DR-029n](work-items/DR-029n-toolbar-region-verification.md)          | Verify unmatched Toolbar center/end consumers after DR-029m                  | Done    |
-| DR-029o                                                               | Retire only unmatched Toolbar center/end overrides after approved DR-029n    | Backlog |
+| [DR-029o](work-items/DR-029o-unused-toolbar-regions.md)               | Retire only unmatched Toolbar center/end overrides after approved DR-029n    | Done    |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |

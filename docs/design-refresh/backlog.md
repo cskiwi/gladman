@@ -5,6 +5,22 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029g [Radius utility consumers and cascade](work-items/DR-029g-radius-consumers-cascade.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Documentation-only investigation of four retained radius overrides, generated Tailwind readers and mounted consumers.
+Preserve all application styling, components, data and behavior; no radius retirement or component extraction.
+Source inventory: 17 utilities in seven templates; distinguish mounted KO/conditional qualification from unused callers.
+Served CSSOM confirms layered defaults/readers and winning unlayered app overrides; retain all four radius values.
+Mounted KO bracket: 20 rounded-lg nodes, three samples at 12px in light/dark at 390px/1440px; no page overflow.
+Original home/dark/1571 x 1272 restored; existing navigation errors remain. No final-regression pass claimed.
+Application lint/build/tests not run: documentation only. Formatting/document checks recorded in the brief.
+Explicit approval: `Approve inventory with documented limits and commit`; unperformed checks remain unperformed.
+Approved commit scope: only this brief/backlog; no push.
+Exact next invocation: separately scope DR-029h remaining global form-width override inventory; not started.
+DR-029 remains open; inherited findings and final regression remain unresolved.
+
+### Previous focus: Unused spacing token retirement (DR-029f)
+
 DR-029f [Unused spacing token retirement](work-items/DR-029f-unused-spacing-radius-tokens.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Removed eight unmatched spacing declarations and their obsolete comment from the mounted global theme stylesheet.
@@ -4140,7 +4156,8 @@ and linked from their registry rows.
 | [DR-029d](work-items/DR-029d-unused-palette-tokens.md)                | Retire four unreferenced global palette/gradient tokens                      | Done    |
 | [DR-029e](work-items/DR-029e-spacing-radius-inventory.md)             | Inventory global spacing/radius token consumers                              | Done    |
 | [DR-029f](work-items/DR-029f-unused-spacing-radius-tokens.md)         | Retire eight unused spacing tokens; preserve Tailwind radius overrides       | Done    |
-| DR-029g                                                               | Investigate radius utility consumers and cascade before any retirement       | Backlog |
+| [DR-029g](work-items/DR-029g-radius-consumers-cascade.md)             | Investigate radius utility consumers and cascade before any retirement       | Done    |
+| DR-029h                                                               | Inventory remaining global form-width overrides before any retirement        | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -5041,7 +5058,11 @@ routes][admin-routes] and [sync routes][sync-routes].
 - DR-029e inventories twelve spacing/radius properties: definitions only, no tracked readers found.
   Its literal-source search missed generated Tailwind radius readers, corrected during DR-029f.
 - DR-029f removes only eight unused spacing properties; preserve all four radius overrides.
-  DR-029g separately investigates generated radius readers and mounted utility consumers before any retirement.
+  DR-029g confirms winning unlayered overrides, generated readers and a mounted KO bracket consumer.
+  Retain all four values: lg is mounted/conditional; xl preserves unused legacy templates; sm/md are not
+  authorized for deletion by this inventory. Unused team dispatch/encounters/matching/match-row/upcoming-match
+  remain unchanged. Inventory approved with disclosed limits; bounded cascade samples do not complete final regression.
+  Next, separately scope DR-029h for global form-width overrides, without deleting them in this inventory.
   Do not touch PrimeNG/Tailwind infrastructure or other global rules; final regression remains separate.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.

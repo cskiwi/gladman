@@ -30,10 +30,7 @@
   );
 
   /* --- Typography scale (only sizes we actually use) --- */
-  --t-stat-lg: 2.5rem;
   --t-eyebrow: 0.6875rem;
-  --t-mono: 0.9375rem;
-  --t-body: 0.9375rem;
 
   /* --- Spacing scale (consumed by component SCSS files) --- */
   --space-1: 4px;
@@ -75,30 +72,6 @@ html.light-theme {
   text-transform: uppercase;
   color: var(--p-text-muted-color);
   line-height: 1;
-}
-
-.t-stat-lg {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: var(--t-stat-lg);
-  line-height: 1;
-  letter-spacing: -0.015em;
-  font-variant-numeric: tabular-nums;
-  color: var(--p-text-color);
-}
-
-.t-mono {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-.t-body {
-  font-size: var(--t-body);
-}
-
-.t-muted {
-  color: var(--p-text-muted-color);
 }
 
 /* ============================================================

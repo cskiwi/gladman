@@ -5,6 +5,26 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029b [Unused typography retirement](work-items/DR-029b-unused-typography.md) is Done on existing
+`main`, 2026-11-27, starting with a clean worktree.
+Removed only four unmatched typography helpers and three private size tokens after fresh tracked consumer checks.
+The mounted app imports the global stylesheet; retained `.t-eyebrow` for conditional competition qualification.
+Exclude other tokens, global overrides, unused components and final cross-route regression.
+App lint/build pass (31 successful tasks including dependencies, 27 cached).
+Compiled CSS has no retired selector/token and retains the qualification helper/token.
+Settled home typography, geometry, twelve rows and contained scrolling match before/after in light/dark at 390/1440px.
+Six supplied feature routes have unchanged sampled dark-wide heading metrics/table counts and no helper nodes.
+Native theme Button Enter activation and visible focus pass four theme/width checks.
+Retain existing navigation-transition errors and navigation-time aborted requests; no clean-console claim.
+Full cross-route visual/accessibility, workflow, locale and SSR/hydration regression remain unchecked.
+Explicit approval: `Approve with documented limits and commit`, 2026-11-27; unchecked criteria stay unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce existing dependency-check failures.
+Commit only this approved child and handoff; no push.
+Next invocation: scope a separate DR-029 cleanup child using fresh consumer evidence.
+Do not delete the qualification helper, redesign unused components or claim final regression passed.
+
+### Previous focus: Player editing parent reconciliation (DR-011)
+
 DR-011 [Player editing](work-items/DR-011-player-editing.md) parent reconciliation
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Reconciled required DR-011a/b/c/d and nested ranking children against their briefs and current mounted source.
@@ -4041,6 +4061,7 @@ and linked from their registry rows.
 | [DR-028d](work-items/DR-028d-cron-jobs-tab.md)                        | Sync cron jobs tab Card                                                      | Done    |
 | DR-029                                                                | Legacy styling retirement and final regression                               | Backlog |
 | [DR-029a](work-items/DR-029a-legacy-typography.md)                    | Legacy typography consumer inventory                                         | Done    |
+| [DR-029b](work-items/DR-029b-unused-typography.md)                    | Retire four unused typography helpers and three private size tokens          | Done    |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -4932,9 +4953,8 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 - Search all consumers before removing old gradients, `g-*`/`t-*` styling, custom tokens, or component overrides.
 - DR-029a inventories only global typography. DR-010a removes the player usage; retain `.t-eyebrow` for the
-  deferred DR-016 qualification branch. Recheck the four unmatched typography helpers separately before any removal.
-  This is not a pass for
-  the rest of the global stylesheet or the final regression matrix.
+  deferred DR-016 qualification branch. DR-029b removes the four unmatched helpers after fresh exact tracked checks;
+  its bounded app/browser checks do not complete the rest of the global stylesheet or the final regression matrix.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.
 - Check all migrated routes, shared overlays, translations, theme persistence, and SSR/hydration.

@@ -5,6 +5,23 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029j [Global error, required and hint selector inventory](work-items/DR-029j-error-required-hint-inventory.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Documentation-only scope: inventory `.error-text`, `label.required::after` and `small.hint`.
+Tracked searches find three definitions and no class readers; served CSS confirms all three rules.
+Mounted competition editor has required inputs and ordinary semantic `small` hints, not these classes.
+Four light/dark 390px/1440px hint samples have zero candidate matches and 13px generic small text.
+Preserve all application styling/components, generic `small`, grouped widths and all other global rules.
+No extraction, dependencies, operational mutations, new branch/worktree or second implementation slice.
+Application build/tests and full visual/accessibility/state/locale/workflow/SSR regression not run.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Explicit approval: `Approve inventory with documented limits and commit`; unperformed checks remain unchecked.
+Approved commit scope: only this inventory/backlog; no push.
+Exact next invocation: separately scope DR-029k to recheck and retire only these unused selectors/comments; not started.
+DR-029 remains open; inherited findings and final regression remain unresolved.
+
+### Previous focus: AutoComplete direct-child width retirement (DR-029i)
+
 DR-029i [AutoComplete direct-child width retirement](work-items/DR-029i-autocomplete-child-width.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Verified eleven declarations/nine source-mounted templates and installed branches: no direct-child div.
@@ -4193,7 +4210,8 @@ and linked from their registry rows.
 | [DR-029g](work-items/DR-029g-radius-consumers-cascade.md)             | Investigate radius utility consumers and cascade before any retirement       | Done    |
 | [DR-029h](work-items/DR-029h-form-width-inventory.md)                 | Inventory remaining global form-width overrides before any retirement        | Done    |
 | [DR-029i](work-items/DR-029i-autocomplete-child-width.md)             | Verify AutoComplete variants and retire its old direct-child width rule      | Done    |
-| DR-029j                                                               | Inventory global error/required/hint selectors before any retirement         | Backlog |
+| [DR-029j](work-items/DR-029j-error-required-hint-inventory.md)        | Inventory global error/required/hint selectors before any retirement         | Done    |
+| DR-029k                                                               | Recheck and retire only unused error/required/hint selectors after DR-029j   | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -5104,7 +5122,10 @@ routes][admin-routes] and [sync routes][sync-routes].
   DR-029i verifies installed branches and eleven declarations, retiring only the unused direct-child rule.
   Bounded search/dropdown before/after and app lint/build pass; user approved with disclosed limits.
   Broader regression and existing workspace lint failures remain unresolved; unchecked criteria stay unchecked.
-  DR-029j is the next separate error/required/hint selector inventory candidate, not started.
+  DR-029j inventories error/required/hint selectors: three definitions, no tracked class consumers.
+  Served rules confirmed; mounted editor hint samples are ordinary semantic `small`, not `.hint`.
+  Inventory approved with disclosed limits; application styles remain unchanged. DR-029k is a separate retirement candidate
+  depending on approved DR-029j and fresh consumer checks; preserve generic `small` and all other global rules.
   Do not touch PrimeNG/Tailwind infrastructure or other global rules; final regression remains separate.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.

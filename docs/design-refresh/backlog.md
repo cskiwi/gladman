@@ -5,6 +5,25 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029i [AutoComplete direct-child width retirement](work-items/DR-029i-autocomplete-child-width.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Verified eleven declarations/nine source-mounted templates and installed branches: no direct-child div.
+Removed only the obsolete four-line rule; preserve grouped form widths and all other styles/components.
+App lint/build pass: 31 successful tasks, 29 cached; no app test target.
+Search and add-member dropdown geometry match before/after in light/dark at 390px/1440px.
+Four final settled header Tab/ArrowDown/Escape checks pass; native dropdown Enter/Escape passes all four cases.
+Dark-wide/light-narrow search crops inspected; full visual/contrast/state/locale/workflow/SSR regression not run.
+Existing unnamed add-member controls recorded as DR-077; native feedback DR-037 and inherited findings stay open.
+No extraction, dependencies, operational mutations, service changes, new branch/worktree or second implementation slice.
+Original home, dark and 1571 x 1272 restored; existing navigation/auth-reload errors remain.
+Explicit approval: `Approve with documented limits and commit`; unperformed checks remain unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Approved commit scope: only this child/global styles/backlog; no push.
+Exact next invocation: separately scope DR-029j error/required/hint global-selector inventory; not started.
+DR-029 remains open; inherited findings and final regression remain unresolved.
+
+### Previous focus: Global form-width override inventory (DR-029h)
+
 DR-029h [Global form-width override inventory](work-items/DR-029h-form-width-inventory.md)
 is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
 Inventoried both global form-width rules, eleven selectors, native fluid APIs and tracked template candidates.
@@ -4173,7 +4192,8 @@ and linked from their registry rows.
 | [DR-029f](work-items/DR-029f-unused-spacing-radius-tokens.md)         | Retire eight unused spacing tokens; preserve Tailwind radius overrides       | Done    |
 | [DR-029g](work-items/DR-029g-radius-consumers-cascade.md)             | Investigate radius utility consumers and cascade before any retirement       | Done    |
 | [DR-029h](work-items/DR-029h-form-width-inventory.md)                 | Inventory remaining global form-width overrides before any retirement        | Done    |
-| DR-029i                                                               | Verify AutoComplete variants before retiring its old direct-child width rule | Backlog |
+| [DR-029i](work-items/DR-029i-autocomplete-child-width.md)             | Verify AutoComplete variants and retire its old direct-child width rule      | Done    |
+| DR-029j                                                               | Inventory global error/required/hint selectors before any retirement         | Backlog |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -4223,6 +4243,7 @@ and linked from their registry rows.
 | [DR-074](work-items/DR-074-toast-contrast.md)                         | Native Toast dark detail-text contrast audit                                 | Done    |
 | [DR-075](work-items/DR-075-toast-light-summary-contrast.md)           | Native Toast light summary-text contrast                                     | Done    |
 | DR-076                                                                | Shared page-header subtitle contrast on the app canvas                       | Backlog |
+| DR-077                                                                | Mounted club team-edit add-member dialog control names                       | Backlog |
 
 [dr-017i]: work-items/DR-017i-assembly-partner-combinations.md
 [dr-017j]: work-items/DR-017j-assembly-player-searches.md
@@ -5080,7 +5101,10 @@ routes][admin-routes] and [sync routes][sync-routes].
   remain unchanged. Inventory approved with disclosed limits; bounded cascade samples do not complete final regression.
   DR-029h inventories both global form-width rules and confirms mounted consumers and native fluid alternatives.
   Retain the grouped rule; sampled AutoComplete hosts have no direct-child div. Inventory approved with limits.
-  Next, separately scope DR-029i variant/consumer verification before retiring only that child rule.
+  DR-029i verifies installed branches and eleven declarations, retiring only the unused direct-child rule.
+  Bounded search/dropdown before/after and app lint/build pass; user approved with disclosed limits.
+  Broader regression and existing workspace lint failures remain unresolved; unchecked criteria stay unchecked.
+  DR-029j is the next separate error/required/hint selector inventory candidate, not started.
   Do not touch PrimeNG/Tailwind infrastructure or other global rules; final regression remains separate.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.
@@ -5091,6 +5115,11 @@ routes][admin-routes] and [sync routes][sync-routes].
 
 ## Progress, evidence, and discoveries
 
+- DR-029i (2026-11-27): mounted club detail team-edit/add-member dialog has unnamed player combobox, dropdown
+  and nested close controls before and after dead-width-rule removal. Plain player label has no `for`; input has
+  no ID/ARIA name and dropdown has no `dropdownAriaLabel`. Track a separately scoped DR-077 accessibility slice.
+  Source consumer: club detail overview's Team bewerken opens TeamEditComponent; Lid toevoegen opens the nested
+  dialog. No live member operation submitted. Do not expand this cleanup or claim those labels pass.
 - DR-011c (2026-11-25): native grouped claims, late-loaded permission controls and dirty/save lifecycle refreshed.
   Two missing claims-state locale keys restored; no unrelated/shared style or auth-policy change.
   Ten claims tests plus eighteen editor/profile regressions pass; final player lint/build pass.

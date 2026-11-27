@@ -5,6 +5,24 @@ description: 'Persistent status registry and frontend area inventory for the inc
 
 ## Current focus
 
+DR-029d [Unused palette and gradient token retirement](work-items/DR-029d-unused-palette-tokens.md)
+is Done after explicit approval on existing `main`, 2026-11-27, starting with a clean worktree.
+Scope only four unreferenced tokens and their light overrides in the mounted global theme stylesheet.
+Fresh exact tracked search returns seven definitions and no consumers.
+Retain referenced win/loss/rank-gradient tokens, qualification typography, spacing/radius and other global rules.
+Removed only the four candidates and obsolete comments; emitted CSS retains all excluded compatibility tokens.
+App lint/build pass (31 successful tasks, 29 cached); no app test target or new behavior test.
+Home light/dark 390px/1440px and all six supplied dark-wide route metrics match before/after.
+Four native theme-control Enter/focus checks pass; restored home, dark presentation and 1571 x 1272 geometry.
+Full regression, contrast/locale/SSR checks and inherited findings remain unverified; no clean-console claim.
+Explicit approval: `Approve with documented limits and commit`; unchecked verification limits remain unchecked.
+Required workspace lint: 22 of 34 targets pass; twelve reproduce historical dependency-check failures.
+Approved commit scope: only this child and handoff; no push.
+Exact next invocation: scope one separate DR-029 spacing/radius consumer inventory; do not delete referenced tokens.
+DR-029 remains open. No component extraction, dependency, operational change or new implementation slice.
+
+### Previous focus: Unused Chip/Tag modifier retirement (DR-029c)
+
 DR-029c [Unused Chip/Tag modifier retirement](work-items/DR-029c-unused-chip-tag-modifiers.md) is Done
 on existing `main`, 2026-11-27, starting with a clean worktree.
 Removed only four unmatched global Chip/Tag modifiers and their private pulse animation (43 lines).
@@ -4083,6 +4101,7 @@ and linked from their registry rows.
 | [DR-029a](work-items/DR-029a-legacy-typography.md)                    | Legacy typography consumer inventory                                         | Done    |
 | [DR-029b](work-items/DR-029b-unused-typography.md)                    | Retire four unused typography helpers and three private size tokens          | Done    |
 | [DR-029c](work-items/DR-029c-unused-chip-tag-modifiers.md)            | Retire unused global Chip/Tag modifiers and their private pulse animation    | Done    |
+| [DR-029d](work-items/DR-029d-unused-palette-tokens.md)                | Retire four unreferenced global palette/gradient tokens                      | Done    |
 | DR-030                                                                | Shared header overflow at 320px                                              | Backlog |
 | DR-031                                                                | Native FloatLabel focused-label contrast audit                               | Backlog |
 | DR-032                                                                | Native Checkbox and secondary Button contrast audit                          | Backlog |
@@ -4978,6 +4997,8 @@ routes][admin-routes] and [sync routes][sync-routes].
   its bounded app/browser checks do not complete the rest of the global stylesheet or the final regression matrix.
 - DR-029c retires only unmatched global Chip/Tag modifiers and their private animation after fresh tracked searches.
   Keep palette, gradient, spacing and radius tokens unchanged; do not redesign unused components.
+- DR-029d separately retires only four unreferenced palette/gradient tokens after fresh tracked checks.
+  Preserve referenced win/loss/rank-gradient tokens, typography, spacing/radius and unused component sources.
 - Revisit the inverted dark palette only as an explicit, separately reviewable theme change with consumer coverage.
 - Remove only unused global rules and stylesheets. Do not delete compatibility styling still used by deferred screens.
 - Check all migrated routes, shared overlays, translations, theme persistence, and SSR/hydration.

@@ -7,21 +7,11 @@
    ============================================================ */
 
 :root {
-  /* --- Semantic accent colors (used by hero gradient, W/L badges) --- */
-  --g-accent-muted: oklch(0.68 0.22 340 / 0.18);
-
+  /* --- W/L colors (consumed by component SCSS files) --- */
   --g-win: oklch(0.85 0.18 135);
-  --g-win-muted: oklch(0.85 0.18 135 / 0.16);
-
   --g-loss: oklch(0.65 0.22 25);
-  --g-loss-muted: oklch(0.65 0.22 25 / 0.16);
 
   /* --- Gradients --- */
-  --g-gradient-primary: linear-gradient(
-    135deg,
-    oklch(0.78 0.15 210) 0%,
-    oklch(0.68 0.22 280) 100%
-  );
   --g-gradient-rank: linear-gradient(
     135deg,
     oklch(0.82 0.15 85) 0%,
@@ -51,13 +41,8 @@
 
 /* --- Light mode overrides for the g-* semantic palette --- */
 html.light-theme {
-  --g-accent-muted: oklch(0.54 0.22 340 / 0.18);
-
   --g-win: oklch(0.62 0.19 145);
-  --g-win-muted: oklch(0.62 0.19 145 / 0.16);
-
   --g-loss: oklch(0.55 0.22 25);
-  --g-loss-muted: oklch(0.55 0.22 25 / 0.16);
 }
 
 /* ============================================================
